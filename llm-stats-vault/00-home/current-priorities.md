@@ -13,7 +13,9 @@ All 855 Phase1+2 runs + 375 synthetic runs complete. Results scored. R report re
 
 ## Open Items (Paper-Blocking)
 
-### 1. Error Taxonomy Analysis ❌ (from proposal — "systematic error taxonomy")
+> Error taxonomy ✅ closed 2026-04-26. See [[2026-04-26-error-taxonomy-pipeline]].
+
+### 1. Error Taxonomy Analysis ✅ DONE (2026-04-26)
 Proposal abstract promises "a systematic error taxonomy for LLM statistical reasoning."  
 `evaluation/error_taxonomy.py` exists as dataclass stub only — no analysis pipeline.
 

@@ -51,6 +51,7 @@ date: 2026-04-26
 - [[2026-04-26-vault-creation-and-workflow-setup]] — vault built, session workflow established
 - [[2026-04-26-research-gap-closures-and-roadmap]] — LLM-as-Judge, PoT, few-shot, bibliography
 - [[2026-04-26-benchmark-completion-and-r-report]] — all 5 models complete, R re-render, doc updates
+- [[2026-04-26-error-taxonomy-pipeline]] — error taxonomy pipeline (E1-E9), proposal gap closed, vault updated
 
 ## Quick Commands
 

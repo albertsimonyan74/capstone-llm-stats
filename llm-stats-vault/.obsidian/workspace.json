@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "c019c9f8a3092ac8",
+        "id": "bd02b6206989d96a",
         "type": "tabs",
         "children": [
           {
-            "id": "30604f221bba6249",
+            "id": "8473cc840ece86cb",
             "type": "leaf",
             "state": {
               "type": "graph",
@@ -161,12 +161,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "30604f221bba6249",
+  "active": "8473cc840ece86cb",
   "lastOpenFiles": [
+    "sessions/2026-04-26-error-taxonomy-pipeline.md",
+    "inbox/README.md",
     "00-home/index.md",
     "knowledge/decisions/obsidian-vault-is-persistent-session-memory.md",
     "sessions/2026-04-26-vault-creation-and-workflow-setup.md",
-    "inbox/README.md",
     "inbox",
     "sessions/2026-04-26-research-gap-closures-and-roadmap.md",
     "sessions",
@@ -194,7 +195,6 @@
     "knowledge/decisions/dual-scoring-paths-exist-for-separation-of-concerns.md",
     "knowledge/decisions/all-scoring-weights-are-equal-at-0.20.md",
     "knowledge/decisions",
-    "knowledge/integrations/react-frontend-uses-vite-with-portal-tooltips.md",
     "knowledge/integrations",
     "knowledge",
     "atlas",
