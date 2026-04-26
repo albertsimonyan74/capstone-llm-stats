@@ -7,6 +7,8 @@ Reference: Nagarkar et al. (2026) — LLMs outperform BLEU/BERTScore on reasonin
 import anthropic
 import json
 import re
+from dotenv import load_dotenv
+load_dotenv()
 
 client = anthropic.Anthropic()
 

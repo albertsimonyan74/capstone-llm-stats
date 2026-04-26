@@ -485,67 +485,61 @@ Note: `runs.jsonl` also contains an old placeholder record with a different sche
 | RQ1 | Numerical accuracy (N score) | Implemented — `numeric_score` in runner, `numerical_score()` in metrics.py |
 | RQ2 | Method selection (M score) | Implemented — `structure_score` in runner, `method_structure_score()` in metrics.py |
 | RQ3 | Assumption compliance (A score) | Implemented — `assumption_score` in runner, `assumption_compliance_score()` in metrics.py |
-| RQ4 | Robustness to prompt variations | Data ready — `data/synthetic/perturbations.json` (75 tasks); `--synthetic` flag added to runner; R weight is Reasoning Quality (not perturbation robustness); perturbation comparison analysis TBD |
+| RQ4 | Robustness to prompt variations | **Implemented** — `data/synthetic/perturbations.json` (75 tasks); all 4 models ran synthetic; `scripts/analyze_perturbations.py` → `rq4_analysis.json`; Gemini synthetic in progress |
 | RQ5 | Confidence calibration (C score) | **Implemented** — `extract_confidence()` + `confidence_calibration_score()` in `response_parser.py`; C=0.20 active in both scoring paths; `scores/recompute_scores.py` backfilled all existing runs |
 
 ---
 
 ## 9. Known Gaps and TODOs
 
-### Verified Run Status (audited 2026-04-25)
+### Verified Run Status (audited 2026-04-26)
 
-#### Phase 1 (136 tasks)
+#### Phase 1+2 (171 tasks combined)
 
 | Model | Runs | Avg Score | Pass Rate | Status |
 |---|---|---|---|---|
-| claude | 136/136 | 0.696 | 117/136 (86%) | ✅ Complete |
-| chatgpt | 136/136 | 0.612 | 98/136 (72%) | ✅ Complete |
-| deepseek | 136/136 | 0.615 | 100/136 (74%) | ✅ Complete |
-| mistral | 136/136 | 0.635 | 110/136 (81%) | ✅ Complete |
-| gemini | 74/136 | 0.236* | 16/76 (21%)* | ❌ Incomplete — daily quota hit |
+| claude | 171/171 | 0.679 | 88.9% | ✅ Complete |
+| chatgpt | 171/171 | 0.614 | 77.8% | ✅ Complete |
+| deepseek | 171/171 | 0.621 | 78.9% | ✅ Complete |
+| mistral | 171/171 | 0.632 | 84.8% | ✅ Complete |
+| gemini | 171/171 | 0.656 | 81.7% | ✅ Complete (paid tier, 2026-04-26) |
 
-\*Gemini avg/pass depressed by 58 error records (429s) with score=0. True performance for completed tasks is higher.
+Old Gemini free-tier records were wiped and re-run with paid billing (2026-04-26). No error records remain.
 
-**Gemini missing 62 tasks** (daily RPD quota exhausted 2026-04-24 ~09:41 UTC):
-BAYES_FACTOR×5, BAYES_REG×5, CI_CREDIBLE×5, CONCEPTUAL×10, GAMBLER×3, HPD×5, JEFFREYS×5, LOG_ML×5, MLE_EFFICIENCY×3, MLE_MAP×5, PPC×5, RANGE_DIST×3, STATIONARY×3.
-**Fix:** Resume — `python -m llm_runner.run_all_tasks --models gemini` (resume logic skips completed tasks automatically).
-
-#### Phase 2 (35 advanced tasks — audited 2026-04-25)
+#### Synthetic / RQ4 (75 perturbation tasks)
 
 | Model | Runs | Status |
 |---|---|---|
-| claude | 35/35 | ✅ Complete (0 errors) |
-| chatgpt | 35/35 | ✅ Complete (0 errors) |
-| deepseek | 35/35 | ✅ Complete (0 errors) |
-| mistral | 35/35 | ✅ Complete (0 errors) |
-| gemini | TBD | ⏳ In progress (separate process running 2026-04-25) |
+| claude | 75/75 | ✅ Complete |
+| chatgpt | 75/75 | ✅ Complete |
+| deepseek | 75/75 | ✅ Complete |
+| mistral | 75/75 | ✅ Complete |
+| gemini | in progress | ⏳ Running 2026-04-26 |
 
-**Resume Gemini Phase 2:** `python -m llm_runner.run_all_tasks --models gemini --tasks data/benchmark_v1/tasks_advanced.json --delay 5`
+**Scoring components:** All 855 Phase1+2 runs have confidence_score + reasoning_score. No error records remain.
 
-**Synthetic (RQ4): 0/375 runs** — `perturbations.json` exists (75 tasks), runner flag exists (`--synthetic`), but no model has run synthetic tasks yet.
+**runs.jsonl record count:** 1155 total (171×5 benchmark + 300 synthetic for 4 models).
 
-**Scoring components in runs.jsonl:**
-- confidence_score + reasoning_score: present in 562/620 runs (58 gemini error runs lack them)
-- results.json: **EMPTY** (0 entries) — `run_benchmark.py` has never produced output
+**results.json:** Populated with 5 models, 834 task scores (via `run_benchmark.py --no-judge`).
+**rq4_analysis.json:** `experiments/results_v1/rq4_analysis.json` — 300 triples, 4 models analyzed.
+  - Claude robustness: 0.915 | ChatGPT: 0.931 | DeepSeek: 0.901 | Mistral: 0.925
+  - By type: rephrase=0.924, semantic=0.916, numerical=0.913
 
 ### CRITICAL (blocks results)
-- [ ] **Resume Gemini Phase 1** — 62 tasks missing: `python -m llm_runner.run_all_tasks --models gemini`
-- [ ] **Resume Gemini Phase 2** — 35 tasks: `python -m llm_runner.run_all_tasks --models gemini --tasks data/benchmark_v1/tasks_advanced.json --delay 5`
-- [ ] **Run synthetic benchmark (RQ4)** — 0/375 done: `python -m llm_runner.run_all_tasks --models claude chatgpt deepseek mistral --synthetic`
-- [ ] **Run `python -m experiments.run_benchmark`** — results.json needs refresh after Phase 2 runs complete
-- [ ] **Recompute Gemini error runs** — 58 runs logged with error + score=0; prune or re-run after quota resets
+- [ ] **Finish Gemini synthetic** (in progress) — 75 tasks: `python -m llm_runner.run_all_tasks --models gemini --synthetic --delay 2`
+- [ ] **Re-run pipeline after Gemini synthetic completes** — `bash scripts/refresh_pipeline.sh --no-judge`
 
 ### IMPORTANT (needed for paper)
-- [ ] Implement RQ4 perturbation comparison analysis (compare rephrase/numerical/semantic per base task) — data will exist after synthetic run
-- [ ] Run `python scripts/summarize_results.py` after all runs complete to refresh `results_summary.json`
 - [ ] Regenerate R visualizations after results complete: `cd report_materials/r_analysis && Rscript run_all.R`
+- [x] Implement RQ4 perturbation comparison analysis — `scripts/analyze_perturbations.py` ✅ written and tested
+- [x] Run `python scripts/summarize_results.py` — outputs `results_summary.json` with benchmark/synthetic split
 - [x] Interactive HTML: 14 HTML files in `report_materials/r_analysis/interactive/` (7 HTML from scripts 08–14, plus 7 `_files/` subdirs; scripts 01–07 output HTML to `figures/` dir)
 - [x] `report_materials/r_analysis/figures/` populated: 15 PNG + 1 GIF + 7 HTML (01–07)
 - [x] Master report `report_materials/r_analysis/benchmark_report.html` — **9.3 MB, generated 2026-04-24** (`theme: null` fixed to `theme: flatly` in Rmd YAML)
 
 ### NICE TO HAVE
-- [ ] Verify `results.json` schema matches what `run_benchmark.py` writes before writing analysis code
-- [ ] Prune or annotate gemini error records in runs.jsonl (currently 58 records with error + score=0)
+- [ ] Verify `results.json` schema matches what `run_benchmark.py` writes before writing analysis code (DONE for `--no-judge` path — schema verified)
+- [ ] Re-render R report with all 5 complete model data (currently has partial Gemini)
 
 ### Before first API run (done)
 - [x] Set all 5 API key environment variables (copy `.env.example` → `.env`)

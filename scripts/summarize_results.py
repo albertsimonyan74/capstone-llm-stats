@@ -17,10 +17,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RUNS_PATH   = os.path.join(ROOT, 'experiments', 'results_v1', 'runs.jsonl')
 OUTPUT_PATH = os.path.join(ROOT, 'capstone-website', 'frontend', 'src', 'data', 'results_summary.json')
 
-EXPECTED_TASKS = 136
+EXPECTED_TASKS = 171   # Phase 1 (136) + Phase 2 (35) benchmark tasks
+SYNTHETIC_SUFFIX = ("_rephrase", "_numerical", "_semantic")
 
 def safe_mean(lst):
     return mean(lst) if lst else 0.0
+
+def is_synthetic(task_id: str) -> bool:
+    return any(task_id.endswith(s) for s in SYNTHETIC_SUFFIX)
 
 def load_runs():
     runs = []
@@ -40,12 +44,21 @@ def load_runs():
     return runs
 
 def build_summary(runs):
-    # Group by model
+    # Split benchmark (Phase1+2) vs synthetic runs
+    bench_runs = [r for r in runs if not is_synthetic(r.get('task_id', ''))]
+    synth_runs = [r for r in runs if is_synthetic(r.get('task_id', ''))]
+
+    # Group by model (benchmark only for completeness check)
     by_model = defaultdict(list)
-    for r in runs:
+    for r in bench_runs:
         by_model[r['model_family']].append(r)
 
-    # Classify models
+    # Also group synthetic
+    by_model_synth = defaultdict(list)
+    for r in synth_runs:
+        by_model_synth[r['model_family']].append(r)
+
+    # Classify models based on benchmark tasks only
     complete, partial, pending = [], [], []
     all_known = ['claude', 'chatgpt', 'deepseek', 'mistral', 'gemini']
     for m in all_known:
@@ -57,7 +70,7 @@ def build_summary(runs):
         else:
             pending.append(m)
 
-    # Per-model stats
+    # Per-model stats (benchmark runs only)
     by_model_out = {}
     for m, records in by_model.items():
         scores     = [r.get('final_score', 0) or 0 for r in records]
@@ -104,9 +117,9 @@ def build_summary(runs):
             'worst_task_types': worst5,
         }
 
-    # Task-type-level stats across all models
+    # Task-type-level stats (benchmark runs only)
     by_type_all = defaultdict(lambda: defaultdict(list))
-    for r in runs:
+    for r in bench_runs:
         by_type_all[r['task_type']][r['model_family']].append(r.get('final_score', 0) or 0)
 
     task_type_stats = {}
@@ -118,9 +131,9 @@ def build_summary(runs):
             'models': {m: round(safe_mean(sc), 4) for m, sc in model_map.items()},
         }
 
-    # Tier-level stats
+    # Tier-level stats (benchmark runs only)
     by_tier_all = defaultdict(lambda: defaultdict(list))
-    for r in runs:
+    for r in bench_runs:
         by_tier_all[str(r.get('tier', '?'))][r['model_family']].append(r.get('final_score', 0) or 0)
 
     tier_stats = {}
@@ -132,13 +145,27 @@ def build_summary(runs):
             'models': {m: round(safe_mean(sc), 4) for m, sc in model_map.items()},
         }
 
+    # Synthetic (RQ4) summary
+    synth_by_model: dict = {}
+    for m, records in by_model_synth.items():
+        scores = [r.get('final_score', 0) or 0 for r in records]
+        passes = [1 if r.get('pass') else 0 for r in records]
+        synth_by_model[m] = {
+            'tasks':      len(records),
+            'avg_score':  round(safe_mean(scores), 4),
+            'pass_rate':  round(safe_mean(passes),  4),
+        }
+
     return {
         'generated_at':     datetime.now(timezone.utc).isoformat(),
         'total_runs':       len(runs),
+        'benchmark_runs':   len(bench_runs),
+        'synthetic_runs':   len(synth_runs),
         'models_complete':  complete,
         'models_partial':   partial,
         'models_pending':   pending,
         'by_model':         by_model_out,
+        'synthetic_by_model': synth_by_model,
         'task_type_stats':  task_type_stats,
         'tier_stats':       tier_stats,
     }

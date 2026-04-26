@@ -7,6 +7,8 @@ import json
 import re
 
 import anthropic
+from dotenv import load_dotenv
+load_dotenv()
 
 client = anthropic.Anthropic()
 _MODEL = "claude-sonnet-4-6"
