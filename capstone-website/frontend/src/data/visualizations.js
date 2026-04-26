@@ -169,14 +169,48 @@ export const VISUALIZATIONS = [
     isGif: true,
     insight: 'Rankings stabilize after ~80 tasks, confirming the benchmark has sufficient statistical power to distinguish model capabilities.',
   },
+  {
+    id: 'error-distribution',
+    title: 'Error Taxonomy: Distribution',
+    subtitle: 'All failure types across 143 failed runs',
+    description: 'Bar chart of the 8-category error taxonomy applied to all 143 failed benchmark runs (score < 0.5). Categories: E3 Assumption Violation, E7 Truncation (token limit), E5 Overconfidence, E6 Conceptual Confusion, E2 Method Selection, E4 Format Failure, E8 Hallucination.',
+    png: '/visualizations/png/16a_error_distribution.png',
+    interactive: null,
+    type: 'Bar',
+    category: 'Error Analysis',
+    insight: 'E3 Assumption Violation (119) and E7 Truncation (93) dominate failures. Token limit (1024) causes 65% of all failures on multi-target tasks like REGRESSION and BAYES_REG.',
+  },
+  {
+    id: 'error-by-model',
+    title: 'Error Taxonomy: By Model',
+    subtitle: 'Error type heatmap across all 5 models',
+    description: 'Heatmap showing count of each error type per model. Claude has fewest total failures (19). ChatGPT and DeepSeek have most (38, 36). Gemini has disproportionate E4 Format Failures (6).',
+    png: '/visualizations/png/16b_error_by_model_heatmap.png',
+    interactive: null,
+    type: 'Heatmap',
+    category: 'Error Analysis',
+    insight: 'Claude is most reliable (fewest failures). E7 Truncation is universal — all models hit the 1024-token cap on complex multi-output tasks.',
+  },
+  {
+    id: 'error-by-task',
+    title: 'Error Taxonomy: By Task Type',
+    subtitle: 'Stacked error mix for 12 hardest task types',
+    description: 'Stacked bar chart showing error composition for the 12 task types with most failures. REGRESSION and BAYES_REG dominated by E7 Truncation. BOX_MULLER dominated by E6 Conceptual Confusion. FISHER_INFO by E6 and E3 Assumption Violation.',
+    png: '/visualizations/png/16c_error_by_task_type.png',
+    interactive: null,
+    type: 'Bar',
+    category: 'Error Analysis',
+    insight: 'Different task types have distinct failure modes: truncation for multi-output tasks vs conceptual confusion for transformation/distribution tasks.',
+  },
 ]
 
 export const VIZ_FILTER_MAP = {
-  'All':          () => true,
-  'Heatmaps':     v => v.category === 'Heatmaps',
-  'Distributions':v => v.category === 'Distributions',
-  'Comparisons':  v => v.category === 'Comparisons',
-  'Animation':    v => v.category === 'Animation',
+  'All':           () => true,
+  'Heatmaps':      v => v.category === 'Heatmaps',
+  'Distributions': v => v.category === 'Distributions',
+  'Comparisons':   v => v.category === 'Comparisons',
+  'Animation':     v => v.category === 'Animation',
+  'Error Analysis':v => v.category === 'Error Analysis',
 }
 
-export const VIZ_FILTERS = ['All', 'Heatmaps', 'Distributions', 'Comparisons', 'Animation']
+export const VIZ_FILTERS = ['All', 'Heatmaps', 'Distributions', 'Comparisons', 'Animation', 'Error Analysis']

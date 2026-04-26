@@ -57,6 +57,11 @@ python data/synthetic/build_perturbations.py
 # Run scoring pipeline (requires experiments/results_v1/runs.jsonl to exist)
 python -m experiments.run_benchmark
 
+# Run error taxonomy analysis (rule-based + LLM-as-Judge, outputs data/error_taxonomy_results.json)
+python scripts/analyze_errors.py                # full pipeline, up to 100 LLM calls
+python scripts/analyze_errors.py --no-llm       # rule-based only, no API calls
+python scripts/analyze_errors.py --max-llm 50   # limit LLM calls
+
 # Start MCP server
 python -m capstone_mcp.server
 
@@ -120,11 +125,12 @@ data/
   synthetic/
     perturbations.json      # 75 perturbations: 25 base tasks × 3 types (rephrase/numerical/semantic)
     build_perturbations.py  # Generation script — run to regenerate
+  error_taxonomy_results.json  # Output of scripts/analyze_errors.py (143 failures tagged E1-E9)
 evaluation/
-  metrics.py          # Formal scoring: weights N=0.60, M=0.20, C=0.00, A=0.20, R=0.00
+  metrics.py          # Formal scoring: weights N=0.20, M=0.20, C=0.20, A=0.20, R=0.20
   task_spec_schema.py # Loads tasks.json → Dict[str, TaskSpec]
   rubrics.py          # Structure/assumption/conceptual rubric key constants
-  error_taxonomy.py   # ErrorAnnotation dataclass
+  error_taxonomy.py   # ErrorAnnotation dataclass (E1-E9 tag constants + validation)
 experiments/
   run_benchmark.py    # Entry point: loads tasks + runs, scores, writes results
   results_v1/
@@ -534,12 +540,17 @@ Old Gemini free-tier records were wiped and re-run with paid billing (2026-04-26
 - [x] Implement RQ4 perturbation comparison analysis — `scripts/analyze_perturbations.py` ✅ written and tested
 - [x] Run `python scripts/summarize_results.py` — outputs `results_summary.json` with benchmark/synthetic split
 - [x] Interactive HTML: 14 HTML files in `report_materials/r_analysis/interactive/` (all regenerated 2026-04-26)
-- [x] `report_materials/r_analysis/figures/` populated: 15 PNG + 1 GIF + 7 HTML (all 5 models, no Gemini exclusions)
-- [x] Master report `report_materials/r_analysis/benchmark_report.html` — **9.6 MB, regenerated 2026-04-26** (all 5 models complete, synthetic filtered out of R analysis)
+- [x] `report_materials/r_analysis/figures/` populated: 18 PNG + 1 GIF (15 original + 3 error taxonomy, all 5 models)
+- [x] Master report `report_materials/r_analysis/benchmark_report.html` — **9.4 MB, regenerated 2026-04-26** with Error Taxonomy + Limitations sections
+- [x] Error taxonomy analysis — `scripts/analyze_errors.py` (E1-E9 hybrid rule-based + LLM-as-Judge); 143/855 failures tagged; output: `data/error_taxonomy_results.json`
+  - Top errors: E3 Assumption Violation (119) > E7 Truncation (93) > E5 Overconfidence (85) > E6 Conceptual Confusion (56)
+  - 3 R visualizations: `16a_error_distribution.png`, `16b_error_by_model_heatmap.png`, `16c_error_by_task_type.png`
+  - Website manifest updated: 3 new viz cards in "Error Analysis" filter tab
+- [x] User study (proposal deliverable) — marked as **future work** in `08_master_report.Rmd` §Limitations
 
 ### NICE TO HAVE
-- [ ] Verify `results.json` schema matches what `run_benchmark.py` writes before writing analysis code (DONE for `--no-judge` path — schema verified)
-- [ ] Re-render R report with all 5 complete model data (currently has partial Gemini)
+- [x] Verify `results.json` schema matches what `run_benchmark.py` writes before writing analysis code (DONE for `--no-judge` path — schema verified)
+- [x] Re-render R report with all 5 complete model data — ✅ done 2026-04-26
 
 ### Before first API run (done)
 - [x] Set all 5 API key environment variables (copy `.env.example` → `.env`)
@@ -560,7 +571,7 @@ Old Gemini free-tier records were wiped and re-run with paid billing (2026-04-26
 - [x] Build Results & Visualizations page (`VizGallery.jsx`) — leaderboard cards + filter tabs + 15-viz gallery with lightbox/iframe/GIF modals. Assets in `frontend/public/visualizations/`. Manifest in `src/data/visualizations.js`. Added as `id="visualizations"` section in App.jsx and navbar entry.
 - [x] Website task modal improvements — stable 2×2 metadata grid with `minHeight:72`, collapsible "TASK INPUTS" section showing `inputs_str` as formatted JSON, GROUND TRUTH parameters wrapped in container div using `ParamTooltip` (portal-based).
 - [x] Website live results panel — `LiveResults` component below `AnimatedScoringBars` in `BenchmarkSection`, reads from `results_summary.json`, shows models benchmarked (4/5 + 1 partial), overall avg score, best model (CLAUDE), hardest/easiest task types with glowing cyan-border panel.
-- [x] R visualization pipeline — 17 scripts (00–15 + Rmd), all 5 models, synthetic excluded. Re-rendered 2026-04-26: 15 PNG + 1 GIF in `figures/`, 14 HTML in `interactive/`, master report 9.6 MB. **Run from `report_materials/r_analysis/` dir** — `Rscript run_all.R` (24.5s). Assets copied to `capstone-website/frontend/public/visualizations/`. Gemini no longer excluded from any R scripts.
+- [x] R visualization pipeline — **18 scripts (00–16 + Rmd)**, all 5 models, synthetic excluded. Re-rendered 2026-04-26: **18 PNG + 1 GIF** in `figures/`, 14 HTML in `interactive/`, master report 9.4 MB (adds Error Taxonomy + Limitations). **Run from `report_materials/r_analysis/` dir** — `Rscript run_all.R`. Assets copied to `capstone-website/frontend/public/visualizations/`. Script `16_error_taxonomy.R` requires `data/error_taxonomy_results.json` (run `python scripts/analyze_errors.py` first).
 - [x] Tasks page pagination + view mode — perPage selector (9/18/36/72/All, default 18), currentPage state resets on filter change, pagination controls below grid, GROUP BY TYPE toggle in sidebar (grouped mode shows all filtered tasks by task_type, no pagination).
 - [x] Removed duplicate leaderboard from `ResultsSection.jsx` — only leaderboard is in `VizGallery.jsx` (Benchmark Visualizations section). `selectedModel` prop removed; heatmap now always shows all models.
 - [x] Viz modal improvements (`VizGallery.jsx`) — "Open Interactive" button: non-GIF now calls `window.open(viz.interactive, '_blank')` (Safari iframe blocked). GIF ("View Animation ▶") still opens in-page modal with `<img>`. iframe modal JSX removed. Static lightbox ("View Static") unchanged: 90vw × 85vh PNG lightbox, zIndex 99000/99001, ESC/backdrop close. Scroll lock on `modalOpen`/`showFullImg`. Plotly `_files/` subdirs copied via `cp -r report_materials/r_analysis/interactive/ frontend/public/visualizations/interactive/`.

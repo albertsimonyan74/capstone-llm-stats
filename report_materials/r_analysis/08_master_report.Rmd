@@ -547,6 +547,97 @@ combined_fail
 
 ---
 
+# Error Taxonomy Analysis
+
+Following the systematic error classification framework proposed in this study,
+we categorize all failed runs (score < 0.5) into eight error types using a
+hybrid rule-based and LLM-as-Judge pipeline (`scripts/analyze_errors.py`).
+
+**Error Categories:**
+
+| Code | Name | Description |
+|------|------|-------------|
+| E1 | Numerical Computation | Correct method, wrong arithmetic |
+| E2 | Method Selection | Wrong statistical procedure chosen |
+| E3 | Assumption Violation | Required assumptions ignored or unchecked |
+| E4 | Format Failure | Answer in prose but ANSWER: line not parseable |
+| E5 | Overconfidence | High expressed confidence despite low accuracy |
+| E6 | Conceptual Confusion | Fundamental misunderstanding of statistical concept |
+| E7 | Truncation | Response cut off at token limit before ANSWER: |
+| E8 | Hallucination | Invented values or formulas not in problem |
+
+```{r error-taxonomy-summary, echo=FALSE, message=FALSE, warning=FALSE}
+library(jsonlite)
+err_path <- "../../data/error_taxonomy_results.json"
+if (file.exists(err_path)) {
+  error_data <- jsonlite::fromJSON(err_path)
+  error_df <- data.frame(
+    `Error Code` = names(error_data$error_distribution),
+    Count        = as.integer(unlist(error_data$error_distribution)),
+    Description  = unlist(error_data$taxonomy_definitions[
+                     names(error_data$error_distribution)]),
+    check.names  = FALSE
+  ) %>% arrange(desc(Count))
+
+  cat(sprintf("**Total failures:** %d / %d benchmark runs (%.1f%% failure rate)\n\n",
+              error_data$total_failures,
+              error_data$total_benchmark_runs,
+              error_data$failure_rate * 100))
+  knitr::kable(error_df, caption = "Error Distribution Across All Models and Task Types")
+} else {
+  cat("_Error taxonomy data not found. Run: `python scripts/analyze_errors.py`_\n")
+}
+```
+
+```{r error-taxonomy-figures, echo=FALSE, fig.show='hold', out.width='100%'}
+figs <- c("figures/16a_error_distribution.png",
+          "figures/16b_error_by_model_heatmap.png",
+          "figures/16c_error_by_task_type.png")
+for (fig in figs) {
+  if (file.exists(fig)) knitr::include_graphics(fig)
+}
+```
+
+**Key findings:**
+
+- **E7 Truncation** (token limit) is the dominant mechanical failure — complex tasks
+  like REGRESSION and BAYES_REG consistently exceed the 1024-token output cap,
+  suggesting `max_tokens` should be increased in future benchmark runs.
+- **E3 Assumption Violation** is the most common semantic failure — models proceed
+  without stating required distributional assumptions (iid, conjugacy conditions).
+- **E6 Conceptual Confusion** clusters in BOX_MULLER and FISHER_INFO tasks,
+  where models misapply transformation or regularity conditions.
+- Claude has the fewest failures (19/171); ChatGPT and DeepSeek the most (38/171, 36/171).
+
+---
+
+# Limitations and Future Work
+
+## Token Limit (E7 Truncation)
+
+The 1024-token output cap causes 93 failures (65% of all failures) in
+multi-target tasks (REGRESSION, BAYES_REG). Future benchmark runs should
+set `max_tokens = 2048` for task types with ≥ 4 numeric targets.
+
+## User Study (Planned)
+
+The original project proposal included a small-scale user study (n = 5–10
+statistics students) comparing human problem-solving against LLM outputs to
+assess practical usefulness and trust alignment. Due to timeline constraints,
+this component is deferred to future work. The confidence calibration score
+(C component, weight 0.20) partially addresses trust alignment by measuring
+whether model-expressed confidence correlates with actual accuracy (RQ5).
+A formal user study remains a planned extension of this benchmark.
+
+## Scope Extensions
+
+Phase 2 (35 computational Bayes tasks: GIBBS, MH, HMC, RJMCMC, VB, ABC,
+HIERARCHICAL) already exceeds the original proposal scope. Potential Phase 3
+extensions include: Kalman filter (state estimation), EM algorithm (mixture
+models), and Laplace approximation (posterior approximation).
+
+---
+
 # Model Comparison Table
 
 ```{r gt-table}

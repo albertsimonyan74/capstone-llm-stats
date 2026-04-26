@@ -1,5 +1,7 @@
 ## run_all.R
-## Master runner: sources all 00–15 scripts in order.
+## Master runner: sources all 00–16 scripts in order.
+## NOTE: 16_error_taxonomy.R requires data/error_taxonomy_results.json.
+## Run `python scripts/analyze_errors.py` from project root before running this.
 ## Creates data/ and figures/ dirs if needed.
 ## Wraps each script in tryCatch; prints progress and final manifest.
 ## Run from: report_materials/r_analysis/
@@ -101,6 +103,13 @@ scripts <- list(
     file    = "15_bar_race.R",
     label   = "15 — Animated bar chart race (GIF + PNG)",
     outputs = c("figures/15_bar_race.gif", "figures/15_bar_race.png")
+  ),
+  list(
+    file    = "16_error_taxonomy.R",
+    label   = "16 — Error taxonomy visualizations (E1-E9)",
+    outputs = c("figures/16a_error_distribution.png",
+                "figures/16b_error_by_model_heatmap.png",
+                "figures/16c_error_by_task_type.png")
   )
 )
 
