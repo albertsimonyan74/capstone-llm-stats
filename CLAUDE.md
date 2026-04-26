@@ -514,20 +514,20 @@ Old Gemini free-tier records were wiped and re-run with paid billing (2026-04-26
 | chatgpt | 75/75 | ✅ Complete |
 | deepseek | 75/75 | ✅ Complete |
 | mistral | 75/75 | ✅ Complete |
-| gemini | in progress | ⏳ Running 2026-04-26 |
+| gemini | 75/75 | ✅ Complete (2026-04-26) |
 
 **Scoring components:** All 855 Phase1+2 runs have confidence_score + reasoning_score. No error records remain.
 
-**runs.jsonl record count:** 1155 total (171×5 benchmark + 300 synthetic for 4 models).
+**runs.jsonl record count:** 1230 total (171×5 benchmark + 375 synthetic = all 5 models).
 
-**results.json:** Populated with 5 models, 834 task scores (via `run_benchmark.py --no-judge`).
-**rq4_analysis.json:** `experiments/results_v1/rq4_analysis.json` — 300 triples, 4 models analyzed.
-  - Claude robustness: 0.915 | ChatGPT: 0.931 | DeepSeek: 0.901 | Mistral: 0.925
-  - By type: rephrase=0.924, semantic=0.916, numerical=0.913
+**results.json:** Populated — 5 models, 855 task scores (via `run_benchmark.py --no-judge`).
+  - Claude 0.683 | Mistral 0.644 | Gemini 0.642 | DeepSeek 0.625 | ChatGPT 0.621
+**rq4_analysis.json:** `experiments/results_v1/rq4_analysis.json` — 375 triples, all 5 models.
+  - Claude 0.915 | ChatGPT 0.931 | DeepSeek 0.901 | Gemini 0.896 | Mistral 0.925
+  - By type: rephrase=0.923, semantic=0.909, numerical=0.908
 
 ### CRITICAL (blocks results)
-- [ ] **Finish Gemini synthetic** (in progress) — 75 tasks: `python -m llm_runner.run_all_tasks --models gemini --synthetic --delay 2`
-- [ ] **Re-run pipeline after Gemini synthetic completes** — `bash scripts/refresh_pipeline.sh --no-judge`
+✅ All CRITICAL items resolved as of 2026-04-26.
 
 ### IMPORTANT (needed for paper)
 - [ ] Regenerate R visualizations after results complete: `cd report_materials/r_analysis && Rscript run_all.R`

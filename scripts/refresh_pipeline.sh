@@ -17,6 +17,10 @@ fi
 
 source .venv/bin/activate
 
+echo "=== Step 0: Deduplicate runs.jsonl ==="
+python scripts/dedup_runs.py
+
+echo ""
 echo "=== Step 1: Formal scoring (run_benchmark.py) ==="
 python -m experiments.run_benchmark $NO_JUDGE
 
