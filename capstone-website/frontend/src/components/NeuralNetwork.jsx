@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 const MODELS = [
   { id:'claude',   initials:'CL', name:'Claude Sonnet 4.5', version:'claude-sonnet-4-5',  provider:'Anthropic',       color:'#00CED1', status:'COMPLETE' },
-  { id:'gemini',   initials:'GM', name:'Gemini 2.5 Flash',  version:'gemini-2.5-flash',   provider:'Google DeepMind', color:'#FF6B6B', status:'PARTIAL'  },
+  { id:'gemini',   initials:'GM', name:'Gemini 2.5 Flash',  version:'gemini-2.5-flash',   provider:'Google DeepMind', color:'#FF6B6B', status:'COMPLETE' },
   { id:'chatgpt',  initials:'GP', name:'GPT-4.1',           version:'gpt-4.1',            provider:'OpenAI',          color:'#7FFFD4', status:'COMPLETE' },
   { id:'deepseek', initials:'DS', name:'DeepSeek Chat',     version:'deepseek-chat',       provider:'DeepSeek AI',     color:'#4A90D9', status:'COMPLETE' },
   { id:'mistral',  initials:'MS', name:'Mistral Large',     version:'mistral-large-latest',provider:'Mistral AI',      color:'#A78BFA', status:'COMPLETE' },

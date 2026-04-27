@@ -70,24 +70,24 @@ const MODEL_META = Object.fromEntries(MODELS.map(m => [m.id, m]))
 
 // ─── Pipeline ─────────────────────────────────────────────────
 const PIPELINE = [
-  { label:'Textbooks', desc:'7 Bayesian textbooks · 80 concepts identified',
-    detail:'Bolstad · Bishop · Hoff · Carlin & Louis · Ghosh · Lee · Goldstein',
-    icon:<svg viewBox="0 0 52 52" fill="none" stroke="var(--aqua)" strokeWidth="1.8" width="52" height="52"><rect x="8" y="9" width="36" height="34" rx="2"/><line x1="8" y1="19" x2="44" y2="19"/><line x1="8" y1="29" x2="44" y2="29"/><line x1="18" y1="9" x2="18" y2="43"/></svg> },
-  { label:'Baseline', desc:'80+ Python functions · Ground truth computation',
-    detail:'Closed-form analytical solutions · 100% reproducible',
-    icon:<svg viewBox="0 0 52 52" fill="none" stroke="var(--aqua)" strokeWidth="1.8" width="52" height="52"><path d="M6 26 L14 26 L19 13 L26 39 L33 16 L38 26 L46 26"/></svg> },
-  { label:'Tasks', desc:'171 benchmark tasks · Numeric + Conceptual',
-    detail:'38 task types · 4 difficulty tiers · Verified targets',
-    icon:<svg viewBox="0 0 52 52" fill="none" stroke="var(--aqua)" strokeWidth="1.8" width="52" height="52"><rect x="9" y="5" width="34" height="42" rx="2"/><polyline points="17,21 22,27 32,17"/><polyline points="17,34 22,40 32,32"/><line x1="17" y1="12" x2="35" y2="12"/></svg> },
-  { label:'LLM Runner', desc:'Claude · Gemini · ChatGPT · DeepSeek · Mistral',
-    detail:'Unified API interface · Auto retry · JSONL logging',
-    icon:<svg viewBox="0 0 52 52" fill="none" stroke="var(--aqua)" strokeWidth="1.8" width="52" height="52"><circle cx="13" cy="17" r="4"/><circle cx="13" cy="35" r="4"/><circle cx="39" cy="17" r="4"/><circle cx="39" cy="35" r="4"/><circle cx="26" cy="26" r="4.5" fill="rgba(0,255,224,0.2)"/><line x1="17" y1="17" x2="21.5" y2="26"/><line x1="17" y1="35" x2="21.5" y2="26"/><line x1="35" y1="17" x2="30.5" y2="26"/><line x1="35" y1="35" x2="30.5" y2="26"/></svg> },
-  { label:'Scoring', desc:'Numeric · Structure · Assumptions · Rubric',
-    detail:'Weighted composite score · Tolerance-based matching',
-    icon:<svg viewBox="0 0 52 52" fill="none" stroke="var(--aqua)" strokeWidth="1.8" width="52" height="52"><circle cx="26" cy="26" r="18"/><circle cx="26" cy="26" r="11"/><circle cx="26" cy="26" r="5" fill="rgba(0,255,224,0.25)"/></svg> },
-  { label:'Results', desc:'Model comparison · Research paper',
-    detail:'Per-model · Per-type · Per-tier breakdown',
-    icon:<svg viewBox="0 0 52 52" fill="none" stroke="var(--aqua)" strokeWidth="1.8" width="52" height="52"><line x1="6" y1="46" x2="46" y2="46"/><line x1="6" y1="6" x2="6" y2="46"/><rect x="10" y="29" width="8" height="17" fill="rgba(0,255,224,0.15)" stroke="var(--aqua)" strokeWidth="1"/><rect x="22" y="20" width="8" height="26" fill="rgba(0,255,224,0.15)" stroke="var(--aqua)" strokeWidth="1"/><rect x="34" y="10" width="8" height="36" fill="rgba(0,255,224,0.15)" stroke="var(--aqua)" strokeWidth="1"/></svg> },
+  { icon:'📐', label:'Task Generation',          title:'171 Statistical Tasks',
+    stat:'38 task types · 4 tiers',
+    desc:'Tasks span 38 types across Phase 1 (136 tasks: conjugate Bayes, frequentist inference, Markov chains) and Phase 2 (35 tasks: MCMC, Variational Bayes, ABC). Each task has deterministic ground truth computed with numpy seed=42.' },
+  { icon:'💬', label:'Standardized Prompting',   title:'Zero-Shot CoT Protocol',
+    stat:'3 prompting strategies',
+    desc:'All models receive identical prompts requiring step-by-step reasoning (Wei et al., 2022). Three prompting modes implemented: Zero-shot CoT (baseline), Few-shot CoT (2 exemplars), Program-of-Thoughts (Chen et al., 2022).' },
+  { icon:'🤖', label:'Multi-Model Evaluation',   title:'5 Leading LLMs',
+    stat:'1,230 total runs',
+    desc:'Claude, ChatGPT, Mistral, DeepSeek, Gemini evaluated under identical conditions via standardized Model Context Protocol. 1,230 total runs across all tasks and models.' },
+  { icon:'📊', label:'Five-Dimensional Scoring', title:'N·M·A·C·R Rubric',
+    stat:'N=M=A=C=R=0.20',
+    desc:'Each response scored on: Numerical Accuracy (N), Method Selection (M), Assumption Compliance (A), Confidence Calibration (C), Reasoning Quality (R). Equal weights (0.20 each). Pass threshold: 0.50.' },
+  { icon:'🔄', label:'Robustness Testing',       title:'RQ4: Perturbation Analysis',
+    stat:'375 synthetic runs',
+    desc:'75 base tasks × 3 perturbation types (numerical, rephrase, semantic) = 225 robustness run combinations per model. Tests whether models rely on surface patterns vs. genuine statistical understanding.' },
+  { icon:'🔍', label:'Error Taxonomy',           title:'Systematic Error Classification',
+    stat:'143 failures · 8 categories',
+    desc:'143 failures classified into 8 error types (E1-E8) using hybrid rule-based + LLM-as-Judge pipeline. Most common: E3 Assumption Violation (119 cases), E7 Truncation (93 cases from 1024-token cap).' },
 ]
 
 // ─── Radar ────────────────────────────────────────────────────
@@ -664,6 +664,51 @@ function RadarChart({ model }) {
   )
 }
 
+// ─── Multi-model radar ────────────────────────────────────────
+const MODEL_COLORS = { claude:'#00CED1', gemini:'#FF6B6B', chatgpt:'#7FFFD4', deepseek:'#4A90D9', mistral:'#A78BFA' }
+function MultiModelRadar() {
+  const size=260, cx=130, cy=130, R=90, n=5
+  const step = (Math.PI*2)/n
+  const rings = [0.25,0.5,0.75,1].map(s =>
+    Array.from({length:n},(_,i)=>{ const a=i*step-Math.PI/2; return `${cx+s*R*Math.cos(a)},${cy+s*R*Math.sin(a)}` }).join(' ')
+  )
+  const axes = Array.from({length:n},(_,i)=>{
+    const a=i*step-Math.PI/2
+    return { ex:cx+R*Math.cos(a), ey:cy+R*Math.sin(a), lx:cx+(R+26)*Math.cos(a), ly:cy+(R+26)*Math.sin(a) }
+  })
+  return (
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+        {rings.map((r,i)=><polygon key={i} points={r} fill="none" stroke="rgba(0,255,224,0.08)" strokeWidth="1"/>)}
+        {axes.map((ax,i)=>{
+          const lines=RADAR_DIMS[i].split('\n')
+          return (
+            <g key={i}>
+              <line x1={cx} y1={cy} x2={ax.ex} y2={ax.ey} stroke="rgba(0,255,224,0.1)" strokeWidth="1"/>
+              {lines.map((l,j)=>(
+                <text key={j} x={ax.lx} y={ax.ly+(j*9)-(lines.length>1?4:0)} textAnchor="middle" dominantBaseline="middle" fontSize="8" fill="var(--text-secondary)">{l}</text>
+              ))}
+            </g>
+          )
+        })}
+        {Object.entries(RADAR_VALS).map(([id, vals]) => {
+          const pts=vals.map((v,i)=>{ const a=i*step-Math.PI/2; return `${cx+v*R*Math.cos(a)},${cy+v*R*Math.sin(a)}` }).join(' ')
+          const col=MODEL_COLORS[id]||'#00FFE0'
+          return <polygon key={id} points={pts} fill={col+'22'} stroke={col} strokeWidth="1.5" opacity="0.85"/>
+        })}
+      </svg>
+      <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:10, marginTop:6 }}>
+        {Object.keys(RADAR_VALS).map(id=>(
+          <div key={id} style={{ display:'flex', alignItems:'center', gap:4, fontSize:9, color:'var(--text-secondary)' }}>
+            <div style={{ width:12, height:3, borderRadius:2, background:MODEL_COLORS[id]||'#00FFE0' }}/>
+            {id.toUpperCase()}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ─── Timeline ─────────────────────────────────────────────────
 const MILESTONES = [
   { date:'Jan 2026',    sub:'Project\nStart' },
@@ -813,12 +858,13 @@ function Overview() {
 //  2. BENCHMARK
 // ═══════════════════════════════════════════════════════════════
 function BenchmarkSection() {
+  const [expanded, setExpanded] = useState(null)
   const pipelineRef = useRef(null)
   const isPipelineInView = useInView(pipelineRef, { once: true, amount: 0.2 })
 
   return (
     <Section id="benchmark" minHeight="auto">
-      <SectionTitle sub="From textbooks to benchmark tasks to model evaluation">How It Works</SectionTitle>
+      <SectionTitle sub="From textbooks to benchmark tasks to model evaluation — click any step to expand">How It Works</SectionTitle>
 
       {/* Pipeline */}
       <motion.div
@@ -826,22 +872,26 @@ function BenchmarkSection() {
         initial="hidden"
         animate={isPipelineInView ? 'visible' : 'hidden'}
         variants={staggerContainer(0.1)}
-        style={{ display:'flex', justifyContent:'center', alignItems:'flex-start', flexWrap:'wrap', gap:0, marginBottom:56 }}
+        style={{ display:'flex', justifyContent:'center', alignItems:'flex-start', flexWrap:'wrap', gap:0, marginBottom:16 }}
       >
         {PIPELINE.map((s,i) => (
           <motion.div key={s.label} variants={staggerItem} style={{ display:'flex', alignItems:'center' }}>
             <div style={{ position:'relative' }}>
               <span className="step-badge">{String(i+1).padStart(2,'0')}</span>
               <motion.div
-                className="card"
-                style={{ width:190, textAlign:'center', padding:'22px 14px', cursor:'default' }}
-                whileHover={{ y: -4, boxShadow: 'var(--glow-md)', borderColor: 'var(--border-hover)' }}
-                transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+                className={`card${expanded===i?' card-glow':''}`}
+                style={{ width:155, textAlign:'center', padding:'20px 12px', cursor:'pointer',
+                  borderColor: expanded===i ? 'var(--border-hover)' : undefined,
+                  background: expanded===i ? 'rgba(0,255,224,0.04)' : undefined }}
+                onClick={() => setExpanded(expanded===i ? null : i)}
+                whileHover={{ y:-4, boxShadow:'var(--glow-md)', borderColor:'var(--border-hover)' }}
+                transition={{ type:'spring', stiffness:400, damping:28 }}
               >
-                <div style={{ marginBottom:12, filter:'drop-shadow(0 0 8px var(--aqua))' }}>{s.icon}</div>
-                <div style={{ color:'var(--aqua)', fontWeight:700, fontSize:12, marginBottom:5 }}>{s.label}</div>
-                <div style={{ color:'var(--text-secondary)', fontSize:10, lineHeight:1.5, marginBottom:4 }}>{s.desc}</div>
-                <div style={{ color:'var(--text-muted)', fontSize:10, fontStyle:'italic', lineHeight:1.4 }}>{s.detail}</div>
+                <div style={{ fontSize:26, marginBottom:8, lineHeight:1 }}>{s.icon}</div>
+                <div style={{ color:'var(--aqua)', fontWeight:700, fontSize:10, marginBottom:4, letterSpacing:'0.06em' }}>{s.label}</div>
+                <div style={{ color:'var(--text-primary)', fontSize:11, fontWeight:600, marginBottom:5, lineHeight:1.3 }}>{s.title}</div>
+                <div style={{ color:'var(--aqua)', fontSize:8, opacity:0.65, letterSpacing:'0.04em' }}>{s.stat}</div>
+                <div style={{ color:'var(--text-muted)', fontSize:9, marginTop:6 }}>{expanded===i ? '▲ collapse':'▼ expand'}</div>
               </motion.div>
             </div>
             {i < PIPELINE.length-1 && (
@@ -854,12 +904,37 @@ function BenchmarkSection() {
         ))}
       </motion.div>
 
+      {/* Accordion detail */}
+      <AnimatePresence mode="wait">
+        {expanded !== null && (
+          <motion.div
+            key={expanded}
+            initial={{ opacity:0, y:-8, height:0 }}
+            animate={{ opacity:1, y:0, height:'auto' }}
+            exit={{ opacity:0, y:-8, height:0 }}
+            transition={{ duration:0.28, ease:[0.22,1,0.36,1] }}
+            style={{ overflow:'hidden', maxWidth:680, margin:'0 auto 32px' }}
+          >
+            <Card glow style={{ padding:'22px 28px', textAlign:'center' }}>
+              <div style={{ fontSize:30, marginBottom:8 }}>{PIPELINE[expanded].icon}</div>
+              <div style={{ color:'var(--aqua)', fontWeight:700, fontSize:11, letterSpacing:'0.1em', marginBottom:4 }}>
+                STEP {expanded+1} — {PIPELINE[expanded].label.toUpperCase()}
+              </div>
+              <div style={{ color:'var(--text-primary)', fontWeight:700, fontSize:16, marginBottom:12 }}>
+                {PIPELINE[expanded].title}
+              </div>
+              <p style={{ color:'var(--text-secondary)', fontSize:13, lineHeight:1.75, margin:0 }}>
+                {PIPELINE[expanded].desc}
+              </p>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Tier Ladder + Scoring */}
       <FadeIn delay={150}>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:24, maxWidth:800, margin:'0 auto' }}>
-          <Card>
-            <TierLadder/>
-          </Card>
+          <Card><TierLadder/></Card>
           <Card>
             <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:20 }}>SCORING FORMULA</div>
             <AnimatedScoringBars/>
@@ -1479,7 +1554,37 @@ const RQS = [
   { id:'RQ2', label:'Method Selection Accuracy',           color:'#00B4D8', status:'5/5 models complete · structure scoring active' },
   { id:'RQ3', label:'Assumption Compliance',               color:'#7FFFD4', status:'5/5 models complete · assumption scoring active' },
   { id:'RQ4', label:'Robustness to Prompt Variations',     color:'#4A90D9', status:'375 runs · avg robustness 0.91 · ChatGPT most robust' },
-  { id:'RQ5', label:'Confidence & Trust Calibration',      color:'#A78BFA', status:'Implemented · C=0.20 active · confidence extraction running' },
+  { id:'RQ5', label:'Confidence & Trust Calibration',      color:'#A78BFA', status:'✅ Complete · C=0.20 · calibration extraction active across 1,230 runs' },
+]
+
+const ABOUT_FINDINGS = [
+  { icon:'🏆', text:'Claude leads overall (0.683) across all 171 tasks', color:'#00FFE0' },
+  { icon:'📉', text:'MARKOV & STATIONARY hardest (avg 0.32) — all models struggle with Markov chain computations', color:'#FF6B6B' },
+  { icon:'⚡', text:'E3 Assumption Violation most common (119 cases) — models proceed without stating priors, iid, or distributional assumptions', color:'#A78BFA' },
+  { icon:'🔄', text:'Semantic perturbations cause largest score drops — surface framing shifts reasoning more than numerical changes', color:'#4A90D9' },
+]
+const ABOUT_REFS = [
+  { authors:'Lu et al.', year:2025, title:'StatEval: Benchmarking LLMs on Statistical Reasoning', id:'arXiv:2510.09517' },
+  { authors:'Nagarkar et al.', year:2026, title:'Can LLM Reasoning Be Trusted in Statistical Domains', id:'arXiv:2601.14479' },
+  { authors:'Liu et al.', year:2025, title:'MathEval: A Comprehensive Benchmark for Mathematical Reasoning', id:'DOI:10.1007/s44366-025-0053-z' },
+  { authors:'Chen et al.', year:2022, title:'Program of Thoughts Prompting', id:'arXiv:2211.12588' },
+  { authors:'Wei et al.', year:2022, title:'Chain-of-Thought Prompting Elicits Reasoning in LLMs', id:'arXiv:2201.11903' },
+]
+const LECTURE_MAP = [
+  ['Lec 21–22', 'MINIMAX · BAYES_RISK · DISC_MEDIAN'],
+  ['Lec 23–25', 'FISHER_INFO · RC_BOUND · MLE_EFFICIENCY · BIAS_VAR'],
+  ['Lec 26–27', 'DIRICHLET · BINOM_FLAT · GAMMA_POISSON'],
+  ['Lec 28–29', 'ORDER_STAT · RANGE_DIST · UNIFORM_MLE · OPT_SCALED'],
+  ['Lec 30–33', 'MARKOV · GAMBLER · STATIONARY'],
+  ['Lec 36–38', 'BOX_MULLER · REGRESSION · LOG_ML'],
+  ['Lec 39–40', 'BAYES_REG · CI_CREDIBLE · CONCEPTUAL'],
+]
+const SCORE_DIMS = [
+  { dim:'N', name:'Numerical Accuracy',     color:'#00FFE0' },
+  { dim:'M', name:'Method Selection',       color:'#00B4D8' },
+  { dim:'A', name:'Assumption Compliance',  color:'#7FFFD4' },
+  { dim:'C', name:'Confidence Calibration', color:'#4A90D9' },
+  { dim:'R', name:'Reasoning Quality',      color:'#A78BFA' },
 ]
 
 function About() {
@@ -1487,59 +1592,154 @@ function About() {
     <Section id="about" minHeight="auto">
       <SectionTitle sub="DS 299 Capstone — evaluating LLM statistical reasoning at graduate level">About This Research</SectionTitle>
 
+      {/* § 1 — Research Overview + CountUp stats */}
       <FadeIn>
-        <Card style={{ maxWidth:800, margin:'0 auto 40px', textAlign:'center', padding:36 }}>
-          <p style={{ color:'var(--text-secondary)', fontSize:15, lineHeight:1.85, margin:0 }}>
-            This DS 299 capstone project evaluates Bayesian statistical reasoning capabilities
-            of five leading LLMs using a benchmark derived from 7 graduate-level textbooks and
-            40 lecture materials. The benchmark spans 38 task types across 4 difficulty tiers,
-            covering numerical accuracy, method selection, assumption compliance, and conceptual understanding.
+        <Card style={{ maxWidth:900, margin:'0 auto 48px', padding:'36px 40px', textAlign:'center' }}>
+          <p style={{ color:'var(--text-secondary)', fontSize:15, lineHeight:1.85, margin:'0 0 36px' }}>
+            The first benchmark dedicated to Bayesian and inferential statistical reasoning,
+            covering both classical conjugate methods and advanced computational techniques
+            (MCMC, Variational Bayes, ABC). Five leading LLMs evaluated across five scoring
+            dimensions derived from graduate-level curriculum.
           </p>
+          <div style={{ display:'flex', flexWrap:'wrap', justifyContent:'center', gap:'28px 40px' }}>
+            {[
+              { target:171,  label:'Tasks' },
+              { target:5,    label:'Models' },
+              { target:1230, label:'Total Runs' },
+              { target:38,   label:'Task Types' },
+              { target:8,    label:'Error Categories' },
+            ].map(({ target, label }) => (
+              <div key={label} style={{ textAlign:'center', minWidth:80 }}>
+                <div style={{ fontFamily:'var(--font-mono)', fontSize:40, fontWeight:800, color:'var(--aqua)', lineHeight:1 }}>
+                  <CountUp target={target}/>
+                </div>
+                <div style={{ color:'var(--text-muted)', fontSize:11, marginTop:6, letterSpacing:'0.1em', textTransform:'uppercase' }}>{label}</div>
+              </div>
+            ))}
+          </div>
         </Card>
       </FadeIn>
 
-      <FadeIn delay={100}>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:24, maxWidth:980, margin:'0 auto' }}>
+      {/* § 2 — Key Findings */}
+      <FadeIn delay={80}>
+        <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.14em', textAlign:'center', marginBottom:20 }}>KEY FINDINGS</div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(210px,1fr))', gap:14, maxWidth:900, margin:'0 auto 52px' }}>
+          {ABOUT_FINDINGS.map((f,i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y:-4, scale:1.02, boxShadow:'var(--glow-md)' }}
+              transition={{ type:'spring', stiffness:400, damping:28 }}
+            >
+              <Card style={{ padding:'22px 18px', height:'100%', boxSizing:'border-box' }}>
+                <div style={{ fontSize:26, marginBottom:12 }}>{f.icon}</div>
+                <div style={{ color:f.color, fontSize:12, lineHeight:1.65 }}>{f.text}</div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </FadeIn>
 
-          {/* Research Questions */}
-          <Card>
-            <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:16 }}>RESEARCH QUESTIONS</div>
-            {RQS.map((q,i) => (
-              <motion.div
-                key={i}
-                className="rq-item"
-                style={{ display:'flex', gap:10, alignItems:'flex-start', marginBottom:4 }}
-                whileHover={{ x: 4 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-              >
-                <span style={{ background:`${q.color}22`, color:q.color, fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:4, flexShrink:0, marginTop:1 }}>{q.id}</span>
-                <div>
-                  <div style={{ color:'var(--text-secondary)', fontSize:12, lineHeight:1.55 }}>{q.label}</div>
-                  <div style={{ color:'var(--text-muted)', fontSize:10, marginTop:3, fontStyle:'italic' }}>{q.status}</div>
+      {/* § 3 — Scoring Framework + Multi-model radar */}
+      <FadeIn delay={140}>
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:24, maxWidth:900, margin:'0 auto 52px' }}>
+          <Card style={{ padding:'24px 20px' }}>
+            <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:20 }}>SCORING FRAMEWORK — N·M·A·C·R</div>
+            {SCORE_DIMS.map(({ dim, name, color }) => (
+              <div key={dim} style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
+                <div style={{ width:28, height:28, borderRadius:6, background:`${color}22`, border:`1.5px solid ${color}`, display:'flex', alignItems:'center', justifyContent:'center', color, fontWeight:800, fontSize:13, flexShrink:0 }}>{dim}</div>
+                <div style={{ flex:1 }}>
+                  <div style={{ display:'flex', justifyContent:'space-between', marginBottom:4 }}>
+                    <span style={{ color:'var(--text-primary)', fontSize:12, fontWeight:600 }}>{name}</span>
+                    <span style={{ color:'var(--text-muted)', fontSize:11, fontFamily:'var(--font-mono)' }}>0.20</span>
+                  </div>
+                  <div style={{ height:4, background:'rgba(255,255,255,0.07)', borderRadius:2, overflow:'hidden' }}>
+                    <motion.div initial={{ width:0 }} whileInView={{ width:'100%' }} viewport={{ once:true }}
+                      transition={{ duration:0.8, delay:0.05 }}
+                      style={{ height:'100%', background:`linear-gradient(90deg,${color}99,${color})`, borderRadius:2 }}/>
+                  </div>
                 </div>
-              </motion.div>
-            ))}
-          </Card>
-
-          {/* Dataset + Textbooks */}
-          <Card>
-            <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:16 }}>DATASET</div>
-            <div style={{ marginBottom:16 }}>
-              <div style={{ color:'var(--text-primary)', fontSize:13, lineHeight:2 }}>
-                <span style={{ color:'var(--aqua)', fontWeight:700 }}>171 tasks</span> · 38 types · 4 tiers<br/>
-                <span style={{ color:'var(--aqua)', fontWeight:700 }}>126 numeric</span> + <span style={{ color:'var(--blue)', fontWeight:700 }}>10 conceptual</span><br/>
-                <span style={{ color:'#A78BFA', fontWeight:700 }}>375 pert. runs</span> · 5 models · RQ4 robustness
               </div>
+            ))}
+            <div style={{ color:'var(--text-muted)', fontSize:10, marginTop:8, borderTop:'1px solid rgba(0,255,224,0.08)', paddingTop:10 }}>
+              Pass threshold: 0.50 · Tier-5 stress multiplier: 1.5×
             </div>
-            <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:10 }}>7 TEXTBOOKS</div>
-            {TEXTBOOKS.map((b,i) => (
-              <div key={i} style={{ display:'flex', gap:8, alignItems:'flex-start', padding:'5px 0', borderBottom:'1px solid rgba(0,255,224,0.07)', lineHeight:1.5 }}>
-                <div style={{ width:8, height:8, borderRadius:'50%', background:b.color, flexShrink:0, marginTop:4, boxShadow:`0 0 4px ${b.color}` }}/>
-                <span style={{ color:'var(--text-secondary)', fontSize:11 }}>{b.text}</span>
-              </div>
-            ))}
+          </Card>
+          <Card style={{ padding:'24px 16px', display:'flex', flexDirection:'column', alignItems:'center' }}>
+            <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:16, textAlign:'center' }}>MODEL CAPABILITY OVERVIEW</div>
+            <MultiModelRadar/>
           </Card>
         </div>
+      </FadeIn>
+
+      {/* § 4 — Research Questions */}
+      <FadeIn delay={170}>
+        <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.14em', textAlign:'center', marginBottom:20 }}>RESEARCH QUESTIONS</div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))', gap:12, maxWidth:900, margin:'0 auto 52px' }}>
+          {RQS.map((q,i) => (
+            <motion.div key={i} whileHover={{ x:4 }} transition={{ type:'spring', stiffness:400, damping:30 }}>
+              <Card style={{ padding:'14px 16px', display:'flex', gap:10, alignItems:'flex-start' }}>
+                <span style={{ background:`${q.color}22`, color:q.color, fontSize:9, fontWeight:700, padding:'3px 7px', borderRadius:4, flexShrink:0, marginTop:1 }}>{q.id}</span>
+                <div>
+                  <div style={{ color:'var(--text-primary)', fontSize:12, fontWeight:600, marginBottom:3 }}>{q.label}</div>
+                  <div style={{ color:'var(--text-muted)', fontSize:10, fontStyle:'italic', lineHeight:1.4 }}>{q.status}</div>
+                </div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </FadeIn>
+
+      {/* § 5 — References */}
+      <FadeIn delay={200}>
+        <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.14em', textAlign:'center', marginBottom:20 }}>REFERENCES</div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(270px,1fr))', gap:12, maxWidth:900, margin:'0 auto 52px' }}>
+          {ABOUT_REFS.map((r,i) => (
+            <motion.div key={i} whileHover={{ y:-3, scale:1.02, boxShadow:'var(--glow-md)' }} transition={{ type:'spring', stiffness:400, damping:28 }}>
+              <Card style={{ padding:'14px 16px' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
+                  <span style={{ color:'var(--text-muted)', fontSize:10 }}>{r.authors}</span>
+                  <span style={{ background:'rgba(0,255,224,0.12)', color:'var(--aqua)', fontSize:9, fontWeight:700, padding:'2px 6px', borderRadius:4 }}>{r.year}</span>
+                </div>
+                <div style={{ color:'var(--text-primary)', fontSize:12, fontWeight:600, marginBottom:6, lineHeight:1.4 }}>{r.title}</div>
+                <div style={{ fontFamily:'var(--font-mono)', fontSize:9, color:'var(--text-muted)' }}>{r.id}</div>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </FadeIn>
+
+      {/* § 6 — Textbooks */}
+      <FadeIn delay={230}>
+        <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.14em', textAlign:'center', marginBottom:20 }}>7 GRADUATE TEXTBOOKS</div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(270px,1fr))', gap:10, maxWidth:900, margin:'0 auto 52px' }}>
+          {TEXTBOOKS.map((b,i) => (
+            <motion.div key={i} whileHover={{ y:-3, scale:1.02 }} transition={{ type:'spring', stiffness:400, damping:28 }}>
+              <Card style={{ padding:'12px 16px', display:'flex', gap:10, alignItems:'flex-start' }}>
+                <div style={{ width:7, height:7, borderRadius:'50%', background:b.color, flexShrink:0, marginTop:4, boxShadow:`0 0 5px ${b.color}` }}/>
+                <span style={{ color:'var(--text-secondary)', fontSize:11, lineHeight:1.55 }}>{b.text}</span>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </FadeIn>
+
+      {/* § 7 — Course Foundation */}
+      <FadeIn delay={260}>
+        <Card style={{ maxWidth:900, margin:'0 auto 40px', padding:'24px 28px' }}>
+          <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.14em', marginBottom:14 }}>COURSE FOUNDATION — DS 299 CAPSTONE</div>
+          <p style={{ color:'var(--text-secondary)', fontSize:13, lineHeight:1.7, margin:'0 0 20px' }}>
+            Built on DS 299 Capstone curriculum — Lectures 21–40 directly mapped to benchmark task types.
+            Supervisor: Dr. Vahe Movsisyan, AUA.
+          </p>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:8 }}>
+            {LECTURE_MAP.map(([lec, tasks]) => (
+              <div key={lec} style={{ display:'flex', gap:10, alignItems:'flex-start', padding:'8px 10px', background:'rgba(0,0,0,0.2)', borderRadius:8, border:'1px solid rgba(0,255,224,0.06)' }}>
+                <span style={{ color:'var(--aqua)', fontSize:9, fontWeight:700, fontFamily:'var(--font-mono)', flexShrink:0, marginTop:1 }}>{lec}</span>
+                <span style={{ color:'var(--text-muted)', fontSize:9, lineHeight:1.5 }}>{tasks}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
       </FadeIn>
 
       <Timeline/>
