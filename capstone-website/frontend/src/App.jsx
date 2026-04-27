@@ -9,6 +9,7 @@ import Navbar          from './components/Navbar'
 import NeuralNetwork   from './components/NeuralNetwork'
 import ResultsSection  from './pages/ResultsSection'
 import VizGallery      from './pages/VizGallery'
+import UserStudy       from './pages/UserStudy'
 import { TOOLTIP_MAP } from './data/TooltipMap'
 import { ParamTooltip } from './components/ParamTooltip'
 
@@ -70,24 +71,61 @@ const MODEL_META = Object.fromEntries(MODELS.map(m => [m.id, m]))
 
 // ─── Pipeline ─────────────────────────────────────────────────
 const PIPELINE = [
-  { icon:'📐', label:'Task Generation',          title:'171 Statistical Tasks',
+  { label:'Task Generation',          title:'171 Statistical Tasks',
     stat:'38 task types · 4 tiers',
     desc:'Tasks span 38 types across Phase 1 (136 tasks: conjugate Bayes, frequentist inference, Markov chains) and Phase 2 (35 tasks: MCMC, Variational Bayes, ABC). Each task has deterministic ground truth computed with numpy seed=42.' },
-  { icon:'💬', label:'Standardized Prompting',   title:'Zero-Shot CoT Protocol',
+  { label:'Standardized Prompting',   title:'Zero-Shot CoT Protocol',
     stat:'3 prompting strategies',
     desc:'All models receive identical prompts requiring step-by-step reasoning (Wei et al., 2022). Three prompting modes implemented: Zero-shot CoT (baseline), Few-shot CoT (2 exemplars), Program-of-Thoughts (Chen et al., 2022).' },
-  { icon:'🤖', label:'Multi-Model Evaluation',   title:'5 Leading LLMs',
+  { label:'Multi-Model Evaluation',   title:'5 Leading LLMs',
     stat:'1,230 total runs',
     desc:'Claude, ChatGPT, Mistral, DeepSeek, Gemini evaluated under identical conditions via standardized Model Context Protocol. 1,230 total runs across all tasks and models.' },
-  { icon:'📊', label:'Five-Dimensional Scoring', title:'N·M·A·C·R Rubric',
+  { label:'Five-Dimensional Scoring', title:'N·M·A·C·R Rubric',
     stat:'N=M=A=C=R=0.20',
     desc:'Each response scored on: Numerical Accuracy (N), Method Selection (M), Assumption Compliance (A), Confidence Calibration (C), Reasoning Quality (R). Equal weights (0.20 each). Pass threshold: 0.50.' },
-  { icon:'🔄', label:'Robustness Testing',       title:'RQ4: Perturbation Analysis',
+  { label:'Robustness Testing',       title:'RQ4: Perturbation Analysis',
     stat:'375 synthetic runs',
     desc:'75 base tasks × 3 perturbation types (numerical, rephrase, semantic) = 225 robustness run combinations per model. Tests whether models rely on surface patterns vs. genuine statistical understanding.' },
-  { icon:'🔍', label:'Error Taxonomy',           title:'Systematic Error Classification',
+  { label:'Error Taxonomy',           title:'Systematic Error Classification',
     stat:'143 failures · 8 categories',
     desc:'143 failures classified into 8 error types (E1-E8) using hybrid rule-based + LLM-as-Judge pipeline. Most common: E3 Assumption Violation (119 cases), E7 Truncation (93 cases from 1024-token cap).' },
+]
+
+// ─── Pipeline SVG icons (monoline, no emoji) ─────────────────
+const PIPELINE_ICONS = [
+  // 1. Task Generation — grid
+  <svg key="p0" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/>
+    <rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>
+  </svg>,
+  // 2. Standardized Prompting — message bubble with text lines
+  <svg key="p1" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    <line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="13.5" x2="13" y2="13.5"/>
+  </svg>,
+  // 3. Multi-Model Evaluation — three connected nodes
+  <svg key="p2" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="4" r="2"/><circle cx="4" cy="20" r="2"/><circle cx="20" cy="20" r="2"/>
+    <line x1="12" y1="6" x2="4.8" y2="18.3"/><line x1="12" y1="6" x2="19.2" y2="18.3"/>
+    <line x1="6" y1="20" x2="18" y2="20"/>
+  </svg>,
+  // 4. Five-Dimensional Scoring — five ascending bars
+  <svg key="p3" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="21" x2="21" y2="21"/>
+    <line x1="5" y1="21" x2="5" y2="15"/><line x1="9" y1="21" x2="9" y2="11"/>
+    <line x1="13" y1="21" x2="13" y2="7"/><line x1="17" y1="21" x2="17" y2="13"/>
+    <line x1="21" y1="21" x2="21" y2="17"/>
+  </svg>,
+  // 5. Robustness Testing — refresh/cycle arrows
+  <svg key="p4" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+    <path d="M3 3v5h5"/>
+  </svg>,
+  // 6. Error Taxonomy — search with crosshair
+  <svg key="p5" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/>
+    <line x1="8" y1="11" x2="14" y2="11"/><line x1="11" y1="8" x2="11" y2="14"/>
+  </svg>,
 ]
 
 // ─── Radar ────────────────────────────────────────────────────
@@ -531,19 +569,54 @@ function LiveResults() {
 }
 
 // ─── Tier Ladder ─────────────────────────────────────────────
+const TIER_TASK_EXAMPLES = {
+  1: ['BETA_BINOM', 'GAMMA_POISSON', 'BINOM_FLAT', 'DIRICHLET'],
+  2: ['NORMAL_GAMMA', 'JEFFREYS', 'MARKOV', 'GIBBS', 'MH', 'VB'],
+  3: ['BAYES_RISK', 'HPD', 'HMC', 'RJMCMC', 'ABC', 'HIERARCHICAL'],
+  4: ['BAYES_FACTOR', 'LOG_ML', 'BIAS_VAR', 'MSE_COMPARE', 'RC_BOUND'],
+}
+const TIER_CHALLENGES = {
+  1: ['Single conjugate update', 'Direct Bayes theorem application', 'Closed-form posterior'],
+  2: ['Chained multi-step inference', 'MCMC sampling (Gibbs/MH)', 'Distribution property derivation'],
+  3: ['Decision theory optimization', 'Computational Bayes (HMC/RJMCMC/ABC)', 'Multi-framework integration'],
+  4: ['Competing estimator comparison', 'Asymptotic efficiency theory', 'Advanced MCMC diagnostics'],
+}
+
 function TierLadder() {
   const [expanded, setExpanded] = useState(null)
   const total = statsData.total_tasks
 
   return (
     <div>
-      <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:16, textAlign:'center' }}>
+      <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:12, textAlign:'center' }}>
         DIFFICULTY LADDER · {total} TASKS
       </div>
+
+      {/* Proportional scale bar */}
+      <div style={{ display:'flex', height:4, borderRadius:2, overflow:'hidden', marginBottom:16, gap:1 }}>
+        {[1,2,3,4].map(t => (
+          <motion.div
+            key={t}
+            style={{ flex:TIER_INFO[t].tasks, background:TIER_INFO[t].color, opacity:0.75 }}
+            whileHover={{ opacity:1, scaleY:1.5 }}
+            transition={{ type:'spring', stiffness:400, damping:25 }}
+            title={`T${t} ${TIER_INFO[t].label}: ${TIER_INFO[t].tasks} tasks`}
+          />
+        ))}
+      </div>
+      {/* Scale labels */}
+      <div style={{ display:'flex', marginBottom:14, gap:1 }}>
+        {[1,2,3,4].map(t => (
+          <div key={t} style={{ flex:TIER_INFO[t].tasks, textAlign:'center' }}>
+            <span style={{ fontSize:8, color:TIER_INFO[t].color+'99', fontFamily:'var(--font-mono)', letterSpacing:'0.04em' }}>T{t}</span>
+          </div>
+        ))}
+      </div>
+
       {[4,3,2,1].map(tier => {
-        const info    = TIER_INFO[tier]
-        const isOpen  = expanded === tier
-        const pct     = Math.round((info.tasks / total) * 100)
+        const info   = TIER_INFO[tier]
+        const isOpen = expanded === tier
+        const pct    = Math.round((info.tasks / total) * 100)
         return (
           <motion.div
             key={tier}
@@ -558,31 +631,53 @@ function TierLadder() {
             transition={{ type:'spring', stiffness:400, damping:30 }}
           >
             <div style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 16px' }}>
-              <div style={{
-                width:32, height:32, borderRadius:8, flexShrink:0,
-                background:`${info.color}18`, border:`1px solid ${info.color}66`,
-                display:'flex', alignItems:'center', justifyContent:'center',
-                color:info.color, fontWeight:800, fontSize:11,
-              }}>T{tier}</div>
-              <div style={{ flex:1 }}>
-                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+              {/* Tier badge with vertical difficulty bar */}
+              <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:3, flexShrink:0 }}>
+                <div style={{
+                  width:34, height:34, borderRadius:8,
+                  background:`${info.color}18`, border:`1.5px solid ${info.color}`,
+                  display:'flex', alignItems:'center', justifyContent:'center',
+                  color:info.color, fontWeight:800, fontSize:11,
+                  boxShadow: isOpen ? `0 0 10px ${info.color}44` : 'none',
+                  transition:'box-shadow 0.2s',
+                }}>T{tier}</div>
+                {/* Difficulty dots */}
+                <div style={{ display:'flex', gap:2 }}>
+                  {[1,2,3,4].map(d => (
+                    <div key={d} style={{ width:4, height:4, borderRadius:'50%',
+                      background: d <= tier ? info.color : `${info.color}25`,
+                      boxShadow: d <= tier ? `0 0 4px ${info.color}` : 'none',
+                    }}/>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:3 }}>
                   <span style={{ color:info.color, fontWeight:700, fontSize:12 }}>{info.label}</span>
-                  <span style={{ color:'var(--text-muted)', fontSize:11, fontFamily:'var(--font-mono)' }}>{info.tasks} tasks</span>
+                  <span style={{ color:'var(--text-muted)', fontSize:10, fontFamily:'var(--font-mono)' }}>
+                    {info.tasks} tasks · {pct}%
+                  </span>
                 </div>
-                <div style={{ fontSize:11, color:'var(--text-secondary)', marginTop:2 }}>{info.desc}</div>
-              </div>
-              <div style={{ width:48, flexShrink:0, textAlign:'right' }}>
-                <div style={{ height:4, background:'rgba(255,255,255,0.06)', borderRadius:2, marginBottom:4, overflow:'hidden' }}>
-                  <div style={{ height:'100%', width:`${pct}%`, background:info.color, borderRadius:2, boxShadow:`0 0 6px ${info.color}` }}/>
+                <div style={{ fontSize:11, color:'var(--text-secondary)', lineHeight:1.45 }}>{info.desc}</div>
+                {/* Inline progress bar */}
+                <div style={{ height:2, background:'rgba(255,255,255,0.06)', borderRadius:1, marginTop:7, overflow:'hidden' }}>
+                  <motion.div
+                    style={{ height:'100%', background:info.color, borderRadius:1 }}
+                    initial={{ width:0 }}
+                    animate={{ width:`${pct}%` }}
+                    transition={{ duration:0.6, ease:'easeOut', delay:0.1 }}
+                  />
                 </div>
-                <span style={{ color:info.color+'88', fontSize:9, fontFamily:'var(--font-mono)' }}>{pct}%</span>
               </div>
+
               <motion.span
-                style={{ color:info.color, fontSize:11, flexShrink:0, width:14, display:'inline-block' }}
+                style={{ color:info.color+'99', fontSize:10, flexShrink:0, width:14, display:'inline-block', textAlign:'center' }}
                 animate={{ rotate: isOpen ? 90 : 0 }}
                 transition={{ duration:0.2 }}
               >▶</motion.span>
             </div>
+
             <AnimatePresence>
               {isOpen && (
                 <motion.div
@@ -592,16 +687,33 @@ function TierLadder() {
                   transition={{ duration:0.25, ease:[0.22,1,0.36,1] }}
                   style={{ overflow:'hidden' }}
                 >
-                  <div style={{ padding:'0 16px 14px 60px', color:'var(--text-secondary)', fontSize:12, lineHeight:1.7, borderTop:`1px solid ${info.color}22` }}>
-                    <div style={{ paddingTop:10 }}>{info.detail}</div>
-                    <div style={{ marginTop:8, display:'flex', gap:6, flexWrap:'wrap' }}>
-                      {Object.entries(TASK_TYPE_TOOLTIPS)
-                        .filter(() => true)
-                        .slice(0,3)
-                        .map(([k]) => (
-                          <span key={k} style={{ fontSize:9, padding:'2px 7px', borderRadius:4, background:`${info.color}15`, color:info.color, border:`1px solid ${info.color}33` }}>{k}</span>
+                  <div style={{ padding:'10px 16px 16px 16px', borderTop:`1px solid ${info.color}22` }}>
+                    <p style={{ color:'var(--text-secondary)', fontSize:11.5, lineHeight:1.7, margin:'0 0 12px' }}>
+                      {info.detail}
+                    </p>
+                    {/* Key challenges */}
+                    <div style={{ marginBottom:12 }}>
+                      <div style={{ fontSize:9, color:info.color+'88', fontWeight:700, letterSpacing:'0.1em', marginBottom:6 }}>KEY CHALLENGES</div>
+                      <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
+                        {TIER_CHALLENGES[tier].map(c => (
+                          <div key={c} style={{ display:'flex', alignItems:'center', gap:6 }}>
+                            <div style={{ width:4, height:4, borderRadius:'50%', background:info.color, flexShrink:0 }}/>
+                            <span style={{ fontSize:11, color:'var(--text-secondary)' }}>{c}</span>
+                          </div>
                         ))}
-                      <span style={{ fontSize:9, padding:'2px 7px', color:'var(--text-muted)' }}>+ more</span>
+                      </div>
+                    </div>
+                    {/* Task type chips */}
+                    <div style={{ fontSize:9, color:info.color+'88', fontWeight:700, letterSpacing:'0.1em', marginBottom:6 }}>TASK TYPES</div>
+                    <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
+                      {TIER_TASK_EXAMPLES[tier].map(k => (
+                        <span key={k} style={{
+                          fontSize:9, padding:'3px 8px', borderRadius:4,
+                          background:`${info.color}14`, color:info.color,
+                          border:`1px solid ${info.color}33`,
+                          fontFamily:'var(--font-mono)', letterSpacing:'0.03em',
+                        }}>{k}</span>
+                      ))}
                     </div>
                   </div>
                 </motion.div>
@@ -887,7 +999,7 @@ function BenchmarkSection() {
                 whileHover={{ y:-4, boxShadow:'var(--glow-md)', borderColor:'var(--border-hover)' }}
                 transition={{ type:'spring', stiffness:400, damping:28 }}
               >
-                <div style={{ fontSize:26, marginBottom:8, lineHeight:1 }}>{s.icon}</div>
+                <div style={{ marginBottom:8, lineHeight:1, color:'var(--aqua)', display:'flex', justifyContent:'center' }}>{PIPELINE_ICONS[i]}</div>
                 <div style={{ color:'var(--aqua)', fontWeight:700, fontSize:10, marginBottom:4, letterSpacing:'0.06em' }}>{s.label}</div>
                 <div style={{ color:'var(--text-primary)', fontSize:11, fontWeight:600, marginBottom:5, lineHeight:1.3 }}>{s.title}</div>
                 <div style={{ color:'var(--aqua)', fontSize:8, opacity:0.65, letterSpacing:'0.04em' }}>{s.stat}</div>
@@ -916,7 +1028,7 @@ function BenchmarkSection() {
             style={{ overflow:'hidden', maxWidth:680, margin:'0 auto 32px' }}
           >
             <Card glow style={{ padding:'22px 28px', textAlign:'center' }}>
-              <div style={{ fontSize:30, marginBottom:8 }}>{PIPELINE[expanded].icon}</div>
+              <div style={{ marginBottom:8, color:'var(--aqua)', display:'flex', justifyContent:'center' }}>{PIPELINE_ICONS[expanded]}</div>
               <div style={{ color:'var(--aqua)', fontWeight:700, fontSize:11, letterSpacing:'0.1em', marginBottom:4 }}>
                 STEP {expanded+1} — {PIPELINE[expanded].label.toUpperCase()}
               </div>
@@ -1554,14 +1666,41 @@ const RQS = [
   { id:'RQ2', label:'Method Selection Accuracy',           color:'#00B4D8', status:'5/5 models complete · structure scoring active' },
   { id:'RQ3', label:'Assumption Compliance',               color:'#7FFFD4', status:'5/5 models complete · assumption scoring active' },
   { id:'RQ4', label:'Robustness to Prompt Variations',     color:'#4A90D9', status:'375 runs · avg robustness 0.91 · ChatGPT most robust' },
-  { id:'RQ5', label:'Confidence & Trust Calibration',      color:'#A78BFA', status:'✅ Complete · C=0.20 · calibration extraction active across 1,230 runs' },
+  { id:'RQ5', label:'Confidence & Trust Calibration',      color:'#A78BFA', status:'Complete · C=0.20 · calibration extraction active across 1,230 runs' },
 ]
 
 const ABOUT_FINDINGS = [
-  { icon:'🏆', text:'Claude leads overall (0.683) across all 171 tasks', color:'#00FFE0' },
-  { icon:'📉', text:'MARKOV & STATIONARY hardest (avg 0.32) — all models struggle with Markov chain computations', color:'#FF6B6B' },
-  { icon:'⚡', text:'E3 Assumption Violation most common (119 cases) — models proceed without stating priors, iid, or distributional assumptions', color:'#A78BFA' },
-  { icon:'🔄', text:'Semantic perturbations cause largest score drops — surface framing shifts reasoning more than numerical changes', color:'#4A90D9' },
+  { text:'Claude leads overall (0.683) across all 171 tasks', color:'#00FFE0' },
+  { text:'MARKOV & STATIONARY hardest (avg 0.32) — all models struggle with Markov chain computations', color:'#FF6B6B' },
+  { text:'E3 Assumption Violation most common (119 cases) — models proceed without stating priors, iid, or distributional assumptions', color:'#A78BFA' },
+  { text:'Semantic perturbations cause largest score drops — surface framing shifts reasoning more than numerical changes', color:'#4A90D9' },
+]
+
+// ─── About findings SVG icons (no emoji) ─────────────────────
+const ABOUT_FINDING_ICONS = [
+  // 1. #1 rank — crown
+  <svg key="a0" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 19h20M4 19 6 9l6 5 6-9 2 14"/>
+    <circle cx="6" cy="9" r="1.5" fill="currentColor" stroke="none"/>
+    <circle cx="18" cy="5" r="1.5" fill="currentColor" stroke="none"/>
+    <circle cx="12" cy="14" r="1.5" fill="currentColor" stroke="none"/>
+  </svg>,
+  // 2. Hardest — downward trend
+  <svg key="a1" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+    <polyline points="16 17 22 17 22 11"/>
+  </svg>,
+  // 3. Warning — triangle exclamation
+  <svg key="a2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+  </svg>,
+  // 4. Perturbation — shuffle/swap arrows
+  <svg key="a3" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
+    <polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
+    <line x1="4" y1="4" x2="9" y2="9"/>
+  </svg>,
 ]
 const ABOUT_REFS = [
   { authors:'Lu et al.', year:2025, title:'StatEval: Benchmarking LLMs on Statistical Reasoning', id:'arXiv:2510.09517' },
@@ -1631,7 +1770,7 @@ function About() {
               transition={{ type:'spring', stiffness:400, damping:28 }}
             >
               <Card style={{ padding:'22px 18px', height:'100%', boxSizing:'border-box' }}>
-                <div style={{ fontSize:26, marginBottom:12 }}>{f.icon}</div>
+                <div style={{ color:f.color, marginBottom:12, display:'flex', alignItems:'center' }}>{ABOUT_FINDING_ICONS[i]}</div>
                 <div style={{ color:f.color, fontSize:12, lineHeight:1.65 }}>{f.text}</div>
               </Card>
             </motion.div>
@@ -1782,9 +1921,9 @@ export default function App() {
       <SectionDivider/>
       <Tasks onOpenModal={setModal}/>
       <SectionDivider/>
-      <Results/>
-      <SectionDivider/>
       <Visualizations setFullImg={setFullImg}/>
+      <SectionDivider/>
+      <UserStudy/>
       <SectionDivider/>
       <About/>
       <motion.footer

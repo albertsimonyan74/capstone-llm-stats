@@ -70,6 +70,11 @@
   50%       { transform: scale(1.8); opacity: 0.5; }
 }
 
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.9; }
+}
+
 @keyframes spinGradient {
   from { transform: rotate(0deg);   }
   to   { transform: rotate(360deg); }

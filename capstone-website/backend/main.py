@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import Optional
 from collections import defaultdict
 
+from user_study import router as user_study_router
+
 app = FastAPI(title="LLM Bayesian Benchmark API")
 
 app.add_middleware(
@@ -13,6 +15,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(user_study_router)
 
 BASE_DIR   = Path(__file__).parent.parent.parent   # project root
 TASKS_FILE = BASE_DIR / "data" / "benchmark_v1" / "tasks_all.json"  # 171 tasks (Phase 1 + Phase 2)
