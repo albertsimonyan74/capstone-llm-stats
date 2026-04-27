@@ -1,0 +1,7487 @@
+[
+  {
+    "task_id": "BETA_BINOM_01",
+    "tier": 1,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_prior",
+      "states_likelihood",
+      "states_posterior_kernel_or_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 0.5714285714285714,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "ci_lower",
+        "true_value": 0.31577760291406304,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "ci_upper",
+        "true_value": 0.807767558198712,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "predictive_pmf_k_m",
+        "true_value": 0.29411764705882354,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "beta-binomial",
+      "inputs": {
+        "alpha": 2,
+        "beta": 2,
+        "x": 6,
+        "n": 10,
+        "k": 3,
+        "m": 5
+      }
+    }
+  },
+  {
+    "task_id": "GAMMA_POISSON_01",
+    "tier": 1,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_prior",
+      "states_likelihood",
+      "states_posterior_kernel_or_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 1.4,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "ci_lower",
+        "true_value": 0.5628726103039734,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "ci_upper",
+        "true_value": 2.611894804503737,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "predictive_pmf_y",
+        "true_value": 0.21706350340395264,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "gamma-poisson",
+      "inputs": {
+        "alpha": 1.0,
+        "rate": 1.0,
+        "counts": [
+          2,
+          0,
+          3,
+          1
+        ],
+        "y": 2
+      }
+    }
+  },
+  {
+    "task_id": "NORMAL_GAMMA_01",
+    "tier": 1,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "states_prior",
+      "states_likelihood",
+      "states_posterior_kernel_or_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "posterior_mean_mu",
+        "true_value": 1.0,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "ci_mu_lower",
+        "true_value": 0.0704200146670858,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "ci_mu_upper",
+        "true_value": 1.9295799853329143,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "posterior_mean_tau",
+        "true_value": 1.2307692307692308,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "normal-gamma",
+      "inputs": {
+        "mu0": 0.0,
+        "kappa0": 1.0,
+        "alpha0": 2.0,
+        "beta0": 2.0,
+        "data": [
+          1.0,
+          2.0,
+          1.5,
+          0.5
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "DIRICHLET_01",
+    "tier": 1,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_prior",
+      "states_likelihood",
+      "states_posterior_kernel_or_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "p1_mean",
+        "true_value": 0.6111111111111112,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "p2_mean",
+        "true_value": 0.3333333333333333,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "p3_mean",
+        "true_value": 0.05555555555555555,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "predictive_pmf_counts",
+        "true_value": 0.3473684210526328,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "dirichlet-multinomial",
+      "inputs": {
+        "alpha": [
+          1,
+          1,
+          1
+        ],
+        "counts": [
+          10,
+          5,
+          0
+        ],
+        "pred_counts": [
+          2,
+          1,
+          0
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "DISC_MEDIAN_01",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_cumulative_probability_rule",
+      "identifies_first_cumsum_geq_half"
+    ],
+    "required_assumption_checks": [
+      "values_are_ordered"
+    ],
+    "numeric_targets": [
+      {
+        "key": "posterior_median",
+        "true_value": 3.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_posterior_median",
+      "inputs": {
+        "values": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "probs": [
+          0.1,
+          0.2,
+          0.3,
+          0.25,
+          0.15
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "DISC_MEDIAN_02",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_cumulative_probability_rule",
+      "identifies_first_cumsum_geq_half"
+    ],
+    "required_assumption_checks": [
+      "values_are_ordered"
+    ],
+    "numeric_targets": [
+      {
+        "key": "posterior_median",
+        "true_value": 1.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_posterior_median",
+      "inputs": {
+        "values": [
+          0.5,
+          1.0,
+          1.5,
+          2.0
+        ],
+        "probs": [
+          0.3,
+          0.4,
+          0.2,
+          0.1
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "DISC_MEDIAN_03",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_cumulative_probability_rule",
+      "identifies_first_cumsum_geq_half"
+    ],
+    "required_assumption_checks": [
+      "values_are_ordered"
+    ],
+    "numeric_targets": [
+      {
+        "key": "posterior_median",
+        "true_value": 20.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_posterior_median",
+      "inputs": {
+        "values": [
+          10,
+          20,
+          30
+        ],
+        "probs": [
+          0.1,
+          0.5,
+          0.4
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "DISC_MEDIAN_04",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_cumulative_probability_rule",
+      "identifies_first_cumsum_geq_half"
+    ],
+    "required_assumption_checks": [
+      "values_are_ordered"
+    ],
+    "numeric_targets": [
+      {
+        "key": "posterior_median",
+        "true_value": 4.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_posterior_median",
+      "inputs": {
+        "values": [
+          2,
+          4,
+          6,
+          8
+        ],
+        "probs": [
+          0.25,
+          0.25,
+          0.25,
+          0.25
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "DISC_MEDIAN_05",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_cumulative_probability_rule",
+      "identifies_first_cumsum_geq_half"
+    ],
+    "required_assumption_checks": [
+      "values_are_ordered"
+    ],
+    "numeric_targets": [
+      {
+        "key": "posterior_median",
+        "true_value": 5.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_posterior_median",
+      "inputs": {
+        "values": [
+          1,
+          3,
+          5,
+          7,
+          9
+        ],
+        "probs": [
+          0.05,
+          0.2,
+          0.5,
+          0.2,
+          0.05
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "UNIFORM_MLE_01",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "identifies_mle_as_max_order_statistic",
+      "states_likelihood_function"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle_theta",
+        "true_value": 4.7,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "uniform_mle",
+      "inputs": {
+        "data": [
+          1.2,
+          3.4,
+          2.1,
+          4.7,
+          0.9
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "UNIFORM_MLE_02",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "identifies_mle_as_max_order_statistic",
+      "states_likelihood_function"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle_theta",
+        "true_value": 3.8,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "uniform_mle",
+      "inputs": {
+        "data": [
+          0.5,
+          1.8,
+          3.2,
+          2.9,
+          1.1,
+          3.8
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "UNIFORM_MLE_03",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "identifies_mle_as_max_order_statistic",
+      "states_likelihood_function"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle_theta",
+        "true_value": 9.2,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "uniform_mle",
+      "inputs": {
+        "data": [
+          7.1,
+          2.3,
+          5.8,
+          9.2,
+          4.6
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "UNIFORM_MLE_04",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "identifies_mle_as_max_order_statistic",
+      "states_likelihood_function"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle_theta",
+        "true_value": 0.9,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "uniform_mle",
+      "inputs": {
+        "data": [
+          0.3,
+          0.7,
+          0.5,
+          0.9,
+          0.4,
+          0.8,
+          0.6
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "UNIFORM_MLE_05",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "identifies_mle_as_max_order_statistic",
+      "states_likelihood_function"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle_theta",
+        "true_value": 15.7,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "uniform_mle",
+      "inputs": {
+        "data": [
+          12.5,
+          8.3,
+          15.7,
+          11.2,
+          9.8,
+          14.1
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "BINOM_FLAT_01",
+    "tier": 1,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_flat_prior_as_beta_1_1",
+      "states_posterior_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 4.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 8.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.3333333333333333,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "binomial_flat_prior",
+      "inputs": {
+        "x": 3,
+        "n": 10,
+        "prior": "Beta(1,1) = Uniform(0,1)"
+      }
+    }
+  },
+  {
+    "task_id": "BINOM_FLAT_02",
+    "tier": 1,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_flat_prior_as_beta_1_1",
+      "states_posterior_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 8.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 4.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.6666666666666666,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "binomial_flat_prior",
+      "inputs": {
+        "x": 7,
+        "n": 10,
+        "prior": "Beta(1,1) = Uniform(0,1)"
+      }
+    }
+  },
+  {
+    "task_id": "BINOM_FLAT_03",
+    "tier": 1,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_flat_prior_as_beta_1_1",
+      "states_posterior_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 1.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 6.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.14285714285714285,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "binomial_flat_prior",
+      "inputs": {
+        "x": 0,
+        "n": 5,
+        "prior": "Beta(1,1) = Uniform(0,1)"
+      }
+    }
+  },
+  {
+    "task_id": "BINOM_FLAT_04",
+    "tier": 1,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_flat_prior_as_beta_1_1",
+      "states_posterior_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 16.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 6.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.7272727272727273,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "binomial_flat_prior",
+      "inputs": {
+        "x": 15,
+        "n": 20,
+        "prior": "Beta(1,1) = Uniform(0,1)"
+      }
+    }
+  },
+  {
+    "task_id": "BINOM_FLAT_05",
+    "tier": 1,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_flat_prior_as_beta_1_1",
+      "states_posterior_family",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 5.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 5.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "binomial_flat_prior",
+      "inputs": {
+        "x": 4,
+        "n": 8,
+        "prior": "Beta(1,1) = Uniform(0,1)"
+      }
+    }
+  },
+  {
+    "task_id": "MINIMAX_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_max_risk_per_estimator",
+      "selects_estimator_with_min_max_risk"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "max_risk_hat1",
+        "true_value": 0.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "max_risk_hat2",
+        "true_value": 1.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "minimax_value",
+        "true_value": 0.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "minimax_comparison",
+      "minimax_estimator": "hat1",
+      "inputs": {
+        "theta_grid": [
+          0,
+          1,
+          2
+        ],
+        "hat1_risks": [
+          0.0,
+          0.5,
+          0.0
+        ],
+        "hat2_risks": [
+          1.0,
+          0.0,
+          1.0
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "MINIMAX_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_max_risk_per_estimator",
+      "selects_estimator_with_min_max_risk"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "max_risk_hat1",
+        "true_value": 0.3,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "max_risk_hat2",
+        "true_value": 0.8,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "minimax_value",
+        "true_value": 0.3,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "minimax_comparison",
+      "minimax_estimator": "hat1",
+      "inputs": {
+        "theta_grid": [
+          0,
+          1,
+          2
+        ],
+        "hat1_risks": [
+          0.3,
+          0.3,
+          0.3
+        ],
+        "hat2_risks": [
+          0.1,
+          0.8,
+          0.1
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "MINIMAX_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_max_risk_per_estimator",
+      "selects_estimator_with_min_max_risk"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "max_risk_hat1",
+        "true_value": 0.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "max_risk_hat2",
+        "true_value": 0.4,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "minimax_value",
+        "true_value": 0.4,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "minimax_comparison",
+      "minimax_estimator": "hat2",
+      "inputs": {
+        "theta_grid": [
+          0,
+          1,
+          2
+        ],
+        "hat1_risks": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "hat2_risks": [
+          0.0,
+          0.4,
+          0.0
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "MINIMAX_04",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_max_risk_per_estimator",
+      "selects_estimator_with_min_max_risk"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "max_risk_hat1",
+        "true_value": 0.6,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "max_risk_hat2",
+        "true_value": 0.4,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "minimax_value",
+        "true_value": 0.4,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "minimax_comparison",
+      "minimax_estimator": "hat2",
+      "inputs": {
+        "theta_grid": [
+          0,
+          1,
+          2
+        ],
+        "hat1_risks": [
+          0.2,
+          0.6,
+          0.2
+        ],
+        "hat2_risks": [
+          0.4,
+          0.4,
+          0.4
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "MINIMAX_05",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_max_risk_per_estimator",
+      "selects_estimator_with_min_max_risk"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "max_risk_hat1",
+        "true_value": 0.4,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "max_risk_hat2",
+        "true_value": 0.3,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "minimax_value",
+        "true_value": 0.3,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "minimax_comparison",
+      "minimax_estimator": "hat2",
+      "inputs": {
+        "theta_grid": [
+          0,
+          1,
+          2
+        ],
+        "hat1_risks": [
+          0.1,
+          0.4,
+          0.1
+        ],
+        "hat2_risks": [
+          0.3,
+          0.3,
+          0.3
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_RISK_01",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_prior_weighting",
+      "sums_weighted_risks"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "bayes_risk",
+        "true_value": 0.38,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_bayes_risk",
+      "inputs": {
+        "risk_values": [
+          0.5,
+          0.3
+        ],
+        "prior_probs": [
+          0.4,
+          0.6
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_RISK_02",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_prior_weighting",
+      "sums_weighted_risks"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "bayes_risk",
+        "true_value": 0.53,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_bayes_risk",
+      "inputs": {
+        "risk_values": [
+          1.0,
+          0.5,
+          0.2
+        ],
+        "prior_probs": [
+          0.3,
+          0.3,
+          0.4
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_RISK_03",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_prior_weighting",
+      "sums_weighted_risks"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "bayes_risk",
+        "true_value": 0.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_bayes_risk",
+      "inputs": {
+        "risk_values": [
+          0.8,
+          0.2
+        ],
+        "prior_probs": [
+          0.5,
+          0.5
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_RISK_04",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_prior_weighting",
+      "sums_weighted_risks"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "bayes_risk",
+        "true_value": 0.25,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_bayes_risk",
+      "inputs": {
+        "risk_values": [
+          0.0,
+          0.5,
+          0.5,
+          0.0
+        ],
+        "prior_probs": [
+          0.25,
+          0.25,
+          0.25,
+          0.25
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_RISK_05",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_prior_weighting",
+      "sums_weighted_risks"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "bayes_risk",
+        "true_value": 0.35000000000000003,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "discrete_bayes_risk",
+      "inputs": {
+        "risk_values": [
+          0.9,
+          0.1,
+          0.4
+        ],
+        "prior_probs": [
+          0.2,
+          0.5,
+          0.3
+        ]
+      }
+    }
+  },
+  {
+    "task_id": "BIAS_VAR_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_bias_from_expectation",
+      "computes_variance_of_estimator",
+      "states_mse_equals_bias_sq_plus_variance"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "bias",
+        "true_value": -0.16666666666666666,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "var_d2",
+        "true_value": 0.01984126984126984,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.047619047619047616,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "bias_variance_decomp",
+      "estimator": "d2 = max(X_i)",
+      "model": "Uniform(0, theta)",
+      "inputs": {
+        "n": 5,
+        "theta": 1.0
+      }
+    }
+  },
+  {
+    "task_id": "BIAS_VAR_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_bias_from_expectation",
+      "computes_variance_of_estimator",
+      "states_mse_equals_bias_sq_plus_variance"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "bias",
+        "true_value": -0.18181818181818182,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "var_d2",
+        "true_value": 0.027548209366391185,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.06060606060606061,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "bias_variance_decomp",
+      "estimator": "d2 = max(X_i)",
+      "model": "Uniform(0, theta)",
+      "inputs": {
+        "n": 10,
+        "theta": 2.0
+      }
+    }
+  },
+  {
+    "task_id": "BIAS_VAR_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_bias_from_expectation",
+      "computes_variance_of_estimator",
+      "states_mse_equals_bias_sq_plus_variance"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "bias",
+        "true_value": -0.14285714285714285,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "var_d2",
+        "true_value": 0.01855287569573284,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.03896103896103896,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "bias_variance_decomp",
+      "estimator": "d2 = max(X_i)",
+      "model": "Uniform(0, theta)",
+      "inputs": {
+        "n": 20,
+        "theta": 3.0
+      }
+    }
+  },
+  {
+    "task_id": "BIAS_VAR_04",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_bias_from_expectation",
+      "computes_variance_of_estimator",
+      "states_mse_equals_bias_sq_plus_variance"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "bias",
+        "true_value": -0.4444444444444444,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "var_d2",
+        "true_value": 0.1580246913580247,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.35555555555555557,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "bias_variance_decomp",
+      "estimator": "d2 = max(X_i)",
+      "model": "Uniform(0, theta)",
+      "inputs": {
+        "n": 8,
+        "theta": 4.0
+      }
+    }
+  },
+  {
+    "task_id": "BIAS_VAR_05",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_bias_from_expectation",
+      "computes_variance_of_estimator",
+      "states_mse_equals_bias_sq_plus_variance"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "bias",
+        "true_value": -0.3125,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "var_d2",
+        "true_value": 0.0861672794117647,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.18382352941176472,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "bias_variance_decomp",
+      "estimator": "d2 = max(X_i)",
+      "model": "Uniform(0, theta)",
+      "inputs": {
+        "n": 15,
+        "theta": 5.0
+      }
+    }
+  },
+  {
+    "task_id": "FISHER_INFO_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_fisher_information_formula",
+      "applies_correct_formula_for_distribution"
+    ],
+    "required_assumption_checks": [
+      "states_regularity_conditions"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 47.61904761904762,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 1.0
+      }
+    ],
+    "notes": {
+      "topic": "fisher_information",
+      "inputs": {
+        "dist": "binomial",
+        "theta": 0.3,
+        "n": 10
+      }
+    }
+  },
+  {
+    "task_id": "FISHER_INFO_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_fisher_information_formula",
+      "applies_correct_formula_for_distribution"
+    ],
+    "required_assumption_checks": [
+      "states_regularity_conditions"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 80.0,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 1.0
+      }
+    ],
+    "notes": {
+      "topic": "fisher_information",
+      "inputs": {
+        "dist": "binomial",
+        "theta": 0.5,
+        "n": 20
+      }
+    }
+  },
+  {
+    "task_id": "FISHER_INFO_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_fisher_information_formula",
+      "applies_correct_formula_for_distribution"
+    ],
+    "required_assumption_checks": [
+      "states_regularity_conditions"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 1.25,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 1.0
+      }
+    ],
+    "notes": {
+      "topic": "fisher_information",
+      "inputs": {
+        "dist": "poisson",
+        "theta": 4.0,
+        "n": 5
+      }
+    }
+  },
+  {
+    "task_id": "FISHER_INFO_04",
+    "tier": 3,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_fisher_information_formula",
+      "applies_correct_formula_for_distribution"
+    ],
+    "required_assumption_checks": [
+      "states_regularity_conditions"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 15.0,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 1.0
+      }
+    ],
+    "notes": {
+      "topic": "fisher_information",
+      "inputs": {
+        "dist": "normal",
+        "theta": 2.0,
+        "n": 15
+      }
+    }
+  },
+  {
+    "task_id": "FISHER_INFO_05",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_fisher_information_formula",
+      "applies_correct_formula_for_distribution"
+    ],
+    "required_assumption_checks": [
+      "states_regularity_conditions"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 4.0,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 1.0
+      }
+    ],
+    "notes": {
+      "topic": "fisher_information",
+      "inputs": {
+        "dist": "poisson",
+        "theta": 2.0,
+        "n": 8
+      }
+    }
+  },
+  {
+    "task_id": "RC_BOUND_01",
+    "tier": 3,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_rc_bound_as_reciprocal_of_fisher_info",
+      "identifies_unbiased_case_bias_deriv_zero"
+    ],
+    "required_assumption_checks": [
+      "states_unbiasedness_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 47.61904761904762,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "rc_bound",
+        "true_value": 0.020999999999999998,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "rao_cramer_bound",
+      "inputs": {
+        "dist": "binomial",
+        "theta": 0.3,
+        "n": 10
+      }
+    }
+  },
+  {
+    "task_id": "RC_BOUND_02",
+    "tier": 3,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_rc_bound_as_reciprocal_of_fisher_info",
+      "identifies_unbiased_case_bias_deriv_zero"
+    ],
+    "required_assumption_checks": [
+      "states_unbiasedness_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 80.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "rc_bound",
+        "true_value": 0.0125,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "rao_cramer_bound",
+      "inputs": {
+        "dist": "binomial",
+        "theta": 0.5,
+        "n": 20
+      }
+    }
+  },
+  {
+    "task_id": "RC_BOUND_03",
+    "tier": 3,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_rc_bound_as_reciprocal_of_fisher_info",
+      "identifies_unbiased_case_bias_deriv_zero"
+    ],
+    "required_assumption_checks": [
+      "states_unbiasedness_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 5.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "rc_bound",
+        "true_value": 0.2,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "rao_cramer_bound",
+      "inputs": {
+        "dist": "poisson",
+        "theta": 4.0,
+        "n": 20
+      }
+    }
+  },
+  {
+    "task_id": "RC_BOUND_04",
+    "tier": 3,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_rc_bound_as_reciprocal_of_fisher_info",
+      "identifies_unbiased_case_bias_deriv_zero"
+    ],
+    "required_assumption_checks": [
+      "states_unbiasedness_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 10.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "rc_bound",
+        "true_value": 0.1,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "rao_cramer_bound",
+      "inputs": {
+        "dist": "normal",
+        "theta": 1.0,
+        "n": 10
+      }
+    }
+  },
+  {
+    "task_id": "RC_BOUND_05",
+    "tier": 3,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "states_rc_bound_as_reciprocal_of_fisher_info",
+      "identifies_unbiased_case_bias_deriv_zero"
+    ],
+    "required_assumption_checks": [
+      "states_unbiasedness_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "fisher_info",
+        "true_value": 4.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "rc_bound",
+        "true_value": 0.25,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "rao_cramer_bound",
+      "inputs": {
+        "dist": "poisson",
+        "theta": 2.0,
+        "n": 8
+      }
+    }
+  },
+  {
+    "task_id": "OPT_SCALED_01",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "derives_optimal_c_by_minimising_mse",
+      "states_c_opt_formula_n_plus_2_over_n_plus_1",
+      "computes_resulting_mse"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "c_opt",
+        "true_value": 1.1666666666666667,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_opt",
+        "true_value": 0.027777777777777776,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "optimal_scaled_estimator",
+      "model": "Uniform(0, theta)",
+      "estimator": "dc = c * max(X_i)",
+      "inputs": {
+        "n": 5,
+        "theta": 1.0
+      }
+    }
+  },
+  {
+    "task_id": "OPT_SCALED_02",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "derives_optimal_c_by_minimising_mse",
+      "states_c_opt_formula_n_plus_2_over_n_plus_1",
+      "computes_resulting_mse"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "c_opt",
+        "true_value": 1.0909090909090908,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_opt",
+        "true_value": 0.03305785123966942,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "optimal_scaled_estimator",
+      "model": "Uniform(0, theta)",
+      "estimator": "dc = c * max(X_i)",
+      "inputs": {
+        "n": 10,
+        "theta": 2.0
+      }
+    }
+  },
+  {
+    "task_id": "OPT_SCALED_03",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "derives_optimal_c_by_minimising_mse",
+      "states_c_opt_formula_n_plus_2_over_n_plus_1",
+      "computes_resulting_mse"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "c_opt",
+        "true_value": 1.0476190476190477,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_opt",
+        "true_value": 0.02040816326530612,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "optimal_scaled_estimator",
+      "model": "Uniform(0, theta)",
+      "estimator": "dc = c * max(X_i)",
+      "inputs": {
+        "n": 20,
+        "theta": 3.0
+      }
+    }
+  },
+  {
+    "task_id": "OPT_SCALED_04",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "derives_optimal_c_by_minimising_mse",
+      "states_c_opt_formula_n_plus_2_over_n_plus_1",
+      "computes_resulting_mse"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "c_opt",
+        "true_value": 1.1111111111111112,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_opt",
+        "true_value": 0.19753086419753085,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "optimal_scaled_estimator",
+      "model": "Uniform(0, theta)",
+      "estimator": "dc = c * max(X_i)",
+      "inputs": {
+        "n": 8,
+        "theta": 4.0
+      }
+    }
+  },
+  {
+    "task_id": "OPT_SCALED_05",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "derives_optimal_c_by_minimising_mse",
+      "states_c_opt_formula_n_plus_2_over_n_plus_1",
+      "computes_resulting_mse"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "c_opt",
+        "true_value": 1.0625,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_opt",
+        "true_value": 0.09765625,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "optimal_scaled_estimator",
+      "model": "Uniform(0, theta)",
+      "estimator": "dc = c * max(X_i)",
+      "inputs": {
+        "n": 15,
+        "theta": 5.0
+      }
+    }
+  },
+  {
+    "task_id": "MSE_COMPARE_01",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "computes_mse_d1_analytical",
+      "computes_mse_d2_analytical",
+      "computes_mse_dc_at_optimal_c",
+      "identifies_dc_as_minimum_mse_estimator"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mse_d1",
+        "true_value": 0.06666666666666667,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.047619047619047616,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_dc",
+        "true_value": 0.027777777777777776,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "mse_comparison",
+      "model": "Uniform(0, theta)",
+      "best_estimator": "dc",
+      "inputs": {
+        "n": 5,
+        "theta": 1.0
+      }
+    }
+  },
+  {
+    "task_id": "MSE_COMPARE_02",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "computes_mse_d1_analytical",
+      "computes_mse_d2_analytical",
+      "computes_mse_dc_at_optimal_c",
+      "identifies_dc_as_minimum_mse_estimator"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mse_d1",
+        "true_value": 0.13333333333333333,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.06060606060606061,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_dc",
+        "true_value": 0.03305785123966942,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "mse_comparison",
+      "model": "Uniform(0, theta)",
+      "best_estimator": "dc",
+      "inputs": {
+        "n": 10,
+        "theta": 2.0
+      }
+    }
+  },
+  {
+    "task_id": "MSE_COMPARE_03",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "computes_mse_d1_analytical",
+      "computes_mse_d2_analytical",
+      "computes_mse_dc_at_optimal_c",
+      "identifies_dc_as_minimum_mse_estimator"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mse_d1",
+        "true_value": 0.15,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.03896103896103896,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_dc",
+        "true_value": 0.02040816326530612,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "mse_comparison",
+      "model": "Uniform(0, theta)",
+      "best_estimator": "dc",
+      "inputs": {
+        "n": 20,
+        "theta": 3.0
+      }
+    }
+  },
+  {
+    "task_id": "MSE_COMPARE_04",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "computes_mse_d1_analytical",
+      "computes_mse_d2_analytical",
+      "computes_mse_dc_at_optimal_c",
+      "identifies_dc_as_minimum_mse_estimator"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mse_d1",
+        "true_value": 0.6666666666666666,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.35555555555555557,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_dc",
+        "true_value": 0.19753086419753085,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "mse_comparison",
+      "model": "Uniform(0, theta)",
+      "best_estimator": "dc",
+      "inputs": {
+        "n": 8,
+        "theta": 4.0
+      }
+    }
+  },
+  {
+    "task_id": "MSE_COMPARE_05",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "computes_mse_d1_analytical",
+      "computes_mse_d2_analytical",
+      "computes_mse_dc_at_optimal_c",
+      "identifies_dc_as_minimum_mse_estimator"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mse_d1",
+        "true_value": 0.5555555555555556,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_d2",
+        "true_value": 0.18382352941176472,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      },
+      {
+        "key": "mse_dc",
+        "true_value": 0.09765625,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.01
+      }
+    ],
+    "notes": {
+      "topic": "mse_comparison",
+      "model": "Uniform(0, theta)",
+      "best_estimator": "dc",
+      "inputs": {
+        "n": 15,
+        "theta": 5.0
+      }
+    }
+  },
+  {
+    "task_id": "MARKOV_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "solves_pi_P_eq_pi",
+      "normalises_to_one",
+      "uses_eigenvalue_or_linear_system"
+    ],
+    "required_assumption_checks": [
+      "chain_is_irreducible",
+      "chain_is_aperiodic"
+    ],
+    "numeric_targets": [
+      {
+        "key": "pi_0",
+        "true_value": 0.5591397849462366,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_1",
+        "true_value": 0.22580645161290316,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_2",
+        "true_value": 0.2150537634408602,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "markov_stationary",
+      "inputs": {
+        "P": [
+          [
+            0.5,
+            0.25,
+            0.25
+          ],
+          [
+            0.6666666666666666,
+            0.0,
+            0.3333333333333333
+          ],
+          [
+            0.6,
+            0.4,
+            0.0
+          ]
+        ]
+      },
+      "note": "Lecture 33 Example 23.6"
+    }
+  },
+  {
+    "task_id": "MARKOV_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_gamblers_ruin_formula",
+      "handles_fair_vs_unfair_case"
+    ],
+    "required_assumption_checks": [
+      "absorbing_boundaries_at_0_and_M"
+    ],
+    "numeric_targets": [
+      {
+        "key": "ruin_prob",
+        "true_value": 0.7,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "win_prob",
+        "true_value": 0.30000000000000004,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "gamblers_ruin",
+      "inputs": {
+        "p": 0.5,
+        "i": 3,
+        "M": 10
+      },
+      "note": "fair game p=0.5"
+    }
+  },
+  {
+    "task_id": "MARKOV_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_gamblers_ruin_formula",
+      "handles_fair_vs_unfair_case"
+    ],
+    "required_assumption_checks": [
+      "absorbing_boundaries_at_0_and_M"
+    ],
+    "numeric_targets": [
+      {
+        "key": "ruin_prob",
+        "true_value": 0.8836363636363636,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "win_prob",
+        "true_value": 0.11636363636363645,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "gamblers_ruin",
+      "inputs": {
+        "p": 0.4,
+        "i": 5,
+        "M": 10
+      },
+      "note": "unfair p=0.4"
+    }
+  },
+  {
+    "task_id": "MARKOV_04",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_matrix_power",
+      "applies_chapman_kolmogorov"
+    ],
+    "required_assumption_checks": [],
+    "numeric_targets": [
+      {
+        "key": "P2_1_2",
+        "true_value": 0.16666666666666666,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "markov_n_step",
+      "inputs": {
+        "P": [
+          [
+            0.5,
+            0.25,
+            0.25
+          ],
+          [
+            0.6666666666666666,
+            0.0,
+            0.3333333333333333
+          ],
+          [
+            0.6,
+            0.4,
+            0.0
+          ]
+        ],
+        "n": 2,
+        "i": 1,
+        "j": 2
+      },
+      "note": "P^2[2,3] = 1/6 (Lecture 31 Example 21.1)"
+    }
+  },
+  {
+    "task_id": "MARKOV_05",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "solves_pi_P_eq_pi",
+      "normalises_to_one"
+    ],
+    "required_assumption_checks": [
+      "chain_is_irreducible"
+    ],
+    "numeric_targets": [
+      {
+        "key": "pi_0",
+        "true_value": 0.5714285714285714,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_1",
+        "true_value": 0.4285714285714286,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "markov_stationary_2state",
+      "inputs": {
+        "P": [
+          [
+            0.7,
+            0.3
+          ],
+          [
+            0.4,
+            0.6
+          ]
+        ]
+      },
+      "note": "two-state chain: pi = [4/7, 3/7]"
+    }
+  },
+  {
+    "task_id": "ORDER_STAT_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_order_stat_pdf_formula",
+      "identifies_beta_distribution_connection"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "uniform_support_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "order_stat_pdf",
+        "true_value": 1.728000000000001,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "order_statistic_pdf",
+      "inputs": {
+        "y": 0.4,
+        "k": 3,
+        "n": 5
+      },
+      "formula": "Beta(3, 3).pdf(0.4)"
+    }
+  },
+  {
+    "task_id": "ORDER_STAT_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_order_stat_pdf_formula",
+      "identifies_beta_distribution_connection"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "uniform_support_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "order_stat_pdf",
+        "true_value": 2.048000000000001,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "order_statistic_pdf",
+      "inputs": {
+        "y": 0.2,
+        "k": 1,
+        "n": 4
+      },
+      "formula": "Beta(1, 4).pdf(0.2)"
+    }
+  },
+  {
+    "task_id": "ORDER_STAT_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_min_cdf_as_1_minus_survival",
+      "applies_F_1_x_formula"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "uniform_support_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "min_cdf",
+        "true_value": 0.8319300000000001,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "min_order_statistic_cdf",
+      "inputs": {
+        "x": 0.3,
+        "n": 5
+      },
+      "formula": "1 - (1 - 0.3)^5"
+    }
+  },
+  {
+    "task_id": "ORDER_STAT_04",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_min_cdf_as_1_minus_survival",
+      "applies_F_1_x_formula"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "uniform_support_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "min_cdf",
+        "true_value": 0.99609375,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "min_order_statistic_cdf",
+      "inputs": {
+        "x": 0.5,
+        "n": 8
+      },
+      "formula": "1 - (1 - 0.5)^8"
+    }
+  },
+  {
+    "task_id": "ORDER_STAT_05",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "identifies_range_as_beta_distribution",
+      "states_correct_parameters_n_minus_1_and_2"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "uniform_support_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "range_beta_alpha",
+        "true_value": 4.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "range_beta_beta",
+        "true_value": 2.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "uniform_range_distribution",
+      "inputs": {
+        "n": 5
+      },
+      "result": "Beta(4, 2)"
+    }
+  },
+  {
+    "task_id": "REGRESSION_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_B_hat_via_Sxy_over_Sxx",
+      "computes_A_hat_via_ybar_minus_B_hat_xbar",
+      "computes_residual_variance_SSR_over_n_minus_2",
+      "constructs_t_based_confidence_intervals"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "A_hat",
+        "true_value": 0.0500000000000016,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_hat",
+        "true_value": 1.9899999999999998,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "s2",
+        "true_value": 0.03566666666666691,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_lower",
+        "true_value": 1.7999392904005407,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_upper",
+        "true_value": 2.180060709599459,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "ols_regression",
+      "model": "Y = A + B*x + epsilon, epsilon ~ N(0, sigma^2)",
+      "inputs": {
+        "x": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "y": [
+          2.1,
+          3.9,
+          6.2,
+          7.8,
+          10.1
+        ]
+      },
+      "level": 0.95
+    }
+  },
+  {
+    "task_id": "REGRESSION_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_B_hat_via_Sxy_over_Sxx",
+      "computes_A_hat_via_ybar_minus_B_hat_xbar",
+      "computes_residual_variance_SSR_over_n_minus_2",
+      "constructs_t_based_confidence_intervals"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "A_hat",
+        "true_value": 0.9285714285714288,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_hat",
+        "true_value": 2.0285714285714285,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "s2",
+        "true_value": 0.021428571428571346,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_lower",
+        "true_value": 1.931416088477392,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_upper",
+        "true_value": 2.125726768665465,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "ols_regression",
+      "model": "Y = A + B*x + epsilon, epsilon ~ N(0, sigma^2)",
+      "inputs": {
+        "x": [
+          0.0,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0
+        ],
+        "y": [
+          1.0,
+          2.8,
+          5.1,
+          6.9,
+          9.2,
+          11.0
+        ]
+      },
+      "level": 0.95
+    }
+  },
+  {
+    "task_id": "REGRESSION_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_B_hat_via_Sxy_over_Sxx",
+      "computes_A_hat_via_ybar_minus_B_hat_xbar",
+      "computes_residual_variance_SSR_over_n_minus_2",
+      "constructs_t_based_confidence_intervals"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "A_hat",
+        "true_value": 0.16999999999999993,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_hat",
+        "true_value": 1.675,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "s2",
+        "true_value": 0.10766666666666665,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_lower",
+        "true_value": 1.509890628951027,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_upper",
+        "true_value": 1.840109371048973,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "ols_regression",
+      "model": "Y = A + B*x + epsilon, epsilon ~ N(0, sigma^2)",
+      "inputs": {
+        "x": [
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0
+        ],
+        "y": [
+          3.5,
+          7.2,
+          9.8,
+          13.5,
+          17.1
+        ]
+      },
+      "level": 0.95
+    }
+  },
+  {
+    "task_id": "REGRESSION_04",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_B_hat_via_Sxy_over_Sxx",
+      "computes_A_hat_via_ybar_minus_B_hat_xbar",
+      "computes_residual_variance_SSR_over_n_minus_2",
+      "constructs_t_based_confidence_intervals"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "A_hat",
+        "true_value": 3.0649999999999995,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_hat",
+        "true_value": 1.8350000000000002,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "s2",
+        "true_value": 0.05433333333333316,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_lower",
+        "true_value": 1.7177091147609125,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_upper",
+        "true_value": 1.952290885239088,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "ols_regression",
+      "model": "Y = A + B*x + epsilon, epsilon ~ N(0, sigma^2)",
+      "inputs": {
+        "x": [
+          1.0,
+          3.0,
+          5.0,
+          7.0,
+          9.0
+        ],
+        "y": [
+          5.0,
+          8.5,
+          12.0,
+          16.2,
+          19.5
+        ]
+      },
+      "level": 0.95
+    }
+  },
+  {
+    "task_id": "REGRESSION_05",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_B_hat_via_Sxy_over_Sxx",
+      "computes_A_hat_via_ybar_minus_B_hat_xbar",
+      "computes_residual_variance_SSR_over_n_minus_2",
+      "constructs_t_based_confidence_intervals"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "A_hat",
+        "true_value": 5.299999999999997,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_hat",
+        "true_value": 1.99,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "s2",
+        "true_value": 0.1333333333333324,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_lower",
+        "true_value": 1.9532522753792585,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "B_upper",
+        "true_value": 2.0267477246207415,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "ols_regression",
+      "model": "Y = A + B*x + epsilon, epsilon ~ N(0, sigma^2)",
+      "inputs": {
+        "x": [
+          10.0,
+          20.0,
+          30.0,
+          40.0,
+          50.0
+        ],
+        "y": [
+          25.0,
+          45.5,
+          65.0,
+          84.5,
+          105.0
+        ]
+      },
+      "level": 0.95
+    }
+  },
+  {
+    "task_id": "BOX_MULLER_01",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_box_muller_formula",
+      "computes_r_as_sqrt_neg2_log_U",
+      "applies_cos_sin_with_2pi_V"
+    ],
+    "required_assumption_checks": [
+      "U_V_independent_uniform_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "z1",
+        "true_value": -0.021207522909263758,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "z2",
+        "true_value": 1.1249607799618835,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x1",
+        "true_value": 49.89396238545368,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x2",
+        "true_value": 55.624803899809415,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "box_muller_transform",
+      "inputs": {
+        "U": 0.531,
+        "V": 0.253,
+        "mu": 50.0,
+        "sigma": 5.0
+      },
+      "formula": "z1 = sqrt(-2*log(U))*cos(2*pi*V), z2 = sqrt(-2*log(U))*sin(2*pi*V), x = mu + sigma*z"
+    }
+  },
+  {
+    "task_id": "BOX_MULLER_02",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_box_muller_formula",
+      "computes_r_as_sqrt_neg2_log_U",
+      "applies_cos_sin_with_2pi_V"
+    ],
+    "required_assumption_checks": [
+      "U_V_independent_uniform_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "z1",
+        "true_value": -1.7941225779941015,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "z2",
+        "true_value": 2.197166472418474e-16,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x1",
+        "true_value": -1.7941225779941015,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x2",
+        "true_value": 2.197166472418474e-16,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "box_muller_transform",
+      "inputs": {
+        "U": 0.2,
+        "V": 0.5,
+        "mu": 0.0,
+        "sigma": 1.0
+      },
+      "formula": "z1 = sqrt(-2*log(U))*cos(2*pi*V), z2 = sqrt(-2*log(U))*sin(2*pi*V), x = mu + sigma*z"
+    }
+  },
+  {
+    "task_id": "BOX_MULLER_03",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_box_muller_formula",
+      "computes_r_as_sqrt_neg2_log_U",
+      "applies_cos_sin_with_2pi_V"
+    ],
+    "required_assumption_checks": [
+      "U_V_independent_uniform_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "z1",
+        "true_value": 0.6136617324034359,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "z2",
+        "true_value": 0.4458513464005416,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x1",
+        "true_value": 11.227323464806872,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x2",
+        "true_value": 10.891702692801083,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "box_muller_transform",
+      "inputs": {
+        "U": 0.75,
+        "V": 0.1,
+        "mu": 10.0,
+        "sigma": 2.0
+      },
+      "formula": "z1 = sqrt(-2*log(U))*cos(2*pi*V), z2 = sqrt(-2*log(U))*sin(2*pi*V), x = mu + sigma*z"
+    }
+  },
+  {
+    "task_id": "BOX_MULLER_04",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_box_muller_formula",
+      "computes_r_as_sqrt_neg2_log_U",
+      "applies_cos_sin_with_2pi_V"
+    ],
+    "required_assumption_checks": [
+      "U_V_independent_uniform_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "z1",
+        "true_value": -4.49643798197451e-16,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "z2",
+        "true_value": -2.4477468306808166,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x1",
+        "true_value": -4.49643798197451e-16,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x2",
+        "true_value": -2.4477468306808166,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "box_muller_transform",
+      "inputs": {
+        "U": 0.05,
+        "V": 0.75,
+        "mu": 0.0,
+        "sigma": 1.0
+      },
+      "formula": "z1 = sqrt(-2*log(U))*cos(2*pi*V), z2 = sqrt(-2*log(U))*sin(2*pi*V), x = mu + sigma*z"
+    }
+  },
+  {
+    "task_id": "BOX_MULLER_05",
+    "tier": 2,
+    "difficulty": "basic",
+    "required_structure_checks": [
+      "applies_box_muller_formula",
+      "computes_r_as_sqrt_neg2_log_U",
+      "applies_cos_sin_with_2pi_V"
+    ],
+    "required_assumption_checks": [
+      "U_V_independent_uniform_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "z1",
+        "true_value": -0.141852275112305,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "z2",
+        "true_value": 0.43657641182399615,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x1",
+        "true_value": 97.87221587331543,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "x2",
+        "true_value": 106.54864617735994,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "box_muller_transform",
+      "inputs": {
+        "U": 0.9,
+        "V": 0.3,
+        "mu": 100.0,
+        "sigma": 15.0
+      },
+      "formula": "z1 = sqrt(-2*log(U))*cos(2*pi*V), z2 = sqrt(-2*log(U))*sin(2*pi*V), x = mu + sigma*z"
+    }
+  },
+  {
+    "task_id": "HPD_01",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_hpd_via_shortest_interval",
+      "notes_hpd_shorter_than_equal_tail"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "hpd_lower",
+        "true_value": 0.21757733531973342,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "hpd_upper",
+        "true_value": 0.7929603178709547,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "hpd_credible_interval",
+      "inputs": {
+        "alpha": 5,
+        "beta": 5,
+        "level": 0.95
+      },
+      "note": "symmetric Beta(5,5): HPD equals equal-tail interval"
+    }
+  },
+  {
+    "task_id": "HPD_02",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_hpd_via_shortest_interval",
+      "notes_hpd_shorter_than_equal_tail"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "hpd_lower",
+        "true_value": 0.007408346347955803,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "hpd_upper",
+        "true_value": 0.43013908985602756,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "hpd_credible_interval",
+      "inputs": {
+        "alpha": 2,
+        "beta": 8,
+        "level": 0.95
+      },
+      "note": "right-skewed Beta(2,8): HPD is shorter than equal-tail"
+    }
+  },
+  {
+    "task_id": "HPD_03",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_hpd_via_shortest_interval",
+      "notes_hpd_shorter_than_equal_tail"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "hpd_lower",
+        "true_value": 5.638329190267618e-07,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "hpd_upper",
+        "true_value": 0.2591706455934424,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "hpd_credible_interval",
+      "inputs": {
+        "alpha": 1,
+        "beta": 10,
+        "level": 0.95
+      },
+      "note": "monotone Beta(1,10): HPD = [0, F^{-1}(0.95)]"
+    }
+  },
+  {
+    "task_id": "HPD_04",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_hpd_via_shortest_interval",
+      "notes_hpd_shorter_than_equal_tail"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "hpd_lower",
+        "true_value": 0.632333433544232,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "hpd_upper",
+        "true_value": 0.9929955499399226,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "hpd_credible_interval",
+      "inputs": {
+        "alpha": 10,
+        "beta": 2,
+        "level": 0.95
+      },
+      "note": "left-skewed Beta(10,2): HPD ends near 1"
+    }
+  },
+  {
+    "task_id": "HPD_05",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_hpd_via_shortest_interval",
+      "notes_hpd_shorter_than_equal_tail"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "hpd_lower",
+        "true_value": 0.07343709635063403,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "hpd_upper",
+        "true_value": 0.5150159228810426,
+        "full_credit_tol": 0.01,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "hpd_credible_interval",
+      "inputs": {
+        "alpha": 3,
+        "beta": 7,
+        "level": 0.9
+      },
+      "note": "Beta(3,7) at 90% level"
+    }
+  },
+  {
+    "task_id": "BAYES_FACTOR_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_bayes_factor_formula",
+      "states_evidence_scale"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_BF",
+        "true_value": 0.32841760423869104,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "BF",
+        "true_value": 1.388768806950624,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "bayes_factor_beta_binomial",
+      "inputs": {
+        "x": 3,
+        "n": 10,
+        "M1": "Beta(1,1)",
+        "M2": "Beta(0.5,0.5)"
+      },
+      "favored": "M1",
+      "strength": "not worth mentioning",
+      "note": "minority successes favour uniform prior"
+    }
+  },
+  {
+    "task_id": "BAYES_FACTOR_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_bayes_factor_formula",
+      "states_evidence_scale"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_BF",
+        "true_value": 0.4182739333605525,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "BF",
+        "true_value": 1.5193368144417092,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "bayes_factor_beta_binomial",
+      "inputs": {
+        "x": 8,
+        "n": 15,
+        "M1": "Beta(1,1)",
+        "M2": "Beta(0.5,0.5)"
+      },
+      "favored": "M1",
+      "strength": "not worth mentioning",
+      "note": "moderate successes"
+    }
+  },
+  {
+    "task_id": "BAYES_FACTOR_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_bayes_factor_formula",
+      "states_evidence_scale"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_BF",
+        "true_value": 0.2922421160145827,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "BF",
+        "true_value": 1.3394272751774277,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "bayes_factor_beta_binomial",
+      "inputs": {
+        "x": 5,
+        "n": 20,
+        "M1": "Beta(1,1)",
+        "M2": "Beta(0.5,0.5)"
+      },
+      "favored": "M1",
+      "strength": "not worth mentioning",
+      "note": "sparse data, n=20"
+    }
+  },
+  {
+    "task_id": "BAYES_FACTOR_04",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_bayes_factor_formula",
+      "states_evidence_scale"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_BF",
+        "true_value": 0.2106345685823081,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "BF",
+        "true_value": 1.2344611617338888,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "bayes_factor_beta_binomial",
+      "inputs": {
+        "x": 2,
+        "n": 10,
+        "M1": "Beta(1,1)",
+        "M2": "Beta(0.5,0.5)"
+      },
+      "favored": "M1",
+      "strength": "not worth mentioning",
+      "note": "few successes"
+    }
+  },
+  {
+    "task_id": "BAYES_FACTOR_05",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_bayes_factor_formula",
+      "states_evidence_scale"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_BF",
+        "true_value": 0.4315880284320812,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "BF",
+        "true_value": 1.5397006715839445,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "bayes_factor_beta_binomial",
+      "inputs": {
+        "x": 12,
+        "n": 25,
+        "M1": "Beta(1,1)",
+        "M2": "Beta(0.5,0.5)"
+      },
+      "favored": "M1",
+      "strength": "not worth mentioning",
+      "note": "larger dataset"
+    }
+  },
+  {
+    "task_id": "JEFFREYS_01",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_jeffreys_prior_formula",
+      "notes_jeffreys_invariance",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 3.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 7.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.3181818181818182,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "jeffreys_prior_binomial",
+      "inputs": {
+        "x": 3,
+        "n": 10,
+        "prior": "Beta(0.5, 0.5) Jeffreys"
+      },
+      "note": "Posterior Beta(x+0.5, n-x+0.5). Compare with flat prior: Beta(x+1, n-x+1)."
+    }
+  },
+  {
+    "task_id": "JEFFREYS_02",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_jeffreys_prior_formula",
+      "notes_jeffreys_invariance",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 7.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 5.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.5769230769230769,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "jeffreys_prior_binomial",
+      "inputs": {
+        "x": 7,
+        "n": 12,
+        "prior": "Beta(0.5, 0.5) Jeffreys"
+      },
+      "note": "Posterior Beta(x+0.5, n-x+0.5). Compare with flat prior: Beta(x+1, n-x+1)."
+    }
+  },
+  {
+    "task_id": "JEFFREYS_03",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_jeffreys_prior_formula",
+      "notes_jeffreys_invariance",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 2.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 6.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.2777777777777778,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "jeffreys_prior_binomial",
+      "inputs": {
+        "x": 2,
+        "n": 8,
+        "prior": "Beta(0.5, 0.5) Jeffreys"
+      },
+      "note": "Posterior Beta(x+0.5, n-x+0.5). Compare with flat prior: Beta(x+1, n-x+1)."
+    }
+  },
+  {
+    "task_id": "JEFFREYS_04",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_jeffreys_prior_formula",
+      "notes_jeffreys_invariance",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 10.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 5.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.65625,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "jeffreys_prior_binomial",
+      "inputs": {
+        "x": 10,
+        "n": 15,
+        "prior": "Beta(0.5, 0.5) Jeffreys"
+      },
+      "note": "Posterior Beta(x+0.5, n-x+0.5). Compare with flat prior: Beta(x+1, n-x+1)."
+    }
+  },
+  {
+    "task_id": "JEFFREYS_05",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "states_jeffreys_prior_formula",
+      "notes_jeffreys_invariance",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha_post",
+        "true_value": 4.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "beta_post",
+        "true_value": 2.5,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.6428571428571429,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "jeffreys_prior_binomial",
+      "inputs": {
+        "x": 4,
+        "n": 6,
+        "prior": "Beta(0.5, 0.5) Jeffreys"
+      },
+      "note": "Posterior Beta(x+0.5, n-x+0.5). Compare with flat prior: Beta(x+1, n-x+1)."
+    }
+  },
+  {
+    "task_id": "PPC_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "generates_predictive_replicates",
+      "checks_tail_probability"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "p_value",
+        "true_value": 0.6004,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      },
+      {
+        "key": "passed",
+        "true_value": 1.0,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      }
+    ],
+    "notes": {
+      "topic": "posterior_predictive_check",
+      "inputs": {
+        "alpha_post": 7.0,
+        "beta_post": 5.0,
+        "n_obs": 10,
+        "x_obs": 6,
+        "n_rep": 5000
+      },
+      "passed": true,
+      "T_rep_mean": 5.8454,
+      "note": "well-specified: x_obs near predictive median"
+    }
+  },
+  {
+    "task_id": "PPC_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "generates_predictive_replicates",
+      "checks_tail_probability"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "p_value",
+        "true_value": 0.5992,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      },
+      {
+        "key": "passed",
+        "true_value": 1.0,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      }
+    ],
+    "notes": {
+      "topic": "posterior_predictive_check",
+      "inputs": {
+        "alpha_post": 4.0,
+        "beta_post": 8.0,
+        "n_obs": 15,
+        "x_obs": 5,
+        "n_rep": 5000
+      },
+      "passed": true,
+      "T_rep_mean": 4.9824,
+      "note": "well-specified: x_obs consistent with model"
+    }
+  },
+  {
+    "task_id": "PPC_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "generates_predictive_replicates",
+      "checks_tail_probability"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "p_value",
+        "true_value": 0.0048,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      },
+      {
+        "key": "passed",
+        "true_value": 0.0,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      }
+    ],
+    "notes": {
+      "topic": "posterior_predictive_check",
+      "inputs": {
+        "alpha_post": 7.0,
+        "beta_post": 5.0,
+        "n_obs": 10,
+        "x_obs": 0,
+        "n_rep": 5000
+      },
+      "passed": false,
+      "T_rep_mean": 5.8454,
+      "note": "model-data conflict: x_obs too low"
+    }
+  },
+  {
+    "task_id": "PPC_04",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "generates_predictive_replicates",
+      "checks_tail_probability"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "p_value",
+        "true_value": 1.0,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      },
+      {
+        "key": "passed",
+        "true_value": 0.0,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      }
+    ],
+    "notes": {
+      "topic": "posterior_predictive_check",
+      "inputs": {
+        "alpha_post": 4.0,
+        "beta_post": 8.0,
+        "n_obs": 15,
+        "x_obs": 15,
+        "n_rep": 5000
+      },
+      "passed": false,
+      "T_rep_mean": 4.9824,
+      "note": "model-data conflict: x_obs too high"
+    }
+  },
+  {
+    "task_id": "PPC_05",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "generates_predictive_replicates",
+      "checks_tail_probability"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "p_value",
+        "true_value": 0.551,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      },
+      {
+        "key": "passed",
+        "true_value": 1.0,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.25
+      }
+    ],
+    "notes": {
+      "topic": "posterior_predictive_check",
+      "inputs": {
+        "alpha_post": 6.0,
+        "beta_post": 6.0,
+        "n_obs": 20,
+        "x_obs": 10,
+        "n_rep": 5000
+      },
+      "passed": true,
+      "T_rep_mean": 10.0314,
+      "note": "well-specified: symmetric posterior, x_obs at centre"
+    }
+  },
+  {
+    "task_id": "BAYES_REG_01",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_normal_inverse_gamma_update",
+      "states_bayesian_regression_prior",
+      "computes_B_hat_via_Sxy_over_Sxx"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "intercept_post",
+        "true_value": 0.553275976881757,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "slope_post",
+        "true_value": 2.0744861627854227,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "bayesian_linear_regression",
+      "model": "y = a + b*x + eps, eps~N(0,sigma^2)",
+      "prior": "beta|sigma^2~N(0, sigma^2*1000*I), sigma^2~IG(1,1)",
+      "inputs": {
+        "x": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
+          10.0
+        ],
+        "y": [
+          2.448331,
+          4.637488,
+          6.609097,
+          9.133488,
+          10.87571,
+          13.063242,
+          15.421521,
+          17.428968,
+          19.237592,
+          20.774616
+        ]
+      },
+      "true_params": {
+        "a": 1.0,
+        "b": 2.0
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_REG_02",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_normal_inverse_gamma_update",
+      "states_bayesian_regression_prior",
+      "computes_B_hat_via_Sxy_over_Sxx"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "intercept_post",
+        "true_value": 3.526876060741021,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "slope_post",
+        "true_value": 0.4522139258445472,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "bayesian_linear_regression",
+      "model": "y = a + b*x + eps, eps~N(0,sigma^2)",
+      "prior": "beta|sigma^2~N(0, sigma^2*1000*I), sigma^2~IG(1,1)",
+      "inputs": {
+        "x": [
+          0.0,
+          2.0,
+          4.0,
+          6.0,
+          8.0,
+          10.0,
+          12.0,
+          14.0,
+          16.0,
+          18.0,
+          20.0
+        ],
+        "y": [
+          2.640332,
+          5.203675,
+          6.396868,
+          6.317236,
+          7.414134,
+          7.51045,
+          8.085879,
+          9.099639,
+          10.001569,
+          12.929205,
+          12.943708
+        ]
+      },
+      "true_params": {
+        "a": 3.0,
+        "b": 0.5
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_REG_03",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_normal_inverse_gamma_update",
+      "states_bayesian_regression_prior",
+      "computes_B_hat_via_Sxy_over_Sxx"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "intercept_post",
+        "true_value": 0.9318950682018112,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "slope_post",
+        "true_value": 3.9906931741071965,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "bayesian_linear_regression",
+      "model": "y = a + b*x + eps, eps~N(0,sigma^2)",
+      "prior": "beta|sigma^2~N(0, sigma^2*1000*I), sigma^2~IG(1,1)",
+      "inputs": {
+        "x": [
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0,
+          10.0,
+          11.0,
+          12.0,
+          13.0,
+          14.0,
+          15.0
+        ],
+        "y": [
+          7.149282,
+          9.486567,
+          10.060222,
+          15.575991,
+          19.42654,
+          28.724838,
+          26.113549,
+          34.75159,
+          36.24636,
+          42.043708,
+          43.994444,
+          48.78554,
+          52.982312,
+          56.219077,
+          61.302519
+        ]
+      },
+      "true_params": {
+        "a": 0.0,
+        "b": 4.0
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_REG_04",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_normal_inverse_gamma_update",
+      "states_bayesian_regression_prior",
+      "computes_B_hat_via_Sxy_over_Sxx"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "intercept_post",
+        "true_value": 1.3399429467941992,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "slope_post",
+        "true_value": -0.9401606065559729,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "bayesian_linear_regression",
+      "model": "y = a + b*x + eps, eps~N(0,sigma^2)",
+      "prior": "beta|sigma^2~N(0, sigma^2*1000*I), sigma^2~IG(1,1)",
+      "inputs": {
+        "x": [
+          0.0,
+          1.0,
+          2.0,
+          3.0,
+          4.0,
+          5.0,
+          6.0,
+          7.0,
+          8.0,
+          9.0
+        ],
+        "y": [
+          1.086326,
+          0.144531,
+          -0.605806,
+          -0.385073,
+          -2.830348,
+          -3.820829,
+          -4.314095,
+          -3.889817,
+          -6.733961,
+          -7.557385
+        ]
+      },
+      "true_params": {
+        "a": 2.0,
+        "b": -1.0
+      }
+    }
+  },
+  {
+    "task_id": "BAYES_REG_05",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_normal_inverse_gamma_update",
+      "states_bayesian_regression_prior",
+      "computes_B_hat_via_Sxy_over_Sxx"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "normal_errors",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "intercept_post",
+        "true_value": 4.954639501411265,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "slope_post",
+        "true_value": 2.0461852910312963,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "bayesian_linear_regression",
+      "model": "y = a + b*x + eps, eps~N(0,sigma^2)",
+      "prior": "beta|sigma^2~N(0, sigma^2*1000*I), sigma^2~IG(1,1)",
+      "inputs": {
+        "x": [
+          1.0,
+          3.0,
+          5.0,
+          7.0,
+          9.0,
+          11.0,
+          13.0
+        ],
+        "y": [
+          7.729572,
+          10.283912,
+          16.004009,
+          16.919058,
+          25.498833,
+          26.713603,
+          31.801523
+        ]
+      },
+      "true_params": {
+        "a": 5.0,
+        "b": 2.0
+      }
+    }
+  },
+  {
+    "task_id": "MLE_MAP_01",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_map_from_posterior_mode",
+      "contrasts_mle_and_map",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle",
+        "true_value": 0.6,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "map",
+        "true_value": 0.5833333333333334,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.5714285714285714,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "shrinkage",
+        "true_value": 0.1666666666666661,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "mle_vs_map_binomial",
+      "inputs": {
+        "x": 6,
+        "n": 10,
+        "alpha": 2,
+        "beta": 2
+      },
+      "prior_mean": 0.5,
+      "note": "symmetric Beta(2,2) prior"
+    }
+  },
+  {
+    "task_id": "MLE_MAP_02",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_map_from_posterior_mode",
+      "contrasts_mle_and_map",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle",
+        "true_value": 0.2,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "map",
+        "true_value": 0.2,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.23529411764705882,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "shrinkage",
+        "true_value": -0.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "mle_vs_map_binomial",
+      "inputs": {
+        "x": 3,
+        "n": 15,
+        "alpha": 1,
+        "beta": 1
+      },
+      "prior_mean": 0.5,
+      "note": "flat prior Beta(1,1): MAP=MLE"
+    }
+  },
+  {
+    "task_id": "MLE_MAP_03",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_map_from_posterior_mode",
+      "contrasts_mle_and_map",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle",
+        "true_value": 0.6,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "map",
+        "true_value": 0.5833333333333334,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.5769230769230769,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "shrinkage",
+        "true_value": 0.1666666666666661,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "mle_vs_map_binomial",
+      "inputs": {
+        "x": 12,
+        "n": 20,
+        "alpha": 3,
+        "beta": 3
+      },
+      "prior_mean": 0.5,
+      "note": "informative symmetric prior pulls toward 0.5"
+    }
+  },
+  {
+    "task_id": "MLE_MAP_04",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_map_from_posterior_mode",
+      "contrasts_mle_and_map",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle",
+        "true_value": 0.2,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "map",
+        "true_value": 0.2,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.23529411764705882,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "shrinkage",
+        "true_value": -0.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "mle_vs_map_binomial",
+      "inputs": {
+        "x": 2,
+        "n": 10,
+        "alpha": 2,
+        "beta": 5
+      },
+      "prior_mean": 0.2857142857142857,
+      "note": "prior biased toward low theta"
+    }
+  },
+  {
+    "task_id": "MLE_MAP_05",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_map_from_posterior_mode",
+      "contrasts_mle_and_map",
+      "updates_hyperparameters_correctly"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "mle",
+        "true_value": 0.6666666666666666,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "map",
+        "true_value": 0.6875,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "posterior_mean",
+        "true_value": 0.6666666666666666,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "shrinkage",
+        "true_value": 0.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "mle_vs_map_binomial",
+      "inputs": {
+        "x": 8,
+        "n": 12,
+        "alpha": 4,
+        "beta": 2
+      },
+      "prior_mean": 0.6666666666666666,
+      "note": "prior biased toward high theta"
+    }
+  },
+  {
+    "task_id": "CI_CREDIBLE_01",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_frequentist_ci",
+      "computes_bayesian_credible"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "freq_lower",
+        "true_value": 4.599225986076149,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "freq_upper",
+        "true_value": 5.4757485266527315,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_lower",
+        "true_value": 4.5968180254381,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_upper",
+        "true_value": 5.473121517519301,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "ci_vs_credible_normal",
+      "inputs": {
+        "mu0": 0.0,
+        "tau0_sq": 100.0,
+        "sigma_sq": 1.0,
+        "n": 20,
+        "data": [
+          5.345584,
+          5.821618,
+          5.330437,
+          3.696843,
+          5.905356,
+          5.446375,
+          4.463047,
+          5.581118,
+          5.364572,
+          5.294132,
+          5.028422,
+          5.546713,
+          4.263546,
+          4.83709,
+          4.517881,
+          5.598846,
+          5.039722,
+          4.707543,
+          4.218092,
+          4.742808
+        ]
+      },
+      "posterior_mean": 5.034969771478701,
+      "freq_center": 5.03748725636444,
+      "note": "very diffuse prior: CI \u2248 credible"
+    }
+  },
+  {
+    "task_id": "CI_CREDIBLE_02",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_frequentist_ci",
+      "computes_bayesian_credible"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "freq_lower",
+        "true_value": 4.51203252644282,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "freq_upper",
+        "true_value": 5.388555067019402,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_lower",
+        "true_value": 4.082401362402237,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_upper",
+        "true_value": 4.918132813472509,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "ci_vs_credible_normal",
+      "inputs": {
+        "mu0": 0.0,
+        "tau0_sq": 0.5,
+        "sigma_sq": 1.0,
+        "n": 20,
+        "data": [
+          5.189053,
+          4.477252,
+          4.586936,
+          2.558533,
+          6.799707,
+          6.144166,
+          4.674577,
+          5.773807,
+          5.281211,
+          4.446177,
+          5.977567,
+          4.689443,
+          4.671176,
+          4.207853,
+          5.454958,
+          4.900802,
+          5.545289,
+          4.392814,
+          5.126828,
+          4.107726
+        ]
+      },
+      "posterior_mean": 4.500267087937373,
+      "freq_center": 4.950293796731111,
+      "note": "informative prior: credible pulled to 0"
+    }
+  },
+  {
+    "task_id": "CI_CREDIBLE_03",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_frequentist_ci",
+      "computes_bayesian_credible"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "freq_lower",
+        "true_value": 3.9641245553171855,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "freq_upper",
+        "true_value": 5.717169636470349,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_lower",
+        "true_value": 4.440821840545259,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_upper",
+        "true_value": 5.452942890050587,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "ci_vs_credible_normal",
+      "inputs": {
+        "mu0": 5.0,
+        "tau0_sq": 0.1,
+        "sigma_sq": 2.0,
+        "n": 10,
+        "data": [
+          7.886296,
+          1.385744,
+          5.591281,
+          4.197053,
+          4.359857,
+          4.6951,
+          2.143308,
+          4.671998,
+          3.776404,
+          9.699431
+        ]
+      },
+      "posterior_mean": 4.946882365297923,
+      "freq_center": 4.840647095893767,
+      "note": "strong prior at true mean"
+    }
+  },
+  {
+    "task_id": "CI_CREDIBLE_04",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_frequentist_ci",
+      "computes_bayesian_credible"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "freq_lower",
+        "true_value": 3.9375125789711847,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "freq_upper",
+        "true_value": 4.949633628476513,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_lower",
+        "true_value": 3.9218585660289493,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_upper",
+        "true_value": 4.927298875531277,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "ci_vs_credible_normal",
+      "inputs": {
+        "mu0": 3.0,
+        "tau0_sq": 5.0,
+        "sigma_sq": 1.0,
+        "n": 15,
+        "data": [
+          3.848209,
+          4.325283,
+          6.163724,
+          5.159148,
+          2.858603,
+          4.494797,
+          3.876536,
+          4.648632,
+          2.891812,
+          4.741772,
+          4.735381,
+          6.075626,
+          4.816645,
+          5.010547,
+          3.006883
+        ]
+      },
+      "posterior_mean": 4.424578720780113,
+      "freq_center": 4.443573103723849,
+      "note": "moderate prior away from data"
+    }
+  },
+  {
+    "task_id": "CI_CREDIBLE_05",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "computes_frequentist_ci",
+      "computes_bayesian_credible"
+    ],
+    "required_assumption_checks": [
+      "states_distributional_assumption",
+      "constant_variance"
+    ],
+    "numeric_targets": [
+      {
+        "key": "freq_lower",
+        "true_value": -1.0401545950609168,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "freq_upper",
+        "true_value": 0.7128904860922461,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_lower",
+        "true_value": -1.0389527742294784,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "bayes_upper",
+        "true_value": 0.7123418870351963,
+        "full_credit_tol": 0.001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "ci_vs_credible_normal",
+      "inputs": {
+        "mu0": 0.0,
+        "tau0_sq": 100.0,
+        "sigma_sq": 1.0,
+        "n": 5,
+        "data": [
+          -0.801931,
+          -1.324359,
+          -0.248362,
+          0.420445,
+          1.136047
+        ]
+      },
+      "posterior_mean": -0.16330544359714108,
+      "freq_center": -0.16363205448433535,
+      "note": "diffuse prior, small n"
+    }
+  },
+  {
+    "task_id": "LOG_ML_01",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_beta_function_for_ml",
+      "computes_normalizing_constant"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_ml",
+        "true_value": -7.745002803515839,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "log_marginal_likelihood",
+      "inputs": {
+        "model": "Beta-Binomial",
+        "alpha": 1.0,
+        "beta": 1.0,
+        "x": 6,
+        "n": 10
+      },
+      "note": "uniform prior"
+    }
+  },
+  {
+    "task_id": "LOG_ML_02",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_beta_function_for_ml",
+      "computes_normalizing_constant"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_ml",
+        "true_value": -8.295049140435111,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "log_marginal_likelihood",
+      "inputs": {
+        "model": "Beta-Binomial",
+        "alpha": 2.0,
+        "beta": 3.0,
+        "x": 4,
+        "n": 12
+      },
+      "note": "informative prior"
+    }
+  },
+  {
+    "task_id": "LOG_ML_03",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_beta_function_for_ml",
+      "computes_normalizing_constant"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_ml",
+        "true_value": -11.96036977563056,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "log_marginal_likelihood",
+      "inputs": {
+        "model": "Beta-Binomial",
+        "alpha": 0.5,
+        "beta": 0.5,
+        "x": 8,
+        "n": 15
+      },
+      "note": "Jeffreys prior"
+    }
+  },
+  {
+    "task_id": "LOG_ML_04",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_beta_function_for_ml",
+      "computes_normalizing_constant"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_ml",
+        "true_value": -7.782995418781033,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "log_marginal_likelihood",
+      "inputs": {
+        "model": "Gamma-Poisson",
+        "alpha": 2.0,
+        "beta": 1.0,
+        "data": [
+          1,
+          2,
+          3,
+          2,
+          1
+        ]
+      },
+      "note": "Gamma(2,1) prior, count data"
+    }
+  },
+  {
+    "task_id": "LOG_ML_05",
+    "tier": 3,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "applies_beta_function_for_ml",
+      "computes_normalizing_constant"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "states_distributional_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "log_ml",
+        "true_value": -7.582324723318883,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "log_marginal_likelihood",
+      "inputs": {
+        "model": "Gamma-Poisson",
+        "alpha": 3.0,
+        "beta": 2.0,
+        "data": [
+          2,
+          4,
+          1,
+          3
+        ]
+      },
+      "note": "Gamma(3,2) prior, sparse data"
+    }
+  },
+  {
+    "task_id": "GAMBLER_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_gamblers_ruin_formula",
+      "handles_fair_vs_unfair_case"
+    ],
+    "required_assumption_checks": [
+      "absorbing_boundaries_at_0_and_M"
+    ],
+    "numeric_targets": [
+      {
+        "key": "ruin_prob",
+        "true_value": 0.2677240285487709,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "win_prob",
+        "true_value": 0.732275971451229,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "gamblers_ruin",
+      "inputs": {
+        "p": 0.6,
+        "i": 3,
+        "M": 8
+      },
+      "formula": "fair: ruin_prob=(M-i)/M; unfair: ruin_prob=((q/p)^i - (q/p)^M)/(1-(q/p)^M)",
+      "note": "favourable game p=0.6"
+    }
+  },
+  {
+    "task_id": "GAMBLER_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_gamblers_ruin_formula",
+      "handles_fair_vs_unfair_case"
+    ],
+    "required_assumption_checks": [
+      "absorbing_boundaries_at_0_and_M"
+    ],
+    "numeric_targets": [
+      {
+        "key": "ruin_prob",
+        "true_value": 0.5333333333333333,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "win_prob",
+        "true_value": 0.4666666666666667,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "gamblers_ruin",
+      "inputs": {
+        "p": 0.5,
+        "i": 7,
+        "M": 15
+      },
+      "formula": "fair: ruin_prob=(M-i)/M; unfair: ruin_prob=((q/p)^i - (q/p)^M)/(1-(q/p)^M)",
+      "note": "fair game, asymmetric starting position"
+    }
+  },
+  {
+    "task_id": "GAMBLER_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "applies_gamblers_ruin_formula",
+      "handles_fair_vs_unfair_case"
+    ],
+    "required_assumption_checks": [
+      "absorbing_boundaries_at_0_and_M"
+    ],
+    "numeric_targets": [
+      {
+        "key": "ruin_prob",
+        "true_value": 0.9990707331944839,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "win_prob",
+        "true_value": 0.0009292668055160824,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "gamblers_ruin",
+      "inputs": {
+        "p": 0.3,
+        "i": 2,
+        "M": 10
+      },
+      "formula": "fair: ruin_prob=(M-i)/M; unfair: ruin_prob=((q/p)^i - (q/p)^M)/(1-(q/p)^M)",
+      "note": "strongly unfavourable p=0.3"
+    }
+  },
+  {
+    "task_id": "STATIONARY_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "solves_pi_P_eq_pi",
+      "normalises_to_one",
+      "uses_eigenvalue_or_linear_system"
+    ],
+    "required_assumption_checks": [
+      "chain_is_irreducible",
+      "chain_is_aperiodic"
+    ],
+    "numeric_targets": [
+      {
+        "key": "pi_0",
+        "true_value": 0.30967741935483845,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_1",
+        "true_value": 0.406451612903226,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_2",
+        "true_value": 0.28387096774193565,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "stationary_distribution",
+      "inputs": {
+        "P": [
+          [
+            0.2,
+            0.5,
+            0.3
+          ],
+          [
+            0.4,
+            0.2,
+            0.4
+          ],
+          [
+            0.3,
+            0.6,
+            0.1
+          ]
+        ]
+      },
+      "note": "3-state, non-uniform stationary distribution"
+    }
+  },
+  {
+    "task_id": "STATIONARY_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "solves_pi_P_eq_pi",
+      "normalises_to_one",
+      "uses_eigenvalue_or_linear_system"
+    ],
+    "required_assumption_checks": [
+      "chain_is_irreducible",
+      "chain_is_aperiodic"
+    ],
+    "numeric_targets": [
+      {
+        "key": "pi_0",
+        "true_value": 0.6666666666666666,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_1",
+        "true_value": 0.3333333333333334,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "stationary_distribution",
+      "inputs": {
+        "P": [
+          [
+            0.9,
+            0.1
+          ],
+          [
+            0.2,
+            0.8
+          ]
+        ]
+      },
+      "note": "2-state: pi = [2/3, 1/3]"
+    }
+  },
+  {
+    "task_id": "STATIONARY_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "solves_pi_P_eq_pi",
+      "normalises_to_one",
+      "uses_eigenvalue_or_linear_system"
+    ],
+    "required_assumption_checks": [
+      "chain_is_irreducible",
+      "chain_is_aperiodic"
+    ],
+    "numeric_targets": [
+      {
+        "key": "pi_0",
+        "true_value": 0.25619834710743805,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_1",
+        "true_value": 0.22038567493112937,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_2",
+        "true_value": 0.36501377410468316,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      },
+      {
+        "key": "pi_3",
+        "true_value": 0.1584022038567494,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.05
+      }
+    ],
+    "notes": {
+      "topic": "stationary_distribution",
+      "inputs": {
+        "P": [
+          [
+            0.5,
+            0.25,
+            0.25,
+            0.0
+          ],
+          [
+            0.2,
+            0.4,
+            0.3,
+            0.1
+          ],
+          [
+            0.1,
+            0.1,
+            0.6,
+            0.2
+          ],
+          [
+            0.3,
+            0.2,
+            0.1,
+            0.4
+          ]
+        ]
+      },
+      "note": "4-state ergodic chain"
+    }
+  },
+  {
+    "task_id": "RANGE_DIST_01",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "identifies_range_as_beta_distribution",
+      "states_correct_parameters_n_minus_1_and_2"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "uniform_support_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha",
+        "true_value": 3.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "beta",
+        "true_value": 2.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "verified",
+        "true_value": 1.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "uniform_range_distribution",
+      "inputs": {
+        "n": 4
+      },
+      "formula": "R ~ Beta(3, 2)",
+      "note": "R ~ Beta(3, 2) for n=4 Uniform[0,1] samples"
+    }
+  },
+  {
+    "task_id": "RANGE_DIST_02",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "identifies_range_as_beta_distribution",
+      "states_correct_parameters_n_minus_1_and_2"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "uniform_support_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha",
+        "true_value": 7.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "beta",
+        "true_value": 2.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "verified",
+        "true_value": 1.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "uniform_range_distribution",
+      "inputs": {
+        "n": 8
+      },
+      "formula": "R ~ Beta(7, 2)",
+      "note": "R ~ Beta(7, 2) for n=8"
+    }
+  },
+  {
+    "task_id": "RANGE_DIST_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "required_structure_checks": [
+      "identifies_range_as_beta_distribution",
+      "states_correct_parameters_n_minus_1_and_2"
+    ],
+    "required_assumption_checks": [
+      "states_iid",
+      "uniform_support_0_1"
+    ],
+    "numeric_targets": [
+      {
+        "key": "alpha",
+        "true_value": 11.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "beta",
+        "true_value": 2.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      },
+      {
+        "key": "verified",
+        "true_value": 1.0,
+        "full_credit_tol": 1e-06,
+        "zero_credit_scale": 0.5
+      }
+    ],
+    "notes": {
+      "topic": "uniform_range_distribution",
+      "inputs": {
+        "n": 12
+      },
+      "formula": "R ~ Beta(11, 2)",
+      "note": "R ~ Beta(11, 2) for n=12"
+    }
+  },
+  {
+    "task_id": "MLE_EFFICIENCY_01",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "states_fisher_information_formula",
+      "states_rc_bound_as_reciprocal_of_fisher_info",
+      "states_unbiasedness_assumption"
+    ],
+    "required_assumption_checks": [
+      "states_regularity_conditions",
+      "states_unbiasedness_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "rc_bound",
+        "true_value": 0.007999999999999998,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "efficiency_ratio",
+        "true_value": 1.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "is_efficient",
+        "true_value": 1.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "mle_efficiency",
+      "inputs": {
+        "dist": "binomial",
+        "theta": 0.4,
+        "n": 30
+      },
+      "fisher_info": 125.00000000000001,
+      "note": "Lecture 24 Example 39: MLE=xbar, Var=theta(1-theta)/n=RC bound",
+      "warning": "efficiency_ratio=1.0 is the theoretical value for regular exponential families; simulation estimate may differ slightly"
+    }
+  },
+  {
+    "task_id": "MLE_EFFICIENCY_02",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "states_fisher_information_formula",
+      "states_rc_bound_as_reciprocal_of_fisher_info",
+      "states_unbiasedness_assumption"
+    ],
+    "required_assumption_checks": [
+      "states_regularity_conditions",
+      "states_unbiasedness_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "rc_bound",
+        "true_value": 0.15000000000000002,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "efficiency_ratio",
+        "true_value": 1.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "is_efficient",
+        "true_value": 1.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "mle_efficiency",
+      "inputs": {
+        "dist": "poisson",
+        "theta": 3.0,
+        "n": 20
+      },
+      "fisher_info": 6.666666666666666,
+      "note": "Poisson MLE=xbar, Var=lambda/n=RC bound",
+      "warning": "efficiency_ratio=1.0 is the theoretical value for regular exponential families; simulation estimate may differ slightly"
+    }
+  },
+  {
+    "task_id": "MLE_EFFICIENCY_03",
+    "tier": 4,
+    "difficulty": "advanced",
+    "required_structure_checks": [
+      "states_fisher_information_formula",
+      "states_rc_bound_as_reciprocal_of_fisher_info",
+      "states_unbiasedness_assumption"
+    ],
+    "required_assumption_checks": [
+      "states_regularity_conditions",
+      "states_unbiasedness_assumption"
+    ],
+    "numeric_targets": [
+      {
+        "key": "rc_bound",
+        "true_value": 0.06666666666666667,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "efficiency_ratio",
+        "true_value": 1.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      },
+      {
+        "key": "is_efficient",
+        "true_value": 1.0,
+        "full_credit_tol": 0.0001,
+        "zero_credit_scale": 0.1
+      }
+    ],
+    "notes": {
+      "topic": "mle_efficiency",
+      "inputs": {
+        "dist": "normal",
+        "theta": 2.0,
+        "n": 15
+      },
+      "fisher_info": 15.0,
+      "note": "Normal MLE=xbar (sigma^2=1 known), Var=1/n=RC bound",
+      "warning": "efficiency_ratio=1.0 is the theoretical value for regular exponential families; simulation estimate may differ slightly"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_01",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "p-value is not posterior probability",
+      "requires prior on H0",
+      "Bayes theorem needed",
+      "posterior P(H0|data) depends on prior"
+    ],
+    "question": "A researcher reports p=0.03. Does this mean the probability that the null hypothesis is true given the data is 3%? Explain.",
+    "reference_answer": "No. p=P(data|H0), not P(H0|data). Converting requires a prior via Bayes theorem. P(H0|data) depends on the prior probability of H0.",
+    "notes": {
+      "topic": "p_value_vs_posterior"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_02",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "HPD shortest interval containing given probability",
+      "equal-tail cuts equal probability from each tail",
+      "differ when posterior is asymmetric/skewed",
+      "example with skewed distribution like Beta(1,5)"
+    ],
+    "question": "When does the Highest Posterior Density (HPD) interval differ from the equal-tail credible interval? Give an example.",
+    "reference_answer": "HPD is the shortest interval with the required probability mass. Equal-tail intervals cut equal mass from each tail. They coincide for symmetric unimodal posteriors but differ for skewed ones. Example: Beta(1,10) \u2014 HPD starts at 0, equal-tail does not.",
+    "notes": {
+      "topic": "hpd_vs_equal_tail"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_03",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "BF is ratio of marginal likelihoods",
+      "BF=15 is strong evidence for H1 (Kass-Raftery scale)",
+      "p-value is one-sided tail probability under H0",
+      "BF incorporates prior predictive comparison"
+    ],
+    "question": "A study reports a Bayes factor BF10=15 in favor of H1. How do you interpret this? How does it differ from a p-value?",
+    "reference_answer": "BF10=15 means the data are 15 times more likely under H1 than H0. On the Kass-Raftery scale this is strong evidence for H1. Unlike a p-value, the Bayes factor compares predictive performance of two models and does not depend on stopping rules.",
+    "notes": {
+      "topic": "bayes_factor_interpretation"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_04",
+    "tier": 3,
+    "difficulty": "advanced",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "invariant under reparametrization",
+      "uniform on theta != uniform on log-odds",
+      "Jeffreys = Beta(0.5,0.5) for Binomial",
+      "sqrt of Fisher information"
+    ],
+    "question": "What property makes Jeffreys prior special compared to a uniform prior? Demonstrate with the Binomial model.",
+    "reference_answer": "Jeffreys prior p(theta) \u221d sqrt(I(theta)) is invariant under reparametrisation: applying it to any monotone transform of theta gives the same prior. For Binomial: I(theta)=1/(theta(1-theta)), so p(theta) \u221d theta^{-1/2}(1-theta)^{-1/2} = Beta(0.5, 0.5). A uniform prior on theta is not uniform on log-odds.",
+    "notes": {
+      "topic": "jeffreys_prior_invariance"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_05",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "credible: P(theta in [0.3,0.7]|data)=0.95",
+      "confidence: 95% of such intervals contain true theta",
+      "credible interval makes direct probability statement about parameter",
+      "confidence interval is statement about procedure"
+    ],
+    "question": "A 95% Bayesian credible interval is [0.3, 0.7] for a proportion theta. What is the correct interpretation? How does it differ from a 95% frequentist confidence interval?",
+    "reference_answer": "Credible interval: given the prior and data, P(theta in [0.3,0.7]) = 0.95. This is a direct probability statement about the parameter. Frequentist CI: if we repeated the experiment, 95% of CIs computed this way would contain the true theta \u2014 a statement about the procedure, not about this specific interval.",
+    "notes": {
+      "topic": "credible_vs_confidence_interval"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_06",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "likelihood dominates prior with large n",
+      "posterior proportional to prior times likelihood",
+      "data overwhelms prior asymptotically",
+      "Bernstein-von Mises: posterior concentrates around MLE"
+    ],
+    "question": "With n=5 observations, a Beta(10,10) prior and Beta(1,1) prior give very different posteriors. With n=500, they are nearly identical. Explain why.",
+    "reference_answer": "The posterior is proportional to prior \u00d7 likelihood. For small n the prior contributes substantially; for large n the likelihood dominates. The Bernstein-von Mises theorem guarantees that as n\u2192\u221e the posterior concentrates around the MLE regardless of the prior (under regularity conditions).",
+    "notes": {
+      "topic": "prior_influence_large_n"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_07",
+    "tier": 2,
+    "difficulty": "basic",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "MLE=0.5 (x/n)",
+      "MAP=(x+alpha-1)/(n+alpha+beta-2)=2/4=0.5",
+      "posterior mean=(x+alpha)/(n+alpha+beta)=3/6=0.5",
+      "MAP minimizes 0-1 loss, posterior mean minimizes MSE"
+    ],
+    "question": "For a Binomial model with x=1, n=2 and Beta(2,2) prior, compute and compare MLE, MAP, and posterior mean. Which should you use and when?",
+    "reference_answer": "MLE = x/n = 0.5. MAP = (1+2-1)/(2+2+2-2) = 2/4 = 0.5. Posterior mean = (1+2)/(2+2+2) = 3/6 = 0.5. For this symmetric case all three coincide. Posterior mean minimises MSE (quadratic loss); MAP minimises 0-1 loss; MLE ignores the prior.",
+    "notes": {
+      "topic": "mle_map_posterior_mean"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_08",
+    "tier": 3,
+    "difficulty": "advanced",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "exchangeable: joint dist invariant to permutation",
+      "weaker than iid",
+      "de Finetti: exchangeable sequence = mixture of iid",
+      "justifies use of prior distribution"
+    ],
+    "question": "What does it mean for observations to be exchangeable? Why is this important in Bayesian statistics?",
+    "reference_answer": "A sequence X1,...,Xn is exchangeable if its joint distribution is invariant under permutation of indices. This is weaker than i.i.d. De Finetti's theorem: any exchangeable sequence can be represented as a mixture of i.i.d. distributions. This provides the theoretical justification for the Bayesian model where observations are conditionally i.i.d. given theta, with theta having a prior distribution.",
+    "notes": {
+      "topic": "exchangeability_de_finetti"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_09",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "closed-form posterior \u2014 no numerical integration",
+      "posterior in same family as prior",
+      "limitation: may not reflect true prior beliefs",
+      "inappropriate when prior is multimodal or has sharp constraints"
+    ],
+    "question": "What are the advantages of using conjugate priors? What situations make them inappropriate?",
+    "reference_answer": "Advantages: the posterior is in the same parametric family as the prior, giving a closed-form update with no numerical integration. Easy to interpret; hyperparameters have pseudo-count interpretations. Limitations: the conjugate family may not represent genuine prior beliefs (e.g. cannot express bimodal prior), and forces a specific distributional shape. Better alternatives: MCMC or variational methods for complex priors.",
+    "notes": {
+      "topic": "conjugate_prior_advantages"
+    }
+  },
+  {
+    "task_id": "CONCEPTUAL_10",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "task_type": "conceptual",
+    "required_structure_checks": [],
+    "required_assumption_checks": [],
+    "numeric_targets": [],
+    "rubric_keys": [
+      "p-value near 0 or 1 indicates model misfit",
+      "0.02 means observed statistic is extreme under model",
+      "model may be misspecified",
+      "consider alternative models or relaxed assumptions"
+    ],
+    "question": "A posterior predictive check yields a Bayesian p-value of 0.02. What does this indicate about the model? What should the analyst do?",
+    "reference_answer": "A Bayesian p-value of 0.02 means the observed test statistic falls in the lower 2% of the posterior predictive distribution \u2014 the data are surprisingly extreme under the fitted model, indicating potential model misspecification. The analyst should examine which aspect of the data the model fails to capture, consider a more flexible likelihood, or relax distributional assumptions.",
+    "notes": {
+      "topic": "ppc_interpretation"
+    }
+  },
+  {
+    "task_id": "GIBBS_01",
+    "task_type": "GIBBS",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "basic",
+    "inputs": {
+      "mu_x": 0.0,
+      "mu_y": 0.0,
+      "sigma_x": 1.0,
+      "sigma_y": 1.0,
+      "rho": 0.5,
+      "n_samples": 2000,
+      "n_burnin": 500
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean_x",
+        "true_value": 0.001015378942673781,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_mean_y",
+        "true_value": 0.006583886446062759,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_var_x",
+        "true_value": 0.94930529435768,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "defines_conditional_distributions",
+      "implements_alternating_sampling",
+      "applies_burn_in"
+    ],
+    "required_assumption_checks": [
+      "uses_bivariate_normal_conditionals",
+      "seeds_rng_for_reproducibility"
+    ],
+    "prompt": "Use Gibbs sampling to sample from a bivariate normal distribution with mu_x=0.0, mu_y=0.0, sigma_x=1.0, sigma_y=1.0, rho=0.5. Run 2000 samples after 500 burn-in steps (seed 42). Report posterior_mean_x, posterior_mean_y, and posterior_var_x."
+  },
+  {
+    "task_id": "GIBBS_02",
+    "task_type": "GIBBS",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "inputs": {
+      "mu_x": 2.0,
+      "mu_y": -1.0,
+      "sigma_x": 1.5,
+      "sigma_y": 0.8,
+      "rho": 0.7,
+      "n_samples": 3000,
+      "n_burnin": 500
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean_x",
+        "true_value": 1.9601767969042327,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_mean_y",
+        "true_value": -1.0207226539344785,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_var_x",
+        "true_value": 2.175327841916919,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "defines_conditional_distributions",
+      "implements_alternating_sampling",
+      "applies_burn_in"
+    ],
+    "required_assumption_checks": [
+      "uses_bivariate_normal_conditionals",
+      "seeds_rng_for_reproducibility"
+    ],
+    "prompt": "Use Gibbs sampling to sample from a bivariate normal distribution with mu_x=2.0, mu_y=-1.0, sigma_x=1.5, sigma_y=0.8, rho=0.7. Run 3000 samples after 500 burn-in steps (seed 42). Report posterior_mean_x, posterior_mean_y, and posterior_var_x."
+  },
+  {
+    "task_id": "GIBBS_03",
+    "task_type": "GIBBS",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "inputs": {
+      "mu_x": -1.0,
+      "mu_y": 3.0,
+      "sigma_x": 2.0,
+      "sigma_y": 1.0,
+      "rho": 0.3,
+      "n_samples": 2000,
+      "n_burnin": 500
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean_x",
+        "true_value": -1.00094564872315,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_mean_y",
+        "true_value": 3.006551169391029,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_var_x",
+        "true_value": 3.804723873230653,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "defines_conditional_distributions",
+      "implements_alternating_sampling",
+      "applies_burn_in"
+    ],
+    "required_assumption_checks": [
+      "uses_bivariate_normal_conditionals",
+      "seeds_rng_for_reproducibility"
+    ],
+    "prompt": "Use Gibbs sampling to sample from a bivariate normal distribution with mu_x=-1.0, mu_y=3.0, sigma_x=2.0, sigma_y=1.0, rho=0.3. Run 2000 samples after 500 burn-in steps (seed 42). Report posterior_mean_x, posterior_mean_y, and posterior_var_x."
+  },
+  {
+    "task_id": "GIBBS_04",
+    "task_type": "GIBBS",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "advanced",
+    "inputs": {
+      "mu_x": 5.0,
+      "mu_y": 5.0,
+      "sigma_x": 1.0,
+      "sigma_y": 2.0,
+      "rho": -0.6,
+      "n_samples": 4000,
+      "n_burnin": 1000
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean_x",
+        "true_value": 4.992606037629365,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_mean_y",
+        "true_value": 4.9871060067335975,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_var_x",
+        "true_value": 1.0265491816613477,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "defines_conditional_distributions",
+      "implements_alternating_sampling",
+      "applies_burn_in"
+    ],
+    "required_assumption_checks": [
+      "uses_bivariate_normal_conditionals",
+      "seeds_rng_for_reproducibility"
+    ],
+    "prompt": "Use Gibbs sampling to sample from a bivariate normal distribution with mu_x=5.0, mu_y=5.0, sigma_x=1.0, sigma_y=2.0, rho=-0.6. Run 4000 samples after 1000 burn-in steps (seed 42). Report posterior_mean_x, posterior_mean_y, and posterior_var_x."
+  },
+  {
+    "task_id": "GIBBS_05",
+    "task_type": "GIBBS",
+    "category": "computational_bayes",
+    "tier": 4,
+    "difficulty": "advanced",
+    "inputs": {
+      "mu_x": 0.0,
+      "mu_y": 0.0,
+      "sigma_x": 3.0,
+      "sigma_y": 3.0,
+      "rho": 0.9,
+      "n_samples": 5000,
+      "n_burnin": 1000
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean_x",
+        "true_value": -0.20820906805740602,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_mean_y",
+        "true_value": -0.21057346546023822,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_var_x",
+        "true_value": 8.372710794742982,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "defines_conditional_distributions",
+      "implements_alternating_sampling",
+      "applies_burn_in"
+    ],
+    "required_assumption_checks": [
+      "uses_bivariate_normal_conditionals",
+      "seeds_rng_for_reproducibility"
+    ],
+    "prompt": "Use Gibbs sampling to sample from a bivariate normal distribution with mu_x=0.0, mu_y=0.0, sigma_x=3.0, sigma_y=3.0, rho=0.9. Run 5000 samples after 1000 burn-in steps (seed 42). Report posterior_mean_x, posterior_mean_y, and posterior_var_x."
+  },
+  {
+    "task_id": "MH_01",
+    "task_type": "MH",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "basic",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_std": 1.0,
+      "n_obs": 10,
+      "n_success": 7,
+      "proposal_std": 0.3,
+      "n_samples": 4000
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 0.6405749675472812,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.11473412672671247,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "acceptance_rate",
+        "true_value": 0.84275,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "proposes_in_logit_space",
+      "computes_log_acceptance_ratio",
+      "tracks_acceptance_rate"
+    ],
+    "required_assumption_checks": [
+      "applies_binomial_log_likelihood",
+      "transforms_via_sigmoid"
+    ],
+    "prompt": "Use Metropolis-Hastings (in logit space) to sample from the posterior of theta given 7 successes in 10 Bernoulli trials, with Normal(0.0, 1.0^2) prior on logit(theta). Proposal std = 0.3, 4000 post-burnin samples, seed 42. Report posterior_mean, posterior_std, and acceptance_rate."
+  },
+  {
+    "task_id": "MH_02",
+    "task_type": "MH",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "n_obs": 20,
+      "n_success": 12,
+      "proposal_std": 0.5,
+      "n_samples": 5000
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 0.5952555132489935,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.10235651557842344,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "acceptance_rate",
+        "true_value": 0.6954,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "proposes_in_logit_space",
+      "computes_log_acceptance_ratio",
+      "tracks_acceptance_rate"
+    ],
+    "required_assumption_checks": [
+      "applies_binomial_log_likelihood",
+      "transforms_via_sigmoid"
+    ],
+    "prompt": "Use Metropolis-Hastings (in logit space) to sample from the posterior of theta given 12 successes in 20 Bernoulli trials, with Normal(0.0, 2.0^2) prior on logit(theta). Proposal std = 0.5, 5000 post-burnin samples, seed 42. Report posterior_mean, posterior_std, and acceptance_rate."
+  },
+  {
+    "task_id": "MH_03",
+    "task_type": "MH",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_std": 1.0,
+      "n_obs": 50,
+      "n_success": 30,
+      "proposal_std": 0.4,
+      "n_samples": 6000
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 0.5950155818145102,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.06527421548785048,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "acceptance_rate",
+        "true_value": 0.6155,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "proposes_in_logit_space",
+      "computes_log_acceptance_ratio",
+      "tracks_acceptance_rate"
+    ],
+    "required_assumption_checks": [
+      "applies_binomial_log_likelihood",
+      "transforms_via_sigmoid"
+    ],
+    "prompt": "Use Metropolis-Hastings (in logit space) to sample from the posterior of theta given 30 successes in 50 Bernoulli trials, with Normal(0.0, 1.0^2) prior on logit(theta). Proposal std = 0.4, 6000 post-burnin samples, seed 42. Report posterior_mean, posterior_std, and acceptance_rate."
+  },
+  {
+    "task_id": "MH_04",
+    "task_type": "MH",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "advanced",
+    "inputs": {
+      "prior_mean": 1.0,
+      "prior_std": 1.5,
+      "n_obs": 30,
+      "n_success": 25,
+      "proposal_std": 0.3,
+      "n_samples": 5000
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 0.8261453046414649,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.06125544513383197,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "acceptance_rate",
+        "true_value": 0.8172,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "proposes_in_logit_space",
+      "computes_log_acceptance_ratio",
+      "tracks_acceptance_rate"
+    ],
+    "required_assumption_checks": [
+      "applies_binomial_log_likelihood",
+      "transforms_via_sigmoid"
+    ],
+    "prompt": "Use Metropolis-Hastings (in logit space) to sample from the posterior of theta given 25 successes in 30 Bernoulli trials, with Normal(1.0, 1.5^2) prior on logit(theta). Proposal std = 0.3, 5000 post-burnin samples, seed 42. Report posterior_mean, posterior_std, and acceptance_rate."
+  },
+  {
+    "task_id": "MH_05",
+    "task_type": "MH",
+    "category": "computational_bayes",
+    "tier": 4,
+    "difficulty": "advanced",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_std": 3.0,
+      "n_obs": 100,
+      "n_success": 60,
+      "proposal_std": 0.2,
+      "n_samples": 8000
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 0.603228768518587,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.04664807620887463,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "acceptance_rate",
+        "true_value": 0.71675,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "proposes_in_logit_space",
+      "computes_log_acceptance_ratio",
+      "tracks_acceptance_rate"
+    ],
+    "required_assumption_checks": [
+      "applies_binomial_log_likelihood",
+      "transforms_via_sigmoid"
+    ],
+    "prompt": "Use Metropolis-Hastings (in logit space) to sample from the posterior of theta given 60 successes in 100 Bernoulli trials, with Normal(0.0, 3.0^2) prior on logit(theta). Proposal std = 0.2, 8000 post-burnin samples, seed 42. Report posterior_mean, posterior_std, and acceptance_rate."
+  },
+  {
+    "task_id": "HMC_01",
+    "task_type": "HMC",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_std": 2.0,
+      "likelihood_std": 1.0,
+      "obs_mean": 2.0,
+      "n_obs": 10,
+      "step_size": 0.1,
+      "n_leapfrog": 5
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 1.9642430767780175,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.3044268805779825,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "energy_error",
+        "true_value": 0.016297526771760752,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "implements_leapfrog_integrator",
+      "computes_hamiltonian_energy",
+      "applies_metropolis_correction"
+    ],
+    "required_assumption_checks": [
+      "uses_gradient_of_log_posterior",
+      "refreshes_momentum_each_iteration"
+    ],
+    "prompt": "Use Hamiltonian Monte Carlo to sample from a Normal posterior (prior N(0.0, 2.0^2), likelihood N(theta, 1.0^2), observed mean=2.0 from 10 observations). Step size=0.1, 5 leapfrog steps, seed 42. Report posterior_mean, posterior_std, and mean energy_error."
+  },
+  {
+    "task_id": "HMC_02",
+    "task_type": "HMC",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "inputs": {
+      "prior_mean": 1.0,
+      "prior_std": 3.0,
+      "likelihood_std": 0.5,
+      "obs_mean": 3.0,
+      "n_obs": 20,
+      "step_size": 0.05,
+      "n_leapfrog": 10
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 2.993437126597684,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.10791061027464173,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "energy_error",
+        "true_value": 0.03726860328624502,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "implements_leapfrog_integrator",
+      "computes_hamiltonian_energy",
+      "applies_metropolis_correction"
+    ],
+    "required_assumption_checks": [
+      "uses_gradient_of_log_posterior",
+      "refreshes_momentum_each_iteration"
+    ],
+    "prompt": "Use Hamiltonian Monte Carlo to sample from a Normal posterior (prior N(1.0, 3.0^2), likelihood N(theta, 0.5^2), observed mean=3.0 from 20 observations). Step size=0.05, 10 leapfrog steps, seed 42. Report posterior_mean, posterior_std, and mean energy_error."
+  },
+  {
+    "task_id": "HMC_03",
+    "task_type": "HMC",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "basic",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_std": 1.0,
+      "likelihood_std": 2.0,
+      "obs_mean": 1.0,
+      "n_obs": 5,
+      "step_size": 0.2,
+      "n_leapfrog": 5
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 0.5866083474059187,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.6543809997184822,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "energy_error",
+        "true_value": 0.013967533875130658,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "implements_leapfrog_integrator",
+      "computes_hamiltonian_energy",
+      "applies_metropolis_correction"
+    ],
+    "required_assumption_checks": [
+      "uses_gradient_of_log_posterior",
+      "refreshes_momentum_each_iteration"
+    ],
+    "prompt": "Use Hamiltonian Monte Carlo to sample from a Normal posterior (prior N(0.0, 1.0^2), likelihood N(theta, 2.0^2), observed mean=1.0 from 5 observations). Step size=0.2, 5 leapfrog steps, seed 42. Report posterior_mean, posterior_std, and mean energy_error."
+  },
+  {
+    "task_id": "HMC_04",
+    "task_type": "HMC",
+    "category": "computational_bayes",
+    "tier": 4,
+    "difficulty": "advanced",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_std": 5.0,
+      "likelihood_std": 1.0,
+      "obs_mean": 4.0,
+      "n_obs": 50,
+      "step_size": 0.05,
+      "n_leapfrog": 20
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 4.010275842011695,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.14161208489309032,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "energy_error",
+        "true_value": 0.02490016858169599,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "implements_leapfrog_integrator",
+      "computes_hamiltonian_energy",
+      "applies_metropolis_correction"
+    ],
+    "required_assumption_checks": [
+      "uses_gradient_of_log_posterior",
+      "refreshes_momentum_each_iteration"
+    ],
+    "prompt": "Use Hamiltonian Monte Carlo to sample from a Normal posterior (prior N(0.0, 5.0^2), likelihood N(theta, 1.0^2), observed mean=4.0 from 50 observations). Step size=0.05, 20 leapfrog steps, seed 42. Report posterior_mean, posterior_std, and mean energy_error."
+  },
+  {
+    "task_id": "HMC_05",
+    "task_type": "HMC",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "advanced",
+    "inputs": {
+      "prior_mean": 2.0,
+      "prior_std": 2.0,
+      "likelihood_std": 1.5,
+      "obs_mean": 5.0,
+      "n_obs": 30,
+      "step_size": 0.1,
+      "n_leapfrog": 10
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_mean",
+        "true_value": 4.940932897425837,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_std",
+        "true_value": 0.2304859418011032,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "energy_error",
+        "true_value": 0.011467462778994842,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "implements_leapfrog_integrator",
+      "computes_hamiltonian_energy",
+      "applies_metropolis_correction"
+    ],
+    "required_assumption_checks": [
+      "uses_gradient_of_log_posterior",
+      "refreshes_momentum_each_iteration"
+    ],
+    "prompt": "Use Hamiltonian Monte Carlo to sample from a Normal posterior (prior N(2.0, 2.0^2), likelihood N(theta, 1.5^2), observed mean=5.0 from 30 observations). Step size=0.1, 10 leapfrog steps, seed 42. Report posterior_mean, posterior_std, and mean energy_error."
+  },
+  {
+    "task_id": "RJMCMC_01",
+    "task_type": "RJMCMC",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "basic",
+    "inputs": {
+      "data": [
+        0.1257302210933933,
+        -0.1321048632913019,
+        0.6404226504432821,
+        0.10490011715303971,
+        -0.535669373161111,
+        0.36159505490948474,
+        1.3040000451301372,
+        0.9470809631292422,
+        -0.7037352358069926,
+        -1.2654214710460525,
+        -0.6232744625373522,
+        0.0413259793472436
+      ],
+      "prior_prob_m1": 0.5,
+      "proposal_std": 0.3
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_prob_m1",
+        "true_value": 0.6489446702262008,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_prob_m2",
+        "true_value": 0.35105532977379916,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "bayes_factor",
+        "true_value": 1.8485538181241838,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_marginal_likelihood_for_each_model",
+      "applies_bayes_theorem_for_model_probabilities",
+      "reports_bayes_factor"
+    ],
+    "required_assumption_checks": [
+      "uses_normal_marginal_likelihood_formula",
+      "posterior_probs_sum_to_one"
+    ],
+    "prompt": "Compute the analytical Bayes factor between M1 (single Normal mean over all 12 observations) and M2 (separate Normal means for two halves). Prior P(M1)=0.5. Data: [0.1257, -0.1321, 0.6404, 0.1049, -0.5357, 0.3616, 1.304, 0.9471, -0.7037, -1.2654, -0.6233, 0.0413]. Report posterior_prob_m1, posterior_prob_m2, and bayes_factor."
+  },
+  {
+    "task_id": "RJMCMC_02",
+    "task_type": "RJMCMC",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "inputs": {
+      "data": [
+        -0.32503077463883434,
+        1.7812083360674542,
+        0.7540890527469348,
+        1.2677326452965483,
+        1.45574101714269,
+        1.6836998436308455,
+        2.411630536374133,
+        3.042513369442678,
+        1.8714653370559657,
+        3.366463470549686,
+        1.3348053265133863,
+        2.3515100700930196,
+        2.9034701816518087,
+        2.0940122977608744,
+        1.2565007506461916,
+        1.0782746237415806
+      ],
+      "prior_prob_m1": 0.5,
+      "proposal_std": 0.3
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_prob_m1",
+        "true_value": 0.8494280444413972,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_prob_m2",
+        "true_value": 0.1505719555586028,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "bayes_factor",
+        "true_value": 5.641342979774202,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_marginal_likelihood_for_each_model",
+      "applies_bayes_theorem_for_model_probabilities",
+      "reports_bayes_factor"
+    ],
+    "required_assumption_checks": [
+      "uses_normal_marginal_likelihood_formula",
+      "posterior_probs_sum_to_one"
+    ],
+    "prompt": "Compute the analytical Bayes factor between M1 (single Normal mean over all 16 observations) and M2 (separate Normal means for two halves). Prior P(M1)=0.5. Data: [-0.325, 1.7812, 0.7541, 1.2677, 1.4557, 1.6837, 2.4116, 3.0425, 1.8715, 3.3665, 1.3348, 2.3515, 2.9035, 2.094, 1.2565, 1.0783]. Report posterior_prob_m1, posterior_prob_m2, and bayes_factor."
+  },
+  {
+    "task_id": "RJMCMC_03",
+    "task_type": "RJMCMC",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "inputs": {
+      "data": [
+        -0.9154516513346783,
+        0.4403902469400988,
+        -2.019236367077472,
+        -0.41835114974342613,
+        -0.31845001982895543,
+        1.0816911693716154,
+        0.4293182450126818,
+        0.7107454180798428,
+        -1.3076572188366788,
+        -0.2592272673855389,
+        1.567950940122659,
+        2.9868622904415214,
+        -2.5181310642082404,
+        3.027847549478125,
+        2.691750847564609,
+        1.562622801400855,
+        0.528911260658607,
+        -0.6278456290728556,
+        2.9160413670739174,
+        3.9205166328999295
+      ],
+      "prior_prob_m1": 0.6,
+      "proposal_std": 0.3
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_prob_m1",
+        "true_value": 0.24731898042613207,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_prob_m2",
+        "true_value": 0.7526810195738679,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "bayes_factor",
+        "true_value": 0.21905603568618598,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_marginal_likelihood_for_each_model",
+      "applies_bayes_theorem_for_model_probabilities",
+      "reports_bayes_factor"
+    ],
+    "required_assumption_checks": [
+      "uses_normal_marginal_likelihood_formula",
+      "posterior_probs_sum_to_one"
+    ],
+    "prompt": "Compute the analytical Bayes factor between M1 (single Normal mean over all 20 observations) and M2 (separate Normal means for two halves). Prior P(M1)=0.6. Data: [-0.9155, 0.4404, -2.0192, -0.4184, -0.3185, 1.0817, 0.4293, 0.7107, -1.3077, -0.2592, 1.568, 2.9869, -2.5181, 3.0278, 2.6918, 1.5626, 0.5289, -0.6278, 2.916, 3.9205]. Report posterior_prob_m1, posterior_prob_m2, and bayes_factor."
+  },
+  {
+    "task_id": "RJMCMC_04",
+    "task_type": "RJMCMC",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "advanced",
+    "inputs": {
+      "data": [
+        7.702452304799188,
+        6.972655647101555,
+        5.536070615988434,
+        3.187522051576743,
+        4.993318800319875,
+        5.9847124026145035,
+        3.0674578043756684,
+        5.592683090273012,
+        5.644795542233345,
+        6.044064085944303
+      ],
+      "prior_prob_m1": 0.4,
+      "proposal_std": 0.3
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_prob_m1",
+        "true_value": 0.995726127601722,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_prob_m2",
+        "true_value": 0.0042738723982780336,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "bayes_factor",
+        "true_value": 349.469767044133,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_marginal_likelihood_for_each_model",
+      "applies_bayes_theorem_for_model_probabilities",
+      "reports_bayes_factor"
+    ],
+    "required_assumption_checks": [
+      "uses_normal_marginal_likelihood_formula",
+      "posterior_probs_sum_to_one"
+    ],
+    "prompt": "Compute the analytical Bayes factor between M1 (single Normal mean over all 10 observations) and M2 (separate Normal means for two halves). Prior P(M1)=0.4. Data: [7.7025, 6.9727, 5.5361, 3.1875, 4.9933, 5.9847, 3.0675, 5.5927, 5.6448, 6.0441]. Report posterior_prob_m1, posterior_prob_m2, and bayes_factor."
+  },
+  {
+    "task_id": "RJMCMC_05",
+    "task_type": "RJMCMC",
+    "category": "computational_bayes",
+    "tier": 4,
+    "difficulty": "advanced",
+    "inputs": {
+      "data": [
+        -1.184117966757189,
+        -0.6617025720390349,
+        -0.43643524714322124,
+        -1.169801907772864,
+        1.739367877130134,
+        -0.4959107284421519,
+        0.3289696294602021,
+        -0.258572545473924,
+        5.583472878802122,
+        5.320360987081839,
+        4.633352622824916,
+        1.7964901193533493,
+        4.052028974259887,
+        4.683686190776535,
+        5.00396157584217,
+        3.382092955292399
+      ],
+      "prior_prob_m1": 0.5,
+      "proposal_std": 0.3
+    },
+    "numeric_targets": [
+      {
+        "key": "posterior_prob_m1",
+        "true_value": 0.0108549292717307,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "posterior_prob_m2",
+        "true_value": 0.9891450707282693,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "bayes_factor",
+        "true_value": 0.01097405182814957,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_marginal_likelihood_for_each_model",
+      "applies_bayes_theorem_for_model_probabilities",
+      "reports_bayes_factor"
+    ],
+    "required_assumption_checks": [
+      "uses_normal_marginal_likelihood_formula",
+      "posterior_probs_sum_to_one"
+    ],
+    "prompt": "Compute the analytical Bayes factor between M1 (single Normal mean over all 16 observations) and M2 (separate Normal means for two halves). Prior P(M1)=0.5. Data: [-1.1841, -0.6617, -0.4364, -1.1698, 1.7394, -0.4959, 0.329, -0.2586, 5.5835, 5.3204, 4.6334, 1.7965, 4.052, 4.6837, 5.004, 3.3821]. Report posterior_prob_m1, posterior_prob_m2, and bayes_factor."
+  },
+  {
+    "task_id": "VB_01",
+    "task_type": "VB",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "basic",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_var": 1.0,
+      "likelihood_var": 1.0,
+      "observations": [
+        2.345584192064786,
+        2.8216181435011585,
+        2.330437076183387,
+        0.6968427683956391,
+        2.905355866673118,
+        2.4463745723640113,
+        1.463046764639715,
+        2.581118104196353,
+        2.364572396186076,
+        2.294132496655526
+      ],
+      "n_iter": 50
+    },
+    "numeric_targets": [
+      {
+        "key": "variational_mean",
+        "true_value": 2.0226438528054334,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "variational_var",
+        "true_value": 0.09090909090909091,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "final_elbo",
+        "true_value": -14.618640740534415,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "derives_variational_posterior_parameters",
+      "computes_elbo",
+      "iterates_cavi_updates"
+    ],
+    "required_assumption_checks": [
+      "assumes_mean_field_factorization",
+      "uses_conjugate_updates"
+    ],
+    "prompt": "Apply CAVI variational inference to a Normal-Normal model: prior N(0.0, 1.0), likelihood N(theta, 1.0), 10 observations (first 5: [2.3456, 2.8216, 2.3304, 0.6968, 2.9054]...). Run 50 iterations. Report variational_mean, variational_var, and final_elbo."
+  },
+  {
+    "task_id": "VB_02",
+    "task_type": "VB",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "inputs": {
+      "prior_mean": 1.0,
+      "prior_var": 2.0,
+      "likelihood_var": 0.5,
+      "observations": [
+        3.019895568921058,
+        3.3826990906287127,
+        2.484482139098833,
+        2.885963036404863,
+        2.6625164811240154,
+        3.419192348844239,
+        3.0278054752371615,
+        2.795280274324438,
+        2.4526640763502106,
+        2.8199654315667906,
+        3.0056995263628403,
+        2.8070779662904406,
+        3.905844670078745,
+        3.7047070207140558,
+        1.102186264723822,
+        1.6776907278226292,
+        2.8776595355613868,
+        2.7044667118965524,
+        3.1495500982490277,
+        3.1521253517157946
+      ],
+      "n_iter": 50
+    },
+    "numeric_targets": [
+      {
+        "key": "variational_mean",
+        "true_value": 2.829010952884721,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "variational_var",
+        "true_value": 0.024691358024691357,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "final_elbo",
+        "true_value": -21.994807480005264,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "derives_variational_posterior_parameters",
+      "computes_elbo",
+      "iterates_cavi_updates"
+    ],
+    "required_assumption_checks": [
+      "assumes_mean_field_factorization",
+      "uses_conjugate_updates"
+    ],
+    "prompt": "Apply CAVI variational inference to a Normal-Normal model: prior N(1.0, 2.0), likelihood N(theta, 0.5), 20 observations (first 5: [3.0199, 3.3827, 2.4845, 2.886, 2.6625]...). Run 50 iterations. Report variational_mean, variational_var, and final_elbo."
+  },
+  {
+    "task_id": "VB_03",
+    "task_type": "VB",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_var": 5.0,
+      "likelihood_var": 2.0,
+      "observations": [
+        1.9649742570714674,
+        -2.556829067769194,
+        -1.5286470099777973,
+        1.8598802504892622,
+        -0.0946158053174144,
+        -0.07171127867323372,
+        -1.719608920362448,
+        -3.3073052391979134,
+        -0.7655493580881624,
+        -0.8473802770498334,
+        -2.718292875942404,
+        -1.956517326492787,
+        -1.1008611516181184,
+        -2.3226522722850884,
+        -1.1375779549931042
+      ],
+      "n_iter": 50
+    },
+    "numeric_targets": [
+      {
+        "key": "variational_mean",
+        "true_value": -1.058616495467972,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "variational_var",
+        "true_value": 0.12987012987012986,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "final_elbo",
+        "true_value": -29.124865817926846,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "derives_variational_posterior_parameters",
+      "computes_elbo",
+      "iterates_cavi_updates"
+    ],
+    "required_assumption_checks": [
+      "assumes_mean_field_factorization",
+      "uses_conjugate_updates"
+    ],
+    "prompt": "Apply CAVI variational inference to a Normal-Normal model: prior N(0.0, 5.0), likelihood N(theta, 2.0), 15 observations (first 5: [1.965, -2.5568, -1.5286, 1.8599, -0.0946]...). Run 50 iterations. Report variational_mean, variational_var, and final_elbo."
+  },
+  {
+    "task_id": "VB_04",
+    "task_type": "VB",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "advanced",
+    "inputs": {
+      "prior_mean": 2.0,
+      "prior_var": 0.5,
+      "likelihood_var": 1.0,
+      "observations": [
+        4.095483027469454,
+        4.035586237055486,
+        3.4937083416856853,
+        4.593748071785823,
+        4.891166954282328,
+        4.320848304566564,
+        3.1817697726096927,
+        4.731652283785441,
+        3.4985599815329476,
+        4.879160618287985,
+        2.928212583122556,
+        4.9144672031287815,
+        3.9799365453845197,
+        2.7512511096655845,
+        3.686100528033152,
+        4.054102278771544,
+        4.272791339164454,
+        3.017811875059022,
+        2.892626952834807,
+        4.199584532847081,
+        3.533250383120198,
+        4.235505611730225,
+        4.759519522478379,
+        2.3512126336490518,
+        4.254388116517617,
+        5.224646967535732,
+        3.702473155629527,
+        3.18918541676243,
+        4.752243827179592,
+        4.253446516208141
+      ],
+      "n_iter": 50
+    },
+    "numeric_targets": [
+      {
+        "key": "variational_mean",
+        "true_value": 3.833576271621369,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "variational_var",
+        "true_value": 0.03125,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "final_elbo",
+        "true_value": -40.614399153807675,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "derives_variational_posterior_parameters",
+      "computes_elbo",
+      "iterates_cavi_updates"
+    ],
+    "required_assumption_checks": [
+      "assumes_mean_field_factorization",
+      "uses_conjugate_updates"
+    ],
+    "prompt": "Apply CAVI variational inference to a Normal-Normal model: prior N(2.0, 0.5), likelihood N(theta, 1.0), 30 observations (first 5: [4.0955, 4.0356, 3.4937, 4.5937, 4.8912]...). Run 50 iterations. Report variational_mean, variational_var, and final_elbo."
+  },
+  {
+    "task_id": "VB_05",
+    "task_type": "VB",
+    "category": "computational_bayes",
+    "tier": 4,
+    "difficulty": "advanced",
+    "inputs": {
+      "prior_mean": 0.0,
+      "prior_var": 10.0,
+      "likelihood_var": 1.0,
+      "observations": [
+        5.89588307077756,
+        4.65478428994872,
+        3.518181726277789,
+        4.889989235288749,
+        4.554171846988768,
+        5.775323822047574,
+        5.193632848377153,
+        3.369150767564899,
+        3.8048369198968004,
+        5.883789036587255,
+        5.6797650174178465,
+        4.359756634091511,
+        4.9989512034327195,
+        5.445573553776186,
+        5.468404335847278,
+        5.87624219611435,
+        5.256485627221562,
+        4.905171661031502,
+        4.741151935212154,
+        6.055742800533251,
+        2.7491457249214624,
+        4.861344674908663,
+        5.03300010398406,
+        3.5746510391298125,
+        5.332813613138047,
+        4.348718987556606,
+        5.862444796315747,
+        4.874407915965673,
+        5.669153240789453,
+        6.218843605171223,
+        5.382929582713472,
+        4.124278856577154,
+        3.485681368295362,
+        6.753384117516372,
+        4.888707806812481,
+        4.311435052365678,
+        5.144257088060825,
+        4.808588669517351,
+        5.852142264212688,
+        5.0339281824371005,
+        5.013749583618419,
+        4.285420278967036,
+        5.4695680987474935,
+        3.9661332776450173,
+        5.665889439763967,
+        6.523937512990132,
+        3.475313961900848,
+        2.533770768648682,
+        5.616878755154319,
+        7.547897815483126
+      ],
+      "n_iter": 100
+    },
+    "numeric_targets": [
+      {
+        "key": "variational_mean",
+        "true_value": 4.964778537160518,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "variational_var",
+        "true_value": 0.01996007984031936,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "final_elbo",
+        "true_value": -75.22116187327418,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "derives_variational_posterior_parameters",
+      "computes_elbo",
+      "iterates_cavi_updates"
+    ],
+    "required_assumption_checks": [
+      "assumes_mean_field_factorization",
+      "uses_conjugate_updates"
+    ],
+    "prompt": "Apply CAVI variational inference to a Normal-Normal model: prior N(0.0, 10.0), likelihood N(theta, 1.0), 50 observations (first 5: [5.8959, 4.6548, 3.5182, 4.89, 4.5542]...). Run 100 iterations. Report variational_mean, variational_var, and final_elbo."
+  },
+  {
+    "task_id": "ABC_01",
+    "task_type": "ABC",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "basic",
+    "inputs": {
+      "observed_mean": 2.0,
+      "observed_std": 1.0,
+      "n_obs": 20,
+      "prior_low": 0.0,
+      "prior_high": 5.0,
+      "n_simulations": 20000,
+      "epsilon": 0.2
+    },
+    "numeric_targets": [
+      {
+        "key": "abc_posterior_mean",
+        "true_value": 2.0007968910217486,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "abc_posterior_std",
+        "true_value": 0.25440305659065604,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "draws_from_prior",
+      "simulates_data_from_likelihood",
+      "applies_acceptance_criterion"
+    ],
+    "required_assumption_checks": [
+      "uses_sufficient_statistic_for_comparison",
+      "epsilon_defines_tolerance_region"
+    ],
+    "prompt": "Use ABC rejection sampling to approximate the posterior of theta given observed mean=2.0 from 20 observations (observed std=1.0). Prior: Uniform(0.0, 5.0). Run 20000 simulations with epsilon=0.2, seed 42. Report abc_posterior_mean and abc_posterior_std."
+  },
+  {
+    "task_id": "ABC_02",
+    "task_type": "ABC",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "inputs": {
+      "observed_mean": 3.5,
+      "observed_std": 0.5,
+      "n_obs": 30,
+      "prior_low": 1.0,
+      "prior_high": 6.0,
+      "n_simulations": 20000,
+      "epsilon": 0.15
+    },
+    "numeric_targets": [
+      {
+        "key": "abc_posterior_mean",
+        "true_value": 3.499038789991502,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "abc_posterior_std",
+        "true_value": 0.12776197412206086,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "draws_from_prior",
+      "simulates_data_from_likelihood",
+      "applies_acceptance_criterion"
+    ],
+    "required_assumption_checks": [
+      "uses_sufficient_statistic_for_comparison",
+      "epsilon_defines_tolerance_region"
+    ],
+    "prompt": "Use ABC rejection sampling to approximate the posterior of theta given observed mean=3.5 from 30 observations (observed std=0.5). Prior: Uniform(1.0, 6.0). Run 20000 simulations with epsilon=0.15, seed 42. Report abc_posterior_mean and abc_posterior_std."
+  },
+  {
+    "task_id": "ABC_03",
+    "task_type": "ABC",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "inputs": {
+      "observed_mean": 0.0,
+      "observed_std": 2.0,
+      "n_obs": 10,
+      "prior_low": -5.0,
+      "prior_high": 5.0,
+      "n_simulations": 20000,
+      "epsilon": 0.3
+    },
+    "numeric_targets": [
+      {
+        "key": "abc_posterior_mean",
+        "true_value": 0.008959896864246994,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "abc_posterior_std",
+        "true_value": 0.6652888018742541,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "draws_from_prior",
+      "simulates_data_from_likelihood",
+      "applies_acceptance_criterion"
+    ],
+    "required_assumption_checks": [
+      "uses_sufficient_statistic_for_comparison",
+      "epsilon_defines_tolerance_region"
+    ],
+    "prompt": "Use ABC rejection sampling to approximate the posterior of theta given observed mean=0.0 from 10 observations (observed std=2.0). Prior: Uniform(-5.0, 5.0). Run 20000 simulations with epsilon=0.3, seed 42. Report abc_posterior_mean and abc_posterior_std."
+  },
+  {
+    "task_id": "ABC_04",
+    "task_type": "ABC",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "advanced",
+    "inputs": {
+      "observed_mean": 10.0,
+      "observed_std": 1.5,
+      "n_obs": 50,
+      "prior_low": 7.0,
+      "prior_high": 13.0,
+      "n_simulations": 30000,
+      "epsilon": 0.2
+    },
+    "numeric_targets": [
+      {
+        "key": "abc_posterior_mean",
+        "true_value": 9.996645067030956,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "abc_posterior_std",
+        "true_value": 0.24143894706425925,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "draws_from_prior",
+      "simulates_data_from_likelihood",
+      "applies_acceptance_criterion"
+    ],
+    "required_assumption_checks": [
+      "uses_sufficient_statistic_for_comparison",
+      "epsilon_defines_tolerance_region"
+    ],
+    "prompt": "Use ABC rejection sampling to approximate the posterior of theta given observed mean=10.0 from 50 observations (observed std=1.5). Prior: Uniform(7.0, 13.0). Run 30000 simulations with epsilon=0.2, seed 42. Report abc_posterior_mean and abc_posterior_std."
+  },
+  {
+    "task_id": "ABC_05",
+    "task_type": "ABC",
+    "category": "computational_bayes",
+    "tier": 4,
+    "difficulty": "advanced",
+    "inputs": {
+      "observed_mean": 5.0,
+      "observed_std": 1.0,
+      "n_obs": 100,
+      "prior_low": 3.0,
+      "prior_high": 7.0,
+      "n_simulations": 50000,
+      "epsilon": 0.1
+    },
+    "numeric_targets": [
+      {
+        "key": "abc_posterior_mean",
+        "true_value": 5.000161885082009,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "abc_posterior_std",
+        "true_value": 0.11439908013227713,
+        "full_credit_tol": 0.1,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "draws_from_prior",
+      "simulates_data_from_likelihood",
+      "applies_acceptance_criterion"
+    ],
+    "required_assumption_checks": [
+      "uses_sufficient_statistic_for_comparison",
+      "epsilon_defines_tolerance_region"
+    ],
+    "prompt": "Use ABC rejection sampling to approximate the posterior of theta given observed mean=5.0 from 100 observations (observed std=1.0). Prior: Uniform(3.0, 7.0). Run 50000 simulations with epsilon=0.1, seed 42. Report abc_posterior_mean and abc_posterior_std."
+  },
+  {
+    "task_id": "HIERARCHICAL_01",
+    "task_type": "HIERARCHICAL",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "basic",
+    "inputs": {
+      "group_means": [
+        1.0,
+        2.0,
+        3.0
+      ],
+      "group_sizes": [
+        10,
+        10,
+        10
+      ],
+      "hyperprior_mean": 2.0,
+      "hyperprior_var": 1.0
+    },
+    "numeric_targets": [
+      {
+        "key": "hyperpost_mean",
+        "true_value": 2.0,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "hyperpost_var",
+        "true_value": 0.2682926829268293,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "shrinkage_factor",
+        "true_value": 0.0909090909090909,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_group_level_sampling_variances",
+      "derives_hyperparameter_posterior",
+      "computes_shrinkage_weights"
+    ],
+    "required_assumption_checks": [
+      "normal_normal_hierarchy_stated",
+      "shrinkage_factor_between_0_and_1"
+    ],
+    "prompt": "Fit a hierarchical Normal model (empirical Bayes). Group means: [1.0, 2.0, 3.0], group sizes: [10, 10, 10]. Hyperprior: N(2.0, 1.0). Report hyperpost_mean, hyperpost_var, and shrinkage_factor."
+  },
+  {
+    "task_id": "HIERARCHICAL_02",
+    "task_type": "HIERARCHICAL",
+    "category": "computational_bayes",
+    "tier": 2,
+    "difficulty": "intermediate",
+    "inputs": {
+      "group_means": [
+        0.5,
+        1.5,
+        2.5,
+        3.5
+      ],
+      "group_sizes": [
+        20,
+        15,
+        25,
+        10
+      ],
+      "hyperprior_mean": 2.0,
+      "hyperprior_var": 2.0
+    },
+    "numeric_targets": [
+      {
+        "key": "hyperpost_mean",
+        "true_value": 1.9905802221682694,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "hyperpost_var",
+        "true_value": 0.41682408031416684,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "shrinkage_factor",
+        "true_value": 0.050453180096643596,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_group_level_sampling_variances",
+      "derives_hyperparameter_posterior",
+      "computes_shrinkage_weights"
+    ],
+    "required_assumption_checks": [
+      "normal_normal_hierarchy_stated",
+      "shrinkage_factor_between_0_and_1"
+    ],
+    "prompt": "Fit a hierarchical Normal model (empirical Bayes). Group means: [0.5, 1.5, 2.5, 3.5], group sizes: [20, 15, 25, 10]. Hyperprior: N(2.0, 2.0). Report hyperpost_mean, hyperpost_var, and shrinkage_factor."
+  },
+  {
+    "task_id": "HIERARCHICAL_03",
+    "task_type": "HIERARCHICAL",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "intermediate",
+    "inputs": {
+      "group_means": [
+        5.0,
+        6.0,
+        4.5,
+        7.0,
+        5.5
+      ],
+      "group_sizes": [
+        30,
+        25,
+        20,
+        35,
+        15
+      ],
+      "hyperprior_mean": 5.6,
+      "hyperprior_var": 1.0
+    },
+    "numeric_targets": [
+      {
+        "key": "hyperpost_mean",
+        "true_value": 5.603799603866507,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "hyperpost_var",
+        "true_value": 0.17222462144178682,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "shrinkage_factor",
+        "true_value": 0.038725855074087295,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_group_level_sampling_variances",
+      "derives_hyperparameter_posterior",
+      "computes_shrinkage_weights"
+    ],
+    "required_assumption_checks": [
+      "normal_normal_hierarchy_stated",
+      "shrinkage_factor_between_0_and_1"
+    ],
+    "prompt": "Fit a hierarchical Normal model (empirical Bayes). Group means: [5.0, 6.0, 4.5, 7.0, 5.5], group sizes: [30, 25, 20, 35, 15]. Hyperprior: N(5.6, 1.0). Report hyperpost_mean, hyperpost_var, and shrinkage_factor."
+  },
+  {
+    "task_id": "HIERARCHICAL_04",
+    "task_type": "HIERARCHICAL",
+    "category": "computational_bayes",
+    "tier": 3,
+    "difficulty": "advanced",
+    "inputs": {
+      "group_means": [
+        10.0,
+        11.0,
+        9.5,
+        10.5
+      ],
+      "group_sizes": [
+        50,
+        40,
+        60,
+        45
+      ],
+      "hyperprior_mean": 10.25,
+      "hyperprior_var": 0.5
+    },
+    "numeric_targets": [
+      {
+        "key": "hyperpost_mean",
+        "true_value": 10.248888888569711,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "hyperpost_var",
+        "true_value": 0.10139277278330139,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "shrinkage_factor",
+        "true_value": 0.017170513551765357,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_group_level_sampling_variances",
+      "derives_hyperparameter_posterior",
+      "computes_shrinkage_weights"
+    ],
+    "required_assumption_checks": [
+      "normal_normal_hierarchy_stated",
+      "shrinkage_factor_between_0_and_1"
+    ],
+    "prompt": "Fit a hierarchical Normal model (empirical Bayes). Group means: [10.0, 11.0, 9.5, 10.5], group sizes: [50, 40, 60, 45]. Hyperprior: N(10.25, 0.5). Report hyperpost_mean, hyperpost_var, and shrinkage_factor."
+  },
+  {
+    "task_id": "HIERARCHICAL_05",
+    "task_type": "HIERARCHICAL",
+    "category": "computational_bayes",
+    "tier": 4,
+    "difficulty": "advanced",
+    "inputs": {
+      "group_means": [
+        2.0,
+        4.0,
+        6.0,
+        8.0,
+        10.0
+      ],
+      "group_sizes": [
+        5,
+        10,
+        15,
+        20,
+        25
+      ],
+      "hyperprior_mean": 6.0,
+      "hyperprior_var": 5.0
+    },
+    "numeric_targets": [
+      {
+        "key": "hyperpost_mean",
+        "true_value": 6.189568493205898,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "hyperpost_var",
+        "true_value": 0.9496696322290622,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      },
+      {
+        "key": "shrinkage_factor",
+        "true_value": 0.14700223523752937,
+        "full_credit_tol": 0.05,
+        "zero_credit_scale": 0.2
+      }
+    ],
+    "required_structure_checks": [
+      "computes_group_level_sampling_variances",
+      "derives_hyperparameter_posterior",
+      "computes_shrinkage_weights"
+    ],
+    "required_assumption_checks": [
+      "normal_normal_hierarchy_stated",
+      "shrinkage_factor_between_0_and_1"
+    ],
+    "prompt": "Fit a hierarchical Normal model (empirical Bayes). Group means: [2.0, 4.0, 6.0, 8.0, 10.0], group sizes: [5, 10, 15, 20, 25]. Hyperprior: N(6.0, 5.0). Report hyperpost_mean, hyperpost_var, and shrinkage_factor."
+  }
+]

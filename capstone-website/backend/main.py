@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import json
 from pathlib import Path
@@ -27,8 +27,8 @@ app.add_middleware(
 
 app.include_router(user_study_router)
 
-BASE_DIR   = Path(__file__).parent.parent.parent   # project root
-TASKS_FILE = BASE_DIR / "data" / "benchmark_v1" / "tasks_all.json"  # 171 tasks (Phase 1 + Phase 2)
+BASE_DIR   = Path(os.environ.get("DATA_ROOT", str(Path(__file__).parent.parent.parent)))
+TASKS_FILE = BASE_DIR / "data" / "benchmark_v1" / "tasks_all.json"
 RUNS_FILE  = BASE_DIR / "experiments" / "results_v1" / "runs.jsonl"
 
 
