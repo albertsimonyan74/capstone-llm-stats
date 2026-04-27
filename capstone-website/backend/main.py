@@ -5,7 +5,10 @@ from pathlib import Path
 from typing import Optional
 from collections import defaultdict
 
-from user_study import router as user_study_router
+try:
+    from backend.user_study import router as user_study_router
+except ModuleNotFoundError:
+    from user_study import router as user_study_router
 
 app = FastAPI(title="LLM Bayesian Benchmark API")
 
