@@ -143,45 +143,45 @@ const RADAR_VALS = {
 
 // ─── Task type tooltips ───────────────────────────────────────
 const TASK_TYPE_TOOLTIPS = {
-  DISC_MEDIAN:   { title:'Discrete Posterior Median',   subdivision:'Bayesian Point Estimation',        description:'Find the median of a discrete posterior distribution by computing cumulative probability and finding first value where CDF ≥ 0.5.',               textbook:'Lecture 21 · Carlin & Louis Ch.2' },
-  BAYES_RISK:    { title:'Bayesian Risk',               subdivision:'Decision Theory',                   description:'Compute Bayes risk B(δ) = Σ R(δ,θᵢ)·π(θᵢ) — prior-weighted expected loss of an estimator.',                                                   textbook:'Lecture 22 · Carlin & Louis Ch.2' },
-  BIAS_VAR:      { title:'Bias-Variance Decomposition', subdivision:'Frequentist Estimation Theory',     description:'Decompose MSE into bias² + variance. Verifies MSE = Bias² + Variance exactly for a given estimator.',                                             textbook:'Lecture 25 · Hoff Ch.5' },
-  BINOM_FLAT:    { title:'Binomial with Flat Prior',    subdivision:'Conjugate Bayesian Models',         description:'Apply uniform Beta(1,1) prior to Binomial data. Posterior is Beta(x+1, n-x+1) — the Laplace smoothed estimate.',                                textbook:'Lecture 21 · Bolstad Ch.3' },
-  DIRICHLET:     { title:'Dirichlet-Multinomial',       subdivision:'Multivariate Conjugate Models',     description:'Conjugate Bayesian model for categorical data. Dirichlet prior updated with multinomial counts to give Dirichlet posterior.',                     textbook:'Lecture 26-27 · Hoff Ch.3 · Bishop Ch.2' },
-  FISHER_INFO:   { title:'Fisher Information',          subdivision:'Frequentist Estimation Theory',     description:'Compute I(θ) = E[(∂/∂θ log f)²] — expected curvature of log-likelihood. Measures how much data informs about θ.',                               textbook:'Lecture 23 · Ghosh et al Ch.1' },
-  MINIMAX:       { title:'Minimax Criterion',           subdivision:'Statistical Decision Theory',       description:'Select estimator that minimizes worst-case (maximum) risk over all possible parameter values.',                                                   textbook:'Lecture 22 · Carlin & Louis Ch.2' },
-  MSE_COMPARE:   { title:'MSE Comparison',              subdivision:'Frequentist Estimation Theory',     description:'Compare mean squared errors of competing estimators to determine which is superior.',                                                              textbook:'Lecture 25 · Hoff Ch.5' },
-  NORMAL_GAMMA:  { title:'Normal-Gamma Model',          subdivision:'Conjugate Bayesian Models',         description:'Joint conjugate prior for Normal data with unknown mean and variance.',                                                                            textbook:'Lecture 16-20 · Hoff Ch.5' },
-  OPT_SCALED:    { title:'Optimal Scaled Estimator',    subdivision:'Frequentist Estimation Theory',     description:'Find constant c minimizing MSE of c·max(Xᵢ). Optimal c = (n+2)/(n+1).',                                                                         textbook:'Lecture 25' },
-  RC_BOUND:      { title:'Rao-Cramér Bound',            subdivision:'Frequentist Estimation Theory',     description:'Lower bound for estimator variance: Var(θ̂) ≥ (1+b\'(θ))²/I(θ). Determines whether estimator is efficient.',                                    textbook:'Lecture 23-24 · Ghosh et al Ch.1' },
-  UNIFORM_MLE:   { title:'Uniform MLE',                 subdivision:'Maximum Likelihood Estimation',     description:'MLE for Uniform(0,θ) is max(X₁,...,Xₙ) — the largest order statistic.',                                                                         textbook:'Lecture 24-25 · Ghosh et al Ch.1' },
-  MARKOV:        { title:'Markov Chain Analysis',       subdivision:'Stochastic Processes',              description:'Compute n-step transition probabilities, stationary distributions, and verify Chapman-Kolmogorov equations.',                                    textbook:'Lecture 30-33' },
-  ORDER_STAT:    { title:'Order Statistics',            subdivision:'Frequentist Distribution Theory',   description:'Compute density and CDF of k-th order statistic X(k). For Uniform[0,1], X(k) ~ Beta(k, n-k+1).',                                              textbook:'Lecture 29' },
-  REGRESSION:    { title:'OLS Linear Regression',       subdivision:'Frequentist Regression',            description:'Ordinary least squares estimators B̂ and Â that minimize sum of squared residuals.',                                                             textbook:'Lecture 37-38' },
-  BOX_MULLER:    { title:'Box-Muller Transform',        subdivision:'Simulation Methods',                description:'Generate Normal(0,1) samples from Uniform(0,1) using η₁=√(-2logU)cos(2πV).',                                                                    textbook:'Lecture 36' },
+  DISC_MEDIAN:   { title:'Discrete Posterior Median',   subdivision:'Bayesian Point Estimation',        description:'Find the median of a discrete posterior distribution by computing cumulative probability and finding first value where CDF ≥ 0.5.',               textbook:'Carlin & Louis Ch.2' },
+  BAYES_RISK:    { title:'Bayesian Risk',               subdivision:'Decision Theory',                   description:'Compute Bayes risk B(δ) = Σ R(δ,θᵢ)·π(θᵢ) — prior-weighted expected loss of an estimator.',                                                   textbook:'Carlin & Louis Ch.2' },
+  BIAS_VAR:      { title:'Bias-Variance Decomposition', subdivision:'Frequentist Estimation Theory',     description:'Decompose MSE into bias² + variance. Verifies MSE = Bias² + Variance exactly for a given estimator.',                                             textbook:'Hoff Ch.5' },
+  BINOM_FLAT:    { title:'Binomial with Flat Prior',    subdivision:'Conjugate Bayesian Models',         description:'Apply uniform Beta(1,1) prior to Binomial data. Posterior is Beta(x+1, n-x+1) — the Laplace smoothed estimate.',                                textbook:'Bolstad Ch.3' },
+  DIRICHLET:     { title:'Dirichlet-Multinomial',       subdivision:'Multivariate Conjugate Models',     description:'Conjugate Bayesian model for categorical data. Dirichlet prior updated with multinomial counts to give Dirichlet posterior.',                     textbook:'Hoff Ch.3 · Bishop Ch.2' },
+  FISHER_INFO:   { title:'Fisher Information',          subdivision:'Frequentist Estimation Theory',     description:'Compute I(θ) = E[(∂/∂θ log f)²] — expected curvature of log-likelihood. Measures how much data informs about θ.',                               textbook:'Ghosh et al Ch.1' },
+  MINIMAX:       { title:'Minimax Criterion',           subdivision:'Statistical Decision Theory',       description:'Select estimator that minimizes worst-case (maximum) risk over all possible parameter values.',                                                   textbook:'Carlin & Louis Ch.2' },
+  MSE_COMPARE:   { title:'MSE Comparison',              subdivision:'Frequentist Estimation Theory',     description:'Compare mean squared errors of competing estimators to determine which is superior.',                                                              textbook:'Hoff Ch.5' },
+  NORMAL_GAMMA:  { title:'Normal-Gamma Model',          subdivision:'Conjugate Bayesian Models',         description:'Joint conjugate prior for Normal data with unknown mean and variance.',                                                                            textbook:'Hoff Ch.5' },
+  OPT_SCALED:    { title:'Optimal Scaled Estimator',    subdivision:'Frequentist Estimation Theory',     description:'Find constant c minimizing MSE of c·max(Xᵢ). Optimal c = (n+2)/(n+1).',                                                                         textbook:'Ghosh et al Ch.1' },
+  RC_BOUND:      { title:'Rao-Cramér Bound',            subdivision:'Frequentist Estimation Theory',     description:'Lower bound for estimator variance: Var(θ̂) ≥ (1+b\'(θ))²/I(θ). Determines whether estimator is efficient.',                                    textbook:'Ghosh et al Ch.1' },
+  UNIFORM_MLE:   { title:'Uniform MLE',                 subdivision:'Maximum Likelihood Estimation',     description:'MLE for Uniform(0,θ) is max(X₁,...,Xₙ) — the largest order statistic.',                                                                         textbook:'Ghosh et al Ch.1' },
+  MARKOV:        { title:'Markov Chain Analysis',       subdivision:'Stochastic Processes',              description:'Compute n-step transition probabilities, stationary distributions, and verify Chapman-Kolmogorov equations.',                                    textbook:'Norris · Ross Ch.4' },
+  ORDER_STAT:    { title:'Order Statistics',            subdivision:'Frequentist Distribution Theory',   description:'Compute density and CDF of k-th order statistic X(k). For Uniform[0,1], X(k) ~ Beta(k, n-k+1).',                                              textbook:'Casella & Berger Ch.5' },
+  REGRESSION:    { title:'OLS Linear Regression',       subdivision:'Frequentist Regression',            description:'Ordinary least squares estimators B̂ and Â that minimize sum of squared residuals.',                                                             textbook:'Casella & Berger Ch.11' },
+  BOX_MULLER:    { title:'Box-Muller Transform',        subdivision:'Simulation Methods',                description:'Generate Normal(0,1) samples from Uniform(0,1) using η₁=√(-2logU)cos(2πV).',                                                                    textbook:'Robert & Casella Ch.2' },
   HPD:           { title:'HPD Credible Interval',       subdivision:'Bayesian Interval Estimation',      description:'Highest Posterior Density interval — shortest interval containing specified probability mass.',                                                    textbook:'Bolstad Ch.5 · Lee Ch.2' },
   BAYES_FACTOR:  { title:'Bayes Factor',                subdivision:'Bayesian Model Comparison',         description:'BF₁₂ = p(data|M₁)/p(data|M₂) — ratio of marginal likelihoods.',                                                                               textbook:'Carlin & Louis Ch.2 · Lee Ch.4' },
   JEFFREYS:      { title:'Jeffreys Prior',              subdivision:'Objective Bayesian Analysis',       description:'Invariant prior p(θ) ∝ √I(θ). For Binomial: Beta(0.5,0.5).',                                                                                   textbook:'Ghosh et al Ch.5 · Lee Ch.3' },
   PPC:           { title:'Posterior Predictive Check',  subdivision:'Bayesian Model Assessment',         description:'Check model fit by comparing observed T(y) to replicated T(y_rep).',                                                                             textbook:'Hoff Ch.4 · Carlin & Louis Ch.2' },
-  BAYES_REG:     { title:'Bayesian Linear Regression',  subdivision:'Bayesian Regression',               description:'Normal-Inverse-Gamma conjugate prior for regression.',                                                                                           textbook:'Lecture 40 · Carlin & Louis Ch.4 · Hoff Ch.9' },
+  BAYES_REG:     { title:'Bayesian Linear Regression',  subdivision:'Bayesian Regression',               description:'Normal-Inverse-Gamma conjugate prior for regression.',                                                                                           textbook:'Carlin & Louis Ch.4 · Hoff Ch.9' },
   MLE_MAP:       { title:'MLE vs MAP Comparison',       subdivision:'Bayesian vs Frequentist Estimation',description:'Compare MLE, MAP (posterior mode), and posterior mean. MAP shrinks MLE toward prior mean.',                                                     textbook:'Ghosh et al Ch.2 · Hoff Ch.3' },
-  CI_CREDIBLE:   { title:'CI vs Credible Interval',     subdivision:'Frequentist vs Bayesian Inference', description:'Compare frequentist 95% CI with Bayesian 95% credible interval.',                                                                               textbook:'All 7 textbooks · Lecture 40' },
+  CI_CREDIBLE:   { title:'CI vs Credible Interval',     subdivision:'Frequentist vs Bayesian Inference', description:'Compare frequentist 95% CI with Bayesian 95% credible interval.',                                                                               textbook:'All 7 textbooks' },
   LOG_ML:        { title:'Log Marginal Likelihood',     subdivision:'Bayesian Model Selection',          description:'log p(data|prior) — log normalizing constant of the posterior.',                                                                                  textbook:'Carlin & Louis Ch.2 · Ghosh et al Ch.2' },
-  GAMBLER:       { title:"Gambler's Ruin",              subdivision:'Stochastic Processes',              description:'Probability of ruin starting from fortune i with absorbing barriers at 0 and M.',                                                               textbook:'Lecture 32' },
-  STATIONARY:    { title:'Stationary Distribution',     subdivision:'Markov Chain Theory',               description:'Limiting distribution π satisfying π@P = π, sum(π)=1.',                                                                                         textbook:'Lecture 33' },
-  RANGE_DIST:    { title:'Range Distribution',          subdivision:'Order Statistics',                  description:'Distribution of R = max(Xᵢ) - min(Xᵢ) for Uniform[0,1] samples.',                                                                              textbook:'Lecture 29' },
-  MLE_EFFICIENCY:{ title:'MLE Efficiency',              subdivision:'Frequentist Estimation Theory',     description:'Verify MLE variance equals Rao-Cramér lower bound.',                                                                                             textbook:'Lecture 23-24' },
+  GAMBLER:       { title:"Gambler's Ruin",              subdivision:'Stochastic Processes',              description:'Probability of ruin starting from fortune i with absorbing barriers at 0 and M.',                                                               textbook:'Ross Ch.4' },
+  STATIONARY:    { title:'Stationary Distribution',     subdivision:'Markov Chain Theory',               description:'Limiting distribution π satisfying π@P = π, sum(π)=1.',                                                                                         textbook:'Norris Ch.1' },
+  RANGE_DIST:    { title:'Range Distribution',          subdivision:'Order Statistics',                  description:'Distribution of R = max(Xᵢ) - min(Xᵢ) for Uniform[0,1] samples.',                                                                              textbook:'Casella & Berger Ch.5' },
+  MLE_EFFICIENCY:{ title:'MLE Efficiency',              subdivision:'Frequentist Estimation Theory',     description:'Verify MLE variance equals Rao-Cramér lower bound.',                                                                                             textbook:'Ghosh et al Ch.1' },
   BETA_BINOM:    { title:'Beta-Binomial Model',         subdivision:'Conjugate Bayesian Models',         description:'Canonical conjugate model: Beta(α,β) prior + Binomial likelihood = Beta(α+x, β+n-x) posterior.',                                              textbook:'Hoff Ch.3 · Bolstad Ch.3' },
   GAMMA_POISSON: { title:'Gamma-Poisson Model',         subdivision:'Conjugate Bayesian Models',         description:'Conjugate model for count data: Gamma(α,β) prior + Poisson likelihood = Gamma(α+Σx, β+n) posterior.',                                         textbook:'Hoff Ch.3 · Bolstad Ch.10' },
   CONCEPTUAL:    { title:'Conceptual Reasoning',        subdivision:'Bayesian Theory & Interpretation',  description:'Tests deep understanding of Bayesian concepts: prior influence, credible vs confidence intervals, exchangeability.',                              textbook:'All 7 textbooks' },
   // Phase 2 — Computational Bayesian Methods
-  GIBBS:         { title:'Gibbs Sampling',              subdivision:'Computational Bayes (Phase 2)',     description:'Sample from bivariate normal via alternating conditional draws. Burn-in discarded; convergence verified against analytic marginals.',             textbook:'Hoff Ch.10 · Carlin & Louis Ch.4' },
-  MH:            { title:'Metropolis–Hastings',         subdivision:'Computational Bayes (Phase 2)',     description:'MCMC on logit-transformed Binomial-Normal posterior. Proposal in logit space; accept/reject via log-acceptance ratio.',                          textbook:'Hoff Ch.10 · Carlin & Louis Ch.4' },
-  HMC:           { title:'Hamiltonian Monte Carlo',     subdivision:'Computational Bayes (Phase 2)',     description:'Leapfrog integrator on Gaussian target. Analytical posterior used; energy error ≈ 0 for exact Gaussians.',                                       textbook:'Neal (2011) · Carlin & Louis Ch.4' },
-  RJMCMC:        { title:'Reversible Jump MCMC',        subdivision:'Computational Bayes (Phase 2)',     description:'Analytical Bayes factor between M1 (one mean) and M2 (split means). Posterior model probabilities via prior-weighted odds.',                     textbook:'Green (1995) · Carlin & Louis Ch.7' },
-  VB:            { title:'Variational Bayes (CAVI)',    subdivision:'Computational Bayes (Phase 2)',     description:'Exact CAVI for Normal-Normal conjugate model. Mean-field variational posterior; ELBO computed analytically.',                                    textbook:'Blei et al (2017) · Bishop Ch.10' },
-  ABC:           { title:'Approximate Bayesian Computation', subdivision:'Computational Bayes (Phase 2)', description:'Rejection ABC: draw θ~Uniform prior, simulate data, accept if |mean(sim)-observed|≤ε. Tolerance 0.10.',                                     textbook:'Sisson et al (2018) · Carlin & Louis Ch.4' },
-  HIERARCHICAL:  { title:'Hierarchical Bayesian Model', subdivision:'Computational Bayes (Phase 2)',     description:'Empirical Bayes normal hierarchy. Posterior hyperparameters for group mean; shrinkage factor toward grand mean.',                               textbook:'Hoff Ch.8 · Gelman et al Ch.5' },
+  GIBBS:         { title:'Gibbs Sampling',              subdivision:'Computational Bayes (Phase 2)',     description:'An MCMC technique that samples from a joint posterior one variable at a time using each variable\'s conditional distribution. Alternates between p(θ₁|θ₂,data) and p(θ₂|θ₁,data) — converges to the joint posterior after burn-in.',        textbook:'Hoff Ch.10 · Carlin & Louis Ch.4' },
+  MH:            { title:'Metropolis–Hastings (MH)',    subdivision:'Computational Bayes (Phase 2)',     description:'A general MCMC algorithm: propose a new θ* from a proposal distribution q, then accept it with probability α = min(1, p(θ*|data)·q(θ|θ*) / p(θ|data)·q(θ*|θ)). Works on any target distribution, even unnormalized posteriors.',      textbook:'Hoff Ch.10 · Carlin & Louis Ch.4' },
+  HMC:           { title:'Hamiltonian Monte Carlo (HMC)',subdivision:'Computational Bayes (Phase 2)',    description:'An advanced MCMC method that uses "momentum" variables and physics-inspired leapfrog integration to make large, informed jumps across the posterior. Avoids the random-walk inefficiency of MH. Used in Stan and PyMC.',                  textbook:'Neal (2011) · Carlin & Louis Ch.4' },
+  RJMCMC:        { title:'Reversible Jump MCMC',        subdivision:'Computational Bayes (Phase 2)',     description:'Extends standard MCMC to jump between models of different dimensionality (model selection). Here: jumps between M₁ (one group mean) and M₂ (two group means), computing posterior model probabilities via prior-weighted odds.',          textbook:'Green (1995) · Carlin & Louis Ch.7' },
+  VB:            { title:'Variational Bayes (CAVI)',    subdivision:'Computational Bayes (Phase 2)',     description:'Approximates the posterior by finding a simpler distribution q(θ) that minimizes KL-divergence from the true posterior. CAVI (Coordinate Ascent VI) optimizes each factor of the mean-field approximation in turn, maximizing the ELBO.', textbook:'Blei et al (2017) · Bishop Ch.10' },
+  ABC:           { title:'Approximate Bayesian Computation (ABC)',subdivision:'Computational Bayes (Phase 2)', description:'Bypasses likelihood evaluation entirely: draw θ from prior, simulate fake data, accept θ if a summary statistic of simulated data matches the observed data within tolerance ε. Used when the likelihood is intractable.',              textbook:'Sisson et al (2018) · Carlin & Louis Ch.4' },
+  HIERARCHICAL:  { title:'Hierarchical Bayesian Model', subdivision:'Computational Bayes (Phase 2)',     description:'Pools information across groups by adding hyperpriors on the group-level parameters. Each group\'s posterior is a compromise between its own data and the population-level estimate — known as "shrinkage" toward the grand mean.',          textbook:'Hoff Ch.8 · Gelman et al Ch.5' },
 }
 
 // ─── Animation variants ───────────────────────────────────────
@@ -434,30 +434,25 @@ function AnimatedScoringBars() {
       <div style={{ color:'var(--text-muted)', fontSize:10, textAlign:'center', marginBottom:20 }}>
         Pass threshold: final_score ≥ 0.5
       </div>
-      {bars.map(b => (
-        <div key={b.key} style={{ marginBottom:18 }}>
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:6 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-              <span style={{ background:`${b.color}22`, color:b.color, fontWeight:800, fontSize:11, padding:'2px 7px', borderRadius:5, border:`1px solid ${b.color}44` }}>{b.key}</span>
-              <span style={{ color:'var(--text-primary)', fontSize:13, fontWeight:600 }}>{b.label}</span>
+      {/* Horizontal grid of 5 scoring components */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:10 }}>
+        {bars.map(b => (
+          <div key={b.key} style={{ background:'rgba(0,0,0,0.2)', border:`1px solid ${b.color}33`, borderRadius:10, padding:'14px 10px', textAlign:'center' }}>
+            <div style={{ width:34, height:34, borderRadius:8, background:`${b.color}18`, border:`1.5px solid ${b.color}`, display:'flex', alignItems:'center', justifyContent:'center', color:b.color, fontWeight:800, fontSize:15, margin:'0 auto 8px' }}>{b.key}</div>
+            <div style={{ color:'var(--text-primary)', fontSize:11, fontWeight:700, marginBottom:4, lineHeight:1.3 }}>{b.label}</div>
+            <div style={{ color:b.color, fontWeight:800, fontSize:16, fontFamily:'var(--font-mono)', marginBottom:8 }}>{b.weight}%</div>
+            <div style={{ height:5, background:'rgba(255,255,255,0.06)', borderRadius:3, overflow:'hidden' }}>
+              <motion.div
+                initial={{ width:0 }}
+                animate={isInView ? { width:'100%' } : { width:0 }}
+                transition={{ duration:1.0, delay:bars.indexOf(b)*0.15, ease:[0.22,1,0.36,1] }}
+                style={{ height:'100%', borderRadius:3, background:`linear-gradient(90deg,${b.color}99,${b.color})`, boxShadow:`0 0 8px ${b.color}66` }}
+              />
             </div>
-            <span style={{ color:b.color, fontWeight:800, fontSize:14, fontFamily:'var(--font-mono)' }}>{b.weight}%</span>
+            <div style={{ color:'rgba(255,255,255,0.4)', fontSize:9, marginTop:6, lineHeight:1.4 }}>{b.desc}</div>
           </div>
-          <div style={{ height:8, background:'rgba(255,255,255,0.06)', borderRadius:4, overflow:'hidden' }}>
-            <motion.div
-              initial={{ width:0 }}
-              animate={isInView ? { width:`${b.weight}%` } : { width:0 }}
-              transition={{ duration:1.1, delay:bars.indexOf(b)*0.2, ease:[0.22,1,0.36,1] }}
-              style={{
-                height:'100%', borderRadius:4,
-                background:`linear-gradient(90deg, ${b.color}cc, ${b.color})`,
-                boxShadow:`0 0 10px ${b.color}88`,
-              }}
-            />
-          </div>
-          <div style={{ color:'var(--text-muted)', fontSize:10, marginTop:4 }}>{b.desc}</div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }
@@ -689,7 +684,7 @@ function TierLadder() {
 
 // ─── Radar Chart ─────────────────────────────────────────────
 function RadarChart({ model }) {
-  const pad=32, inner=200, size=inner+pad*2
+  const pad=48, inner=200, size=inner+pad*2
   const cx=size/2, cy=size/2, R=80, n=5
   const step = (Math.PI*2)/n
   const vals = RADAR_VALS[model.id] || Array(n).fill(0.7)
@@ -700,7 +695,9 @@ function RadarChart({ model }) {
   })
   const axes = Array.from({length:n},(_,i)=>{
     const a = i*step - Math.PI/2
-    return { ex: cx+R*Math.cos(a), ey: cy+R*Math.sin(a), lx: cx+(R+26)*Math.cos(a), ly: cy+(R+26)*Math.sin(a) }
+    const lx = cx+(R+38)*Math.cos(a), ly = cy+(R+38)*Math.sin(a)
+    const anchor = lx < cx-5 ? 'end' : lx > cx+5 ? 'start' : 'middle'
+    return { ex: cx+R*Math.cos(a), ey: cy+R*Math.sin(a), lx, ly, anchor }
   })
   const rings = [0.25,0.5,0.75,1].map(s =>
     Array.from({length:n},(_,i)=>{
@@ -712,7 +709,7 @@ function RadarChart({ model }) {
 
   return (
     <div className="radar-wrap">
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} overflow="visible">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         {rings.map((r,i)=>(
           <polygon key={i} points={r} fill="none" stroke="rgba(0,255,224,0.1)" strokeWidth="1"/>
         ))}
@@ -722,8 +719,8 @@ function RadarChart({ model }) {
             <g key={i}>
               <line x1={cx} y1={cy} x2={ax.ex} y2={ax.ey} stroke="rgba(0,255,224,0.12)" strokeWidth="1"/>
               {lines.map((l,j)=>(
-                <text key={j} x={ax.lx} y={ax.ly+(j*10)-(lines.length>1?5:0)}
-                  textAnchor="middle" dominantBaseline="middle"
+                <text key={j} x={ax.lx} y={ax.ly+(j*11)-(lines.length>1?5.5:0)}
+                  textAnchor={ax.anchor} dominantBaseline="middle"
                   fontSize="8.5" fill="var(--text-secondary)">
                   {l}
                 </text>
@@ -741,7 +738,7 @@ function RadarChart({ model }) {
 // ─── Multi-model radar ────────────────────────────────────────
 const MODEL_COLORS = { claude:'#00CED1', gemini:'#FF6B6B', chatgpt:'#7FFFD4', deepseek:'#4A90D9', mistral:'#A78BFA' }
 function MultiModelRadar() {
-  const pad=36, inner=240, size=inner+pad*2
+  const pad=52, inner=240, size=inner+pad*2
   const cx=size/2, cy=size/2, R=95, n=5
   const step = (Math.PI*2)/n
   const rings = [0.25,0.5,0.75,1].map(s =>
@@ -749,11 +746,13 @@ function MultiModelRadar() {
   )
   const axes = Array.from({length:n},(_,i)=>{
     const a=i*step-Math.PI/2
-    return { ex:cx+R*Math.cos(a), ey:cy+R*Math.sin(a), lx:cx+(R+28)*Math.cos(a), ly:cy+(R+28)*Math.sin(a) }
+    const lx=cx+(R+42)*Math.cos(a), ly=cy+(R+42)*Math.sin(a)
+    const anchor = lx < cx-5 ? 'end' : lx > cx+5 ? 'start' : 'middle'
+    return { ex:cx+R*Math.cos(a), ey:cy+R*Math.sin(a), lx, ly, anchor }
   })
   return (
     <div style={{ display:'flex', flexDirection:'column', alignItems:'center' }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} overflow="visible">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         {rings.map((r,i)=><polygon key={i} points={r} fill="none" stroke="rgba(0,255,224,0.08)" strokeWidth="1"/>)}
         {axes.map((ax,i)=>{
           const lines=RADAR_DIMS[i].split('\n')
@@ -761,7 +760,7 @@ function MultiModelRadar() {
             <g key={i}>
               <line x1={cx} y1={cy} x2={ax.ex} y2={ax.ey} stroke="rgba(0,255,224,0.1)" strokeWidth="1"/>
               {lines.map((l,j)=>(
-                <text key={j} x={ax.lx} y={ax.ly+(j*10)-(lines.length>1?5:0)} textAnchor="middle" dominantBaseline="middle" fontSize="9" fill="var(--text-secondary)">{l}</text>
+                <text key={j} x={ax.lx} y={ax.ly+(j*11)-(lines.length>1?5.5:0)} textAnchor={ax.anchor} dominantBaseline="middle" fontSize="9" fill="var(--text-secondary)">{l}</text>
               ))}
             </g>
           )
@@ -857,13 +856,13 @@ function Overview() {
           <motion.div variants={fadeUp} style={{ width:'60%', height:1, background:'linear-gradient(90deg,transparent,var(--aqua),transparent)', margin:'44px auto', opacity:0.3 }}/>
 
           {/* CTAs */}
-          <motion.div variants={fadeUp} style={{ display:'flex', gap:14, justifyContent:'center' }}>
+          <motion.div variants={fadeUp} style={{ display:'flex', gap:14, justifyContent:'center', flexWrap:'wrap' }}>
             <motion.button
               className="btn-primary"
               whileHover={{ y: -3, boxShadow: 'var(--glow-md)' }}
               whileTap={{ scale: 0.96 }}
               transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-              onClick={() => document.getElementById('results')?.scrollIntoView({behavior:'smooth'})}
+              onClick={() => document.getElementById('visualizations')?.scrollIntoView({behavior:'smooth'})}
             >
               View Results
             </motion.button>
@@ -875,6 +874,16 @@ function Overview() {
               onClick={() => document.getElementById('tasks')?.scrollIntoView({behavior:'smooth'})}
             >
               Explore Tasks →
+            </motion.button>
+            <motion.button
+              className="btn-secondary"
+              whileHover={{ y: -3, background: 'var(--bg-card-hover)', borderColor:'rgba(167,139,250,0.7)' }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+              style={{ borderColor:'rgba(167,139,250,0.4)', color:'#A78BFA' }}
+              onClick={() => document.getElementById('user-study')?.scrollIntoView({behavior:'smooth'})}
+            >
+              User Study ↗
             </motion.button>
           </motion.div>
         </motion.div>
@@ -993,26 +1002,31 @@ function BenchmarkSection() {
             <div style={{ color:'rgba(255,255,255,0.3)', fontSize:7, marginTop:1 }}>5 MODELS</div>
           </motion.div>
 
-          {/* Pipeline step nodes */}
+          {/* Pipeline step nodes — outer div handles position, inner motion.div handles scale */}
           {PIPELINE.map((s,i) => {
             const pos = getPos(i)
             const isActive = expanded === i
             return (
-              <motion.div
-                key={i}
-                style={{ position:'absolute', ...pos, width:130, transform:'translate(-50%,-50%)',
-                  background: isActive ? 'rgba(0,255,224,0.08)' : 'rgba(255,255,255,0.03)',
-                  border:`1px solid ${isActive ? 'rgba(0,255,224,0.5)' : 'rgba(0,255,224,0.15)'}`,
-                  borderRadius:12, padding:'12px 10px 10px', cursor:'pointer', textAlign:'center' }}
-                onClick={() => setExpanded(isActive ? null : i)}
-                whileHover={{ scale:1.06, borderColor:'rgba(0,255,224,0.4)', background:'rgba(0,255,224,0.05)' }}
-                transition={{ type:'spring', stiffness:400, damping:28 }}
-              >
-                <div style={{ color:'var(--aqua)', marginBottom:5, display:'flex', justifyContent:'center', opacity:0.85 }}>{PIPELINE_ICONS[i]}</div>
-                <div style={{ color:'var(--aqua)', fontSize:9, fontWeight:700, marginBottom:3, letterSpacing:'0.05em', lineHeight:1.3 }}>{s.label}</div>
-                <div style={{ color:'rgba(255,255,255,0.55)', fontSize:8, fontWeight:600, lineHeight:1.3 }}>{s.stat}</div>
-                <div style={{ color:'rgba(0,255,224,0.35)', fontSize:7, marginTop:4 }}>{isActive ? '▲' : '▼'}</div>
-              </motion.div>
+              <div key={i} style={{ position:'absolute', ...pos, transform:'translate(-50%,-50%)', width:132 }}>
+                <motion.div
+                  style={{
+                    background: isActive ? 'rgba(0,255,224,0.08)' : 'rgba(255,255,255,0.03)',
+                    border:`1px solid ${isActive ? 'rgba(0,255,224,0.55)' : 'rgba(0,255,224,0.15)'}`,
+                    borderRadius:12, padding:'12px 10px 10px', cursor:'pointer', textAlign:'center',
+                    boxShadow: isActive ? '0 0 18px rgba(0,255,224,0.15)' : 'none',
+                    transition:'background 0.2s, border-color 0.2s, box-shadow 0.2s',
+                  }}
+                  onClick={() => setExpanded(isActive ? null : i)}
+                  whileHover={{ scale:1.07 }}
+                  whileTap={{ scale:0.97 }}
+                  transition={{ type:'spring', stiffness:420, damping:26 }}
+                >
+                  <div style={{ color:isActive ? 'var(--aqua)' : 'rgba(0,255,224,0.7)', marginBottom:5, display:'flex', justifyContent:'center' }}>{PIPELINE_ICONS[i]}</div>
+                  <div style={{ color: isActive ? 'var(--aqua)' : 'rgba(255,255,255,0.85)', fontSize:9, fontWeight:700, marginBottom:3, letterSpacing:'0.05em', lineHeight:1.3 }}>{s.label}</div>
+                  <div style={{ color:'rgba(255,255,255,0.5)', fontSize:8, fontWeight:600, lineHeight:1.3 }}>{s.stat}</div>
+                  <div style={{ color:'rgba(0,255,224,0.4)', fontSize:7, marginTop:5 }}>{isActive ? '▲ close' : '▼ expand'}</div>
+                </motion.div>
+              </div>
             )
           })}
         </div>
@@ -1067,9 +1081,9 @@ function BenchmarkSection() {
         </div>
       </FadeIn>
 
-      {/* Tier Ladder + Scoring */}
+      {/* Tier Ladder + Scoring — stacked vertically, each full-width */}
       <FadeIn delay={180}>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:24, maxWidth:900, margin:'0 auto' }}>
+        <div style={{ display:'flex', flexDirection:'column', gap:20, maxWidth:960, margin:'0 auto' }}>
           <Card><TierLadder/></Card>
           <Card>
             <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:20 }}>SCORING FORMULA</div>
@@ -1280,7 +1294,7 @@ function Tasks({ onOpenModal }) {
                   { key:'all',                  label:'All' },
                   { key:'numeric',              label:'Numeric' },
                   { key:'conceptual',           label:'Concept' },
-                  { key:'computational_bayes',  label:'Comp. Bayes' },
+                  { key:'computational_bayes',  label:'MCMC · VB · ABC' },
                 ].map(({ key: cat, label }) => (
                   <motion.button
                     key={cat}
@@ -1512,7 +1526,8 @@ function TaskCard({ task, onClick, onCopy, copied }) {
       </Tooltip>
       <p style={{ color:'var(--text-secondary)', fontSize:12, lineHeight:1.55, margin:'8px 0 12px', textTransform:'capitalize' }}>
         {(() => {
-          const desc = task.description || TASK_TYPE_TOOLTIPS[task.task_type]?.description || ''
+          const useTooltip = task.category === 'computational_bayes' && (!task.description || task.description.length < 20)
+          const desc = (useTooltip ? TASK_TYPE_TOOLTIPS[task.task_type]?.description : task.description) || TASK_TYPE_TOOLTIPS[task.task_type]?.description || ''
           return desc.slice(0,110) + (desc.length>110 ? '…' : '')
         })()}
       </p>
@@ -1978,6 +1993,8 @@ export default function App() {
       <Navbar/>
       <Overview/>
       <SectionDivider/>
+      <About/>
+      <SectionDivider/>
       <BenchmarkSection/>
       <SectionDivider/>
       <Models/>
@@ -1987,8 +2004,6 @@ export default function App() {
       <Visualizations setFullImg={setFullImg} onOpenGif={setGifModal}/>
       <SectionDivider/>
       <UserStudy/>
-      <SectionDivider/>
-      <About/>
       <motion.footer
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}

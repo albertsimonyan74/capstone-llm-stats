@@ -335,6 +335,7 @@ function VizCard({ viz, index, setFullImg, onOpenGif, featured = false }) {
 export default function VizGallery({ setFullImg, onOpenGif }) {
   const [activeFilter, setActiveFilter] = useState('All')
   const [galleryExpanded, setGalleryExpanded] = useState(false)
+  const [sectionOpen, setSectionOpen] = useState(false)
   const GALLERY_PREVIEW = 6
   const summary = summaryData
 
@@ -363,9 +364,18 @@ export default function VizGallery({ setFullImg, onOpenGif }) {
 
   return (
     <>
-      {/* ── Section header ─────────────────────────────────── */}
+      {/* ── Section header — click to toggle gallery ────────── */}
       <FadeIn>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 8, flexWrap: 'wrap', gap: 12 }}>
+        <motion.div
+          data-hover="true"
+          onClick={() => setSectionOpen(v => !v)}
+          style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            marginBottom: 8, flexWrap: 'wrap', gap: 12,
+            cursor: 'none', userSelect: 'none',
+          }}
+          whileHover={{ opacity: 0.9 }}
+        >
           <div>
             <div style={{ color: 'rgba(0,255,224,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', marginBottom: 6 }}>
               // R ANALYSIS · GGPLOT2 + PLOTLY
@@ -377,10 +387,22 @@ export default function VizGallery({ setFullImg, onOpenGif }) {
               </span>
             </h2>
           </div>
-          <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', fontFamily: 'monospace', textAlign: 'right' }}>
-            {VISUALIZATIONS.length} charts · R ggplot2 + Plotly
-          </div>
-        </div>
+          <motion.button
+            data-hover="true"
+            whileTap={{ scale: 0.95 }}
+            style={{
+              padding: '10px 24px', borderRadius: 10, cursor: 'none',
+              background: sectionOpen ? 'rgba(0,255,224,0.1)' : 'rgba(0,255,224,0.05)',
+              border: `1px solid ${sectionOpen ? 'rgba(0,255,224,0.5)' : 'rgba(0,255,224,0.2)'}`,
+              color: '#00FFE0', fontSize: 13, fontWeight: 700,
+              display: 'flex', alignItems: 'center', gap: 8,
+              transition: 'all 0.2s',
+            }}
+          >
+            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace' }}>{VISUALIZATIONS.length} charts</span>
+            {sectionOpen ? 'Collapse ▲' : 'Explore Gallery ▼'}
+          </motion.button>
+        </motion.div>
         <motion.div
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
@@ -388,10 +410,33 @@ export default function VizGallery({ setFullImg, onOpenGif }) {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           style={{
             width: 64, height: 3, background: 'linear-gradient(90deg,#00FFE0,#00B4D8)',
-            borderRadius: 2, marginBottom: 40, transformOrigin: 'left',
+            borderRadius: 2, marginBottom: sectionOpen ? 40 : 12, transformOrigin: 'left',
+            transition: 'margin-bottom 0.3s',
           }}
         />
       </FadeIn>
+
+      <AnimatePresence>
+        {!sectionOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ textAlign: 'center', padding: '32px 0 16px', color: 'rgba(255,255,255,0.3)', fontSize: 13 }}
+          >
+            Click "Explore Gallery" to view {VISUALIZATIONS.length} R-generated charts and interactive dashboards
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+      {sectionOpen && (
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 8 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      >
 
       {/* ── Leaderboard ─────────────────────────────────────── */}
       <FadeIn delay={60}>
@@ -567,6 +612,10 @@ export default function VizGallery({ setFullImg, onOpenGif }) {
           Last generated: {new Date(summary.generated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}.
         </div>
       </FadeIn>
+
+      </motion.div>
+      )}
+      </AnimatePresence>
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </>
