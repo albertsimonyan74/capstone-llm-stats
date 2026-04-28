@@ -48,23 +48,23 @@ const TIER_INFO = {
 const MODELS = [
   { id:'claude',   initials:'CL', name:'Claude Sonnet 4.5', full:'Claude Sonnet 4.5',
     version:'claude-sonnet-4-5',    provider:'Anthropic',       lab:'Frontier AI Lab',
-    color:'#00CED1', api:'api.anthropic.com/v1/messages', maxTokens: 1024,
+    color:'#00CED1', api:'api.anthropic.com/v1/messages', maxTokens: 1024, avgOutputTokens: 811,
     strengths:'Strong mathematical reasoning, excellent at step-by-step Bayesian derivations and conjugate updates', status:'READY' },
   { id:'gemini',   initials:'GM', name:'Gemini 2.5 Flash',  full:'Gemini 2.5 Flash',
     version:'gemini-2.5-flash',     provider:'Google DeepMind', lab:'Alphabet',
-    color:'#FF6B6B', api:'generativelanguage.googleapis.com', maxTokens: 4096,
-    strengths:'Fast inference, good at probability calculations and statistical formula application', status:'READY' },
+    color:'#FF6B6B', api:'generativelanguage.googleapis.com', maxTokens: 4096, avgOutputTokens: 1729,
+    strengths:'Fast inference, good at probability calculations and statistical formula application. Note: Gemini used a 4096-token output cap (not 1024) — see runs for details', status:'READY' },
   { id:'chatgpt',  initials:'GP', name:'GPT-4.1',           full:'GPT-4.1',
     version:'gpt-4.1',              provider:'OpenAI',           lab:'Microsoft Partnership',
-    color:'#7FFFD4', api:'api.openai.com/v1/chat/completions', maxTokens: 1024,
+    color:'#7FFFD4', api:'api.openai.com/v1/chat/completions', maxTokens: 1024, avgOutputTokens: 700,
     strengths:'Broad statistical knowledge, reliable at standard Bayesian textbook problems', status:'READY' },
   { id:'deepseek', initials:'DS', name:'DeepSeek V4 Flash', full:'DeepSeek V4 Flash',
     version:'deepseek-chat',        provider:'DeepSeek AI',      lab:'China',
-    color:'#4A90D9', api:'api.deepseek.com/v1/chat/completions', maxTokens: 1024,
+    color:'#4A90D9', api:'api.deepseek.com/v1/chat/completions', maxTokens: 1024, avgOutputTokens: 706,
     strengths:'Strong mathematical background, emerging capability in statistical inference tasks', status:'READY' },
   { id:'mistral',  initials:'MS', name:'Mistral Large',     full:'Mistral Large Latest',
     version:'mistral-large-latest', provider:'Mistral AI',       lab:'France',
-    color:'#A78BFA', api:'api.mistral.ai/v1/chat/completions', maxTokens: 1024,
+    color:'#A78BFA', api:'api.mistral.ai/v1/chat/completions', maxTokens: 1024, avgOutputTokens: 744,
     strengths:'Strong reasoning with European research pedigree, competitive on formal mathematical tasks', status:'READY' },
 ]
 const MODEL_META = Object.fromEntries(MODELS.map(m => [m.id, m]))
@@ -650,24 +650,24 @@ function TierLadder() {
               const info = TIER_INFO[expanded]
               return (
                 <div style={{ padding:'12px 0 4px' }}>
-                  <p style={{ color:'var(--text-secondary)', fontSize:13, lineHeight:1.75, margin:'0 0 12px' }}>
+                  <p style={{ color:'var(--text-secondary)', fontSize:15, lineHeight:1.8, margin:'0 0 14px' }}>
                     {info.detail}
                   </p>
                   <div style={{ marginBottom:10 }}>
-                    <div style={{ fontSize:9, color:info.color+'80', fontWeight:700, letterSpacing:'0.1em', marginBottom:5 }}>KEY CHALLENGES</div>
+                    <div style={{ fontSize:10, color:info.color+'80', fontWeight:700, letterSpacing:'0.1em', marginBottom:6 }}>KEY CHALLENGES</div>
                     <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
                       {TIER_CHALLENGES[expanded].map(c => (
                         <div key={c} style={{ display:'flex', alignItems:'center', gap:5 }}>
                           <div style={{ width:4, height:4, borderRadius:'50%', background:info.color, flexShrink:0 }}/>
-                          <span style={{ fontSize:10, color:'var(--text-secondary)' }}>{c}</span>
+                          <span style={{ fontSize:12, color:'var(--text-secondary)' }}>{c}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div style={{ fontSize:9, color:info.color+'80', fontWeight:700, letterSpacing:'0.1em', marginBottom:5 }}>TASK TYPES</div>
+                  <div style={{ fontSize:10, color:info.color+'80', fontWeight:700, letterSpacing:'0.1em', marginBottom:6 }}>TASK TYPES</div>
                   <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
                     {TIER_TASK_EXAMPLES[expanded].map(k => (
-                      <span key={k} style={{ fontSize:9, padding:'3px 8px', borderRadius:4,
+                      <span key={k} style={{ fontSize:10, padding:'3px 8px', borderRadius:4,
                         background:`${info.color}14`, color:info.color,
                         border:`1px solid ${info.color}33`, fontFamily:'var(--font-mono)' }}>{k}</span>
                     ))}
@@ -1236,7 +1236,7 @@ function Models() {
 
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:16 }}>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr', gap:8 }}>
-                  {[['VERSION', selModel.version],['API', selModel.api],['MAX TOKENS', (selModel.maxTokens || 1024).toLocaleString()]].map(([k,v]) => (
+                  {[['VERSION', selModel.version],['API', selModel.api],['TOKEN LIMIT (BENCHMARK)', (selModel.maxTokens || 1024).toLocaleString()],['AVG OUTPUT TOKENS', selModel.avgOutputTokens ? selModel.avgOutputTokens.toLocaleString() : '—']].map(([k,v]) => (
                     <div key={k} style={{ background:'rgba(0,0,0,0.22)', borderRadius:8, padding:'10px 12px' }}>
                       <div style={{ color:'var(--aqua)', fontSize:9, fontWeight:700, letterSpacing:'0.1em', marginBottom:4 }}>{k}</div>
                       <div style={{ color:'var(--text-primary)', fontSize:11, fontFamily:'var(--font-mono)', wordBreak:'break-all' }}>{v}</div>
@@ -2088,10 +2088,12 @@ function References() {
 //  ROOT APP
 // ═══════════════════════════════════════════════════════════════
 export default function App() {
-  const [modal,     setModal]     = useState(null)
-  const [fullImg,   setFullImg]   = useState(null)
-  const [gifModal,  setGifModal]  = useState(null)
-  const [tasksOpen, setTasksOpen] = useState(false)
+  const [modal,        setModal]        = useState(null)
+  const [fullImg,      setFullImg]      = useState(null)
+  const [gifModal,     setGifModal]     = useState(null)
+  const [gifLoading,   setGifLoading]   = useState(false)
+  const [gifError,     setGifError]     = useState(false)
+  const [tasksOpen,    setTasksOpen]    = useState(false)
 
   useEffect(() => {
     const handler = (e) => {
@@ -2123,7 +2125,7 @@ export default function App() {
       <SectionDivider/>
       <Tasks onOpenModal={setModal} isOpen={tasksOpen} onToggle={()=>setTasksOpen(o=>!o)}/>
       <SectionDivider/>
-      <Visualizations setFullImg={setFullImg} onOpenGif={setGifModal}/>
+      <Visualizations setFullImg={setFullImg} onOpenGif={url => { setGifModal(url); setGifLoading(true); setGifError(false) }}/>
       <SectionDivider/>
       <UserStudy/>
       <SectionDivider/>
@@ -2259,11 +2261,24 @@ export default function App() {
                 }}
               >✕</button>
             </div>
-            <div style={{ padding: 12, display: 'flex', justifyContent: 'center' }}>
+            <div style={{ padding: 12, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 200 }}>
+              {gifLoading && !gifError && (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12, position: 'absolute' }}>
+                  <div style={{ width: 40, height: 40, border: '3px solid rgba(0,255,224,0.2)', borderTop: '3px solid #00FFE0', borderRadius: '50%', animation: 'spin 0.9s linear infinite' }}/>
+                  <div style={{ color: 'rgba(0,255,224,0.6)', fontSize: 12, fontFamily: 'monospace' }}>Loading animation…</div>
+                </div>
+              )}
+              {gifError && (
+                <div style={{ color: 'rgba(255,107,107,0.8)', fontSize: 13, textAlign: 'center', padding: '24px 0' }}>
+                  Failed to load animation. Check the file exists at <code style={{ fontFamily: 'monospace', fontSize: 11 }}>{gifModal}</code>
+                </div>
+              )}
               <img
                 src={gifModal}
-                alt="Animated visualization"
-                style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', borderRadius: 8 }}
+                alt="Score Race Animation"
+                onLoad={() => setGifLoading(false)}
+                onError={() => { setGifLoading(false); setGifError(true) }}
+                style={{ maxWidth: '100%', maxHeight: '80vh', objectFit: 'contain', borderRadius: 8, display: gifError ? 'none' : 'block', opacity: gifLoading ? 0 : 1, transition: 'opacity 0.3s' }}
               />
             </div>
           </motion.div>

@@ -100,10 +100,35 @@ function extractFinalAnswer(text) {
   return ''
 }
 
+const NUMERIC_TOLERANCE = 0.005
+
 function normalizeAnswerStr(s) {
   return s.toLowerCase()
     .replace(/\b\d+\.\d+\b/g, n => parseFloat(n).toFixed(2))
     .replace(/\s+/g, ' ').trim().slice(0, 100)
+}
+
+// Extract first numeric value from an answer string; null if no number found
+function extractFirstNum(s) {
+  const m = s.match(/-?\d+(?:\.\d+)?(?:e[+-]?\d+)?/i)
+  if (!m) return null
+  const n = parseFloat(m[0])
+  return isFinite(n) ? n : null
+}
+
+// Cluster [{model_id, num}] by tolerance (sort-then-chain approach)
+function clusterNumeric(pairs, tol) {
+  const sorted = [...pairs].sort((a, b) => a.num - b.num)
+  const clusters = [[sorted[0]]]
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = clusters[clusters.length - 1]
+    if (sorted[i].num - prev[prev.length - 1].num <= tol) {
+      prev.push(sorted[i])
+    } else {
+      clusters.push([sorted[i]])
+    }
+  }
+  return clusters
 }
 
 function computeDivergence(responses) {
@@ -116,13 +141,24 @@ function computeDivergence(responses) {
     normAnswer: normalizeAnswerStr(extractFinalAnswer(r.response)),
   }))
 
-  const groups = {}
-  for (const e of extracted) {
-    if (!groups[e.normAnswer]) groups[e.normAnswer] = []
-    groups[e.normAnswer].push(e.model_id)
+  // Try numeric clustering first
+  const numericPairs = extracted.map(e => ({ model_id: e.model_id, num: extractFirstNum(e.rawAnswer) }))
+  const allNumeric = numericPairs.every(p => p.num !== null)
+
+  let groups // Array of [normKey, [model_ids]]
+  if (allNumeric) {
+    const clusters = clusterNumeric(numericPairs, NUMERIC_TOLERANCE)
+    groups = clusters.map((cluster, i) => [String(i), cluster.map(p => p.model_id)])
+  } else {
+    const strGroups = {}
+    for (const e of extracted) {
+      if (!strGroups[e.normAnswer]) strGroups[e.normAnswer] = []
+      strGroups[e.normAnswer].push(e.model_id)
+    }
+    groups = Object.entries(strGroups)
   }
 
-  const groupList = Object.entries(groups).sort((a, b) => b[1].length - a[1].length)
+  const groupList = [...groups].sort((a, b) => b[1].length - a[1].length)
   const total = extracted.length
   const largest = groupList[0][1].length
 
@@ -540,9 +576,19 @@ export default function UserStudy() {
         </motion.div>
 
         {/* Aggregate stats */}
-        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }} style={{ background: 'rgba(0,255,224,0.02)', border: '1px solid rgba(0,255,224,0.1)', borderRadius: 12, padding: '16px 24px', marginBottom: 28 }}>
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.5 }} style={{ background: 'rgba(0,255,224,0.02)', border: '1px solid rgba(0,255,224,0.1)', borderRadius: 12, padding: '16px 24px', marginBottom: 8 }}>
           <AggregateStats refreshTrigger={voteRefresh} />
         </motion.div>
+        {/* Vote storage info */}
+        <div style={{ marginBottom: 20, padding: '8px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>💾 VOTES SAVED TO</span>
+          <code style={{ fontSize: 10, color: 'rgba(0,255,224,0.5)', fontFamily: 'var(--font-mono)', background: 'rgba(0,255,224,0.05)', padding: '2px 8px', borderRadius: 4 }}>backend/data/user_study_results.json</code>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', fontFamily: 'var(--font-mono)' }}>·</span>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>JSON array — one record per vote</span>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', fontFamily: 'var(--font-mono)' }}>·</span>
+          <code style={{ fontSize: 10, color: 'rgba(0,255,224,0.5)', fontFamily: 'var(--font-mono)', background: 'rgba(0,255,224,0.05)', padding: '2px 8px', borderRadius: 4 }}>backend/data/vote_memory.json</code>
+          <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontFamily: 'var(--font-mono)' }}>aggregated stats</span>
+        </div>
 
         {/* Input panel */}
         <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }} style={{ background: 'rgba(0,255,224,0.03)', border: '1px solid rgba(0,255,224,0.15)', borderRadius: 14, padding: '28px 32px', marginBottom: 36, display: 'flex', flexDirection: 'column', gap: 16 }}>
