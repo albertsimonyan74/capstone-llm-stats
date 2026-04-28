@@ -56,7 +56,7 @@ Pattern: [[adding-a-new-task-type-requires-4-changes]].
 
 ## Phase 4 — Visualization Quality ✅ DONE (2026-04-27)
 
-### 4. Website Viz Overhaul ✅ DONE
+### 4. Website Viz Overhaul ✅ DONE (initial)
 - Trimmed 18 → 12 visualizations
 - Featured 2×2 strip above gallery
 - All descriptions plain language
@@ -66,6 +66,11 @@ Pattern: [[adding-a-new-task-type-requires-4-changes]].
 - TierLadder rebuilt with tier-specific examples and challenges
 
 See [[2026-04-27-website-ui-viz-overhaul]].
+
+### 4b. Website UI Overhaul Part 2 ✅ DONE (2026-04-28)
+All 10 items complete. See [[2026-04-28-ui-overhaul-part2]].
+
+Commit 84fa12a pushed → Vercel auto-deploying.
 
 ---
 

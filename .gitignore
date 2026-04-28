@@ -44,3 +44,4 @@ interactive/
 **/*.gif
 benchmark_report.html
 report_materials/r_analysis/benchmark_report.html
+.vercel

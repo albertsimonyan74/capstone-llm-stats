@@ -43,29 +43,33 @@ button { font-family: inherit; }
 input, textarea, select { cursor: text !important; }
 a, button, [data-hover] { cursor: none !important; }
 
-/* ─── Global cursor element ──────────────────────────────────────── */
+/* ─── Global cursor element — sharp angled triangle ─────────────── */
 #global-cursor {
   position: fixed;
   top: 0;
   left: 0;
-  width: 24px;
-  height: 24px;
-  border: 1.5px solid rgba(0, 255, 224, 0.8);
-  border-radius: 50%;
+  width: 18px;
+  height: 22px;
+  background: rgba(0, 255, 224, 0.88);
+  clip-path: polygon(0 0, 100% 28%, 28% 100%);
+  border-radius: 0;
+  border: none;
   pointer-events: none;
   z-index: 999999;
-  transform: translate(-50%, -50%);
-  transition: width 0.18s ease, height 0.18s ease,
-              background 0.18s ease, opacity 0.2s ease;
+  transform: translate(-1px, -1px);
+  transition: width 0.14s ease, height 0.14s ease,
+              background 0.14s ease, opacity 0.18s ease,
+              filter 0.14s ease;
   opacity: 0;
   will-change: transform;
 }
 
 #global-cursor.visible  { opacity: 1; }
 #global-cursor.hovering {
-  width: 40px;
-  height: 40px;
-  background: rgba(0, 255, 224, 0.07);
+  width: 26px;
+  height: 32px;
+  background: rgba(0, 255, 224, 1.0);
+  filter: drop-shadow(0 0 7px rgba(0, 255, 224, 0.75));
 }
 
 @media (pointer: coarse) {

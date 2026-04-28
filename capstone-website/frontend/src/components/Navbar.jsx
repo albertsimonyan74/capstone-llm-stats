@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 
 const NAV_SECTIONS = [
-  { id: 'overview',   label: 'Overview'     },
-  { id: 'benchmark',  label: 'How It Works' },
-  { id: 'models',     label: 'Models'       },
-  { id: 'tasks',      label: 'Tasks'        },
-  { id: 'visualizations', label: 'Visualizations' },
-  { id: 'user-study',    label: 'User Study'    },
+  { id: 'overview',      label: 'Overview'     },
+  { id: 'about',         label: 'Research'     },
+  { id: 'benchmark',     label: 'How It Works' },
+  { id: 'models',        label: 'Models'       },
+  { id: 'tasks',         label: 'Tasks'        },
+  { id: 'visualizations',label: 'Visualizations' },
+  { id: 'user-study',    label: 'User Study'   },
 ]
 
 export default function Navbar() {

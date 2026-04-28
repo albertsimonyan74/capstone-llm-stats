@@ -204,7 +204,7 @@ function VotePanel({ responses, question, sessionId, hasImage, onVoteDone }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <div style={{ color: 'var(--text-muted)', fontSize: 12, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>
+      <div style={{ color: 'rgba(0,255,224,0.75)', fontSize: 12, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em', fontWeight:700 }}>
         STEP 2 — SELECT BEST RESPONSE
       </div>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -220,9 +220,9 @@ function VotePanel({ responses, question, sessionId, hasImage, onVoteDone }) {
               style={{
                 padding: '8px 18px',
                 borderRadius: 8,
-                border: `1.5px solid ${isVoted ? meta.color : meta.color + '55'}`,
-                background: isVoted ? meta.color + '1a' : 'transparent',
-                color: isVoted ? meta.color : 'var(--text-muted)',
+                border: `1.5px solid ${isVoted ? meta.color : meta.color + '66'}`,
+                background: isVoted ? meta.color + '22' : 'rgba(255,255,255,0.04)',
+                color: isVoted ? meta.color : 'rgba(255,255,255,0.75)',
                 fontSize: 12,
                 fontWeight: 700,
                 cursor: 'pointer',
@@ -300,17 +300,19 @@ function AggregateStats() {
       <button
         onClick={load}
         style={{
-          padding: '8px 20px',
+          padding: '9px 22px',
           borderRadius: 8,
-          border: '1px solid rgba(0,255,224,0.25)',
-          background: 'transparent',
-          color: 'var(--text-muted)',
+          border: '1px solid rgba(0,255,224,0.4)',
+          background: 'rgba(0,255,224,0.07)',
+          color: 'rgba(0,255,224,0.9)',
           fontSize: 12,
+          fontWeight: 700,
           cursor: 'pointer',
           fontFamily: 'var(--font-mono)',
+          letterSpacing: '0.04em',
         }}
       >
-        View aggregate vote results
+        View Aggregate Vote Results ▼
       </button>
     )
   }
@@ -327,7 +329,7 @@ function AggregateStats() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <div style={{ color: 'var(--text-muted)', fontSize: 11, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>
+      <div style={{ color: 'rgba(0,255,224,0.8)', fontSize: 11, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em', fontWeight:700 }}>
         AGGREGATE VOTES — {data.total_votes} total
       </div>
       {Object.entries(dist).map(([id, count]) => {
@@ -350,7 +352,7 @@ function AggregateStats() {
                 style={{ height: '100%', background: meta.color + 'cc', borderRadius: 6 }}
               />
             </div>
-            <div style={{ width: 52, textAlign: 'right', fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+            <div style={{ width: 52, textAlign: 'right', fontSize: 11, color: 'rgba(255,255,255,0.7)', fontFamily: 'var(--font-mono)' }}>
               {count} ({pct}%)
             </div>
           </div>
@@ -447,7 +449,7 @@ export default function UserStudy() {
           }}>
             User Study
           </h2>
-          <p style={{ color: 'var(--text-muted)', fontSize: 15, lineHeight: 1.7, maxWidth: 640, margin: 0 }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: 15, lineHeight: 1.7, maxWidth: 640, margin: 0 }}>
             Submit a Bayesian or inferential statistics question. All 5 models respond in parallel.
             Vote for the explanation you find most useful — results feed the research.
           </p>
@@ -470,7 +472,7 @@ export default function UserStudy() {
             gap: 16,
           }}
         >
-          <div style={{ color: 'var(--text-muted)', fontSize: 11, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em' }}>
+          <div style={{ color: 'rgba(0,255,224,0.75)', fontSize: 11, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em', fontWeight:700 }}>
             STEP 1 — YOUR QUESTION
           </div>
 
