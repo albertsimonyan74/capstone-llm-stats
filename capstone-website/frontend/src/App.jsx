@@ -1001,39 +1001,66 @@ function BenchmarkSection() {
 
       {/* Circular pipeline diagram */}
       <FadeIn>
-        <div style={{ position:'relative', width:'100%', maxWidth:640, height:640, margin:'0 auto 8px' }}>
+        <div style={{ position:'relative', width:'100%', maxWidth:800, height:800, margin:'0 auto 8px' }}>
 
           {/* Outer rotating ring */}
           <div style={{ position:'absolute', left:'50%', top:'50%', width:'78%', height:'78%',
             animation:'ringRotate 70s linear infinite', borderRadius:'50%',
-            border:'1px dashed rgba(0,255,224,0.12)' }}/>
+            border:'1px dashed rgba(0,255,224,0.12)', transform:'translate(-50%,-50%)' }}>
+            <div style={{ position:'absolute', top:'-4px', left:'50%', transform:'translateX(-50%)', width:7, height:7, borderRadius:'50%', background:'rgba(0,255,224,0.7)', boxShadow:'0 0 8px rgba(0,255,224,0.6)' }}/>
+            <div style={{ position:'absolute', bottom:'-4px', left:'50%', transform:'translateX(-50%)', width:5, height:5, borderRadius:'50%', background:'rgba(0,255,224,0.4)', boxShadow:'0 0 6px rgba(0,255,224,0.4)' }}/>
+            <div style={{ position:'absolute', top:'50%', right:'-4px', transform:'translateY(-50%)', width:5, height:5, borderRadius:'50%', background:'rgba(0,180,216,0.5)', boxShadow:'0 0 6px rgba(0,180,216,0.5)' }}/>
+            <div style={{ position:'absolute', top:'50%', left:'-4px', transform:'translateY(-50%)', width:4, height:4, borderRadius:'50%', background:'rgba(167,139,250,0.5)', boxShadow:'0 0 5px rgba(167,139,250,0.5)' }}/>
+          </div>
 
           {/* Inner counter-rotating ring */}
           <div style={{ position:'absolute', left:'50%', top:'50%', width:'58%', height:'58%',
             animation:'ringCCW 45s linear infinite', borderRadius:'50%',
-            border:'1px dashed rgba(0,180,216,0.09)' }}/>
+            border:'1px dashed rgba(0,180,216,0.09)', transform:'translate(-50%,-50%)' }}>
+            <div style={{ position:'absolute', top:'-4px', left:'50%', transform:'translateX(-50%)', width:6, height:6, borderRadius:'50%', background:'rgba(0,180,216,0.5)', boxShadow:'0 0 7px rgba(0,180,216,0.5)' }}/>
+            <div style={{ position:'absolute', bottom:'-4px', left:'50%', transform:'translateX(-50%)', width:4, height:4, borderRadius:'50%', background:'rgba(0,180,216,0.3)', boxShadow:'0 0 5px rgba(0,180,216,0.4)' }}/>
+            <div style={{ position:'absolute', top:'50%', right:'-4px', transform:'translateY(-50%)', width:4, height:4, borderRadius:'50%', background:'rgba(0,255,224,0.4)', boxShadow:'0 0 5px rgba(0,255,224,0.4)' }}/>
+          </div>
 
           {/* Electron orbit paths */}
           <div style={{ position:'absolute', left:'50%', top:'50%', width:'38%', height:'38%',
             animation:'ringRotate 28s linear infinite', borderRadius:'50%',
-            border:'1.5px dashed rgba(0,255,224,0.22)' }}>
+            border:'1.5px dashed rgba(0,255,224,0.22)', transform:'translate(-50%,-50%)' }}>
             <div style={{ position:'absolute', top:'-5px', left:'50%', transform:'translateX(-50%)',
-              width:8, height:8, borderRadius:'50%', background:'#00FFE0',
-              boxShadow:'0 0 10px rgba(0,255,224,0.8)', marginTop:1 }}/>
+              width:9, height:9, borderRadius:'50%', background:'#00FFE0',
+              boxShadow:'0 0 12px rgba(0,255,224,0.9)' }}/>
+            <div style={{ position:'absolute', bottom:'-4px', left:'50%', transform:'translateX(-50%)',
+              width:6, height:6, borderRadius:'50%', background:'rgba(0,255,224,0.6)',
+              boxShadow:'0 0 8px rgba(0,255,224,0.6)' }}/>
+            <div style={{ position:'absolute', top:'50%', right:'-4px', transform:'translateY(-50%)',
+              width:5, height:5, borderRadius:'50%', background:'rgba(0,255,224,0.45)',
+              boxShadow:'0 0 6px rgba(0,255,224,0.5)' }}/>
           </div>
           <div style={{ position:'absolute', left:'50%', top:'50%', width:'48%', height:'28%',
             animation:'ringCCW 18s linear infinite', borderRadius:'50%',
-            border:'1px dashed rgba(167,139,250,0.25)' }}>
+            border:'1px dashed rgba(167,139,250,0.25)', transform:'translate(-50%,-50%)' }}>
             <div style={{ position:'absolute', top:'-4px', left:'50%', transform:'translateX(-50%)',
-              width:6, height:6, borderRadius:'50%', background:'#A78BFA',
-              boxShadow:'0 0 8px rgba(167,139,250,0.9)' }}/>
+              width:8, height:8, borderRadius:'50%', background:'#A78BFA',
+              boxShadow:'0 0 10px rgba(167,139,250,0.9)' }}/>
+            <div style={{ position:'absolute', bottom:'-4px', left:'50%', transform:'translateX(-50%)',
+              width:5, height:5, borderRadius:'50%', background:'rgba(167,139,250,0.55)',
+              boxShadow:'0 0 7px rgba(167,139,250,0.6)' }}/>
+            <div style={{ position:'absolute', top:'50%', left:'-4px', transform:'translateY(-50%)',
+              width:4, height:4, borderRadius:'50%', background:'rgba(167,139,250,0.4)',
+              boxShadow:'0 0 5px rgba(167,139,250,0.5)' }}/>
           </div>
           <div style={{ position:'absolute', left:'50%', top:'50%', width:'28%', height:'48%',
             animation:'ringRotate 22s linear infinite', borderRadius:'50%',
-            border:'1px dashed rgba(0,180,216,0.22)' }}>
+            border:'1px dashed rgba(0,180,216,0.22)', transform:'translate(-50%,-50%)' }}>
             <div style={{ position:'absolute', top:'-4px', left:'50%', transform:'translateX(-50%)',
-              width:6, height:6, borderRadius:'50%', background:'#00B4D8',
-              boxShadow:'0 0 8px rgba(0,180,216,0.9)' }}/>
+              width:8, height:8, borderRadius:'50%', background:'#00B4D8',
+              boxShadow:'0 0 10px rgba(0,180,216,0.9)' }}/>
+            <div style={{ position:'absolute', bottom:'-4px', left:'50%', transform:'translateX(-50%)',
+              width:5, height:5, borderRadius:'50%', background:'rgba(0,180,216,0.55)',
+              boxShadow:'0 0 7px rgba(0,180,216,0.6)' }}/>
+            <div style={{ position:'absolute', top:'50%', right:'-4px', transform:'translateY(-50%)',
+              width:4, height:4, borderRadius:'50%', background:'rgba(0,180,216,0.4)',
+              boxShadow:'0 0 5px rgba(0,180,216,0.5)' }}/>
           </div>
 
           {/* SVG connector lines */}
@@ -1078,10 +1105,7 @@ function BenchmarkSection() {
             animate={{ boxShadow:['0 0 28px rgba(0,255,224,0.10)','0 0 56px rgba(0,255,224,0.24)','0 0 28px rgba(0,255,224,0.10)'] }}
             transition={{ duration:3, repeat:Infinity, ease:'easeInOut' }}
           >
-            <div style={{ color:'var(--aqua)', fontSize:9, fontWeight:700, letterSpacing:'0.08em' }}>BENCHMARK</div>
-            <div style={{ color:'var(--aqua)', fontWeight:800, fontSize:24, fontFamily:'var(--font-mono)', lineHeight:1.1 }}>171</div>
-            <div style={{ color:'rgba(0,255,224,0.5)', fontSize:8, marginTop:1 }}>TASKS</div>
-            <div style={{ color:'rgba(255,255,255,0.3)', fontSize:7, marginTop:1 }}>5 MODELS</div>
+            <div style={{ color:'var(--aqua)', fontWeight:800, fontSize:16, fontFamily:'var(--font-mono)', letterSpacing:'0.04em', textAlign:'center' }}>Benchmarking</div>
           </motion.div>
 
           {/* Pipeline step nodes — outer div handles position, inner motion.div handles scale */}
@@ -1295,11 +1319,11 @@ function Tasks({ onOpenModal, isOpen, onToggle }) {
   const [searchId,    setSearchId]    = useState('')
   const [searchTopic, setSearchTopic] = useState('')
   const [copied,      setCopied]      = useState(null)
-  const [perPage,     setPerPage]     = useState(18)
+  const [perPage,     setPerPage]     = useState(16)
   const [currentPage, setCurrentPage] = useState(1)
   const [viewMode,    setViewMode]    = useState('grid')
 
-  const PER_PAGE_OPTIONS = [9, 18, 36, 72, 171]
+  const PER_PAGE_OPTIONS = [16, 32, 64, 171]
 
   const filtered = useMemo(() => tasksData.filter(t => {
     if (tiers.length && !tiers.includes(t.tier)) return false
@@ -1386,7 +1410,7 @@ function Tasks({ onOpenModal, isOpen, onToggle }) {
       <div style={{ display:'grid', gridTemplateColumns:'250px 1fr', gap:24, alignItems:'start' }}>
 
         {/* Filter sidebar */}
-        <div style={{ position:'sticky', top:96, alignSelf:'start' }}>
+        <div style={{ alignSelf:'start', marginTop:0 }}>
           <Card>
             <div style={{ textAlign:'center', paddingBottom:16, borderBottom:'1px solid var(--border-default)', marginBottom:16 }}>
               <motion.span

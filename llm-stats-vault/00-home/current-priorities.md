@@ -82,6 +82,18 @@ See [[2026-04-28-ui-fixes-part3]].
 See [[2026-04-28-ui-fixes-part4]].
 **Supabase setup needed** for persistent votes: create `votes`+`questions` tables, set `SUPABASE_URL`+`SUPABASE_KEY` in Render env vars.
 
+### 4e. Website Session 29e ✅ DONE (2026-04-30)
+12 fixes: Möbius Strip hero animation, Key Findings+Radar 2-col layout, footer with author credit, wider sections, description truncation 155→280, filter sidebar alignment, Key Findings title/Radar legend font sizes; R viz: score distributions interactive→ridges, E8 shown in error taxonomy, difficulty→grouped bar heatmap, speed/accuracy text overlap fixed.
+Commit ac3c979. See [[2026-04-30-ui-viz-session29e]].
+
+### 4f. Website Session 30b ✅ DONE (2026-04-30)
+8 fixes: Neural net hero (HeroNetworkBg canvas), horizontal radar legend, 3 animated electron orbit rings on How It Works circle (145px), filter sidebar alignment (alignSelf:start), 10 CONCEPTUAL task descriptions completed (reference_answer), User Study 2-col layout + inline registration form + AggregatePanel always visible with reason breakdown, backend reason_distribution added, footer cleanup.
+Commit c86cb39. See [[2026-04-30-ui-session30b]].
+
+### 4g. Website Session 30c ✅ DONE (2026-04-30)
+4 fixes: How It Works container 640→800px, more particles on all orbit rings (3 per ring) + outer rings, center hub text → "Benchmarking", filter sidebar sticky removed (alignSelf:start only — no top:96 offset), page sizes 9/18/36/72 → 16/32/64/All.
+See [[2026-04-30-ui-session30c]].
+
 ---
 
 ## Phase 5 — Paper Writing
