@@ -90,11 +90,18 @@ function MarkdownRenderer({ text, color }) {
 function extractFinalAnswer(text) {
   if (!text) return ''
   const lines = text.split('\n')
-  // Scan bottom-up: ANSWER: or **ANSWER:** (markdown bold)
+  // Scan bottom-up for ANSWER: tag (plain or **ANSWER:** markdown bold)
   for (let i = lines.length - 1; i >= 0; i--) {
     const line = lines[i].trim()
     if (/^\*{0,2}ANSWER:\*{0,2}/i.test(line)) {
-      return line.replace(/^\*{0,2}ANSWER:\*{0,2}\s*/i, '').replace(/\*{0,2}$/, '').trim()
+      const val = line.replace(/^\*{0,2}ANSWER:\*{0,2}\s*/i, '').replace(/\*{0,2}$/, '').trim()
+      if (val) return val
+      // Value may be on the next non-empty line (model put answer on separate line)
+      for (let j = i + 1; j < lines.length; j++) {
+        const next = lines[j].trim()
+        if (next) return next
+      }
+      return ''
     }
   }
   for (let i = lines.length - 1; i >= 0; i--) {
@@ -148,19 +155,13 @@ function extractAllNums(s) {
   return matches.map(m => parseFloat(m)).filter(n => isFinite(n))
 }
 
-// Cluster [{model_id, num}] by tolerance (sort-then-chain approach)
-function clusterNumeric(pairs, tol) {
-  const sorted = [...pairs].sort((a, b) => a.num - b.num)
-  const clusters = [[sorted[0]]]
-  for (let i = 1; i < sorted.length; i++) {
-    const prev = clusters[clusters.length - 1]
-    if (sorted[i].num - prev[prev.length - 1].num <= tol) {
-      prev.push(sorted[i])
-    } else {
-      clusters.push([sorted[i]])
-    }
-  }
-  return clusters
+// Compare two sorted numeric arrays element-wise within tolerance
+function numsClose(a, b, tol) {
+  if (a.length === 0 && b.length === 0) return true
+  if (a.length !== b.length) return false
+  const sa = [...a].sort((x, y) => x - y)
+  const sb = [...b].sort((x, y) => x - y)
+  return sa.every((v, i) => Math.abs(v - sb[i]) <= tol)
 }
 
 function computeDivergence(responses) {
@@ -174,42 +175,62 @@ function computeDivergence(responses) {
     allNums: extractAllNums(extractFinalAnswer(r.response)),
   }))
 
-  // Try numeric clustering on first number
-  const numericPairs = extracted.map(e => ({ model_id: e.model_id, num: extractFirstNum(e.rawAnswer) }))
-  const allNumeric = numericPairs.every(p => p.num !== null)
+  // Override: if all normalized strings are identical → instant consensus
+  const normSet = new Set(extracted.map(e => e.normAnswer))
+  if (normSet.size === 1) {
+    const allIds = extracted.map(e => e.model_id)
+    return {
+      modelStatus: Object.fromEntries(allIds.map(id => [id, 'consensus'])),
+      verdict: 'consensus', severity: 'none',
+      message: 'All models converge on the same answer.',
+      groups: [['0', allIds]], extracted,
+    }
+  }
 
   let groups // Array of [normKey, [model_ids]]
-  if (allNumeric) {
-    const clusters = clusterNumeric(numericPairs, NUMERIC_TOLERANCE)
-    groups = clusters.map((cluster, i) => [String(i), cluster.map(p => p.model_id)])
+  const allHaveNums = extracted.every(e => e.allNums.length > 0)
+
+  if (allHaveNums) {
+    // Group by sorted number arrays (handles multi-value answers and different orderings)
+    const groupNums = []
+    const groupMembers = []
+    for (const e of extracted) {
+      let found = -1
+      for (let gi = 0; gi < groupNums.length; gi++) {
+        if (numsClose(e.allNums, groupNums[gi], NUMERIC_TOLERANCE)) {
+          found = gi; break
+        }
+      }
+      if (found === -1) {
+        groupNums.push(e.allNums)
+        groupMembers.push([e.model_id])
+      } else {
+        groupMembers[found].push(e.model_id)
+      }
+    }
+    groups = groupMembers.map((members, i) => [String(i), members])
   } else {
-    // String comparison with tolerance: two answers match if their first numbers
-    // are within tolerance, or if they have no numbers and text matches
-    const assigned = new Map() // model_id → group index
-    const groupMembers = [] // [[model_id, ...], ...]
+    // Fallback: first-number comparison or string match
+    const groupMembers = []
     for (const e of extracted) {
       let matched = -1
       for (let gi = 0; gi < groupMembers.length; gi++) {
         const repId = groupMembers[gi][0]
         const rep = extracted.find(x => x.model_id === repId)
         if (!rep) continue
-        // Try numeric comparison of first number
         const n1 = extractFirstNum(e.rawAnswer)
         const n2 = extractFirstNum(rep.rawAnswer)
         if (n1 !== null && n2 !== null && Math.abs(n1 - n2) <= NUMERIC_TOLERANCE) {
           matched = gi; break
         }
-        // String match after normalization
         if (n1 === null && n2 === null && e.normAnswer === rep.normAnswer) {
           matched = gi; break
         }
       }
       if (matched === -1) {
         groupMembers.push([e.model_id])
-        assigned.set(e.model_id, groupMembers.length - 1)
       } else {
         groupMembers[matched].push(e.model_id)
-        assigned.set(e.model_id, matched)
       }
     }
     groups = groupMembers.map((members, i) => [String(i), members])
@@ -492,7 +513,9 @@ function AggregateStats({ refreshTrigger }) {
     <motion.div initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ color: 'rgba(0,255,224,0.8)', fontSize: 11, fontFamily: 'var(--font-mono)', letterSpacing: '0.06em', fontWeight: 700 }}>
-          AGGREGATE VOTES {data ? `— ${data.total_votes} total` : ''}
+          AGGREGATE VOTES
+          {data ? ` — ${data.total_votes} vote${data.total_votes !== 1 ? 's' : ''}` : ''}
+          {data?.unique_users ? <span style={{ color: 'rgba(167,139,250,0.8)', marginLeft: 10 }}>· {data.unique_users} unique user{data.unique_users !== 1 ? 's' : ''}</span> : null}
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button onClick={() => { setLoading(true); fetch(`${API_BASE}/api/user-study/results`).then(r => r.json()).then(d => { setData(d); setLoading(false) }).catch(() => setLoading(false)) }} disabled={loading} style={{ padding: '4px 12px', borderRadius: 6, border: '1px solid rgba(0,255,224,0.3)', background: 'rgba(0,255,224,0.06)', color: 'rgba(0,255,224,0.8)', fontSize: 10, fontWeight: 700, cursor: loading ? 'wait' : 'pointer', fontFamily: 'var(--font-mono)' }}>↻ REFRESH</button>

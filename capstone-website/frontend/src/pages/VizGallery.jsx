@@ -141,6 +141,7 @@ function LeaderCard({ modelId, data, rank }) {
 // ─── VizCard (standard gallery card) ─────────────────────────
 function VizCard({ viz, index, setFullImg, onOpenGif, featured = false }) {
   const [imgLoaded, setImgLoaded] = useState(false)
+  const [iframeOpen, setIframeOpen] = useState(false)
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, amount: 0.1 })
   const hasInteractive = viz.interactive !== null
@@ -290,11 +291,11 @@ function VizCard({ viz, index, setFullImg, onOpenGif, featured = false }) {
             {hasInteractive ? (
               <button
                 data-hover="true"
-                onClick={() => viz.isGif ? onOpenGif(viz.interactive) : window.open(viz.interactive, '_blank')}
+                onClick={() => viz.isGif ? onOpenGif(viz.interactive) : setIframeOpen(v => !v)}
                 style={{
                   flex: 1, padding: '9px 0',
-                  background: 'rgba(0,255,224,0.1)',
-                  border: '1px solid rgba(0,255,224,0.3)',
+                  background: iframeOpen && !viz.isGif ? 'rgba(0,255,224,0.18)' : 'rgba(0,255,224,0.1)',
+                  border: `1px solid ${iframeOpen && !viz.isGif ? 'rgba(0,255,224,0.55)' : 'rgba(0,255,224,0.3)'}`,
                   borderRadius: 7, color: '#00FFE0',
                   fontSize: 12, fontWeight: 600, cursor: 'none',
                   transition: 'background 0.18s, border-color 0.18s',
@@ -304,11 +305,11 @@ function VizCard({ viz, index, setFullImg, onOpenGif, featured = false }) {
                   e.currentTarget.style.borderColor = 'rgba(0,255,224,0.5)'
                 }}
                 onMouseLeave={e => {
-                  e.currentTarget.style.background = 'rgba(0,255,224,0.1)'
-                  e.currentTarget.style.borderColor = 'rgba(0,255,224,0.3)'
+                  e.currentTarget.style.background = iframeOpen && !viz.isGif ? 'rgba(0,255,224,0.18)' : 'rgba(0,255,224,0.1)'
+                  e.currentTarget.style.borderColor = iframeOpen && !viz.isGif ? 'rgba(0,255,224,0.55)' : 'rgba(0,255,224,0.3)'
                 }}
               >
-                {viz.isGif ? 'View Animation ▶' : 'Open Interactive ↗'}
+                {viz.isGif ? 'View Animation ▶' : iframeOpen ? 'Close Interactive ▲' : 'Open Interactive ▼'}
               </button>
             ) : (
               <div
@@ -326,6 +327,26 @@ function VizCard({ viz, index, setFullImg, onOpenGif, featured = false }) {
               </div>
             )}
           </div>
+
+          {/* Inline interactive iframe panel */}
+          <AnimatePresence>
+            {iframeOpen && !viz.isGif && viz.interactive && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 520 }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                style={{ overflow: 'hidden', borderTop: '1px solid rgba(0,255,224,0.15)', marginTop: 12 }}
+              >
+                <iframe
+                  src={viz.interactive}
+                  title={`${viz.title} interactive`}
+                  style={{ width: '100%', height: 520, border: 'none', background: '#050a16', borderRadius: '0 0 12px 12px' }}
+                  loading="lazy"
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </motion.div>
   )
