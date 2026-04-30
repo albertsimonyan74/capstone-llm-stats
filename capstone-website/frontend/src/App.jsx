@@ -1893,19 +1893,49 @@ const TEXTBOOKS = [
 const RQS = [
   { id:'RQ1', label:'Numerical & Statistical Accuracy',   color:'#00FFE0',
     detail:'Do LLMs compute correct numerical answers? Tests exact posterior parameters, credible intervals, and predictive distributions against deterministic ground-truth values computed in Python.',
-    result:'Claude 88.9% pass · avg N-score 0.683 across all 5 models', metric:'N = 0.20', icon:'#' },
+    result:'Claude 88.9% pass · avg N-score 0.683 across all 5 models', metric:'N = 0.20', icon:'#',
+    expandedStats:[
+      { label:'Claude N-score', value:'0.683' }, { label:'Gemini N-score', value:'0.642' },
+      { label:'ChatGPT N-score', value:'0.621' }, { label:'DeepSeek N-score', value:'0.625' }, { label:'Mistral N-score', value:'0.644' },
+    ],
+    expandedDetail:'Numeric answers are extracted from a required "ANSWER: <value>" line at the end of each response. Ground truth is computed in Python using analytic formulas or seeded Monte Carlo. Tolerance varies by task type: ±0.01 for discrete medians, ±0.05 for MCMC tasks, ±0.10 for variational methods. Partial credit is awarded on a linear scale between full-credit and zero-credit tolerances. CONCEPTUAL tasks skip this dimension entirely — scored on rubric only.',
+  },
   { id:'RQ2', label:'Method Selection Accuracy',           color:'#00B4D8',
     detail:'Do models choose the correct statistical method and show appropriate derivation steps? Evaluates whether the response uses the right conjugate family, MCMC variant, or frequentist procedure.',
-    result:'Structure rubric active · Phase 2 tasks test 7 computational Bayes methods', metric:'M = 0.20', icon:'M' },
+    result:'Structure rubric active · Phase 2 tasks test 7 computational Bayes methods', metric:'M = 0.20', icon:'M',
+    expandedStats:[
+      { label:'Phase 1 task types', value:'31' }, { label:'Phase 2 methods', value:'7' },
+      { label:'Hardest type', value:'MARKOV' }, { label:'Avg M-score', value:'~0.65' }, { label:'MCMC pass rate', value:'<30%' },
+    ],
+    expandedDetail:'Each task specifies required_structure_checks — a list of observable derivation steps (e.g. "states_prior", "applies_bayes_theorem", "shows_posterior_update"). The scorer uses keyword matching across 40+ structure patterns mapped to expected vocabulary. Phase 2 tasks cover 7 computational Bayes methods: Gibbs sampling, Metropolis-Hastings, HMC, RJMCMC, Hierarchical Bayes, Variational Bayes, and ABC. These are the frontier where all models struggle most.',
+  },
   { id:'RQ3', label:'Assumption Compliance',               color:'#7FFFD4',
     detail:'Do models state and verify the assumptions required for their chosen method — prior specification, iid conditions, distributional families? Failures here indicate shallow statistical reasoning.',
-    result:'E3 Assumption Violation is the #1 failure mode (119/143 failures)', metric:'A = 0.20', icon:'A' },
+    result:'E3 Assumption Violation is the #1 failure mode (119/143 failures)', metric:'A = 0.20', icon:'A',
+    expandedStats:[
+      { label:'Total failures', value:'143' }, { label:'E3 violations', value:'119' },
+      { label:'E3 share', value:'83%' }, { label:'Error types', value:'E1–E9' }, { label:'LLM judge calls', value:'≤100' },
+    ],
+    expandedDetail:'Each task specifies required_assumption_checks — e.g. "prior_specified", "iid_stated", "likelihood_family_named". Models frequently compute correct posteriors while omitting the distributional assumptions that justify the computation. This is the dominant failure mode across all 5 models. Error taxonomy runs post-hoc via analyze_errors.py using Claude as an LLM judge (with --no-llm flag for rule-based fallback). Nine error categories: E1 extraction, E2 formula, E3 assumption, E4 setup, E5 conceptual, E6 rounding, E7 interpretation, E8 overfit, E9 other.',
+  },
   { id:'RQ4', label:'Robustness to Prompt Variations',     color:'#4A90D9',
     detail:'Are model scores stable across rephrasings, numerical changes, and semantic reframings of the same problem? Tests whether LLMs understand statistics or rely on surface pattern matching.',
-    result:'375 synthetic runs · avg robustness 0.91 · ChatGPT most robust (0.931)', metric:'RQ4 ≈ 0.91', icon:'R' },
+    result:'375 synthetic runs · avg robustness 0.91 · ChatGPT most robust (0.931)', metric:'RQ4 ≈ 0.91', icon:'R',
+    expandedStats:[
+      { label:'Synthetic runs', value:'375' }, { label:'Base tasks', value:'25' },
+      { label:'Perturbation types', value:'3' }, { label:'ChatGPT robustness', value:'0.931' }, { label:'Semantic drop', value:'largest' },
+    ],
+    expandedDetail:'25 base tasks each perturbed 3 ways: rephrase (same math, reworded), numerical (new numbers with recomputed GT), semantic (same math in new real-world framing). Semantic reframings caused the largest score drops across all models — surface framing shifts reasoning more than changing actual numbers. ChatGPT is most robust (0.931 avg), followed by Claude. Robustness score = perturbed_score / base_score, clamped to [0,1]. All perturbations generated by GPT-4.1 and validated against ground-truth recalculation.',
+  },
   { id:'RQ5', label:'Confidence & Trust Calibration',      color:'#A78BFA',
     detail:'Does expressed certainty match actual accuracy? Overconfident-wrong answers are penalized 1.5× more than well-calibrated wrong answers. Extracted from linguistic hedges and explicit percentages.',
-    result:'C=0.20 active · calibration extracted across all 1,230 runs', metric:'C = 0.20', icon:'C' },
+    result:'C=0.20 active · calibration extracted across all 1,230 runs', metric:'C = 0.20', icon:'C',
+    expandedStats:[
+      { label:'Total calibration scores', value:'1,230' }, { label:'Penalty multiplier', value:'1.5×' },
+      { label:'Underconfident discount', value:'0.8×' }, { label:'Hedge phrases tracked', value:'10+' }, { label:'Weight in final score', value:'20%' },
+    ],
+    expandedDetail:'Confidence is extracted from linguistic signals: explicit percentages ("I am 90% confident"), hedge words ("approximately", "roughly", "I think"), or certainty markers ("clearly", "definitely"). Overconfident-wrong is penalized 1.5× — the model expressed high certainty but got the wrong answer. Underconfident-right is discounted by 0.8×. Well-calibrated responses (confident+correct, uncertain+wrong) score 1.0. This dimension incentivizes epistemic honesty over bluster. Calibration is extracted in response_parser.py via extract_confidence().',
+  },
 ]
 
 const ABOUT_FINDINGS = [
@@ -1967,30 +1997,84 @@ const SCORE_DIMS = [
 ]
 
 function About() {
+  const [openRQ, setOpenRQ] = React.useState(null)
   return (
     <Section id="about" minHeight="auto">
       <SectionTitle>About This Research</SectionTitle>
 
       {/* § 1 — Research Questions (TOP) */}
       <FadeIn>
-        <div style={{ display:'flex', gap:16, maxWidth:1300, margin:'0 auto 52px', alignItems:'flex-start' }}>
-          {RQS.map((q,i) => (
-            <motion.div key={i}
-              style={{ flex:1, marginTop: i % 2 === 1 ? 36 : 0, borderRadius:14 }}
-              whileHover={{ y:-6, boxShadow:`0 14px 44px ${q.color}30` }}
-              transition={{ type:'spring', stiffness:400, damping:28 }}
-            >
-              <Card style={{ padding:'20px 14px', boxSizing:'border-box', borderTop:`3px solid ${q.color}`, borderRadius:'0 0 14px 14px', height:'100%' }}>
-                <div style={{ color:q.color, fontSize:42, fontWeight:900, fontFamily:'var(--font-mono)', opacity:0.08, textAlign:'right', lineHeight:1, marginBottom:-10, userSelect:'none' }}>{i+1}</div>
-                <div style={{ width:34, height:34, borderRadius:8, background:`${q.color}18`, border:`1.5px solid ${q.color}`, display:'flex', alignItems:'center', justifyContent:'center', color:q.color, fontWeight:800, fontSize:11, marginBottom:10 }}>{q.id}</div>
-                <div style={{ color:'var(--text-primary)', fontSize:11.5, fontWeight:700, marginBottom:4, lineHeight:1.3 }}>{q.label}</div>
-                <div style={{ color:q.color, fontSize:9, fontWeight:700, letterSpacing:'0.08em', marginBottom:10 }}>{q.metric}</div>
-                <p style={{ color:'var(--text-secondary)', fontSize:10.5, lineHeight:1.65, margin:'0 0 10px' }}>{q.detail}</p>
-                <div style={{ background:`${q.color}0D`, border:`1px solid ${q.color}22`, borderRadius:6, padding:'5px 8px', fontSize:9, color:q.color, fontStyle:'italic' }}>{q.result}</div>
-              </Card>
-            </motion.div>
-          ))}
+        <div style={{ display:'flex', gap:16, maxWidth:1300, margin:'0 auto 16px', alignItems:'flex-start' }}>
+          {RQS.map((q,i) => {
+            const isOpen = openRQ === i
+            return (
+              <motion.div key={i}
+                style={{ flex:1, marginTop: i % 2 === 1 ? 36 : 0, borderRadius:14, cursor:'pointer' }}
+                onClick={() => setOpenRQ(isOpen ? null : i)}
+                whileHover={{ y: isOpen ? 0 : -6, boxShadow:`0 14px 44px ${q.color}${isOpen ? '50' : '30'}` }}
+                animate={{ boxShadow: isOpen ? `0 0 0 2px ${q.color}60` : 'none' }}
+                transition={{ type:'spring', stiffness:400, damping:28 }}
+              >
+                <Card style={{ padding:'20px 14px', boxSizing:'border-box', borderTop:`3px solid ${q.color}`, borderRadius:'0 0 14px 14px', height:'100%', userSelect:'none' }}>
+                  <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between' }}>
+                    <div style={{ color:q.color, fontSize:42, fontWeight:900, fontFamily:'var(--font-mono)', opacity:0.08, lineHeight:1, marginBottom:-10, userSelect:'none' }}>{i+1}</div>
+                    <motion.svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={q.color} strokeWidth="2.5" strokeLinecap="round"
+                      animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration:0.25 }} style={{ flexShrink:0, marginTop:4, opacity:0.7 }}>
+                      <polyline points="6 9 12 15 18 9"/>
+                    </motion.svg>
+                  </div>
+                  <div style={{ width:34, height:34, borderRadius:8, background:`${q.color}18`, border:`1.5px solid ${q.color}`, display:'flex', alignItems:'center', justifyContent:'center', color:q.color, fontWeight:800, fontSize:11, marginBottom:10 }}>{q.id}</div>
+                  <div style={{ color:'var(--text-primary)', fontSize:11.5, fontWeight:700, marginBottom:4, lineHeight:1.3 }}>{q.label}</div>
+                  <div style={{ color:q.color, fontSize:9, fontWeight:700, letterSpacing:'0.08em', marginBottom:10 }}>{q.metric}</div>
+                  <p style={{ color:'var(--text-secondary)', fontSize:10.5, lineHeight:1.65, margin:'0 0 10px' }}>{q.detail}</p>
+                  <div style={{ background:`${q.color}0D`, border:`1px solid ${q.color}22`, borderRadius:6, padding:'5px 8px', fontSize:9, color:q.color, fontStyle:'italic' }}>{q.result}</div>
+                </Card>
+              </motion.div>
+            )
+          })}
         </div>
+
+        {/* Expanded panel — full width below the row */}
+        <AnimatePresence mode="wait">
+          {openRQ !== null && (() => {
+            const q = RQS[openRQ]
+            return (
+              <motion.div key={openRQ}
+                initial={{ opacity:0, height:0 }}
+                animate={{ opacity:1, height:'auto' }}
+                exit={{ opacity:0, height:0 }}
+                transition={{ duration:0.3, ease:'easeInOut' }}
+                style={{ overflow:'hidden', maxWidth:1300, margin:'0 auto' }}
+              >
+                <div style={{ border:`1px solid ${q.color}30`, borderRadius:14, background:`${q.color}06`, padding:'28px 32px', marginBottom:8 }}>
+                  <div style={{ display:'flex', gap:40, alignItems:'flex-start', flexWrap:'wrap' }}>
+                    {/* Left: stats grid */}
+                    <div style={{ flexShrink:0 }}>
+                      <div style={{ color:q.color, fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:14 }}>KEY NUMBERS</div>
+                      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'10px 24px' }}>
+                        {q.expandedStats.map((s,j) => (
+                          <div key={j}>
+                            <div style={{ color:q.color, fontSize:18, fontWeight:800, fontFamily:'var(--font-mono)', lineHeight:1 }}>{s.value}</div>
+                            <div style={{ color:'rgba(255,255,255,0.4)', fontSize:9, letterSpacing:'0.06em', marginTop:2 }}>{s.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Divider */}
+                    <div style={{ width:1, alignSelf:'stretch', background:`${q.color}20`, flexShrink:0 }}/>
+                    {/* Right: detailed explanation */}
+                    <div style={{ flex:1, minWidth:240 }}>
+                      <div style={{ color:q.color, fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:12 }}>HOW IT'S MEASURED</div>
+                      <p style={{ color:'var(--text-secondary)', fontSize:12, lineHeight:1.8, margin:0 }}>{q.expandedDetail}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )
+          })()}
+        </AnimatePresence>
+
+        <div style={{ height:36 }}/>
       </FadeIn>
 
       {/* § 2 — Research Overview + CountUp stats */}
