@@ -1997,7 +1997,7 @@ const SCORE_DIMS = [
 ]
 
 function About() {
-  const [openRQ, setOpenRQ] = React.useState(null)
+  const [openRQ, setOpenRQ] = useState(null)
   return (
     <Section id="about" minHeight="auto">
       <SectionTitle>About This Research</SectionTitle>
