@@ -1,5 +1,9 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'motion/react'
+import {
+  PerModelPassFlipPanel, KeywordDegradationPanel, PerDimRobustnessPanel,
+  PerDimCalibrationPanel, AccCalibScatterPanel,
+} from '../components/MethodologyPanels'
 
 const SCORE_DIMS = [
   { dim: 'A', name: 'Assumption Compliance',  weight: 0.30, color: '#7FFFD4', desc: 'Required assumption checks (prior_specified, iid_stated). Heaviest weight: Du 2025, Boye & Moell 2025, Yamauchi 2025 all identify assumption articulation as the primary failure mode in LLM statistical reasoning.' },
@@ -234,6 +238,7 @@ export default function Methodology() {
               evaluation, where the goal is to measure reasoning competence independent of surface
               phrasing.
             </Callout>
+            <KeywordDegradationPanel />
             <Callout color="#FF6B6B" title="α is NEGATIVE on R and M">
               Krippendorff α reports systematic disagreement (not just weak agreement) on
               reasoning_quality (α = −0.133, 95% CI [−0.228, −0.039] entirely below zero) and
@@ -262,6 +267,11 @@ export default function Methodology() {
               ))}
             </div>
           </Card>
+        </FadeIn>
+
+        {/* 3.5 — Per-model pass-flip panel */}
+        <FadeIn delay={165}>
+          <PerModelPassFlipPanel />
         </FadeIn>
 
         {/* 4 — Per-model failure modes */}
@@ -297,6 +307,11 @@ export default function Methodology() {
               </table>
             </div>
           </Card>
+        </FadeIn>
+
+        {/* 4.5 — Per-dim robustness panel */}
+        <FadeIn delay={195}>
+          <PerDimRobustnessPanel />
         </FadeIn>
 
         {/* 5 — Statistical validation + tolerance */}
@@ -354,6 +369,7 @@ export default function Methodology() {
               BEST consistency ECE (0.618). Same model, opposite calibration extremes depending on
               extraction method. Calibration measurement is method-dependent.
             </Callout>
+            <PerDimCalibrationPanel />
             <p style={{ color: 'rgba(232,244,248,0.7)', fontSize: 12, lineHeight: 1.7, margin: '14px 0 0' }}>
               <strong>Accuracy-calibration correlation (RQ5 Layer 4):</strong> Pearson r between
               per-task aggregate (literature-weighted NMACR) and per-task confidence (dim_C):
@@ -362,6 +378,11 @@ export default function Methodology() {
               not mean accurate; it means hedging behaviour tracks task difficulty.
             </p>
           </Card>
+        </FadeIn>
+
+        {/* 6.5 — Accuracy-calibration scatter panel */}
+        <FadeIn delay={255}>
+          <AccCalibScatterPanel />
         </FadeIn>
 
         {/* 7 — Eligibility filters / disclosures */}
