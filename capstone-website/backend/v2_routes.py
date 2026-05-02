@@ -217,7 +217,8 @@ def _build_rankings() -> HeadlineRankings:
         )
 
     # Calibration: ECE asc (lower is better)
-    cal_items = [(m, d.get("ece")) for m, d in calib.items() if d.get("ece") is not None]
+    cal_items = [(m, d.get("ece")) for m, d in calib.items()
+                 if isinstance(d, dict) and d.get("ece") is not None]
     cal_items.sort(key=lambda x: x[1])
     calibration = [
         RankingEntry(rank=i + 1, model=m, ece=ece) for i, (m, ece) in enumerate(cal_items)
