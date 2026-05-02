@@ -113,7 +113,8 @@ def root():
                       "/api/v2/health", "/api/v2/headline_numbers",
                       "/api/v2/rankings", "/api/v2/error_taxonomy",
                       "/api/v2/robustness", "/api/v2/agreement",
-                      "/api/v2/calibration", "/api/v2/literature"],
+                      "/api/v2/calibration", "/api/v2/literature",
+                      "/api/v2/pass_flip"],
     }
 
 

@@ -301,6 +301,7 @@ def rankings() -> Dict[str, Any]:
     sc = _load_json(V2_FILES["calibration_consistency"])
 
     return {
+        "weighting_scheme": bs.get("weighting_scheme"),
         "accuracy": {
             "method": bs.get("method"),
             "B": bs.get("B"),
