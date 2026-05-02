@@ -1,0 +1,26 @@
+[progress] 100/2365 | elapsed=82.5s | rate=1.21/s | ETA=1868s | errors 429=0 503=0 parse=1 timeout=0 other=0 | tokens in/out=135022/19555 | cost~$0.136
+[progress] 200/2365 | elapsed=170.8s | rate=1.17/s | ETA=1849s | errors 429=0 503=0 parse=3 timeout=0 other=0 | tokens in/out=271958/38982 | cost~$0.274
+[progress] 300/2365 | elapsed=252.8s | rate=1.19/s | ETA=1740s | errors 429=0 503=0 parse=4 timeout=0 other=0 | tokens in/out=427313/58386 | cost~$0.427
+[progress] 400/2365 | elapsed=326.2s | rate=1.23/s | ETA=1602s | errors 429=0 503=0 parse=4 timeout=0 other=0 | tokens in/out=582874/77970 | cost~$0.582
+[progress] 500/2365 | elapsed=397.5s | rate=1.26/s | ETA=1483s | errors 429=0 503=0 parse=5 timeout=0 other=0 | tokens in/out=718651/97432 | cost~$0.718
+[progress] 600/2365 | elapsed=475.3s | rate=1.26/s | ETA=1398s | errors 429=0 503=0 parse=5 timeout=0 other=0 | tokens in/out=849992/116561 | cost~$0.851
+[progress] 700/2365 | elapsed=547.5s | rate=1.28/s | ETA=1302s | errors 429=0 503=0 parse=6 timeout=0 other=0 | tokens in/out=989338/136183 | cost~$0.990
+[progress] 800/2365 | elapsed=644.5s | rate=1.24/s | ETA=1261s | errors 429=0 503=0 parse=6 timeout=0 other=0 | tokens in/out=1135860/155953 | cost~$1.137
+[progress] 900/2365 | elapsed=720.6s | rate=1.25/s | ETA=1173s | errors 429=0 503=0 parse=6 timeout=0 other=0 | tokens in/out=1289570/176151 | cost~$1.290
+[progress] 1000/2365 | elapsed=802.1s | rate=1.25/s | ETA=1095s | errors 429=0 503=0 parse=8 timeout=0 other=0 | tokens in/out=1434623/195950 | cost~$1.435
+[progress] 1100/2365 | elapsed=861.0s | rate=1.28/s | ETA=990s | errors 429=0 503=0 parse=8 timeout=0 other=0 | tokens in/out=1612562/216040 | cost~$1.609
+[progress] 1200/2365 | elapsed=914.7s | rate=1.31/s | ETA=888s | errors 429=0 503=0 parse=8 timeout=0 other=0 | tokens in/out=1779269/236071 | cost~$1.773
+[progress] 1300/2365 | elapsed=969.3s | rate=1.34/s | ETA=794s | errors 429=0 503=0 parse=8 timeout=0 other=0 | tokens in/out=1964128/256167 | cost~$1.954
+[progress] 1400/2365 | elapsed=1025.5s | rate=1.37/s | ETA=707s | errors 429=0 503=0 parse=8 timeout=0 other=0 | tokens in/out=2139244/276513 | cost~$2.126
+[progress] 1500/2365 | elapsed=1077.7s | rate=1.39/s | ETA=621s | errors 429=0 503=0 parse=8 timeout=0 other=0 | tokens in/out=2322165/296036 | cost~$2.304
+[progress] 1600/2365 | elapsed=1129.9s | rate=1.42/s | ETA=540s | errors 429=0 503=0 parse=13 timeout=0 other=0 | tokens in/out=2481753/315688 | cost~$2.462
+[progress] 1700/2365 | elapsed=1175.7s | rate=1.45/s | ETA=460s | errors 429=0 503=0 parse=15 timeout=0 other=0 | tokens in/out=2652085/335181 | cost~$2.629
+[progress] 1800/2365 | elapsed=1211.6s | rate=1.49/s | ETA=380s | errors 429=0 503=0 parse=16 timeout=0 other=0 | tokens in/out=2835362/355806 | cost~$2.808
+[progress] 1900/2365 | elapsed=1253.1s | rate=1.52/s | ETA=307s | errors 429=0 503=0 parse=16 timeout=0 other=0 | tokens in/out=3025527/376254 | cost~$2.994
+[progress] 2000/2365 | elapsed=1292.1s | rate=1.55/s | ETA=236s | errors 429=0 503=0 parse=21 timeout=0 other=0 | tokens in/out=3214741/396259 | cost~$3.178
+[progress] 2100/2365 | elapsed=1325.7s | rate=1.58/s | ETA=167s | errors 429=0 503=0 parse=22 timeout=0 other=0 | tokens in/out=3445312/416433 | cost~$3.398
+[progress] 2200/2365 | elapsed=1359.2s | rate=1.62/s | ETA=102s | errors 429=0 503=0 parse=25 timeout=0 other=0 | tokens in/out=3656667/436049 | cost~$3.602
+[progress] 2300/2365 | elapsed=1404.1s | rate=1.64/s | ETA=40s | errors 429=0 503=0 parse=26 timeout=0 other=0 | tokens in/out=3827480/456351 | cost~$3.770
+[progress] 2365/2365 | elapsed=1429.8s | rate=1.65/s | ETA=0s | errors 429=0 503=0 parse=27 timeout=0 other=0 | tokens in/out=3936135/469797 | cost~$3.877
+Loaded 2365 runs and 473 task specs.
+Total runs: 2365 | already judged: 0 | missing task spec: 0 | to judge: 2365

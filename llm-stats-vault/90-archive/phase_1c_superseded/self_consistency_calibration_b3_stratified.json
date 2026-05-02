@@ -1,0 +1,160 @@
+{
+  "_methodology_citation": "Methodology grounded in Multi-Answer Confidence (arxiv 2602.07842) and SelfCheckGPT (Manakul et al., 2023). Contrast with FermiEval (arxiv 2510.26995). Addresses audit finding F-12 / P-3.",
+  "n_tasks": 30,
+  "n_models": 5,
+  "n_runs_per_pair": 3,
+  "temperature": 0.7,
+  "top_p": 0.95,
+  "stratification": {
+    "BAYESIAN_CORE": [
+      "BAYES_REG_04",
+      "BAYES_REG_05",
+      "BAYES_REG_01",
+      "BAYES_REG_03",
+      "BAYES_REG_02"
+    ],
+    "MLE_FREQ": [
+      "FISHER_INFO_02",
+      "FISHER_INFO_03",
+      "FISHER_INFO_01",
+      "FISHER_INFO_04",
+      "MLE_EFFICIENCY_03"
+    ],
+    "MCMC": [
+      "STATIONARY_03",
+      "STATIONARY_01",
+      "MH_05",
+      "HMC_04",
+      "GIBBS_03"
+    ],
+    "REGRESSION": [
+      "REGRESSION_05",
+      "REGRESSION_04",
+      "REGRESSION_02",
+      "REGRESSION_03",
+      "REGRESSION_01"
+    ],
+    "CAUSAL_PRED": [
+      "MARKOV_01",
+      "MARKOV_04",
+      "MARKOV_05",
+      "MARKOV_03",
+      "MARKOV_02"
+    ],
+    "ADVANCED": [
+      "BOX_MULLER_02",
+      "BOX_MULLER_04",
+      "BOX_MULLER_03",
+      "BOX_MULLER_01",
+      "LOG_ML_02"
+    ]
+  },
+  "selected_task_ids": [
+    "BAYES_REG_04",
+    "BAYES_REG_05",
+    "BAYES_REG_01",
+    "BAYES_REG_03",
+    "BAYES_REG_02",
+    "FISHER_INFO_02",
+    "FISHER_INFO_03",
+    "FISHER_INFO_01",
+    "FISHER_INFO_04",
+    "MLE_EFFICIENCY_03",
+    "STATIONARY_03",
+    "STATIONARY_01",
+    "MH_05",
+    "HMC_04",
+    "GIBBS_03",
+    "REGRESSION_05",
+    "REGRESSION_04",
+    "REGRESSION_02",
+    "REGRESSION_03",
+    "REGRESSION_01",
+    "MARKOV_01",
+    "MARKOV_04",
+    "MARKOV_05",
+    "MARKOV_03",
+    "MARKOV_02",
+    "BOX_MULLER_02",
+    "BOX_MULLER_04",
+    "BOX_MULLER_03",
+    "BOX_MULLER_01",
+    "LOG_ML_02"
+  ],
+  "per_model": {
+    "claude": {
+      "n_pairs_with_3_runs": 30,
+      "n_high": 0,
+      "n_med": 0,
+      "n_low": 30,
+      "consistency_ece": 0.33,
+      "consistency_brier": 0.10890000000000005,
+      "accuracy_overall": 0.0
+    },
+    "chatgpt": {
+      "n_pairs_with_3_runs": 30,
+      "n_high": 14,
+      "n_med": 0,
+      "n_low": 16,
+      "consistency_ece": 0.6426666666666667,
+      "consistency_brier": 0.5247466666666667,
+      "accuracy_overall": 0.0
+    },
+    "gemini": {
+      "n_pairs_with_3_runs": 30,
+      "n_high": 7,
+      "n_med": 7,
+      "n_low": 16,
+      "consistency_ece": 0.5656666666666668,
+      "consistency_brier": 0.39615666666666666,
+      "accuracy_overall": 0.0
+    },
+    "deepseek": {
+      "n_pairs_with_3_runs": 30,
+      "n_high": 13,
+      "n_med": 2,
+      "n_low": 15,
+      "consistency_ece": 0.643,
+      "consistency_brier": 0.51771,
+      "accuracy_overall": 0.0
+    },
+    "mistral": {
+      "n_pairs_with_3_runs": 30,
+      "n_high": 11,
+      "n_med": 2,
+      "n_low": 17,
+      "consistency_ece": 0.5983333333333333,
+      "consistency_brier": 0.45830333333333334,
+      "accuracy_overall": 0.0
+    }
+  },
+  "ece_comparison": {
+    "claude": {
+      "keyword_ece": 0.0665989159891599,
+      "consistency_ece": 0.33,
+      "direction_flipped": true
+    },
+    "chatgpt": {
+      "keyword_ece": 0.06260162601626021,
+      "consistency_ece": 0.6426666666666667,
+      "direction_flipped": true
+    },
+    "gemini": {
+      "keyword_ece": 0.09728997289972899,
+      "consistency_ece": 0.5656666666666668,
+      "direction_flipped": true
+    },
+    "deepseek": {
+      "keyword_ece": 0.17947154471544713,
+      "consistency_ece": 0.643,
+      "direction_flipped": false
+    },
+    "mistral": {
+      "keyword_ece": 0.08401084010840104,
+      "consistency_ece": 0.5983333333333333,
+      "direction_flipped": true
+    }
+  },
+  "session_cost_usd": 1.1941,
+  "aborted_partial": false
+}

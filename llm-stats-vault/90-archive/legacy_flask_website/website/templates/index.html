@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLM Bayesian Benchmark · DS 299</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<!-- ── Navbar ──────────────────────────────────────────────── -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="/static/assets/logo.svg" alt="Logo" />
+    <div class="logo-text">
+      LLM Benchmark
+      <span>DS 299 · Capstone</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#section-overview"  class="active">Overview</a></li>
+    <li><a href="#section-benchmark">Benchmark</a></li>
+    <li><a href="#section-models">Models</a></li>
+    <li><a href="#section-tasks">Tasks</a></li>
+    <li><a href="#section-results">Results</a></li>
+    <li><a href="#section-about">About</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 1: Hero / Overview
+     FIX 1: Updated title, subtitle, 40 LECTURES stat
+     ══════════════════════════════════════════════════════════ -->
+<section id="section-overview" class="section grid-bg">
+  <canvas id="particle-canvas"></canvas>
+  <div class="hero-content fade-in">
+    <div class="hero-eyebrow">// DS 299 · Capstone Research Project · 2026</div>
+    <h1 class="hero-title">Benchmarking LLMs on Bayesian Statistical Reasoning</h1>
+    <p class="hero-subtitle">
+      Evaluating <strong>Claude · Gemini · ChatGPT · DeepSeek</strong><br>
+      on Bayesian Statistical Reasoning
+    </p>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number" data-counter="136">0</span>
+        <span class="stat-label">Tasks</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" data-counter="4">0</span>
+        <span class="stat-label">Models</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" data-counter="31">0</span>
+        <span class="stat-label">Task Types</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" data-counter="40">0</span>
+        <span class="stat-label">Lectures</span>
+      </div>
+    </div>
+
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap">
+      <a href="#section-results" class="btn btn-primary glow-pulse">▶ View Results</a>
+      <a href="#section-tasks"   class="btn btn-outline">Explore Tasks →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 2: Benchmark Framework
+     FIX 2: Heading centered
+     FIX 3: SVG icons replace emojis
+     ══════════════════════════════════════════════════════════ -->
+<section id="section-benchmark" class="section">
+  <h2 class="section-title fade-in">How It Works</h2>
+
+  <div class="pipeline fade-in" style="max-width:1100px;width:100%">
+
+    <!-- Step 1: Textbooks -->
+    <div class="pipeline-step">
+      <div class="step-content">
+        <svg class="step-svg" viewBox="0 0 40 40" fill="none" stroke="#00CED1" stroke-width="2">
+          <rect x="5" y="8" width="30" height="24" rx="2"/>
+          <line x1="5"  y1="16" x2="35" y2="16"/>
+          <line x1="5"  y1="24" x2="35" y2="24"/>
+          <line x1="13" y1="8"  x2="13" y2="32"/>
+        </svg>
+        <div class="step-title">Textbooks</div>
+        <div class="step-desc">7 Bayesian textbooks · 80 concepts identified</div>
+      </div>
+    </div>
+
+    <div class="pipeline-arrow">→</div>
+
+    <!-- Step 2: Baseline -->
+    <div class="pipeline-step">
+      <div class="step-content">
+        <svg class="step-svg" viewBox="0 0 40 40" fill="none" stroke="#00CED1" stroke-width="2">
+          <path d="M8 20 L14 20 L17 10 L20 30 L23 14 L26 20 L32 20"/>
+          <circle cx="8"  cy="20" r="2" fill="#00CED1"/>
+          <circle cx="32" cy="20" r="2" fill="#00CED1"/>
+        </svg>
+        <div class="step-title">Baseline</div>
+        <div class="step-desc">80+ Python functions · Ground truth computation</div>
+      </div>
+    </div>
+
+    <div class="pipeline-arrow">→</div>
+
+    <!-- Step 3: Tasks -->
+    <div class="pipeline-step">
+      <div class="step-content">
+        <svg class="step-svg" viewBox="0 0 40 40" fill="none" stroke="#00CED1" stroke-width="2">
+          <rect x="8" y="6" width="24" height="28" rx="2"/>
+          <polyline points="14,16 17,19 23,13"/>
+          <polyline points="14,24 17,27 23,21"/>
+          <line x1="14" y1="11" x2="26" y2="11"/>
+        </svg>
+        <div class="step-title">Tasks</div>
+        <div class="step-desc">136 benchmark tasks · Numeric + Conceptual</div>
+      </div>
+    </div>
+
+    <div class="pipeline-arrow">→</div>
+
+    <!-- Step 4: LLM Runner -->
+    <div class="pipeline-step">
+      <div class="step-content">
+        <svg class="step-svg" viewBox="0 0 40 40" fill="none" stroke="#00CED1" stroke-width="2">
+          <circle cx="10" cy="15" r="3"/>
+          <circle cx="10" cy="25" r="3"/>
+          <circle cx="20" cy="10" r="3"/>
+          <circle cx="20" cy="20" r="3"/>
+          <circle cx="20" cy="30" r="3"/>
+          <circle cx="30" cy="15" r="3"/>
+          <circle cx="30" cy="25" r="3"/>
+          <line x1="13" y1="15" x2="17" y2="10"/>
+          <line x1="13" y1="15" x2="17" y2="20"/>
+          <line x1="13" y1="25" x2="17" y2="20"/>
+          <line x1="13" y1="25" x2="17" y2="30"/>
+          <line x1="23" y1="10" x2="27" y2="15"/>
+          <line x1="23" y1="20" x2="27" y2="15"/>
+          <line x1="23" y1="20" x2="27" y2="25"/>
+          <line x1="23" y1="30" x2="27" y2="25"/>
+        </svg>
+        <div class="step-title">LLM Runner</div>
+        <div class="step-desc">Claude · Gemini · ChatGPT · DeepSeek</div>
+      </div>
+    </div>
+
+    <div class="pipeline-arrow">→</div>
+
+    <!-- Step 5: Scoring -->
+    <div class="pipeline-step">
+      <div class="step-content">
+        <svg class="step-svg" viewBox="0 0 40 40" fill="none" stroke="#00CED1" stroke-width="2">
+          <circle cx="20" cy="20" r="14"/>
+          <circle cx="20" cy="20" r="9"/>
+          <circle cx="20" cy="20" r="4"/>
+          <line x1="20" y1="6"  x2="20" y2="2"/>
+          <line x1="34" y1="20" x2="38" y2="20"/>
+        </svg>
+        <div class="step-title">Scoring</div>
+        <div class="step-desc">Numeric accuracy · Structure · Assumptions · Rubric</div>
+      </div>
+    </div>
+
+    <div class="pipeline-arrow">→</div>
+
+    <!-- Step 6: Results -->
+    <div class="pipeline-step">
+      <div class="step-content">
+        <svg class="step-svg" viewBox="0 0 40 40" fill="none" stroke="#00CED1" stroke-width="2">
+          <line x1="8" y1="32" x2="32" y2="32"/>
+          <rect x="10" y="22" width="5" height="10" fill="rgba(0,206,209,0.3)" stroke="#00CED1"/>
+          <rect x="18" y="16" width="5" height="16" fill="rgba(0,206,209,0.3)" stroke="#00CED1"/>
+          <rect x="26" y="10" width="5" height="22" fill="rgba(0,206,209,0.3)" stroke="#00CED1"/>
+        </svg>
+        <div class="step-title">Results</div>
+        <div class="step-desc">Model comparison · Task analysis · Research paper</div>
+      </div>
+    </div>
+
+  </div><!-- /.pipeline -->
+
+  <div class="charts-row fade-in" style="max-width:700px;width:100%">
+    <div class="chart-card">
+      <h4>Tasks by Tier</h4>
+      <canvas id="chart-tier"></canvas>
+    </div>
+    <div class="chart-card">
+      <h4>Tasks by Category</h4>
+      <canvas id="chart-category"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 3: Models
+     FIX 2: Heading centered
+     ══════════════════════════════════════════════════════════ -->
+<section id="section-models" class="section">
+  <h2 class="section-title fade-in">Models Under Evaluation</h2>
+
+  <div class="models-grid fade-in">
+    <div class="model-card claude">
+      <div class="model-status"><span class="badge badge-ready">READY</span></div>
+      <div class="model-icon">CL</div>
+      <div class="model-name">Claude Sonnet 4.5</div>
+      <div class="model-ver">claude-sonnet-4-5-20251001</div>
+      <div class="model-provider">Anthropic · Frontier AI Lab</div>
+    </div>
+    <div class="model-card gemini">
+      <div class="model-status"><span class="badge badge-ready">READY</span></div>
+      <div class="model-icon">GM</div>
+      <div class="model-name">Gemini 1.5 Flash</div>
+      <div class="model-ver">gemini-1.5-flash</div>
+      <div class="model-provider">Google DeepMind · Alphabet</div>
+    </div>
+    <div class="model-card chatgpt">
+      <div class="model-status"><span class="badge badge-ready">READY</span></div>
+      <div class="model-icon">GP</div>
+      <div class="model-name">GPT-4o Mini</div>
+      <div class="model-ver">gpt-4o-mini</div>
+      <div class="model-provider">OpenAI · Microsoft Partnership</div>
+    </div>
+    <div class="model-card deepseek">
+      <div class="model-status"><span class="badge badge-ready">READY</span></div>
+      <div class="model-icon">DS</div>
+      <div class="model-name">DeepSeek Chat</div>
+      <div class="model-ver">deepseek-chat</div>
+      <div class="model-provider">DeepSeek AI · China</div>
+    </div>
+  </div>
+
+  <div class="formula-card fade-in">
+    <h3 style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-secondary);margin-bottom:1rem">
+      Scoring Formula
+    </h3>
+    <div class="formula">Numeric Task &nbsp; Final Score = 0.6 × Numeric + 0.2 × Structure + 0.2 × Assumptions</div>
+    <div class="formula">Conceptual Task &nbsp; Final Score = Rubric Key Coverage (fraction of key concepts found)</div>
+    <div class="formula">Tier 5 Stress Tests &nbsp; Final Score × 1.5× Multiplier</div>
+    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:1rem">
+      Pass threshold: Final Score ≥ 0.50 &nbsp;|&nbsp;
+      Robustness R = 1 − σ(runs) / 0.15 (requires multiple perturbation runs)
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 4: Task Explorer
+     FIX 2: Heading centered
+     FIX 4: Redesigned filter panel
+     ══════════════════════════════════════════════════════════ -->
+<section id="section-tasks" class="section">
+  <h2 class="section-title fade-in">Benchmark Tasks</h2>
+
+  <div class="task-explorer fade-in" style="width:100%;max-width:1200px">
+
+    <!-- ── Filter sidebar ── -->
+    <div class="filter-panel" style="max-width:280px">
+      <h4>⚙ Filters</h4>
+
+      <!-- Tier checkboxes -->
+      <div class="filter-group" style="margin-bottom:1.5rem">
+        <label>Tier</label>
+        <div class="tier-toggle-group">
+          <label class="tier-toggle">
+            <input type="checkbox" class="tier-checkbox" value="1">
+            <span class="tier-toggle-box">✓</span>
+            <span class="tier-toggle-label">Tier 1 — Basic (9 tasks)</span>
+          </label>
+          <label class="tier-toggle">
+            <input type="checkbox" class="tier-checkbox" value="2">
+            <span class="tier-toggle-box">✓</span>
+            <span class="tier-toggle-label">Tier 2 — Intermediate (45)</span>
+          </label>
+          <label class="tier-toggle">
+            <input type="checkbox" class="tier-checkbox" value="3">
+            <span class="tier-toggle-box">✓</span>
+            <span class="tier-toggle-label">Tier 3 — Advanced (69)</span>
+          </label>
+          <label class="tier-toggle">
+            <input type="checkbox" class="tier-checkbox" value="4">
+            <span class="tier-toggle-box">✓</span>
+            <span class="tier-toggle-label">Tier 4 — Expert (13)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Category buttons -->
+      <div class="filter-group" style="margin-bottom:1.5rem">
+        <label>Category</label>
+        <div style="display:flex;gap:0.4rem">
+          <button class="btn btn-sm btn-outline category-btn active" data-category="all">All</button>
+          <button class="btn btn-sm btn-outline category-btn" data-category="numeric">Numeric</button>
+          <button class="btn btn-sm btn-outline category-btn" data-category="conceptual">Conceptual</button>
+        </div>
+      </div>
+
+      <!-- Search by Task ID -->
+      <div class="filter-group" style="margin-bottom:1.5rem">
+        <label>Search by Task ID</label>
+        <div class="search-row">
+          <input id="search-task-id" class="filter-input mono-input"
+                 type="text" placeholder="e.g. DISC_MEDIAN_01, MARKOV…"
+                 autocomplete="off" />
+          <button class="search-btn" id="search-id-btn">→</button>
+        </div>
+      </div>
+
+      <!-- Search by Topic -->
+      <div class="filter-group" style="margin-bottom:1.5rem">
+        <label>Search by Topic</label>
+        <div class="search-row">
+          <input id="search-topic" class="filter-input"
+                 type="text" placeholder="e.g. posterior median, Bayes factor…"
+                 autocomplete="off" />
+          <button class="search-btn" id="search-topic-btn">→</button>
+        </div>
+      </div>
+
+      <!-- Clear all -->
+      <a class="clear-filters-link" id="clear-filters">↺ CLEAR ALL FILTERS</a>
+
+      <p style="font-size:0.72rem;color:var(--text-muted);margin-top:1rem;line-height:1.5">
+        Click any task card to view the full prompt and ground truth.
+      </p>
+    </div>
+
+    <!-- ── Task grid ── -->
+    <div style="flex:1;min-width:0">
+      <div id="tasks-count" style="color:var(--text-muted);font-size:11px;letter-spacing:0.05em;padding:0 2px 10px;font-family:var(--font-mono)"></div>
+      <div id="tasks-grid" class="tasks-grid">
+        <div class="task-list-placeholder">Loading tasks…</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 5: Results Dashboard
+     FIX 2: Heading centered
+     FIX 5: Improved empty state
+     ══════════════════════════════════════════════════════════ -->
+<section id="section-results" class="section">
+  <h2 class="section-title fade-in">Benchmark Results</h2>
+
+  <div class="results-container fade-in">
+
+    <!-- ── Empty state (shown by default) ── -->
+    <div id="results-awaiting" class="empty-state-wrapper">
+
+      <!-- Pulsing status card -->
+      <div class="awaiting-status-card">
+        <div class="pulse-ring"><div class="pulse-ring-inner"></div></div>
+        <h3 style="font-size:1rem;letter-spacing:0.12em;color:var(--aquamarine);margin-bottom:0.75rem">
+          AWAITING BENCHMARK RUNS
+        </h3>
+        <p style="color:var(--text-secondary);font-size:0.88rem;line-height:1.7;max-width:480px;margin:0 auto">
+          API benchmark runs will populate this dashboard.<br>
+          Results update automatically every 30 seconds.
+        </p>
+      </div>
+
+      <!-- Model placeholder cards -->
+      <div class="model-pending-grid">
+        <div class="model-pending-card">
+          <div class="model-pending-icon">CL</div>
+          <div class="model-pending-name">Claude</div>
+          <div class="model-pending-status">PENDING</div>
+          <div class="shimmer-bar-track"><div class="shimmer-bar-fill"></div></div>
+        </div>
+        <div class="model-pending-card">
+          <div class="model-pending-icon">GM</div>
+          <div class="model-pending-name">Gemini</div>
+          <div class="model-pending-status">PENDING</div>
+          <div class="shimmer-bar-track"><div class="shimmer-bar-fill"></div></div>
+        </div>
+        <div class="model-pending-card">
+          <div class="model-pending-icon">GP</div>
+          <div class="model-pending-name">ChatGPT</div>
+          <div class="model-pending-status">PENDING</div>
+          <div class="shimmer-bar-track"><div class="shimmer-bar-fill"></div></div>
+        </div>
+        <div class="model-pending-card">
+          <div class="model-pending-icon">DS</div>
+          <div class="model-pending-name">DeepSeek</div>
+          <div class="model-pending-status">PENDING</div>
+          <div class="shimmer-bar-track"><div class="shimmer-bar-fill"></div></div>
+        </div>
+      </div>
+
+      <!-- Coming-soon note -->
+      <div class="coming-soon-note">
+        When complete, this dashboard will show:<br>
+        <span>leaderboard</span> · <span>radar chart</span> ·
+        <span>task-type breakdown</span> · <span>latency analysis</span>
+      </div>
+
+    </div><!-- /#results-awaiting -->
+
+    <!-- ── Live dashboard (hidden until runs exist) ── -->
+    <div id="results-dashboard" style="display:none;width:100%">
+
+      <div class="lb-card lb-header">
+        <div>RANK</div><div>MODEL</div>
+        <div style="text-align:right">AVG SCORE</div>
+        <div style="text-align:right">PASS RATE</div>
+        <div style="text-align:right">TASKS</div>
+        <div style="text-align:right">LATENCY</div>
+      </div>
+      <div id="leaderboard-list" class="leaderboard" style="margin-bottom:2rem"></div>
+
+      <div class="charts-grid-2" style="margin-bottom:1.5rem">
+        <div class="results-chart-card">
+          <h4>Model Comparison by Category</h4>
+          <canvas id="chart-radar"></canvas>
+        </div>
+        <div class="results-chart-card">
+          <h4>Score Distribution by Model</h4>
+          <canvas id="chart-dist"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-full" style="margin-bottom:1.5rem">
+        <h4>Average Score by Task Type</h4>
+        <canvas id="chart-bar-type"></canvas>
+      </div>
+
+      <div class="results-chart-card" style="max-width:600px">
+        <h4>Latency vs Accuracy</h4>
+        <canvas id="chart-scatter"></canvas>
+      </div>
+
+    </div><!-- /#results-dashboard -->
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════
+     SECTION 6: About
+     FIX 2: Heading centered
+     FIX 6: Correct 7 textbooks
+     ══════════════════════════════════════════════════════════ -->
+<section id="section-about" class="section">
+  <h2 class="section-title fade-in">About This Research</h2>
+
+  <div class="context-card fade-in" style="margin-bottom:2rem">
+    <p>
+      This DS 299 capstone project evaluates the Bayesian statistical reasoning capabilities
+      of four leading large language models using a benchmark derived from 7 graduate-level
+      textbooks and 40 lecture materials. The benchmark covers 31 task types across numerical
+      accuracy, method selection, assumption compliance, prompt robustness, and confidence calibration.
+    </p>
+  </div>
+
+  <div class="about-grid fade-in">
+
+    <!-- Research Questions -->
+    <div class="about-card">
+      <h3>Research Questions</h3>
+      <ul class="rq-list">
+        <li>
+          <span class="rq-num">RQ1</span>
+          <span>Numerical &amp; Statistical Accuracy — What is the numeric accuracy of each LLM on a standardized Bayesian task benchmark?</span>
+        </li>
+        <li>
+          <span class="rq-num">RQ2</span>
+          <span>Method Selection Accuracy — What proportion of tasks involve incorrect statistical method selection vs. the controlled baseline?</span>
+        </li>
+        <li>
+          <span class="rq-num">RQ3</span>
+          <span>Assumption Compliance — To what extent do LLMs identify and respect required statistical assumptions?</span>
+        </li>
+        <li>
+          <span class="rq-num">RQ4</span>
+          <span>Robustness to Prompt Variations — How stable are LLM outputs under paraphrasing, renaming, and adversarial perturbations?</span>
+        </li>
+        <li>
+          <span class="rq-num">RQ5</span>
+          <span>Confidence &amp; Trust Calibration — Is model-reported confidence correlated with actual correctness in statistical tasks?</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Methodology -->
+    <div class="about-card">
+      <h3>Methodology</h3>
+      <div class="method-steps">
+        <div class="method-step">
+          <span class="method-step-num">1</span>
+          <span>Ground truth computation via closed-form Python functions for each conjugate model</span>
+        </div>
+        <div class="method-step">
+          <span class="method-step-num">2</span>
+          <span>Task specification generation (tasks.json) with numeric targets and rubric keys</span>
+        </div>
+        <div class="method-step">
+          <span class="method-step-num">3</span>
+          <span>Structured prompt generation for all 31 task types via prompt_builder.py</span>
+        </div>
+        <div class="method-step">
+          <span class="method-step-num">4</span>
+          <span>LLM querying via unified model_clients interface (Claude/Gemini/OpenAI/DeepSeek APIs)</span>
+        </div>
+        <div class="method-step">
+          <span class="method-step-num">5</span>
+          <span>Automated scoring: numeric tolerance + structure keyword checks + rubric key matching</span>
+        </div>
+        <div class="method-step">
+          <span class="method-step-num">6</span>
+          <span>Statistical analysis &amp; visualization of results across model families and task types</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dataset — FIX 6: correct textbooks -->
+    <div class="about-card">
+      <h3>Dataset</h3>
+      <div class="dataset-list">
+        <div class="dataset-item"><strong>136 tasks</strong> across 31 task types, 4 tiers</div>
+        <div class="dataset-item"><strong>126 numeric</strong> tasks + <strong>10 conceptual</strong> tasks</div>
+        <div class="dataset-item" style="margin:0.6rem 0 0.3rem"><strong>7 Textbooks</strong></div>
+        <div class="dataset-item-book">
+          <span class="dataset-bullet">◆</span>
+          <span>Bolstad — <em>Introduction to Bayesian Statistics</em> (2nd ed.)</span>
+        </div>
+        <div class="dataset-item-book">
+          <span class="dataset-bullet">◆</span>
+          <span>Bishop — <em>Pattern Recognition and Machine Learning</em></span>
+        </div>
+        <div class="dataset-item-book">
+          <span class="dataset-bullet">◆</span>
+          <span>Ghosh, Delampady &amp; Samanta — <em>An Introduction to Bayesian Analysis</em></span>
+        </div>
+        <div class="dataset-item-book">
+          <span class="dataset-bullet">◆</span>
+          <span>Hoff — <em>A First Course in Bayesian Statistical Methods</em></span>
+        </div>
+        <div class="dataset-item-book">
+          <span class="dataset-bullet">◆</span>
+          <span>Carlin &amp; Louis — <em>Bayesian Methods for Data Analysis</em> (3rd ed.)</span>
+        </div>
+        <div class="dataset-item-book">
+          <span class="dataset-bullet">◆</span>
+          <span>Goldstein &amp; Wooff — <em>Bayes Linear Statistics</em></span>
+        </div>
+        <div class="dataset-item-book">
+          <span class="dataset-bullet">◆</span>
+          <span>Lee — <em>Bayesian Statistics: An Introduction</em> (4th ed.)</span>
+        </div>
+        <div class="dataset-item" style="margin-top:0.75rem">
+          <strong>40 lecture materials</strong> from graduate courses
+        </div>
+        <div class="dataset-item"><strong>4 models</strong>: Claude, Gemini, ChatGPT, DeepSeek</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center;margin-top:3rem;color:var(--text-muted);font-size:0.8rem">
+    <span style="font-family:var(--font-mono)">DS 299 Capstone · 2025–2026</span>
+    &nbsp;·&nbsp; Built with Flask + Chart.js &nbsp;·&nbsp;
+    <span style="color:var(--aquamarine)">Neo-Futuristic Edition</span>
+  </div>
+</section>
+
+<!-- ── Task Modal (new) ──────────────────────────────────────── -->
+<div id="task-modal" class="modal-overlay" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span id="modal-task-id" class="modal-task-id-text"></span>
+      <button class="modal-close-btn" onclick="closeTaskModal()">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">TASK PROMPT</div>
+        <div id="modal-question" class="modal-question-text"></div>
+      </div>
+      <div class="modal-section" id="modal-targets-section" style="display:none">
+        <div class="modal-section-title">GROUND TRUTH</div>
+        <div id="modal-targets"></div>
+      </div>
+      <div class="modal-section" id="modal-rubric-section" style="display:none">
+        <div class="modal-section-title">RUBRIC KEYS</div>
+        <div id="modal-rubric"></div>
+      </div>
+      <div class="modal-section" id="modal-ref-section" style="display:none">
+        <div class="modal-section-title">REFERENCE ANSWER</div>
+        <div id="modal-ref" class="modal-ref-text"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Legacy overlay (kept for safety) ─────────────────────── -->
+<div id="modal-overlay" style="display:none">
+  <div id="modal-box">
+    <button class="modal-close" onclick="closeTaskModal()">✕</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<!-- ── Refresh badge ────────────────────────────────────────── -->
+<div class="refresh-badge" id="refresh-badge">
+  <span class="refresh-dot"></span>
+  live · <span class="refresh-time">—</span>
+</div>
+
+<!-- ── Scripts ──────────────────────────────────────────────── -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="/static/js/animations.js"></script>
+<script src="/static/js/api.js"></script>
+<script src="/static/js/charts.js"></script>
+<script src="/static/js/main.js"></script>
+
+</body>
+</html>

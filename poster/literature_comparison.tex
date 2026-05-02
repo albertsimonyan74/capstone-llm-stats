@@ -1,0 +1,28 @@
+% Literature comparison fragment — \input{} this from poster/main.tex
+% Compilable inside a tikzposter \block{Literature Comparison}{ ... }.
+% Compresses 10 dims × 8 systems into a tight table; THIS WORK row is bold + shaded.
+
+\begin{tabular}{@{}p{2.6cm}|p{1.55cm}|p{1.55cm}|p{1.55cm}|p{1.6cm}|p{1.55cm}|p{1.55cm}|p{1.6cm}|>{\columncolor{blue!18}}p{2.05cm}@{}}
+\toprule
+\textbf{Dimension} &
+StatEval\newline(Lu 2025) &
+MathEval\newline(Liu 2025) &
+Reason\-Bench\newline(2025) &
+Brittle\-Bench\newline(2026) &
+Ice-Cream\newline(Wang 2025) &
+FermiEval\newline(2025) &
+Can-LLM-Reas.\newline(Nagarkar 2026) &
+\textbf{THIS WORK} \\
+\midrule
+Domain          & Stats freq. & General math & General reas. & General reas. & Causal & Fermi & Stat reas. & \textbf{Bayesian} \\
+\# tasks        & {\textasciitilde}500 & 17 datasets & multi & multi & {\textasciitilde}30 & Fermi & multi & \textbf{171} \\
+Ground truth    & Hand MC & Mixed & Mixed & Mixed & Hand & Closed-form & Mixed & \textbf{Closed-form + seeded MC} \\
+Format          & MC & Mixed & Free & Free & Free & Numeric CI & Free & \textbf{Free, N$\cdot$M$\cdot$A$\cdot$C$\cdot$R} \\
+Ext.\ judge     & $\times$ & $\checkmark$ rubric & partial & $\times$ & $\times$ & $\times$ & $\times$ & \textbf{$\checkmark$ Llama 3.3 70B} \\
+Perturbations   & $\times$ & $\times$ & $\checkmark$ var. & $\checkmark$ 3 types & $\times$ & $\times$ & $\times$ & \textbf{$\checkmark$ 398 (3 types)} \\
+Stat.\ rigor    & Point & Multi-dim agg. & Var-as-1st-cls & Bootstrap rec. & Point & CI calib. & Point & \textbf{Bootstrap CI + $\alpha$} \\
+Calibration     & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ verbal & partial & \textbf{$\checkmark$ + cons.\ proxy} \\
+Error taxonomy  & $\times$ & partial & $\times$ & $\times$ & $\checkmark$ assump. & $\times$ & partial & \textbf{$\checkmark$ 4-L1 / 9-L2} \\
+Open + repro    & $\checkmark$ & $\checkmark$ & partial & $\checkmark$ & $\checkmark$ & $\checkmark$ & partial & \textbf{$\checkmark$ full} \\
+\bottomrule
+\end{tabular}

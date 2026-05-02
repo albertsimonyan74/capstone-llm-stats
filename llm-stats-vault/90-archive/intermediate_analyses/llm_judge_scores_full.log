@@ -1,0 +1,16 @@
+[progress] 100/1230 | elapsed=92.9s | rate=1.08/s | ETA=1050s | errors 429=0 503=0 parse=0 timeout=0 other=0 | tokens in/out=141328/19921 | cost~$0.142
+[progress] 200/1230 | elapsed=177.7s | rate=1.13/s | ETA=915s | errors 429=0 503=0 parse=2 timeout=0 other=0 | tokens in/out=278315/39276 | cost~$0.279
+[progress] 300/1230 | elapsed=268.4s | rate=1.12/s | ETA=832s | errors 429=0 503=0 parse=4 timeout=0 other=0 | tokens in/out=426006/58874 | cost~$0.427
+[progress] 400/1230 | elapsed=349.3s | rate=1.15/s | ETA=725s | errors 429=0 503=0 parse=5 timeout=0 other=0 | tokens in/out=585483/78877 | cost~$0.585
+[progress] 500/1230 | elapsed=394.1s | rate=1.27/s | ETA=575s | errors 429=0 503=0 parse=5 timeout=0 other=0 | tokens in/out=727051/98635 | cost~$0.727
+[progress] 600/1230 | elapsed=481.5s | rate=1.25/s | ETA=506s | errors 429=0 503=0 parse=5 timeout=0 other=0 | tokens in/out=872301/118053 | cost~$0.872
+[progress] 700/1230 | elapsed=588.7s | rate=1.19/s | ETA=446s | errors 429=0 503=1 parse=7 timeout=0 other=0 | tokens in/out=1004654/137512 | cost~$1.005
+[progress] 800/1230 | elapsed=689.5s | rate=1.16/s | ETA=371s | errors 429=0 503=1 parse=7 timeout=0 other=0 | tokens in/out=1135382/157098 | cost~$1.137
+[progress] 900/1230 | elapsed=786.1s | rate=1.14/s | ETA=288s | errors 429=0 503=1 parse=9 timeout=0 other=0 | tokens in/out=1284542/177493 | cost~$1.287
+[progress] 1000/1230 | elapsed=937.0s | rate=1.07/s | ETA=216s | errors 429=0 503=4 parse=11 timeout=0 other=0 | tokens in/out=1447083/197534 | cost~$1.447
+[progress] 1100/1230 | elapsed=1005.5s | rate=1.09/s | ETA=119s | errors 429=0 503=4 parse=14 timeout=0 other=0 | tokens in/out=1670184/217437 | cost~$1.661
+[progress] 1200/1230 | elapsed=1066.0s | rate=1.13/s | ETA=27s | errors 429=0 503=4 parse=14 timeout=0 other=0 | tokens in/out=1925301/237203 | cost~$1.903
+[progress] 1230/1230 | elapsed=1083.3s | rate=1.14/s | ETA=0s | errors 429=0 503=4 parse=14 timeout=0 other=0 | tokens in/out=1986612/243198 | cost~$1.962
+Merged 75 perturbation specs.
+Loaded 1230 runs and 246 task specs.
+Total runs: 1230 | already judged: 0 | missing task spec: 0 | to judge: 1230

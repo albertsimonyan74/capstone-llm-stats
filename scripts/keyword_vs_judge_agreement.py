@@ -11,7 +11,6 @@ Run from project root:
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 
 import matplotlib
@@ -20,6 +19,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
 from sklearn.metrics import cohen_kappa_score
+
+from baseline.utils_task_id import task_type_from_id as derive_task_type
 
 RUNS_PATH = Path("experiments/results_v1/runs.jsonl")
 JUDGE_PATH = Path("experiments/results_v2/llm_judge_scores_full.jsonl")
@@ -48,13 +49,6 @@ DIMS = [
 
 def load_jsonl(path: Path) -> list[dict]:
     return [json.loads(l) for l in path.read_text().splitlines() if l.strip()]
-
-
-def derive_task_type(task_id: str) -> str:
-    # Strip trailing _NN, _NN_perturb suffix
-    base = re.sub(r"_(rephrase|numerical|semantic)$", "", task_id)
-    base = re.sub(r"_\d+$", "", base)
-    return base
 
 
 def compute_metrics(pairs_kw: list[float], pairs_jd: list[float]) -> dict:
@@ -108,7 +102,7 @@ def join_records(runs: list[dict], judge: list[dict], tasks: dict[str, dict]) ->
             "n_required_structure_checks": n_req_struct,
             "run_id": r["run_id"],
             "task_id": r["task_id"],
-            "task_type": r.get("task_type") or derive_task_type(r["task_id"]),
+            "task_type": derive_task_type(r["task_id"]),
             "model_family": r["model_family"],
             "kw_structure": r.get("structure_score"),
             "kw_assumption": r.get("assumption_score"),

@@ -19,9 +19,22 @@ date: 2026-04-26
 
 **Total:** 1230 records (855 benchmark + 375 synthetic). No error records.
 
-**Leaderboard (formal scoring):** Claude 0.683 > Mistral 0.644 > Gemini 0.642 > DeepSeek 0.625 > ChatGPT 0.621
+## Current leaderboard (literature-weighted NMACR, Phase 1B)
 
-**RQ4 Robustness:** ChatGPT 0.931 > Mistral 0.925 > Claude 0.915 > DeepSeek 0.901 > Gemini 0.896
+| Rank | Model | Score | 95% CI |
+|------|-------|-------|--------|
+| 1 | Gemini 2.5 Flash | 0.776 | [0.753, 0.799] |
+| 2 | Claude Sonnet 4.5 | 0.712 | [0.689, 0.736] |
+| 3 | GPT-4.1 | 0.691 | [0.668, 0.713] |
+| 4 | Mistral Large | 0.675 | [0.652, 0.698] |
+| 5 | DeepSeek V3 | 0.663 | [0.641, 0.687] |
+
+Weighting scheme: A=0.30, R=0.25, M=0.20, C=0.15, N=0.10 (literature-derived per
+Du 2025, Boye-Moell 2025, Yamauchi 2025). Updated 2026-05-02.
+
+Note: Equal-weight ranking (Phase 1A) ranks Claude #1; literature-weighting (Phase 1B) ranks Gemini #1. Compare via three-rankings figure.
+
+**Equal-weight Phase 1A (historical, paper appendix):** Claude 0.683 > Mistral 0.644 > Gemini 0.642 > DeepSeek 0.625 > ChatGPT 0.621.
 
 **results.json:** ✅ Populated (5 models × 171 tasks = 855 entries)  
 **rq4_analysis.json:** ✅ Complete (375 triples, all 5 models)  

@@ -1,0 +1,64 @@
+[2026-05-01T14:10:37.790307+00:00] === Phase 1C Self-Consistency (full coverage) ===
+[2026-05-01T14:10:37.790640+00:00] Methodology grounded in Multi-Answer Confidence (arxiv 2602.07842) and SelfCheckGPT (Manakul et al., 2023). Phase 1C full-task expansion of stratified B3.
+[2026-05-01T14:10:37.791736+00:00] Loaded 171 tasks; 161 numeric (consistency-eligible)
+[2026-05-01T14:10:37.791793+00:00] Already completed: 0
+[2026-05-01T14:10:37.792036+00:00] Queued: 2415 (target = 2415)
+[2026-05-01T14:22:34.642533+00:00]   progress 50/2415  running=$0.370  projected_total=$17.893  failures={}
+[2026-05-01T14:28:39.588778+00:00]   progress 100/2415  running=$0.550  projected_total=$13.289  failures={}
+[2026-05-01T14:34:36.555691+00:00]   progress 150/2415  running=$0.734  projected_total=$11.818  failures={}
+[2026-05-01T14:42:36.829774+00:00]   progress 200/2415  running=$0.978  projected_total=$11.807  failures={}
+[2026-05-01T14:48:13.929930+00:00]   progress 250/2415  running=$1.133  projected_total=$10.943  failures={}
+[2026-05-01T14:54:38.047152+00:00]   progress 300/2415  running=$1.289  projected_total=$10.375  failures={}
+[2026-05-01T14:59:46.057858+00:00]   progress 350/2415  running=$1.484  projected_total=$10.238  failures={}
+[2026-05-01T15:04:02.361578+00:00]   progress 400/2415  running=$1.600  projected_total=$9.661  failures={}
+[2026-05-01T15:09:12.195019+00:00]   progress 450/2415  running=$1.758  projected_total=$9.437  failures={}
+[2026-05-01T15:16:17.302161+00:00]   progress 500/2415  running=$2.016  projected_total=$9.737  failures={}
+[2026-05-01T15:21:35.322400+00:00]   progress 550/2415  running=$2.130  projected_total=$9.353  failures={}
+[2026-05-01T15:28:03.350206+00:00]   progress 600/2415  running=$2.298  projected_total=$9.250  failures={}
+[2026-05-01T15:36:17.304115+00:00]   progress 650/2415  running=$2.553  projected_total=$9.484  failures={}
+[2026-05-01T15:45:52.929184+00:00]   progress 700/2415  running=$2.850  projected_total=$9.832  failures={}
+[2026-05-01T15:55:27.493342+00:00]   progress 750/2415  running=$3.144  projected_total=$10.125  failures={}
+[2026-05-01T17:03:44.362995+00:00]   progress 800/2415  running=$3.391  projected_total=$10.236  failures={'chatgpt': 1}
+[2026-05-01T17:20:52.722288+00:00]   progress 850/2415  running=$3.599  projected_total=$10.227  failures={'chatgpt': 1}
+[2026-05-01T17:27:46.019432+00:00]   progress 900/2415  running=$3.820  projected_total=$10.251  failures={'chatgpt': 1}
+[2026-05-01T17:34:04.288626+00:00]   progress 950/2415  running=$4.026  projected_total=$10.235  failures={'chatgpt': 1}
+[2026-05-01T17:46:09.172455+00:00]   progress 1000/2415  running=$4.340  projected_total=$10.482  failures={'chatgpt': 1}
+[2026-05-01T17:57:44.988271+00:00]   progress 1050/2415  running=$4.648  projected_total=$10.691  failures={'chatgpt': 1}
+[2026-05-01T18:04:38.028981+00:00]   progress 1100/2415  running=$4.870  projected_total=$10.692  failures={'chatgpt': 1}
+[2026-05-01T18:15:31.929793+00:00]   progress 1150/2415  running=$5.128  projected_total=$10.769  failures={'chatgpt': 1}
+[2026-05-01T18:15:31.931728+00:00] WARN: cumulative $5.128 > $5 soft pause (continuing; hard cap is $15)
+[2026-05-01T20:06:24.777753+00:00]   progress 1200/2415  running=$5.439  projected_total=$10.946  failures={'chatgpt': 1}
+[2026-05-01T20:17:40.905799+00:00]   progress 1250/2415  running=$5.808  projected_total=$11.221  failures={'chatgpt': 1}
+[2026-05-01T20:23:47.912702+00:00]   progress 1300/2415  running=$5.981  projected_total=$11.110  failures={'chatgpt': 1}
+[2026-05-01T20:31:05.644482+00:00]   progress 1350/2415  running=$6.188  projected_total=$11.070  failures={'chatgpt': 1}
+[2026-05-01T20:42:23.337913+00:00]   progress 1400/2415  running=$6.530  projected_total=$11.264  failures={'chatgpt': 1}
+[2026-05-01T20:56:55.597813+00:00]   progress 1450/2415  running=$6.852  projected_total=$11.413  failures={'chatgpt': 1}
+[2026-05-01T21:08:29.177458+00:00]   progress 1500/2415  running=$7.144  projected_total=$11.502  failures={'chatgpt': 1}
+[2026-05-01T21:15:15.904089+00:00]   progress 1550/2415  running=$7.380  projected_total=$11.499  failures={'chatgpt': 1}
+[2026-05-01T21:25:34.588873+00:00]   progress 1600/2415  running=$7.678  projected_total=$11.590  failures={'chatgpt': 1}
+[2026-05-01T21:35:17.812592+00:00]   progress 1650/2415  running=$7.973  projected_total=$11.670  failures={'chatgpt': 1}
+[2026-05-01T21:43:56.257336+00:00]   progress 1700/2415  running=$8.277  projected_total=$11.758  failures={'chatgpt': 1}
+[2026-05-01T21:50:31.289916+00:00]   progress 1750/2415  running=$8.469  projected_total=$11.687  failures={'chatgpt': 1}
+[2026-05-01T21:59:40.964383+00:00]   progress 1800/2415  running=$8.765  projected_total=$11.759  failures={'chatgpt': 1}
+[2026-05-01T22:07:53.060645+00:00]   progress 1850/2415  running=$9.049  projected_total=$11.813  failures={'chatgpt': 1}
+[2026-05-01T22:17:34.294693+00:00]   progress 1900/2415  running=$9.297  projected_total=$11.818  failures={'chatgpt': 1}
+[2026-05-01T22:27:08.014788+00:00]   progress 1950/2415  running=$9.494  projected_total=$11.757  failures={'chatgpt': 1}
+[2026-05-01T22:37:12.831146+00:00]   progress 2000/2415  running=$9.749  projected_total=$11.772  failures={'chatgpt': 1}
+[2026-05-02T07:33:21.640216+00:00]   progress 2050/2415  running=$9.975  projected_total=$11.752  failures={'chatgpt': 1, 'mistral': 1}
+[2026-05-02T07:42:44.547425+00:00]   progress 2100/2415  running=$10.192  projected_total=$11.721  failures={'chatgpt': 1, 'mistral': 1}
+[2026-05-02T07:51:03.604544+00:00]   progress 2150/2415  running=$10.447  projected_total=$11.734  failures={'chatgpt': 1, 'mistral': 1}
+[2026-05-02T08:00:19.997913+00:00]   progress 2200/2415  running=$10.691  projected_total=$11.735  failures={'chatgpt': 1, 'mistral': 1}
+[2026-05-02T08:11:43.482881+00:00]   progress 2250/2415  running=$10.977  projected_total=$11.782  failures={'chatgpt': 1, 'mistral': 1}
+[2026-05-02T08:20:48.967644+00:00]   progress 2300/2415  running=$11.202  projected_total=$11.762  failures={'chatgpt': 1, 'mistral': 1}
+[2026-05-02T08:29:00.715757+00:00]   progress 2350/2415  running=$11.376  projected_total=$11.691  failures={'chatgpt': 1, 'mistral': 1}
+[2026-05-02T08:39:24.496446+00:00]   progress 2400/2415  running=$11.620  projected_total=$11.692  failures={'chatgpt': 1, 'mistral': 1}
+[2026-05-02T08:42:31.712036+00:00] Total calls this session: 2415
+[2026-05-02T08:42:31.717630+00:00] Total cost this session: $11.688
+[2026-05-02T08:42:31.799615+00:00] Saved /Users/albertsimonyan/Desktop/capstone-llm-stats/experiments/results_v2/self_consistency_calibration_full.json
+[2026-05-02T08:42:31.799721+00:00] 
+=== Per-model ECE comparison (verbalized / stratified-B3 / full) ===
+[2026-05-02T08:42:31.800015+00:00]   claude      verb=0.0666  strat=0.3300  full=0.7342  n_high=89  n_med=16  n_low=56  failures=0
+[2026-05-02T08:42:31.800067+00:00]   chatgpt     verb=0.0626  strat=0.6427  full=0.7214  n_high=91  n_med=6  n_low=64  failures=1
+[2026-05-02T08:42:31.800111+00:00]   gemini      verb=0.0973  strat=0.5657  full=0.6178  n_high=58  n_med=22  n_low=81  failures=0
+[2026-05-02T08:42:31.800152+00:00]   deepseek    verb=0.1795  strat=0.6430  full=0.7261  n_high=83  n_med=24  n_low=54  failures=0
+[2026-05-02T08:42:31.800194+00:00]   mistral     verb=0.0840  strat=0.5983  full=0.6632  n_high=75  n_med=10  n_low=76  failures=1

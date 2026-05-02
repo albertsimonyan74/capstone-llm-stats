@@ -31,3 +31,15 @@ Each of the five components (Numerical, Method, Assumption, Confidence, Reasonin
 | R (Reasoning) | 0.00 | 0.20 | ↑ activated |
 
 Old scores in `runs.jsonl` were backfilled via `scripts/recompute_scores.py`.
+
+---
+
+## Update — 2026-05-02
+
+This decision remains canonical for the runtime scoring paths
+(`response_parser.py`, `metrics.py`). Phase 1B introduced an additional
+**post-hoc literature-derived weighting** in `scripts/recompute_nmacr.py`
+that produces a different aggregate score for analysis purposes. The two
+paths coexist by design — see [audit/aggregation_locus.md](../../../audit/aggregation_locus.md)
+and [audit/recompute_log.md](../../../audit/recompute_log.md) for the rationale.
+

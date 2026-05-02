@@ -19,7 +19,7 @@ Compares verbalized vs consistency-based confidence extraction on multi-answer q
 - Single-call keyword extraction (our approach) is the weakest baseline.
 
 ## How it grounds this project
-Frames our calibration limitation. Our keyword extraction is verbalized; consistency-based is the natural upgrade. Maps to scripts/self_consistency_proxy.py (Group B3) and the empty high-confidence bucket disclosure in audit/limitations_disclosures.md.
+Frames our calibration limitation. Our keyword extraction is verbalized; consistency-based is the natural upgrade. Maps to scripts/self_consistency_full.py (Phase 1C canonical; B3-stratified scripts/self_consistency_proxy.py archived 2026-05-02 to llm-stats-vault/90-archive/intermediate_analyses/scripts/) and the empty high-confidence bucket disclosure in audit/limitations_disclosures.md.
 
 ## Citation in poster
 (Multi-Answer Confidence, 2026)
