@@ -277,11 +277,21 @@ const STATIC_PER_DIM_ECE = {
 }
 
 export function PerDimCalibrationPanel() {
-  // Static-only: per_dim_calibration.json is not exposed by /api/v2/calibration.
-  // Source data is committed in experiments/results_v2/per_dim_calibration.json.
+  const [perDim, setPerDim] = useState(STATIC_PER_DIM_ECE)
+
+  useEffect(() => {
+    fetch(`${API}/api/v2/calibration`)
+      .then(r => r.ok ? r.json() : null)
+      .then(j => {
+        const live = j?.per_dim_ece
+        if (live && Object.keys(live).length) setPerDim(live)
+      })
+      .catch(() => {})
+  }, [])
+
   const rows = DIMS.map(dim => {
     const row = { dim }
-    for (const m of MODELS) row[m] = STATIC_PER_DIM_ECE[dim]?.[m] ?? null
+    for (const m of MODELS) row[m] = perDim[dim]?.[m] ?? null
     return row
   })
 
@@ -355,8 +365,10 @@ export function AccCalibScatterPanel() {
       if (cancelled) return
       const cal = cRes.status === 'fulfilled' ? cRes.value : null
       const rk = rRes.status === 'fulfilled' ? rRes.value : null
-      const liveCorr = cal?.verbalized?.per_model?.accuracy_calibration_correlation
-      if (liveCorr) setCorr(liveCorr)
+      const liveCorr =
+        cal?.accuracy_calibration_correlation ??
+        cal?.verbalized?.per_model?.accuracy_calibration_correlation
+      if (liveCorr && Object.keys(liveCorr).length) setCorr(liveCorr)
       const accPm = rk?.accuracy?.per_model
       if (accPm) {
         const next = {}
