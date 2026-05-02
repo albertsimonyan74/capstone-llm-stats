@@ -36,6 +36,7 @@ V2_FILES = {
     "perturbations_all": BASE_DIR / "data" / "synthetic" / "perturbations_all.json",
     "pass_flip": RESULTS_V2 / "combined_pass_flip_analysis.json",
     "keyword_degradation": RESULTS_V2 / "keyword_degradation_check.json",
+    "calibration_per_dim": RESULTS_V2 / "per_dim_calibration.json",
 }
 
 # Files required for /api/v2/health to report ok
@@ -51,6 +52,7 @@ HEALTH_REQUIRED = [
     "tolerance_sensitivity",
     "pass_flip",
     "keyword_degradation",
+    "calibration_per_dim",
 ]
 
 # ─── mtime-keyed cache ────────────────────────────────────────────
@@ -363,6 +365,7 @@ def robustness() -> Dict[str, Any]:
         "per_model": rob.get("per_model", {}),
         "ranking": rob.get("ranking", []),
         "per_task_type_heatmap": rob.get("per_task_type_heatmap", {}),
+        "per_dim_delta": rob.get("per_dim_delta", {}),
         "notes": rob.get("notes"),
     }
 
@@ -402,6 +405,7 @@ def calibration() -> Dict[str, Any]:
     verb = _load_json(V2_FILES["calibration_verbalized"])
     cons = _load_json(V2_FILES["calibration_consistency"])
     bs = _load_json(V2_FILES["bootstrap_ci"])
+    per_dim = _load_json(V2_FILES["calibration_per_dim"])
 
     return {
         "verbalized": {
@@ -409,6 +413,10 @@ def calibration() -> Dict[str, Any]:
             "ece_points": bs.get("calibration_ece_points", {}),
             "note": bs.get("calibration_note"),
         },
+        "per_dim_ece": per_dim.get("per_dim_ece", {}),
+        "per_dim_buckets": per_dim.get("buckets", []),
+        "accuracy_calibration_correlation": verb.get("accuracy_calibration_correlation", {}),
+        "accuracy_calibration_correlation_note": verb.get("accuracy_calibration_correlation_note", ""),
         "consistency": {
             "n_tasks": cons.get("n_tasks"),
             "n_models": cons.get("n_models"),
