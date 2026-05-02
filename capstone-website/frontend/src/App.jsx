@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef, useMemo, createContext, useContext } from 'react'
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'motion/react'
 import './App.css'
 import tasksData from './data/tasks.json'
@@ -79,14 +79,14 @@ const PIPELINE = [
     stat:'38 task types · 4 tiers',
     desc:'Tasks span 38 types across Phase 1 (136 tasks: conjugate Bayes, frequentist inference, Markov chains) and Phase 2 (35 tasks: MCMC, Variational Bayes, ABC). Each task has deterministic ground truth computed with numpy seed=42.' },
   { label:'Standardized Prompting',   title:'Zero-Shot CoT Protocol',
-    stat:'3 prompting strategies',
-    desc:'All models receive identical prompts requiring step-by-step reasoning (Wei et al., 2022). Three prompting modes implemented: Zero-shot CoT (baseline), Few-shot CoT (2 exemplars), Program-of-Thoughts (Chen et al., 2022).' },
+    stat:'Zero-shot Chain-of-Thought',
+    desc:'Single prompting strategy: zero-shot Chain-of-Thought (Wei et al., 2022). All 5 models receive identical prompts requiring step-by-step reasoning, ending with a structured ANSWER: line.' },
   { label:'Multi-Model Evaluation',   title:'5 Leading LLMs + 1 External Judge',
     stat:'1,230 base runs · Llama 3.3 70B judge',
     desc:'Claude, ChatGPT, Mistral, DeepSeek, Gemini evaluated under identical conditions. External Llama 3.3 70B Instruct judge (Together AI) provides cross-provider validation following Park et al. (2025).' },
   { label:'Five-Dimensional Scoring', title:'N·M·A·C·R Rubric',
-    stat:'N=M=A=C=R=0.20',
-    desc:'Numerical Accuracy (N), Method Selection (M), Assumption Compliance (A), Confidence Calibration (C), Reasoning Quality (R). Equal weights, pass threshold 0.50. Two scoring paths kept in sync.' },
+    stat:'A=0.30 · R=0.25 · M=0.20 · C=0.15 · N=0.10',
+    desc:'Numerical Accuracy (N), Method Selection (M), Assumption Compliance (A), Confidence Calibration (C), Reasoning Quality (R). Literature-derived weights (Du 2025, Boye & Moell 2025, Yamauchi 2025). Pass threshold 0.50.' },
   { label:'Robustness Testing',       title:'RQ4: Perturbation Analysis',
     stat:'2,365 perturbation runs · 0 errors',
     desc:'473 perturbations × 5 models. Three orthogonal types (rephrase / numerical / semantic) following BrittleBench (2026). Bootstrap-CI separability tests on per-model robustness Δ.' },
@@ -137,12 +137,67 @@ const PIPELINE_ICONS = [
 // Assumption Compliance (avg_assumption_score), Conceptual Reasoning (avg_structure_score)
 // Values derived from 2026-04-26 benchmark: 171 tasks × 5 models, all complete
 const RADAR_DIMS = ['Math\nAccuracy','Speed','Consistency','Assumption\nCompliance','Conceptual\nReasoning']
-const RADAR_VALS = {
+// Last-deploy snapshot of last-deploy radar — used as fallback if /api/v2/rankings fails.
+// Indices: 0 Math Accuracy · 1 Speed · 2 Consistency · 3 Assumption Compliance · 4 Conceptual Reasoning
+const RADAR_VALS_FALLBACK = {
   claude:   [0.89, 0.61, 0.91, 0.73, 0.95],
   gemini:   [0.86, 0.85, 0.90, 0.70, 0.93],
   chatgpt:  [0.78, 0.90, 0.93, 0.60, 0.87],
   deepseek: [0.79, 0.10, 0.90, 0.66, 0.88],
   mistral:  [0.85, 0.55, 0.92, 0.61, 0.90],
+}
+const RadarValuesContext = createContext(RADAR_VALS_FALLBACK)
+const RadarSourceContext = createContext('fallback') // 'live' or 'fallback'
+
+function normalizeAxis(scores, lo = 0.4, hi = 1.0) {
+  const vals = Object.values(scores)
+  const min = Math.min(...vals), max = Math.max(...vals)
+  if (!isFinite(min) || !isFinite(max) || max === min) {
+    return Object.fromEntries(Object.entries(scores).map(([k]) => [k, hi]))
+  }
+  return Object.fromEntries(
+    Object.entries(scores).map(([k, v]) => [k, lo + ((v - min) / (max - min)) * (hi - lo)])
+  )
+}
+
+function useRadarFromAPI() {
+  const [vals, setVals] = useState(RADAR_VALS_FALLBACK)
+  const [source, setSource] = useState('fallback')
+  useEffect(() => {
+    const API = import.meta.env.VITE_API_URL || ''
+    fetch(`${API}/api/v2/rankings`)
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('http ' + r.status)))
+      .then(d => {
+        const acc = d?.accuracy?.per_model || {}
+        const rob = d?.robustness?.per_model || {}
+        const accMean = Object.fromEntries(
+          Object.entries(acc).map(([m, v]) => [m, v?.mean ?? 0])
+        )
+        // Robustness: lower delta = more consistent → invert sign before normalizing
+        const consInput = Object.fromEntries(
+          Object.entries(rob).map(([m, v]) => [m, -(v?.mean_delta ?? 0)])
+        )
+        const accNorm = normalizeAxis(accMean)
+        const consNorm = normalizeAxis(consInput)
+        const next = {}
+        for (const m of Object.keys(RADAR_VALS_FALLBACK)) {
+          const fallback = RADAR_VALS_FALLBACK[m]
+          next[m] = [
+            accNorm[m] ?? fallback[0],
+            fallback[1],            // Speed — not in API
+            consNorm[m] ?? fallback[2],
+            fallback[3],            // Assumption Compliance — keep snapshot
+            fallback[4],            // Conceptual Reasoning — keep snapshot
+          ]
+        }
+        if (Object.keys(next).length === 5) {
+          setVals(next)
+          setSource('live')
+        }
+      })
+      .catch(() => { /* keep fallback */ })
+  }, [])
+  return [vals, source]
 }
 
 // ─── Task type tooltips ───────────────────────────────────────
@@ -423,20 +478,20 @@ function AnimatedScoringBars() {
   const isInView = useInView(ref, { once: true, amount: 0.3 })
 
   const bars = [
-    { label:'Numeric Accuracy',       weight:20, key:'N', color:'#00FFE0', desc:'Exact numerical match within tolerance bounds' },
-    { label:'Method Structure',        weight:20, key:'M', color:'#A78BFA', desc:'Correct method selection and derivation steps' },
-    { label:'Assumption Compliance',   weight:20, key:'A', color:'#00897B', desc:'Acknowledgment of prior, data, and model assumptions' },
-    { label:'Confidence Calibration',  weight:20, key:'C', color:'#F59E0B', desc:'Expressed certainty matches actual accuracy' },
-    { label:'Reasoning Quality',       weight:20, key:'R', color:'#EC4899', desc:'Shows work, identifies model, states formula, interprets result' },
+    { label:'Assumption Compliance',   weight:30, key:'A', color:'#00897B', desc:'Acknowledgment of prior, data, and model assumptions. Heaviest weight (Du 2025, Boye & Moell 2025, Yamauchi 2025).' },
+    { label:'Reasoning Quality',       weight:25, key:'R', color:'#EC4899', desc:'Shows work, identifies model, states formula, interprets result. Most externally-judgeable dimension.' },
+    { label:'Method Structure',        weight:20, key:'M', color:'#A78BFA', desc:'Correct method selection and derivation steps. Partially redundant with R.' },
+    { label:'Confidence Calibration',  weight:15, key:'C', color:'#F59E0B', desc:'Expressed certainty matches actual accuracy. Separate evaluation track honestly disclosed.' },
+    { label:'Numeric Accuracy',       weight:10, key:'N', color:'#00FFE0', desc:'Exact numerical match within tolerance bounds. Necessary but trivially checkable.' },
   ]
 
   return (
     <div ref={ref}>
       <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:6, textAlign:'center' }}>
-        COMPOSITE SCORE = N·0.20 + M·0.20 + A·0.20 + C·0.20 + R·0.20
+        COMPOSITE SCORE = A·0.30 + R·0.25 + M·0.20 + C·0.15 + N·0.10
       </div>
       <div style={{ color:'var(--text-muted)', fontSize:10, textAlign:'center', marginBottom:20 }}>
-        Pass threshold: final_score ≥ 0.5
+        Literature-derived weights · Pass threshold: final_score ≥ 0.5
       </div>
       {/* Horizontal grid of 5 scoring components */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:10 }}>
@@ -691,7 +746,8 @@ function RadarChart({ model }) {
   const pad=72, inner=200, size=inner+pad*2
   const cx=size/2, cy=size/2, R=80, n=5
   const step = (Math.PI*2)/n
-  const vals = RADAR_VALS[model.id] || Array(n).fill(0.7)
+  const radarMap = useContext(RadarValuesContext)
+  const vals = radarMap[model.id] || Array(n).fill(0.7)
 
   const pts = vals.map((v,i) => {
     const a = i*step - Math.PI/2
@@ -743,6 +799,7 @@ function RadarChart({ model }) {
 const MODEL_COLORS = { claude:'#00CED1', gemini:'#FF6B6B', chatgpt:'#7FFFD4', deepseek:'#4A90D9', mistral:'#A78BFA' }
 function MultiModelRadar() {
   const [hoveredModel, setHoveredModel] = useState(null)
+  const radarMap = useContext(RadarValuesContext)
   const pad=96, inner=320, size=inner+pad*2
   const cx=size/2, cy=size/2, R=130, n=5
   const step = (Math.PI*2)/n
@@ -771,7 +828,7 @@ function MultiModelRadar() {
               </g>
             )
           })}
-          {Object.entries(RADAR_VALS).map(([id, vals]) => {
+          {Object.entries(radarMap).map(([id, vals]) => {
             const pts=vals.map((v,i)=>{ const a=i*step-Math.PI/2; return `${cx+v*R*Math.cos(a)},${cy+v*R*Math.sin(a)}` }).join(' ')
             const col=MODEL_COLORS[id]||'#00FFE0'
             const isHov = hoveredModel===id
@@ -807,7 +864,7 @@ function MultiModelRadar() {
               {RADAR_DIMS.map((d,i)=>(
                 <div key={i} style={{ fontSize:9, color:'rgba(200,220,230,0.8)', display:'flex', justifyContent:'space-between', gap:8 }}>
                   <span>{d.replace('\n',' ')}</span>
-                  <span style={{ color:MODEL_COLORS[hoveredModel], fontWeight:700 }}>{(RADAR_VALS[hoveredModel][i]*100).toFixed(0)}%</span>
+                  <span style={{ color:MODEL_COLORS[hoveredModel], fontWeight:700 }}>{(radarMap[hoveredModel][i]*100).toFixed(0)}%</span>
                 </div>
               ))}
             </div>
@@ -816,7 +873,7 @@ function MultiModelRadar() {
       </div>
       {/* Legend — horizontal row below radar */}
       <div style={{ display:'flex', flexDirection:'row', flexWrap:'wrap', gap:'6px 18px', justifyContent:'center' }}>
-        {Object.keys(RADAR_VALS).map(id=>(
+        {Object.keys(radarMap).map(id=>(
           <div
             key={id}
             style={{ display:'flex', alignItems:'center', gap:8, fontSize:13, color: hoveredModel===id ? MODEL_COLORS[id] : 'var(--text-secondary)', cursor:'pointer', transition:'color 0.2s', padding:'4px 10px', borderRadius:6, background: hoveredModel===id ? MODEL_COLORS[id]+'14' : 'transparent' }}
@@ -964,8 +1021,8 @@ const HOW_EXTRA = [
     title:'Research Question Integration',
     icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
     lines:[
-      'RQ1 PRIMARY (40%): external-judge validation — 25% pass-flip, α = 0.55',
-      'RQ2-5 SUPPORTING (15% each): hardest categories, failure mode, robustness, calibration',
+      'RQ1 PRIMARY: external-judge validation — 22.2% combined pass-flip, α = 0.55 (negative on R, M)',
+      'RQ2–5 SUPPORTING: hardest categories, failure mode, robustness, calibration',
       'RQ4: 2,365 perturbation runs across 3 types (rephrase / numerical / semantic)',
     ],
   },
@@ -974,8 +1031,8 @@ const HOW_EXTRA = [
     title:'Referenced Paper Analysis',
     icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
     lines:[
-      'Wei et al. 2022 → zero-shot CoT baseline prompting',
-      'Chen et al. 2022 → Program-of-Thoughts (PoT) strategy',
+      'Wei et al. 2022 → zero-shot CoT baseline prompting (the single shipped strategy)',
+      'Yamauchi et al. 2025 → external Llama 3.3 70B judge methodology',
       'StatEval / MathEval → comparative benchmark baseline',
     ],
   },
@@ -1250,6 +1307,7 @@ function BenchmarkSection() {
 // ═══════════════════════════════════════════════════════════════
 function Models() {
   const [sel, setSel] = useState(null)
+  const radarSource = useContext(RadarSourceContext)
 
   const selModel = sel !== null ? MODELS[sel] : null
 
@@ -1307,7 +1365,7 @@ function Models() {
                 </div>
                 <div style={{ background:'rgba(0,0,0,0.22)', borderRadius:8, padding:'12px', display:'flex', flexDirection:'column', alignItems:'center' }}>
                   <div style={{ color:'var(--aqua)', fontSize:9, fontWeight:700, letterSpacing:'0.1em', marginBottom:4, textAlign:'center' }}>CAPABILITY RADAR</div>
-                  <div style={{ fontSize:9, color:'var(--text-muted)', marginBottom:4, textAlign:'center' }}>Placeholder · updates after runs</div>
+                  <div style={{ fontSize:9, color:'var(--text-muted)', marginBottom:4, textAlign:'center' }}>{radarSource === 'live' ? 'Live data — updated each deploy' : 'Last-deploy snapshot'}</div>
                   <RadarChart model={selModel}/>
                 </div>
               </div>
@@ -1867,53 +1925,53 @@ function Visualizations({ setFullImg }) {
 //  7. ABOUT
 // ═══════════════════════════════════════════════════════════════
 const RQS = [
-  { id:'RQ1', tier:'PRIMARY', weight:'40%', color:'#00FFE0',
+  { id:'RQ1', tier:'PRIMARY', color:'#00FFE0',
     label:'External-Judge Validation',
     question:'How does external-judge validation differ from keyword scoring?',
-    headline:'25% pass-flip · α = 0.55 (questionable, Park et al. 2025)',
+    headline:'22.2% combined pass-flip · α = 0.55 (assumption) · α negative on R, M',
     viewLink:'judge',
-    detail:'Methodology contribution: keyword rubrics systematically overstate assumption-checking quality on Bayesian tasks. The Llama 3.3 70B external judge (Together AI) reveals 274 of 1094 runs that pass keyword rubric but fail the judge on assumption_compliance. Krippendorff α = 0.55 (95% CI [0.51, 0.59]); Spearman ρ = 0.59. Both metrics agree: keyword and judge are not interchangeable raters.',
-    grounding:'Park et al. 2025 (arXiv:2506.13639) — α-over-ρ for inter-rater reliability. Liu et al. 2025 — multi-dim rubric baseline.',
+    detail:'Methodology contribution: keyword rubrics systematically overstate assumption-checking quality on Bayesian tasks. Across 3,195 eligible runs (1,095 base + 2,100 perturbation) the Llama 3.3 70B external judge (Together AI) flags 708 pass-flips on assumption_compliance. Krippendorff α = 0.55 (questionable per Park 2025 thresholds) on assumption; α = -0.133 on reasoning_quality and -0.042 on method_structure — actively below zero, raters disagree more than chance. Spearman ρ = 0.59 on assumption.',
+    grounding:'Yamauchi et al. 2025 (arXiv:2506.13639) — α-over-ρ for inter-rater reliability. Liu et al. 2025 — multi-dim rubric baseline. Feuer et al. 2025 — single-judge limitation.',
   },
-  { id:'RQ2', tier:'SUPPORTING', weight:'15%', color:'#FFB347',
+  { id:'RQ2', tier:'SUPPORTING', color:'#FFB347',
     label:'Hardest Bayesian Categories',
     question:'Which Bayesian categories are hardest?',
     headline:'REGRESSION cluster ~0.30 mean accuracy across all 5 models',
     viewLink:'tasks',
-    detail:'Domain-specific failure surface that prior benchmarks cannot expose. REGRESSION cluster, MCMC, and ADVANCED tasks score below cohort mean across every model.',
-    grounding:'Liu et al. 2025 (MathEval) — task-category convention. Boye & Moell 2026 (Math-Reasoning-Failures) — unwarranted-assumption category.',
+    detail:'Domain-specific failure surface that prior benchmarks cannot expose. REGRESSION cluster, MCMC, and ADVANCED tasks score below cohort mean across every model. Under literature-derived NMACR weights, Gemini ranks #1 on accuracy (0.776 [0.753, 0.799]).',
+    grounding:'Liu et al. 2025 (MathEval) — task-category convention. Boye & Moell 2025 (Math-Reasoning-Failures) — unwarranted-assumption category.',
   },
-  { id:'RQ3', tier:'SUPPORTING', weight:'15%', color:'#A78BFA',
+  { id:'RQ3', tier:'SUPPORTING', color:'#A78BFA',
     label:'Dominant Failure Mode',
     question:'What is the dominant failure mode?',
     headline:'46.9% of failures are assumption violations, not math errors',
     viewLink:'errors',
-    detail:'ASSUMPTION_VIOLATION 67/143 base failures · MATHEMATICAL_ERROR 48 · FORMATTING 18 · CONCEPTUAL 10 · HALLUCINATION 0. Failure mode is silent assumption-skipping, not arithmetic error.',
-    grounding:'Du et al. 2025 (Ice Cream) — independent ~47% reproduction on causal-inference tasks. Math-Reasoning-Failures 2026.',
+    detail:'ASSUMPTION_VIOLATION 67/143 base failures · MATHEMATICAL_ERROR 48 · FORMATTING 18 · CONCEPTUAL 10 · HALLUCINATION 0. Per-model split is heterogeneous: ChatGPT 25/38 assumption-dominated; Claude 10/19 math-dominated; Mistral 12/26 math-dominated; DeepSeek mixed; Gemini balanced.',
+    grounding:'Du et al. 2025 (Ice Cream) — independent ~47% reproduction on causal-inference tasks. Boye & Moell 2025 — Math-Reasoning-Failures.',
   },
-  { id:'RQ4', tier:'SUPPORTING', weight:'15%', color:'#4A90D9',
+  { id:'RQ4', tier:'SUPPORTING', color:'#4A90D9',
     label:'Robustness to Perturbation',
     question:'Are accuracy rankings robust to prompt perturbation?',
     headline:'Rankings change: accuracy ≠ robustness ≠ calibration',
     viewLink:'robustness',
-    detail:'2,365 perturbation runs (5 models × 473 perturbations, 0 errors). Three uniformly-robust task types: HIERARCHICAL, RJMCMC, VB. ChatGPT/DeepSeek noise-equivalent (Δ ≈ 0).',
-    grounding:'BrittleBench 2026 — perturbation taxonomy. ReasonBench 2025 — variance-as-first-class. Statistical Fragility 2025 — separability tests.',
+    detail:'2,365 perturbation runs (5 models × 473 perturbations, 0 errors). Under literature-derived NMACR weights, Mistral ranks #1 on robustness; ChatGPT and Mistral robustness CIs cross zero (effectively noise-equivalent). Three uniformly-robust task types: HIERARCHICAL, RJMCMC, VB.',
+    grounding:'BrittleBench 2026 — perturbation taxonomy. Au et al. 2025 (ReasonBench) — variance-as-first-class. Hochlehnert et al. 2025 (Statistical Fragility) — separability tests.',
   },
-  { id:'RQ5', tier:'SUPPORTING', weight:'15%', color:'#7FFFD4',
+  { id:'RQ5', tier:'SUPPORTING', color:'#7FFFD4',
     label:'Confidence Calibration',
     question:'Are LLM confidence claims calibrated?',
-    headline:'Hedge-heavy under verbalized; overconfident under consistency-based',
+    headline:'Method-dependent: hedge-heavy verbalized · all overconfident under consistency',
     viewLink:'calibration',
-    detail:'Zero high-confidence records across all 5 models (verbalized extraction). 3-bucket ECE (0.3 / 0.5 / 0.6) — empty 0.9 bucket. Self-consistency proxy (B3) reveals overconfidence on hard tasks.',
+    detail:'Verbalized extraction (n=246 base/model): hedge-heavy, ECE 0.06–0.18. Consistency extraction (Phase 1C, n=161 numeric tasks × 3 reruns): all 5 models severely overconfident, ECE 0.62–0.73. Gemini outlier in both directions: 0 verbalized signals AND best consistency ECE (0.618).',
     grounding:'FermiEval 2025 — overconfidence contrast. Multi-Answer Confidence 2026 — consistency-based path. Nagarkar et al. 2026.',
   },
 ]
 
 const ABOUT_FINDINGS = [
-  { title:'External judge disagrees', stat:'25%', statLabel:'pass-flip on assumption_compliance', text:'274/1094 runs pass keyword rubric but fail the Llama 3.3 70B judge. Methodology contribution — keyword overstates assumption checking.', color:'#00FFE0' },
-  { title:'REGRESSION is the wall', stat:'~0.30', statLabel:'mean accuracy · all 5 models', text:'REGRESSION cluster is the hardest category across every model. MCMC and ADVANCED follow.', color:'#FFB347' },
-  { title:'Failure mode is silent', stat:'46.9%', statLabel:'of 143 base failures', text:'Assumption violations dominate (67/143). Models compute correct math but skip prior specs, iid conditions, distributional families.', color:'#A78BFA' },
-  { title:'Three rankings disagree', stat:'3 ≠', statLabel:'accuracy · robustness · calibration', text:'Single-metric leaderboards mislead. ChatGPT/DeepSeek noise-equivalent on robustness; Top-2 accuracy CIs overlap.', color:'#4A90D9' },
+  { title:'External judge disagrees', stat:'22.2%', statLabel:'combined pass-flip · 708/3,195', text:'Across 3,195 base + perturbation runs, judge flips 708 pass→fail on assumption_compliance. Krippendorff α negative on reasoning_quality and method_structure — keyword and judge actively disagree.', color:'#00FFE0' },
+  { title:'REGRESSION is the wall', stat:'~0.30', statLabel:'mean accuracy · all 5 models', text:'REGRESSION cluster is the hardest category across every model. MCMC and ADVANCED follow. Gemini #1 accuracy 0.776 under literature weights.', color:'#FFB347' },
+  { title:'Failure mode is silent', stat:'46.9%', statLabel:'of 143 base failures', text:'Assumption violations dominate (67/143). Per-model split varies sharply: ChatGPT assumption-dominated; Claude math-dominated.', color:'#A78BFA' },
+  { title:'Three rankings disagree', stat:'3 ≠', statLabel:'accuracy · robustness · calibration', text:'Single-metric leaderboards mislead. ChatGPT/Mistral robustness CIs cross zero (noise-equivalent); the other 3 are statistically separable from zero.', color:'#4A90D9' },
 ]
 
 // ─── About findings SVG icons (no emoji) ─────────────────────
@@ -1996,7 +2054,7 @@ function About() {
                     color: q.tier === 'PRIMARY' ? '#050a16' : q.color,
                     fontSize: 9, fontWeight: 800, letterSpacing: '0.14em',
                     padding: '4px 8px', borderRadius: 4,
-                  }}>{q.tier} · {q.weight}</span>
+                  }}>{q.tier}</span>
                 </div>
                 <div style={{
                   color: '#fff', fontSize: isPrimary ? 18 : 13.5, fontWeight: 700,
@@ -2151,6 +2209,7 @@ export default function App() {
   const [gifError,          setGifError]          = useState(false)
   const [tasksOpen,         setTasksOpen]         = useState(false)
   const [interactiveModal,  setInteractiveModal]  = useState(null)
+  const [radarVals, radarSource] = useRadarFromAPI()
 
   useEffect(() => {
     const handler = (e) => {
@@ -2161,6 +2220,8 @@ export default function App() {
   }, [])
 
   return (
+    <RadarValuesContext.Provider value={radarVals}>
+    <RadarSourceContext.Provider value={radarSource}>
     <>
     <motion.div
       className="app-root"
@@ -2466,5 +2527,7 @@ export default function App() {
       )}
     </AnimatePresence>
     </>
+    </RadarSourceContext.Provider>
+    </RadarValuesContext.Provider>
   )
 }
