@@ -28,7 +28,6 @@ const STATIC_FALLBACK = {
 const COLORS = ['#00FFE0', '#7FFFD4', '#A78BFA', '#FFB347', '#00B4D8', '#4A90D9']
 
 function buildCards(d, pf) {
-  // Headline 1 — combined pass-flip across 3,195 runs
   const flipPct = pf?.combined?.pct_pass_flip != null
     ? (pf.combined.pct_pass_flip * 100).toFixed(1)
     : (d.pass_flip_rate * 100).toFixed(1)
@@ -87,7 +86,8 @@ function staticCards() {
   })
 }
 
-export default function KeyFindings() {
+// Hook: returns { cards, loading }
+export function useKeyFindings() {
   const [cards, setCards] = useState(null)
   const [loading, setLoading] = useState(true)
 
@@ -100,7 +100,66 @@ export default function KeyFindings() {
       .catch(() => { setCards(staticCards()); setLoading(false) })
   }, [])
 
-  const list = cards || staticCards()
+  return { cards: cards || staticCards(), loading }
+}
+
+// Single card renderer — exported so App.jsx can interleave with viz
+export function KeyFindingCard({ card, index, hero = false, loading = false }) {
+  const color = COLORS[index % COLORS.length]
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.04 * index, duration: 0.45 }}
+      style={{
+        border: `1px solid ${color}33`,
+        borderTop: `3px solid ${color}`,
+        borderRadius: 12,
+        padding: '20px 20px 18px',
+        background: `${color}08`,
+        opacity: loading ? 0.55 : 1,
+        transition: 'opacity 0.3s',
+        height: '100%',
+        boxSizing: 'border-box',
+      }}
+    >
+      <div style={{
+        fontFamily: 'monospace', color,
+        fontSize: hero ? 38 : 26, fontWeight: 800, lineHeight: 1.05, marginBottom: 8,
+      }}>
+        {card.big}
+      </div>
+      <div style={{
+        color: 'rgba(232,244,248,0.9)', fontSize: hero ? 15 : 13, fontWeight: 700,
+        marginBottom: 10, lineHeight: 1.35,
+      }}>
+        {card.label}
+      </div>
+      <div style={{ color: 'rgba(232,244,248,0.78)', fontSize: 12, lineHeight: 1.6, marginBottom: 10 }}>
+        {card.desc}
+      </div>
+      {card.why && (
+        <div style={{
+          borderTop: `1px solid ${color}22`,
+          paddingTop: 10,
+          fontSize: 11,
+          color: 'rgba(232,244,248,0.55)',
+          lineHeight: 1.55,
+          fontStyle: 'italic',
+        }}>
+          <span style={{ color, fontWeight: 700, fontStyle: 'normal', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: 9, marginRight: 6 }}>
+            Why it matters
+          </span>
+          {card.why}
+        </div>
+      )}
+    </motion.div>
+  )
+}
+
+// Original block-rendered version — preserved as default export for backward compat
+export default function KeyFindings() {
+  const { cards, loading } = useKeyFindings()
 
   return (
     <div style={{
@@ -109,59 +168,11 @@ export default function KeyFindings() {
       gap: 14,
       maxWidth: 1300, margin: '0 auto 32px',
     }}>
-      {list.map((c, i) => {
-        const color = COLORS[i % COLORS.length]
-        const isHero = i === 0
-        return (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.04 * i, duration: 0.45 }}
-            style={{
-              border: `1px solid ${color}33`,
-              borderTop: `3px solid ${color}`,
-              borderRadius: 12,
-              padding: '20px 20px 18px',
-              background: `${color}08`,
-              opacity: loading && !cards ? 0.55 : 1,
-              transition: 'opacity 0.3s',
-              gridColumn: isHero ? '1 / -1' : 'auto',
-            }}
-          >
-            <div style={{
-              fontFamily: 'monospace', color: color,
-              fontSize: isHero ? 38 : 26, fontWeight: 800, lineHeight: 1.05, marginBottom: 8,
-            }}>
-              {c.big}
-            </div>
-            <div style={{
-              color: 'rgba(232,244,248,0.9)', fontSize: isHero ? 15 : 13, fontWeight: 700,
-              marginBottom: 10, lineHeight: 1.35,
-            }}>
-              {c.label}
-            </div>
-            <div style={{ color: 'rgba(232,244,248,0.78)', fontSize: 12, lineHeight: 1.6, marginBottom: 10 }}>
-              {c.desc}
-            </div>
-            {c.why && (
-              <div style={{
-                borderTop: `1px solid ${color}22`,
-                paddingTop: 10,
-                fontSize: 11,
-                color: 'rgba(232,244,248,0.55)',
-                lineHeight: 1.55,
-                fontStyle: 'italic',
-              }}>
-                <span style={{ color, fontWeight: 700, fontStyle: 'normal', letterSpacing: '0.08em', textTransform: 'uppercase', fontSize: 9, marginRight: 6 }}>
-                  Why it matters
-                </span>
-                {c.why}
-              </div>
-            )}
-          </motion.div>
-        )
-      })}
+      {cards.map((c, i) => (
+        <div key={i} style={{ gridColumn: i === 0 ? '1 / -1' : 'auto' }}>
+          <KeyFindingCard card={c} index={i} hero={i === 0} loading={loading} />
+        </div>
+      ))}
     </div>
   )
 }

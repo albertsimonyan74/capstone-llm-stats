@@ -8,7 +8,9 @@ import GlobeBackground from './components/GlobeBackground'
 import Navbar          from './components/Navbar'
 import NeuralNetwork   from './components/NeuralNetwork'
 import HeroNetworkBg   from './components/HeroNetworkBg'
-import KeyFindings     from './components/KeyFindings'
+import KeyFindings, { useKeyFindings, KeyFindingCard } from './components/KeyFindings'
+import { PerModelPassFlipPanel } from './components/MethodologyPanels'
+import ThreeRankingsComparison from './components/ThreeRankingsComparison'
 import VizGallery      from './pages/VizGallery'
 import UserStudy       from './pages/UserStudy'
 import Methodology     from './pages/Methodology'
@@ -795,6 +797,43 @@ function RadarChart({ model }) {
   )
 }
 
+// ─── Key Findings hero section: Card1 + viz + Cards2-3-4 + viz + Cards5-6 ───
+function KeyFindingsSection() {
+  const { cards, loading } = useKeyFindings()
+  if (!cards || cards.length < 6) return <KeyFindings/>
+  return (
+    <div style={{ maxWidth: 1300, margin: '0 auto' }}>
+      {/* Card 1 — hero / full-width */}
+      <div style={{ marginBottom: 24 }}>
+        <KeyFindingCard card={cards[0]} index={0} hero={true} loading={loading}/>
+      </div>
+
+      {/* Viz #1 — per-model pass-flip */}
+      <div className="kf-viz-spacer">
+        <PerModelPassFlipPanel/>
+      </div>
+
+      {/* Cards 2-3-4 */}
+      <div className="kf-card-row kf-card-row-3">
+        <KeyFindingCard card={cards[1]} index={1} loading={loading}/>
+        <KeyFindingCard card={cards[2]} index={2} loading={loading}/>
+        <KeyFindingCard card={cards[3]} index={3} loading={loading}/>
+      </div>
+
+      {/* Viz #2 — three rankings comparison */}
+      <div className="kf-viz-spacer">
+        <ThreeRankingsComparison/>
+      </div>
+
+      {/* Cards 5-6 */}
+      <div className="kf-card-row kf-card-row-2">
+        <KeyFindingCard card={cards[4]} index={4} loading={loading}/>
+        <KeyFindingCard card={cards[5]} index={5} loading={loading}/>
+      </div>
+    </div>
+  )
+}
+
 // ─── Multi-model radar ────────────────────────────────────────
 const MODEL_COLORS = { claude:'#00CED1', gemini:'#FF6B6B', chatgpt:'#7FFFD4', deepseek:'#4A90D9', mistral:'#A78BFA' }
 function MultiModelRadar() {
@@ -959,12 +998,12 @@ function Overview() {
           {/* Divider */}
           <motion.div variants={fadeUp} style={{ width:'60%', height:1, background:'linear-gradient(90deg,transparent,var(--aqua),transparent)', margin:'44px auto 32px', opacity:0.3 }}/>
 
-          {/* Key Findings — live data fetch */}
+          {/* Key Findings — live data fetch with interleaved viz */}
           <motion.div variants={fadeUp} style={{ width:'100%', textAlign:'left', marginBottom:32 }}>
             <div style={{ color:'var(--aqua)', fontSize:11, fontWeight:700, letterSpacing:'0.16em', textAlign:'center', marginBottom:16 }}>
-              KEY FINDINGS · v2
+              KEY FINDINGS
             </div>
-            <KeyFindings/>
+            <KeyFindingsSection/>
           </motion.div>
 
           {/* CTAs */}
@@ -1967,39 +2006,6 @@ const RQS = [
   },
 ]
 
-const ABOUT_FINDINGS = [
-  { title:'External judge disagrees', stat:'22.2%', statLabel:'combined pass-flip · 708/3,195', text:'Across 3,195 base + perturbation runs, judge flips 708 pass→fail on assumption_compliance. Krippendorff α negative on reasoning_quality and method_structure — keyword and judge actively disagree.', color:'#00FFE0' },
-  { title:'REGRESSION is the wall', stat:'~0.30', statLabel:'mean accuracy · all 5 models', text:'REGRESSION cluster is the hardest category across every model. MCMC and ADVANCED follow. Gemini #1 accuracy 0.776 under literature weights.', color:'#FFB347' },
-  { title:'Failure mode is silent', stat:'46.9%', statLabel:'of 143 base failures', text:'Assumption violations dominate (67/143). Per-model split varies sharply: ChatGPT assumption-dominated; Claude math-dominated.', color:'#A78BFA' },
-  { title:'Three rankings disagree', stat:'3 ≠', statLabel:'accuracy · robustness · calibration', text:'Single-metric leaderboards mislead. ChatGPT/Mistral robustness CIs cross zero (noise-equivalent); the other 3 are statistically separable from zero.', color:'#4A90D9' },
-]
-
-// ─── About findings SVG icons (no emoji) ─────────────────────
-const ABOUT_FINDING_ICONS = [
-  // 1. #1 rank — crown
-  <svg key="a0" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M2 19h20M4 19 6 9l6 5 6-9 2 14"/>
-    <circle cx="6" cy="9" r="1.5" fill="currentColor" stroke="none"/>
-    <circle cx="18" cy="5" r="1.5" fill="currentColor" stroke="none"/>
-    <circle cx="12" cy="14" r="1.5" fill="currentColor" stroke="none"/>
-  </svg>,
-  // 2. Hardest — downward trend
-  <svg key="a1" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
-    <polyline points="16 17 22 17 22 11"/>
-  </svg>,
-  // 3. Warning — triangle exclamation
-  <svg key="a2" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-    <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-  </svg>,
-  // 4. Perturbation — shuffle/swap arrows
-  <svg key="a3" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
-    <polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
-    <line x1="4" y1="4" x2="9" y2="9"/>
-  </svg>,
-]
 const SCORE_DIMS = [
   { dim:'N', name:'Numerical Accuracy',     color:'#00FFE0' },
   { dim:'M', name:'Method Selection',       color:'#00B4D8' },
@@ -2153,42 +2159,13 @@ function About() {
         </Card>
       </FadeIn>
 
-      {/* § 3 — Key Findings (left) + Radar (right) */}
+      {/* § 3 — Model capability overview (radar, full-width) */}
       <FadeIn delay={100}>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:32, maxWidth:1300, margin:'0 auto 52px', alignItems:'stretch' }}>
-          {/* Left: Key Findings */}
-          <div style={{ display:'flex', flexDirection:'column' }}>
-            <div style={{ color:'var(--aqua)', fontSize:13, fontWeight:700, letterSpacing:'0.14em', marginBottom:20, textAlign:'center' }}>KEY FINDINGS</div>
-            <div style={{ display:'flex', flexDirection:'column', gap:12, flex:1 }}>
-              {ABOUT_FINDINGS.map((f,i) => (
-                <motion.div
-                  key={i}
-                  style={{ flex:1, borderRadius:16 }}
-                  whileHover={{ y:-3, boxShadow:`0 8px 32px ${f.color}22` }}
-                  transition={{ type:'spring', stiffness:400, damping:28 }}
-                >
-                  <Card style={{ padding:'18px 20px', boxSizing:'border-box', height:'100%' }}>
-                    <div style={{ display:'flex', alignItems:'flex-start', gap:14, marginBottom:10 }}>
-                      <div style={{ color:f.color, flexShrink:0, marginTop:2 }}>{ABOUT_FINDING_ICONS[i]}</div>
-                      <div>
-                        <div style={{ color:f.color, fontSize:22, fontWeight:800, fontFamily:'var(--font-mono)', lineHeight:1 }}>{f.stat}</div>
-                        <div style={{ color:'rgba(255,255,255,0.35)', fontSize:9, letterSpacing:'0.06em', marginTop:2 }}>{f.statLabel}</div>
-                      </div>
-                    </div>
-                    <div style={{ color:'var(--text-primary)', fontSize:12, fontWeight:700, marginBottom:5 }}>{f.title}</div>
-                    <div style={{ color:f.color, fontSize:11, lineHeight:1.65, opacity:0.85 }}>{f.text}</div>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          {/* Right: Radar */}
-          <div style={{ display:'flex', flexDirection:'column' }}>
-            <div style={{ color:'var(--aqua)', fontSize:13, fontWeight:700, letterSpacing:'0.12em', marginBottom:16, textAlign:'center' }}>MODEL CAPABILITY OVERVIEW</div>
-            <Card style={{ padding:'20px 12px', display:'flex', flexDirection:'column', alignItems:'center', flex:1 }}>
-              <MultiModelRadar/>
-            </Card>
-          </div>
+        <div style={{ maxWidth:1300, margin:'0 auto 52px' }}>
+          <div style={{ color:'var(--aqua)', fontSize:13, fontWeight:700, letterSpacing:'0.12em', marginBottom:16, textAlign:'center' }}>MODEL CAPABILITY OVERVIEW</div>
+          <Card style={{ padding:'24px 16px', display:'flex', flexDirection:'column', alignItems:'center' }}>
+            <MultiModelRadar/>
+          </Card>
         </div>
       </FadeIn>
 
