@@ -797,15 +797,17 @@ function RadarChart({ model }) {
   )
 }
 
-// ─── Key Findings hero section: Card1 + viz + Cards2-3-4 + viz + Cards5-6 ───
+// ─── Key Findings: 2 rows of 3 cards · viz between rows · viz after row 2 ───
 function KeyFindingsSection() {
   const { cards, loading } = useKeyFindings()
   if (!cards || cards.length < 6) return <KeyFindings/>
   return (
     <div style={{ maxWidth: 1300, margin: '0 auto' }}>
-      {/* Card 1 — hero / full-width */}
-      <div style={{ marginBottom: 24 }}>
-        <KeyFindingCard card={cards[0]} index={0} hero={true} loading={loading}/>
+      {/* Cards 1-3 */}
+      <div className="kf-card-row kf-card-row-3">
+        <KeyFindingCard card={cards[0]} index={0} loading={loading}/>
+        <KeyFindingCard card={cards[1]} index={1} loading={loading}/>
+        <KeyFindingCard card={cards[2]} index={2} loading={loading}/>
       </div>
 
       {/* Viz #1 — per-model pass-flip */}
@@ -813,22 +815,16 @@ function KeyFindingsSection() {
         <PerModelPassFlipPanel/>
       </div>
 
-      {/* Cards 2-3-4 */}
+      {/* Cards 4-6 */}
       <div className="kf-card-row kf-card-row-3">
-        <KeyFindingCard card={cards[1]} index={1} loading={loading}/>
-        <KeyFindingCard card={cards[2]} index={2} loading={loading}/>
         <KeyFindingCard card={cards[3]} index={3} loading={loading}/>
+        <KeyFindingCard card={cards[4]} index={4} loading={loading}/>
+        <KeyFindingCard card={cards[5]} index={5} loading={loading}/>
       </div>
 
       {/* Viz #2 — three rankings comparison */}
       <div className="kf-viz-spacer">
         <ThreeRankingsComparison/>
-      </div>
-
-      {/* Cards 5-6 */}
-      <div className="kf-card-row kf-card-row-2">
-        <KeyFindingCard card={cards[4]} index={4} loading={loading}/>
-        <KeyFindingCard card={cards[5]} index={5} loading={loading}/>
       </div>
     </div>
   )
@@ -997,14 +993,6 @@ function Overview() {
 
           {/* Divider */}
           <motion.div variants={fadeUp} style={{ width:'60%', height:1, background:'linear-gradient(90deg,transparent,var(--aqua),transparent)', margin:'44px auto 32px', opacity:0.3 }}/>
-
-          {/* Key Findings — live data fetch with interleaved viz */}
-          <motion.div variants={fadeUp} style={{ width:'100%', textAlign:'left', marginBottom:32 }}>
-            <div style={{ color:'var(--aqua)', fontSize:11, fontWeight:700, letterSpacing:'0.16em', textAlign:'center', marginBottom:16 }}>
-              KEY FINDINGS
-            </div>
-            <KeyFindingsSection/>
-          </motion.div>
 
           {/* CTAs */}
           <motion.div variants={fadeUp} style={{ display:'flex', gap:14, justifyContent:'center', flexWrap:'wrap' }}>
@@ -1966,40 +1954,60 @@ function Visualizations({ setFullImg }) {
 const RQS = [
   { id:'RQ1', tier:'PRIMARY', color:'#00FFE0',
     label:'External-Judge Validation',
-    question:'How does external-judge validation differ from keyword scoring?',
-    headline:'22.2% combined pass-flip · α = 0.55 (assumption) · α negative on R, M',
+    question:'Does keyword-based scoring agree with external-judge evaluation on assumption articulation, both on base prompts and under prompt perturbation?',
+    headline:[
+      '22.2% combined pass-flip across 3,195 evaluable runs',
+      'Krippendorff α = 0.55 (assumption); negative α on reasoning quality (-0.13) and method structure (-0.04)',
+      'Keyword-judge gap widens 3.7pp under perturbation',
+    ],
     viewLink:'judge',
-    detail:'Methodology contribution: keyword rubrics systematically overstate assumption-checking quality on Bayesian tasks. Across 3,195 eligible runs (1,095 base + 2,100 perturbation) the Llama 3.3 70B external judge (Together AI) flags 708 pass-flips on assumption_compliance. Krippendorff α = 0.55 (questionable per Park 2025 thresholds) on assumption; α = -0.133 on reasoning_quality and -0.042 on method_structure — actively below zero, raters disagree more than chance. Spearman ρ = 0.59 on assumption.',
+    detail:'Methodology contribution: keyword rubrics systematically overstate assumption-checking quality on Bayesian tasks. Across 3,195 eligible runs (1,095 base + 2,100 perturbation) the Llama 3.3 70B external judge (Together AI) flags 708 pass-flips on assumption_compliance. Krippendorff α = 0.55 on assumption; α = -0.133 on reasoning_quality and -0.042 on method_structure — actively below zero, raters disagree more than chance. Spearman ρ = 0.59 on assumption.',
     grounding:'Yamauchi et al. 2025 (arXiv:2506.13639) — α-over-ρ for inter-rater reliability. Liu et al. 2025 — multi-dim rubric baseline. Feuer et al. 2025 — single-judge limitation.',
   },
   { id:'RQ2', tier:'SUPPORTING', color:'#FFB347',
-    label:'Hardest Bayesian Categories',
-    question:'Which Bayesian categories are hardest?',
-    headline:'REGRESSION cluster ~0.30 mean accuracy across all 5 models',
+    label:'Bayesian Category Difficulty',
+    question:'Which Bayesian inference categories yield the lowest accuracy under literature-weighted scoring, and is the difficulty pattern consistent across the five evaluated LLMs?',
+    headline:[
+      'REGRESSION cluster: ~0.30 mean accuracy across all 5 models',
+      'MCMC and ADVANCED tasks follow as next-hardest',
+      'Difficulty pattern is consistent across models (all 5 models find the same categories hardest)',
+    ],
     viewLink:'tasks',
     detail:'Domain-specific failure surface that prior benchmarks cannot expose. REGRESSION cluster, MCMC, and ADVANCED tasks score below cohort mean across every model. Under literature-derived NMACR weights, Gemini ranks #1 on accuracy (0.776 [0.753, 0.799]).',
     grounding:'Liu et al. 2025 (MathEval) — task-category convention. Boye & Moell 2025 (Math-Reasoning-Failures) — unwarranted-assumption category.',
   },
   { id:'RQ3', tier:'SUPPORTING', color:'#A78BFA',
     label:'Dominant Failure Mode',
-    question:'What is the dominant failure mode?',
-    headline:'46.9% of failures are assumption violations, not math errors',
+    question:'When LLMs fail on Bayesian inference tasks, do failures stem mostly from assumption-articulation gaps or computational errors, and does the distribution differ by model?',
+    headline:[
+      '67 of 143 audited failures (46.9%) are assumption violations',
+      '48 of 143 (33.6%) are math errors',
+      'Per-model split varies sharply: ChatGPT assumption-dominated, Claude math-dominated',
+    ],
     viewLink:'errors',
     detail:'ASSUMPTION_VIOLATION 67/143 base failures · MATHEMATICAL_ERROR 48 · FORMATTING 18 · CONCEPTUAL 10 · HALLUCINATION 0. Per-model split is heterogeneous: ChatGPT 25/38 assumption-dominated; Claude 10/19 math-dominated; Mistral 12/26 math-dominated; DeepSeek mixed; Gemini balanced.',
     grounding:'Du et al. 2025 (Ice Cream) — independent ~47% reproduction on causal-inference tasks. Boye & Moell 2025 — Math-Reasoning-Failures.',
   },
   { id:'RQ4', tier:'SUPPORTING', color:'#4A90D9',
-    label:'Robustness to Perturbation',
-    question:'Are accuracy rankings robust to prompt perturbation?',
-    headline:'Rankings change: accuracy ≠ robustness ≠ calibration',
+    label:'Ranking Stability across Evaluation Lenses',
+    question:'Do per-model rankings remain stable across accuracy, robustness to perturbation, and calibration measurements, or does the choice of evaluation lens produce divergent leaderboards?',
+    headline:[
+      'Three different #1s: Gemini (accuracy), Mistral (robustness), ChatGPT (calibration)',
+      'Only ChatGPT and Mistral are statistically noise-equivalent on robustness',
+      'Gemini accuracy #1 but robustness #5 — sharp inversion',
+    ],
     viewLink:'robustness',
     detail:'2,365 perturbation runs (5 models × 473 perturbations, 0 errors). Under literature-derived NMACR weights, Mistral ranks #1 on robustness; ChatGPT and Mistral robustness CIs cross zero (effectively noise-equivalent). Three uniformly-robust task types: HIERARCHICAL, RJMCMC, VB.',
     grounding:'BrittleBench 2026 — perturbation taxonomy. Au et al. 2025 (ReasonBench) — variance-as-first-class. Hochlehnert et al. 2025 (Statistical Fragility) — separability tests.',
   },
   { id:'RQ5', tier:'SUPPORTING', color:'#7FFFD4',
-    label:'Confidence Calibration',
-    question:'Are LLM confidence claims calibrated?',
-    headline:'Method-dependent: hedge-heavy verbalized · all overconfident under consistency',
+    label:'Calibration Method-Dependence',
+    question:'How does calibration error vary between verbalized confidence extraction and self-consistency-based extraction, and which models exhibit method-dependent calibration patterns?',
+    headline:[
+      'Verbalized ECE 0.06–0.18 (hedge-heavy across models)',
+      'Self-consistency ECE 0.62–0.73 (all overconfident under repeat-agreement)',
+      'Gemini calibration inversion: 0 verbalized signals but BEST consistency ECE',
+    ],
     viewLink:'calibration',
     detail:'Verbalized extraction (n=246 base/model): hedge-heavy, ECE 0.06–0.18. Consistency extraction (Phase 1C, n=161 numeric tasks × 3 reruns): all 5 models severely overconfident, ECE 0.62–0.73. Gemini outlier in both directions: 0 verbalized signals AND best consistency ECE (0.618).',
     grounding:'FermiEval 2025 — overconfidence contrast. Multi-Answer Confidence 2026 — consistency-based path. Nagarkar et al. 2026.',
@@ -2020,14 +2028,11 @@ function About() {
     <Section id="about" minHeight="auto">
       <SectionTitle>About This Research</SectionTitle>
 
-      {/* § 1 — Research Questions (RQ1 PRIMARY + RQ2-5 SUPPORTING grid) */}
+      {/* § 1 — Research Questions (5 cards, equal size, 3+2 grid) */}
       <FadeIn>
         {(() => {
-          const primary = RQS[0]
-          const supporting = RQS.slice(1)
-          const renderCard = (q, i, isPrimary) => {
-            const isOpen = openRQ === (isPrimary ? 0 : i + 1)
-            const idx = isPrimary ? 0 : i + 1
+          const renderCard = (q, idx) => {
+            const isOpen = openRQ === idx
             return (
               <motion.div
                 key={q.id}
@@ -2035,13 +2040,14 @@ function About() {
                 whileHover={{ y: -4, boxShadow: `0 14px 44px ${q.color}33` }}
                 animate={{ boxShadow: isOpen ? `0 0 0 2px ${q.color}60` : 'none' }}
                 transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+                className="rq-card"
                 style={{
                   cursor: 'pointer',
                   background: 'rgba(255,255,255,0.025)',
                   border: `1px solid ${q.color}33`,
                   borderTop: `3px solid ${q.color}`,
                   borderRadius: 14,
-                  padding: isPrimary ? '28px 32px' : '20px 22px',
+                  padding: '20px 22px',
                   position: 'relative',
                   overflow: 'hidden',
                   height: '100%',
@@ -2050,24 +2056,24 @@ function About() {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10, flexWrap: 'wrap' }}>
                   <div style={{
-                    width: isPrimary ? 44 : 34, height: isPrimary ? 44 : 34, borderRadius: 8,
+                    width: 34, height: 34, borderRadius: 8,
                     background: `${q.color}18`, border: `1.5px solid ${q.color}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    color: q.color, fontWeight: 800, fontSize: isPrimary ? 14 : 11, fontFamily: 'var(--font-mono)',
+                    color: q.color, fontWeight: 800, fontSize: 11, fontFamily: 'var(--font-mono)',
                   }}>{q.id}</div>
                   <span style={{
-                    background: q.tier === 'PRIMARY' ? q.color : `${q.color}22`,
-                    color: q.tier === 'PRIMARY' ? '#050a16' : q.color,
+                    background: `${q.color}22`,
+                    color: q.color,
                     fontSize: 9, fontWeight: 800, letterSpacing: '0.14em',
                     padding: '4px 8px', borderRadius: 4,
                   }}>{q.tier}</span>
                 </div>
                 <div style={{
-                  color: '#fff', fontSize: isPrimary ? 18 : 13.5, fontWeight: 700,
+                  color: '#fff', fontSize: 13.5, fontWeight: 700,
                   marginBottom: 6, lineHeight: 1.3,
                 }}>{q.label}</div>
                 <div style={{
-                  color: 'rgba(232,244,248,0.65)', fontSize: isPrimary ? 13 : 11.5,
+                  color: 'rgba(232,244,248,0.65)', fontSize: 11.5,
                   lineHeight: 1.55, marginBottom: 10, fontStyle: 'italic',
                 }}>{q.question}</div>
                 <div style={{
@@ -2075,7 +2081,15 @@ function About() {
                   padding: '10px 12px', marginBottom: 10,
                 }}>
                   <div style={{ color: q.color, fontSize: 9, fontWeight: 700, letterSpacing: '0.12em', marginBottom: 4 }}>HEADLINE</div>
-                  <div style={{ color: '#fff', fontSize: isPrimary ? 14 : 12, fontWeight: 700, lineHeight: 1.45 }}>{q.headline}</div>
+                  {Array.isArray(q.headline) ? (
+                    <ul style={{ color: '#fff', fontSize: 12, fontWeight: 600, lineHeight: 1.5, margin: 0, paddingLeft: 16 }}>
+                      {q.headline.map((h, hi) => (
+                        <li key={hi} style={{ marginBottom: hi < q.headline.length - 1 ? 4 : 0 }}>{h}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <div style={{ color: '#fff', fontSize: 12, fontWeight: 700, lineHeight: 1.45 }}>{q.headline}</div>
+                  )}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
                   <span
@@ -2113,17 +2127,8 @@ function About() {
           }
 
           return (
-            <div style={{ maxWidth: 1300, margin: '0 auto 24px' }}>
-              <div style={{ marginBottom: 16 }}>
-                {renderCard(primary, 0, true)}
-              </div>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: 14,
-              }}>
-                {supporting.map((q, i) => renderCard(q, i, false))}
-              </div>
+            <div className="rq-grid" style={{ maxWidth: 1300, margin: '0 auto 24px' }}>
+              {RQS.map((q, i) => renderCard(q, i))}
             </div>
           )
         })()}
@@ -2159,7 +2164,17 @@ function About() {
         </Card>
       </FadeIn>
 
-      {/* § 3 — Model capability overview (radar, full-width) */}
+      {/* § 3 — Key Findings (moved inside About, after RQ cards + stats) */}
+      <FadeIn delay={80}>
+        <div className="kf-inside-about" style={{ maxWidth:1300, margin:'0 auto 48px' }}>
+          <div style={{ color:'var(--aqua)', fontSize:13, fontWeight:700, letterSpacing:'0.16em', textAlign:'center', marginBottom:24 }}>
+            KEY FINDINGS
+          </div>
+          <KeyFindingsSection/>
+        </div>
+      </FadeIn>
+
+      {/* § 4 — Model capability overview (radar, full-width, end of section) */}
       <FadeIn delay={100}>
         <div style={{ maxWidth:1300, margin:'0 auto 52px' }}>
           <div style={{ color:'var(--aqua)', fontSize:13, fontWeight:700, letterSpacing:'0.12em', marginBottom:16, textAlign:'center' }}>MODEL CAPABILITY OVERVIEW</div>

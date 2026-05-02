@@ -46,8 +46,8 @@ function buildCards(d, pf) {
     {
       big: 'α = -0.13 to 0.55',
       label: 'Two scoring methods give different answers',
-      desc: `Krippendorff agreement on assumption articulation is ${alphaA} (questionable per Park et al. 2025 thresholds). On reasoning_quality and method_structure, the agreement is NEGATIVE — the two methods disagree more than they agree by chance. The disagreement is not noise — it's structural.`,
-      why: "Confirms the 1-in-5 finding above isn't a fluke. The two scoring methods genuinely measure different things on three of four dimensions.",
+      desc: `Krippendorff agreement on assumption articulation is ${alphaA}. On reasoning_quality and method_structure, the agreement is NEGATIVE (-0.13 and -0.04 respectively) — the two methods disagree more than they would by chance. The disagreement is not noise — it's structural.`,
+      why: "Confirms the 1-in-5 finding above isn't a fluke. The two scoring methods genuinely measure different things on three of four dimensions. Negative agreement cannot be explained by random rater error.",
     },
     {
       big: 'Almost half',

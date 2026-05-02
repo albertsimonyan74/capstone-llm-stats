@@ -688,3 +688,30 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
     grid-template-columns: 1fr;
   }
 }
+
+/* ─── RQ grid: 3+2 (auto-flow), equal cards ──────────────────── */
+.rq-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px auto;
+}
+
+@media (max-width: 900px) {
+  .rq-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .rq-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Key Findings inside About — visual separator ───────────── */
+.kf-inside-about {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
