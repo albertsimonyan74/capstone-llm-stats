@@ -6,6 +6,6 @@ Create a new Overleaf project (Blank Project), set the compiler to **pdfLaTeX** 
 
 ## Stub status
 
-- **Real content:** Abstract, RQs, N·M·A·C·R rubric (Row 1); Methodology + Judge Validation (Row 2); RQ5 ECE table; Keyword vs Judge stats and pass-flip (Row 5 left).
+- **Real content:** Abstract, RQs, N·M·A·C·R rubric (Row 1); Methodology + Judge Validation (Row 2); RQ5 ECE table; Keyword vs Judge stats and keyword-judge disagreement (Row 5 left).
 - **Stubs (`\figstub{...}`):** Three Rankings figure, Failure Taxonomy chart, RQ2/RQ3/RQ4/RQ5 sub-figures, 4-panel scatter. Replace each `\figstub{caption}{height}` with `\includegraphics[width=\linewidth]{path/to/figure.png}` once the figures are exported from `report_materials/figures/`.
 - **Reasoning-quality ranking** in the Three Rankings panel is a stub (one bullet) — fill from `experiments/results_v2/llm_judge_scores_full.jsonl` per-model means.

@@ -1,18 +1,23 @@
-"""Combined base + perturbation pass-flip analysis on assumption_compliance.
+"""Combined base + perturbation keyword-judge disagreement analysis on assumption_compliance.
+
+User-facing term: "keyword-judge disagreement". Code identifiers below
+retain `pass_flip` for backward compatibility (JSON keys, function names,
+endpoint paths consumed by the website).
 
 Phase 1.5 audit-driven extension of the canonical
 `keyword_vs_judge_agreement.py` analysis. The original script reports a
-pass-flip headline (keyword PASS, judge FAIL) on the 1,095 eligible base runs
-only. This script extends the same methodology to the 2,365 perturbation runs
-and reports the union (run-ID deduplicated) for a complete picture.
+keyword-judge disagreement headline (keyword PASS, judge FAIL) on the
+1,095 eligible base runs only. This script extends the same methodology
+to the 2,365 perturbation runs and reports the union (run-ID deduplicated)
+for a complete picture.
 
 Methodology:
   - Eligibility: tasks with non-empty `required_assumption_checks` (Phase 1A
     convention; matches `keyword_vs_judge_agreement.py`).
   - Binarization at 0.5 (>=0.5 = PASS, <0.5 = FAIL) on both keyword and judge
     scores for the assumption_compliance dimension.
-  - Pass-flip = keyword PASS AND judge FAIL.
-  - Inverse-flip = keyword FAIL AND judge PASS.
+  - pass_flip (keyword-judge disagreement) = keyword PASS AND judge FAIL.
+  - inverse_flip = keyword FAIL AND judge PASS.
   - Combined population = run-ID deduplicated set union of base + pert runs.
 
 Citations:

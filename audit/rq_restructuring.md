@@ -25,7 +25,7 @@ comparison.
 
 ### RQ1 — PRIMARY: How does external-judge validation differ from keyword scoring?
 
-- **Headline.** 25.0% pass-flip on `assumption_compliance`
+- **Headline.** 25.0% keyword-judge disagreement on `assumption_compliance`
   (274 / 1095 runs). Krippendorff α = 0.55 (95% CI [0.504, 0.595],
   questionable under Park et al. thresholds); Spearman ρ = 0.59
   (moderate). Both metrics agree: keyword and judge are not

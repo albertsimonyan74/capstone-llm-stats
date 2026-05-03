@@ -105,7 +105,7 @@ absent; the remaining four weights are renormalised to 1.0. Mirrors
 ### RQ1 (PRIMARY) — How does external-judge validation differ from keyword scoring?
 - **NMACR mapping:** RQ1 cross-validates **all 5** NMACR dimensions
   against the external Llama 3.3 70B judge.
-- **Headline:** 25.0% pass-flip on `assumption_compliance`
+- **Headline:** 25.0% keyword-judge disagreement on `assumption_compliance`
   (274 / 1095 runs). Krippendorff α = 0.55 (95% CI [0.504, 0.595]) —
   questionable agreement under Park et al. (2025) thresholds.
   Spearman ρ = 0.59. Both metrics agree: keyword and judge are not

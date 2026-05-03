@@ -40,8 +40,8 @@ function buildCards(d, pf) {
     {
       big: '1 in 5',
       label: 'Simple scoring overlooks bad reasoning',
-      desc: `Across ${flipTotal.toLocaleString()} evaluable runs (1,095 base + 2,100 perturbations), ${flipPct}% (${flipN.toLocaleString()}) passed simple keyword-matching but failed when read carefully by an external AI judge. The disagreement holds under prompt rewording — a robustness finding for the methodology.`,
-      why: 'Most LLM benchmarks score by keyword-matching alone. Our analysis across multiple prompt variants shows this approach systematically misses bad reasoning at a measurable rate.',
+      desc: `Across ${flipTotal.toLocaleString()} evaluable runs (1,095 base + 2,100 perturbations), the keyword scorer and LLM judge disagreed on ${flipPct}% (${flipN.toLocaleString()}) of cases — keyword said the response passed, judge said it failed. The disagreement holds under prompt rewording — a robustness finding for the methodology.`,
+      why: 'Most LLM benchmarks score by keyword-matching alone. Analysis across multiple prompt variants shows this approach systematically misses bad reasoning at a measurable rate.',
     },
     {
       big: 'α = -0.13 to 0.55',
@@ -64,13 +64,13 @@ function buildCards(d, pf) {
     {
       big: '3 different rankings',
       label: 'Accuracy, robustness, calibration disagree',
-      desc: 'When we ranked models on accuracy, robustness, and calibration, the three rankings looked completely different. Gemini wins accuracy but is least robust. Mistral wins robustness. ChatGPT wins calibration. Only ChatGPT and Mistral are in the noise-equivalent band on robustness — others are statistically separable.',
+      desc: 'Ranking models on accuracy, robustness, and calibration produces three completely different leaderboards. Gemini wins accuracy but is least robust. Mistral wins robustness. ChatGPT wins calibration. Only ChatGPT and Mistral are in the noise-equivalent band on robustness — others are statistically separable.',
       why: "Single-number leaderboards mislead. The same data tells three different stories about which model is 'best.'",
     },
     {
       big: 'All overconfident',
       label: 'Models think they\'re right when they\'re wrong',
-      desc: "When a model gives the same answer 3 times in a row (confident agreement), it's still wrong about 60-70% of the time on hard tasks. We tested this across 161 numerical-answer tasks and found ECE scores of 0.62-0.73 for all 5 models. Notably, Gemini — which produces zero verbalized confidence under keyword extraction — has the BEST consistency calibration (0.62), an outlier in both directions.",
+      desc: "When a model gives the same answer 3 times in a row (confident agreement), it's still wrong about 60-70% of the time on hard tasks. Across 161 numerical-answer tasks, ECE scores range from 0.62 to 0.73 for all 5 models. Notably, Gemini — which produces zero verbalized confidence under keyword extraction — has the BEST consistency calibration (0.62), an outlier in both directions.",
       why: "'Confidence' doesn't mean 'correctness' for current LLMs on Bayesian reasoning. Calibration is method-dependent.",
     },
   ]

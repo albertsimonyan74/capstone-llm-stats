@@ -18,7 +18,7 @@ of the Day-4 (2026-05-03) citation-honesty pass requested after the
   `llm-stats-vault/40-literature/bibtex.bib`.
 - **Numerical values.** Every quantitative claim cross-checked against the
   canonical JSON in `experiments/results_v2/` (verification logged below
-  each RQ as "Source file"). The 22.16% combined pass-flip is preferred
+  each RQ as "Source file"). The 22.16% combined keyword-judge disagreement is preferred
   over the 25.02% base-only headline because it pools base + perturbation
   evidence (3,195 eligible runs vs 1,095) and is the canonical Phase 1.5
   result.
@@ -71,7 +71,7 @@ concentrated on a particular dimension?
     temperature 0. Four rubric dimensions: `method_structure`,
     `assumption_compliance`, `reasoning_quality`,
     `reasoning_completeness`.
-  - *Pass-flip* — keyword PASS (≥ 0.5) and judge FAIL (< 0.5) on the same
+  - *Keyword-judge disagreement* — keyword PASS (≥ 0.5) and judge FAIL (< 0.5) on the same
     (run_id, dimension), or vice versa.
 - Excluded population. 135 base runs whose tasks have empty
   `required_assumption_checks` (CONCEPTUAL × 10, MINIMAX × 5, BAYES_RISK
@@ -81,9 +81,9 @@ concentrated on a particular dimension?
 **Metrics.**
 - Krippendorff's α (ordinal, 11-bin discretization of [0, 1]) per
   dimension, with bootstrap CI (B = 1,000, seed = 42).
-- Combined pass-flip rate over 3,195 eligible runs (base ∪ perturbation,
+- Combined keyword-judge disagreement rate over 3,195 eligible runs (base ∪ perturbation,
   no run-id collisions verified).
-- Per-perturbation-type pass-flip rates.
+- Per-perturbation-type keyword-judge disagreement rates.
 
 **Population.** 5 frontier LLMs × 171 base tasks (1,095 base eligible)
 plus 5 × 420 perturbation tasks (2,100 perturbation eligible) = 3,195
@@ -91,10 +91,10 @@ eligible (model, run) pairs. Sample size justified by the bootstrap-CI
 target (Longjohn et al. 2025; Hochlehnert et al. 2025).
 
 **Findings (canonical values).**
-- Combined pass-flip: **708 / 3,195 = 22.16%** (Phase 1.5).
+- Combined keyword-judge disagreement: **708 / 3,195 = 22.16%** (Phase 1.5).
   Inverse flip (keyword FAIL, judge PASS): 143 / 3,195 = 4.48%.
   Net signal: keyword ≈ 5× more lenient than judge.
-- Per-perturbation-type pass-flip: rephrase 21.6% (162 / 750), numerical
+- Per-perturbation-type keyword-judge disagreement: rephrase 21.6% (162 / 750), numerical
   22.7% (136 / 600), semantic 18.1% (136 / 750). Disagreement is a
   stable rubric property, not a base-prompt artifact.
 - Krippendorff α (ordinal, B = 1,000):
@@ -160,11 +160,11 @@ holds positively for `assumption_compliance` (CI excludes 0 from
 
 **Convergence with prior work.**
 - Yamauchi et al. (2025) report judge-template-choice effects exceeding
-  judge-model-choice effects in general LLM-as-Judge work. We observe
-  the same: cross-provider comparison (Groq vs Together with the same
-  Llama-3.3-70B model) yields nearly identical scores.
-- Feuer et al. (2025) frame single-judge bias as a validity concern; we
-  inherit that limitation and disclose it explicitly.
+  judge-model-choice effects in general LLM-as-Judge work. The same
+  pattern is observed here: cross-provider comparison (Groq vs Together
+  with the same Llama-3.3-70B model) yields nearly identical scores.
+- Feuer et al. (2025) frame single-judge bias as a validity concern;
+  this work inherits that limitation and discloses it explicitly.
 
 **Source files.**
 - `experiments/results_v2/combined_pass_flip_analysis.json`
@@ -216,8 +216,8 @@ and uses the renormalized M·A·C·R weights (mirrors `full_score()`
 behavior in `llm_runner/response_parser.py`).
 
 **Result vs hypotheses.** Reject H₀: REGRESSION delta vs cohort mean
-exceeds 0.10. The MCMC cluster delta is smaller but still material; we
-report the gap conservatively without claiming statistical separability
+exceeds 0.10. The MCMC cluster delta is smaller but still material; the
+gap is reported conservatively without claiming statistical separability
 in the current draft (paper-scope: bootstrap CI on category means).
 
 **Citations used.**
@@ -230,7 +230,7 @@ in the current draft (paper-scope: bootstrap CI on category means).
   is a top failure mode across math reasoning domains; multi-domain
   catalogue of failure clusters. Vault:
   `papers/13-new-math-reasoning-failures-2026.md`. Bibtex:
-  `mathfail2025`. *Used to align our REGRESSION drops with their
+  `mathfail2025`. *Used to align the REGRESSION drops with their
   general-math finding.*
 - **Bishop (2006) PRML** — canonical method-class taxonomy used to
   bucket VB_*, BAYES_REG, LOG_ML, DIRICHLET_*. Vault:
@@ -247,12 +247,13 @@ in the current draft (paper-scope: bootstrap CI on category means).
 
 **Convergence with prior work.**
 - Boye & Moell (2025) report unwarranted-assumption clusters as
-  cross-domain top failures; our REGRESSION deficit aligns with their
-  finding that derivation-heavy problems concentrate failures even
+  cross-domain top failures; the REGRESSION deficit reported here
+  aligns with their finding that derivation-heavy problems concentrate
+  failures even
   when raw arithmetic is correct.
 - Liu et al. (2025) demonstrate that category-level views expose
-  weaknesses that per-task or per-model views obscure; we replicate
-  that pattern in the Bayesian setting.
+  weaknesses that per-task or per-model views obscure; the same
+  pattern is replicated here in the Bayesian setting.
 
 **Source file.** `experiments/results_v2/nmacr_scores_v2.jsonl`
 aggregated per category; visualized in
@@ -334,13 +335,13 @@ non-uniform under any reasonable rounding.
   fits"). Multi-judge ensemble is required to disambiguate. See
   `audit/limitations_disclosures.md` (a).
 - Perturbation-run failures are not pooled into the L1 distribution
-  here; the 46.9% headline applies to base only. Combined pass-flip
+  here; the 46.9% headline applies to base only. Combined keyword-judge disagreement
   analysis (RQ1) includes perturbations.
 
 **Convergence with prior work.**
 - Du et al. (2025) ~47% assumption-violation on causal inference —
-  numerically nearly identical to our 46.85%. Domain shifts (causal
-  pitfalls vs Bayesian inference); failure-mode-share invariant.
+  numerically nearly identical to the 46.85% reported here. Domain shifts
+  (causal pitfalls vs Bayesian inference); failure-mode-share invariant.
 - Boye & Moell (2025) name the same failure cluster across general math
   reasoning. Three-way external corroboration of a single finding
   across three reasoning domains.
@@ -406,7 +407,7 @@ Calibration uses 1,230 base runs.
   gemini–deepseek **not_separable**. Both top robustness pairs
   (mistral and chatgpt) have CIs spanning zero — within-noise of "no
   perturbation effect." Cite Hochlehnert et al. (2025): single-question
-  swaps shift Pass@1 ≥ 3 pp — same noise scale we observe.
+  swaps shift Pass@1 ≥ 3 pp — same noise scale observed here.
 
 **Result vs hypotheses.** Reject H₀. The three rankings are not
 concordant — the top-ranked model differs across all three axes
@@ -444,16 +445,16 @@ many pairwise rank differences are noise-equivalent on each axis.
   yields a different ranking — see RQ5.
 - Bootstrap CI overlaps are evaluated pairwise without multiple-testing
   correction. With 10 pairs per axis, family-wise error rate is
-  inflated; we use bootstrap as a soft significance heuristic, not as
-  a hypothesis test, and disclose this.
+  inflated; bootstrap is used here as a soft significance heuristic,
+  not as a hypothesis test — disclosed accordingly.
 
 **Convergence with prior work.**
 - Au et al. (2025) and Hochlehnert et al. (2025) both report
   ranking-flip behavior on small-sample-size benchmarks. Our results
   match: in 5 of 10 accuracy pairs, ranks are within bootstrap noise.
 - Romanou et al. (2026) report robustness deltas often within
-  stochastic noise; our chatgpt and mistral robustness CIs span zero,
-  matching that pattern.
+  stochastic noise; the chatgpt and mistral robustness CIs reported
+  here span zero, matching that pattern.
 
 **Source file.** `experiments/results_v2/bootstrap_ci.json`
 (`weighting_scheme = "literature_v1"`, `B = 10000`, `seed = 42`).
@@ -533,9 +534,10 @@ between the two ECE rankings is negative (gemini reverses).
   systematically overconfident on Fermi estimation tasks; 90% claimed
   CIs cover ~50% of ground truth. Vault:
   `papers/11-new-fermieval-2025.md`. Bibtex: `fermieval2025`. *Used as
-  contrast finding under verbalized extraction (we observe hedge-heavy,
-  not overconfident); convergence finding under consistency extraction
-  (we observe overconfident, matching FermiEval direction).*
+  contrast finding under verbalized extraction (this work observes
+  hedge-heavy, not overconfident); convergence finding under consistency
+  extraction (this work observes overconfident, matching FermiEval
+  direction).*
 - **Wang et al. (2026)** Multi-Answer Confidence [arXiv:2602.07842] —
   verbalized confidence systematically underestimates uncertainty
   diversity; consistency-based confidence dominates verbalized
@@ -563,14 +565,17 @@ between the two ECE rankings is negative (gemini reverses).
 
 **Convergence with prior work.**
 - Epstein et al. (2025) report systematic overconfidence on Fermi
-  estimation. Under our consistency-extraction lens, all 5 models
-  severely overconfident (ECE 0.62–0.73) — domain-invariant overconfidence.
+  estimation. Under the consistency-extraction lens used here, all 5
+  models are severely overconfident (ECE 0.62–0.73) — domain-invariant
+  overconfidence.
 - Wang et al. (2026) name verbalized as the weakest baseline of three
-  methods reviewed; we explicitly adopt that framing and disclose our
-  verbalized result is the weakest of two we report.
+  methods reviewed; this work explicitly adopts that framing and
+  discloses that the verbalized result is the weakest of the two
+  reported.
 - Nagarkar et al. (2026) flag confidence-vs-accuracy decoupling on
-  statistical-domain tasks; our accuracy-calibration correlation
-  Pearson r ∈ [0.35, 0.49] confirms decoupling is moderate (not
+  statistical-domain tasks; the accuracy-calibration correlation
+  reported here, Pearson r ∈ [0.35, 0.49], confirms decoupling is
+  moderate (not
   catastrophic) where confidence is extractable, and total (Gemini)
   where it is not.
 
@@ -624,7 +629,7 @@ RQ formulations.
 | 2 | ~~Bibtex key `wang2025icecream` actually points to Du et al. (Ice Cream)…~~ | **RESOLVED 2026-05-03.** Bibtex key renamed `wang2025icecream` → `du2025icecream`. Vault note `papers/09-new-ice-cream-causal-2025.md` updated (bibtex key field, Citation-in-poster, Citation-in-paper, Authors comment). README + poster-citations updated to "Du et al. (2025)". static_data mirror synced. |
 | 3 | ~~Bibtex key `park2025judge` actually points to Yamauchi et al.~~ | **VERIFIED 2026-05-03 (no rename).** Bibtex key `park2025judge` retained for citation stability per Day-3 housekeeping convention; bibtex `author={...}` field correctly says "Yamauchi" so any LaTeX `\cite{park2025judge}` resolves to "Yamauchi et al." in printed references. All in-text references across project use "Yamauchi et al. (2025)". No further action needed pre-submission unless reviewer queries the key mismatch. |
 | 4 | ~~Boye & Moell — bibtex year 2026 vs arXiv Feb 2025…~~ | **RESOLVED 2026-05-03.** Bibtex key renamed `mathfail2026` → `mathfail2025`; year field updated `2026 → 2025`. Vault note `papers/13-new-math-reasoning-failures-2026.md` Year + Citation-in-poster + Citation-in-paper + Bibtex-key fields all aligned to 2025. Filename retains legacy `-2026` suffix for stability (logged in metadata). README + poster-citations + audit/literature_comparison.md + audit/personal_todo_status.md updated. static_data mirror synced. |
-| 5 | The 22.16% combined pass-flip uses `pct_pass_flip` from `combined_pass_flip_analysis.json`; the older 25.02% uses base-only `keyword_vs_judge_agreement.json`. Both are canonical at their own scope. | Paper should pick one for the headline (recommend 22.16%, larger denominator) and footnote the other. Website currently shows both via the `useKeyFindings` hook. |
+| 5 | The 22.16% combined keyword-judge disagreement uses `pct_pass_flip` from `combined_pass_flip_analysis.json`; the older 25.02% uses base-only `keyword_vs_judge_agreement.json`. Both are canonical at their own scope. | Paper should pick one for the headline (recommend 22.16%, larger denominator) and footnote the other. Website currently shows both via the `useKeyFindings` hook. |
 | 6 | Gemini "all 246 base responses unstated" — verify this exactly matches `calibration.json` per_bucket counts (gemini.unstated.n = 246 expected). | Pre-paper sanity check: confirm gemini bucket totals sum to 246. |
 | 7 | Phase 1C self-consistency cost reported as $11.688 in `recompute_log.md`; verify this matches the run-log artifacts before citing in paper. | Cross-check `experiments/results_v2/self_consistency_runs.jsonl` token counts against vendor-quoted $/M-token rates. |
 
@@ -638,19 +643,20 @@ foregrounded in the Discussion section.
 
 - **Boye & Moell (2025)** supports both RQ2 (REGRESSION-cluster failure)
   and RQ3 (assumption-violation as dominant L1). Their multi-domain
-  catalogue is the single strongest external corroboration of our
-  failure-mode story.
+  catalogue is the single strongest external corroboration of the
+  failure-mode story reported here.
 - **Du et al. (2025)** "Ice Cream" supports RQ3's 46.85% headline with
   a near-identical 47% from causal inference. Two domains, same
   failure-mode share — strong external validity claim available.
 - **Yamauchi et al. (2025)** supports RQ1 (metric choice) and is
-  cross-referenced in our judge-validation methodology and limitations
-  framing. Crucial that paper prose distinguishes *metric choice*
+  cross-referenced in the judge-validation methodology and limitations
+  framing of this work. Crucial that paper prose distinguishes
+  *metric choice*
   (supported) from *threshold attribution* (NOT supported by vault).
 - **Hochlehnert et al. (2025)** is the load-bearing citation for
   bootstrap-CI separability across RQ1 (CI on Krippendorff α) and RQ4
   (CI on accuracy / robustness). Their "single-question swaps shift
-  Pass@1 ≥ 3 pp" finding is the same noise-scale we observe.
+  Pass@1 ≥ 3 pp" finding is the same noise-scale observed here.
 - **Wang et al. (2026)** Multi-Answer is the load-bearing citation for
   RQ5's verbalized-vs-consistency dichotomy. Future work toward
   token-logprob calibration also cites this paper.

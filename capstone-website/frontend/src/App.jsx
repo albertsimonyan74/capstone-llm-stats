@@ -810,7 +810,7 @@ function KeyFindingsSection() {
         <KeyFindingCard card={cards[2]} index={2} loading={loading}/>
       </div>
 
-      {/* Viz #1 — per-model pass-flip */}
+      {/* Viz #1 — per-model keyword-judge disagreement */}
       <div className="kf-viz-spacer">
         <PerModelPassFlipPanel/>
       </div>
@@ -1048,7 +1048,7 @@ const HOW_EXTRA = [
     title:'Research Question Integration',
     icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
     lines:[
-      'RQ1 PRIMARY: external-judge validation — 22.2% combined pass-flip, α = 0.55 (negative on R, M)',
+      'RQ1 PRIMARY: external-judge validation — 22.2% combined keyword-judge disagreement, α = 0.55 (negative on R, M)',
       'RQ2–5 SUPPORTING: hardest categories, failure mode, robustness, calibration',
       'RQ4: 2,365 perturbation runs across 3 types (rephrase / numerical / semantic)',
     ],
@@ -1956,12 +1956,12 @@ const RQS = [
     label:'External-Judge Validation',
     question:'Does keyword-based scoring agree with external-judge evaluation on assumption articulation, both on base prompts and under prompt perturbation?',
     headline:[
-      '22.2% combined pass-flip across 3,195 evaluable runs',
+      '22.2% combined keyword-judge disagreement across 3,195 evaluable runs',
       'Krippendorff α = 0.55 (assumption); negative α on reasoning quality (-0.13) and method structure (-0.04)',
       'Keyword-judge gap widens 3.7pp under perturbation',
     ],
     viewLink:'judge',
-    detail:'Methodology contribution: keyword rubrics systematically overstate assumption-checking quality on Bayesian tasks. Across 3,195 eligible runs (1,095 base + 2,100 perturbation) the Llama 3.3 70B external judge (Together AI) flags 708 pass-flips on assumption_compliance. Krippendorff α = 0.55 on assumption; α = -0.133 on reasoning_quality and -0.042 on method_structure — actively below zero, raters disagree more than chance. Spearman ρ = 0.59 on assumption.',
+    detail:'Methodology contribution: keyword rubrics systematically overstate assumption-checking quality on Bayesian tasks. Across 3,195 eligible runs (1,095 base + 2,100 perturbation) the Llama 3.3 70B external judge (Together AI) flags 708 keyword-judge disagreements on assumption_compliance. Krippendorff α = 0.55 on assumption; α = -0.133 on reasoning_quality and -0.042 on method_structure — actively below zero, raters disagree more than chance. Spearman ρ = 0.59 on assumption.',
     grounding:'Yamauchi et al. 2025 (arXiv:2506.13639) — α-over-ρ for inter-rater reliability. Liu et al. 2025 — multi-dim rubric baseline. Feuer et al. 2025 — single-judge limitation.',
   },
   { id:'RQ2', tier:'SUPPORTING', color:'#FFB347',

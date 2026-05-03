@@ -282,11 +282,11 @@ Excluded: 10 CONCEPTUAL tasks (no numerical answers against which
 Methodology: Set union of base + perturbation eligible runs, dedup by run_id.
 
 Headline numbers:
-- Base pass-flip: 274 / 1,095 = 25.02% (canonical, unchanged — reconciled)
-- Perturbation pass-flip: 434 / 2,100 = 20.67%
-- Combined pass-flip: 708 / 3,195 = 22.16%
+- Base keyword-judge disagreement: 274 / 1,095 = 25.02% (canonical, unchanged — reconciled)
+- Perturbation keyword-judge disagreement: 434 / 2,100 = 20.67%
+- Combined keyword-judge disagreement: 708 / 3,195 = 22.16%
 
-Interpretation: Pass-flip rate is 4.4pp lower on perturbations than on base,
+Interpretation: Keyword-judge disagreement rate is 4.4pp lower on perturbations than on base,
 indicating the keyword/judge disagreement attenuates when surface form changes
 while underlying mathematics stays fixed — disagreement is a stable rubric
 property rather than an artefact of base wording.
@@ -314,6 +314,6 @@ Constraints honoured:
 - No git commits
 
 DECISION POINT: Headline framing for website (deferred to user):
-- Option A: keep "25% pass-flip on 1,095 base runs" as headline
-- Option B: switch to "22.2% pass-flip on 3,195 combined runs"
+- Option A: keep "25% keyword-judge disagreement on 1,095 base runs" as headline
+- Option B: switch to "22.2% keyword-judge disagreement on 3,195 combined runs"
 - Option C: present both as a comparison

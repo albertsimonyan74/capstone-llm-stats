@@ -24,7 +24,7 @@ experiments/results_v2/* (10 JSON + scan of 4 JSONL), report_materials/
 
 **Top 5 highest-value items to surface BEFORE Group B ships:**
 
-1. **D-1.05 Per-model pass-flip rate decomposition** — claude 27.7%, chatgpt 19.1%, gemini 23.5%, deepseek 19.1%, mistral 21.4% (combined) and per-base claude 30.6% vs chatgpt 21.0%. Headline 25% pass-flip hides 9-point per-model spread; surfacing this turns RQ1 from one-number into an interpretable pattern.
+1. **D-1.05 Per-model keyword-judge disagreement rate decomposition** — claude 27.7%, chatgpt 19.1%, gemini 23.5%, deepseek 19.1%, mistral 21.4% (combined) and per-base claude 30.6% vs chatgpt 21.0%. Headline 25% keyword-judge disagreement hides 9-point per-model spread; surfacing this turns RQ1 from one-number into an interpretable pattern.
 2. **D-1.10 Reasoning-quality and method-structure α are NEGATIVE** (overall α_RQ = −0.133, α_M = −0.042, both 95% CIs straddle 0). Currently rolled into "questionable" but the *direction* (active disagreement, not just weak agreement) is the strongest possible evidence that keyword reasoning rubrics fail. Never on website.
 3. **D-5.01 Methodology page still claims "Five equal-weight dimensions (0.20 each)"** (Methodology.jsx:110-113). Phase 1B locked literature-derived weights A=0.30 R=0.25 M=0.20 C=0.15 N=0.10 — Methodology page literally contradicts the canonical narrative. The full 5-paragraph per-dim defense in research-narrative.md §2 has never reached the website.
 4. **D-1.16 Per-model failure-mode distribution differs dramatically** — chatgpt: ASSUMPTION_VIOLATION 25 dominant (86% of its failures); claude: MATHEMATICAL_ERROR 10 dominant. The "46.9% assumption violations" headline hides that 2/5 models have *math errors* as their dominant mode. Currently only in JSON. This is the cross-cutting connection that lifts RQ3 from descriptive to diagnostic.
@@ -33,7 +33,7 @@ experiments/results_v2/* (10 JSON + scan of 4 JSONL), report_materials/
 **Top 3 cross-cutting connections never made explicit on the website:**
 
 1. **Cross-method ranking inversion on calibration** — Gemini ranks WORST on verbalized ECE (0.097 vs cohort 0.06-0.18) but BEST on consistency ECE (0.618 vs cohort 0.66-0.73). Same model. Different extraction method. Different rank. Compelling evidence that "calibration measurement is method-dependent" — already in research-narrative.md but never visualized as the inversion it is.
-2. **Per-model α and per-model pass-flip are coupled** — Claude has lowest α_assumption (0.501) AND highest combined pass-flip (27.7%); mistral has highest α (0.594) AND moderate pass-flip (21.4%). The dimension where keyword and judge disagree most is also the dimension where *that specific model* trips most often.
+2. **Per-model α and per-model keyword-judge disagreement are coupled** — Claude has lowest α_assumption (0.501) AND highest combined keyword-judge disagreement (27.7%); mistral has highest α (0.594) AND moderate keyword-judge disagreement (21.4%). The dimension where keyword and judge disagree most is also the dimension where *that specific model* trips most often.
 3. **Robustness CIs cross zero for chatgpt and mistral** — chatgpt Δ=0.011 [−0.001, 0.024], mistral Δ=0.007 [−0.006, 0.019]. 2 of 5 models cannot statistically be distinguished from "no robustness deficit." Stronger claim than "ChatGPT/DeepSeek noise-equivalent" (currently in App.jsx) — and DeepSeek's CI is now [0.027, 0.058], which is *separable* from zero. The frontend prose is half-correct.
 
 **Top 3 literature insights not propagated to website:**
@@ -59,19 +59,19 @@ Content: Keyword PASS rate drops 1.87pp on perturbation (68.7%→66.8%); judge d
 Where it should appear: Methodology page §3 (judge subsection) — direct empirical evidence judge is robust to surface change. Also a Key Findings card (replaces "Perturbation runs" placeholder).
 Why it strengthens: Reviewers ask "why an LLM judge instead of just better keyword regex?" This is the answer in pre-computed numbers.
 
-**[D-1.02] Per-perturbation-type pass-flip rate** (rephrase 21.6%, numerical 22.7%, semantic 18.1%)
+**[D-1.02] Per-perturbation-type keyword-judge disagreement rate** (rephrase 21.6%, numerical 22.7%, semantic 18.1%)
 Type: BURIED_FINDING
 Severity: MEDIUM
 Source: experiments/results_v2/combined_pass_flip_analysis.json:perturbation.per_perturbation_type
-Content: Pass-flip rate on perturbation runs decomposes by type. Numerical perturbations produce the highest disagreement (22.7%), semantic the lowest (18.1%) — counter-intuitive: changing the numbers exposes assumption-checking gaps more than reframing the problem.
+Content: Keyword-judge disagreement rate on perturbation runs decomposes by type. Numerical perturbations produce the highest disagreement (22.7%), semantic the lowest (18.1%) — counter-intuitive: changing the numbers exposes assumption-checking gaps more than reframing the problem.
 Where: New visualization or KeyFindings card; sub-panel of judge-validation section.
 Why: Surface evidence that judge value is not equal across perturbation kinds — refines the "use a judge" argument.
 
-**[D-1.03] Combined 22.16% pass-flip on 3,195 runs** (vs 25.0% headline on 1,095 base)
+**[D-1.03] Combined 22.16% keyword-judge disagreement on 3,195 runs** (vs 25.0% headline on 1,095 base)
 Type: BURIED_FINDING
 Severity: HIGH
 Source: experiments/results_v2/combined_pass_flip_analysis.json:combined
-Content: Phase 1.5 introduced run-ID-deduplicated set union of base + perturbation pass-flip. Combined: 708/3,195 = 22.16%. Base alone: 274/1,095 = 25.02%. Recompute_log records "DECISION POINT: Headline framing for website (deferred to user): keep 25% / switch to 22.2% / present both."
+Content: Phase 1.5 introduced run-ID-deduplicated set union of base + perturbation keyword-judge disagreement. Combined: 708/3,195 = 22.16%. Base alone: 274/1,095 = 25.02%. Recompute_log records "DECISION POINT: Headline framing for website (deferred to user): keep 25% / switch to 22.2% / present both."
 Where: Decision needed before Group B prose is written. KeyFindings card. PosterCompanion if the broader denominator is preferred.
 Why: 3× sample size strengthens the claim numerically; 22% is a different number than 25% and reviewers will ask which.
 
@@ -79,15 +79,15 @@ Why: 3× sample size strengthens the claim numerically; 22% is a different numbe
 Type: BURIED_FINDING
 Severity: MEDIUM
 Source: combined_pass_flip_analysis.json:combined.pct_inverse_flip = 0.0448
-Content: 143 of 3,195 eligible runs flip the OTHER way — keyword fails them, judge passes them. The 22.16% pass-flip headline implies 17.7% net keyword overstatement (22.16 − 4.48). Currently never disclosed; the headline reads as if all disagreement is keyword-overstates direction.
+Content: 143 of 3,195 eligible runs flip the OTHER way — keyword fails them, judge passes them. The 22.16% keyword-judge disagreement headline implies 17.7% net keyword overstatement (22.16 − 4.48). Currently never disclosed; the headline reads as if all disagreement is keyword-overstates direction.
 Where: Methodology page or Limitations — honest framing.
 Why: A reviewer who computes the matrix herself will see 5% inverse-flip and ask why it isn't disclosed. Pre-empt.
 
-**[D-1.05] Per-model pass-flip rate (combined)**
+**[D-1.05] Per-model keyword-judge disagreement rate (combined)**
 Type: BURIED_FINDING
 Severity: HIGH
 Source: combined_pass_flip_analysis.json:combined.per_model
-Content: Combined per-model pass-flip — claude 27.7% (177/639), gemini 23.5% (150/639), mistral 21.4% (137/639), chatgpt 19.1% (122/639), deepseek 19.1% (122/639). 9-point spread. The 25%/22% headline is a population mean over a non-uniform distribution. Base-only: claude 30.6%, mistral 26.5%, gemini 24.7%, deepseek 22.4%, chatgpt 21.0%.
+Content: Combined per-model keyword-judge disagreement — claude 27.7% (177/639), gemini 23.5% (150/639), mistral 21.4% (137/639), chatgpt 19.1% (122/639), deepseek 19.1% (122/639). 9-point spread. The 25%/22% headline is a population mean over a non-uniform distribution. Base-only: claude 30.6%, mistral 26.5%, gemini 24.7%, deepseek 22.4%, chatgpt 21.0%.
 Where: New "Per-model judge disagreement" KeyFindings card OR a panel with grouped bars; Methodology subsection.
 Why: Lifts RQ1 from one-number to ranking. Claude — the model that wins accuracy under equal weights — is also the model the judge most often disagrees with on assumption_compliance. Materially relevant to the "Claude wins / Gemini wins under literature weights" narrative.
 
@@ -120,8 +120,8 @@ Type: BURIED_FINDING
 Severity: MEDIUM
 Source: krippendorff_agreement.json:per_model[*].assumption_compliance
 Content: chatgpt α=0.577, claude α=0.501, gemini α=0.539, deepseek α=0.537, mistral α=0.594. Cohort range 0.501-0.594. Mistral has the BEST keyword-judge agreement; claude has the WORST. All "questionable" by Park 2025 thresholds. Nowhere on the website.
-Where: New panel under Judge Validation. Strengthens the per-model pass-flip narrative (D-1.05).
-Why: When combined with D-1.05, the message is "the model the judge least agrees with also has the highest pass-flip rate" — supports the keyword-rubric-is-bad-for-this-task hypothesis specifically by model.
+Where: New panel under Judge Validation. Strengthens the per-model keyword-judge disagreement narrative (D-1.05).
+Why: When combined with D-1.05, the message is "the model the judge least agrees with also has the highest keyword-judge disagreement rate" — supports the keyword-rubric-is-bad-for-this-task hypothesis specifically by model.
 
 **[D-1.10] α is NEGATIVE on reasoning_quality and method_structure** (active disagreement)
 Type: BURIED_FINDING
@@ -225,7 +225,7 @@ Severity: LOW
 Source: experiments/results_v2/top_disagreements_assumption.json (30 records)
 Content: 30 specific runs where keyword and judge disagree by ≥ 1.0 on assumption_compliance, with judge_justification + response_excerpt. Concrete examples like BIAS_VAR_03/claude where keyword=0 but judge=1 ("response explicitly states iid + Uniform(0,θ)"). Reviewer-grade ground-truth.
 Where: New "Specific disagreements" panel, perhaps as a curated 3-example callout. Or a paper appendix.
-Why: Anecdotal evidence behind the 25% pass-flip headline. Hand-pickable and powerful.
+Why: Anecdotal evidence behind the 25% keyword-judge disagreement headline. Hand-pickable and powerful.
 
 **[D-1.23] Major-disagreement counts (keyword↔judge gap > 0.5) per dimension**
 Type: BURIED_FINDING
@@ -233,7 +233,7 @@ Severity: LOW
 Source: keyword_vs_judge_agreement.json:overall_per_dimension[*].major_disagreements_gt_0_5
 Content: Counts of |keyword − judge| > 0.5 on each dim. assumption_compliance 120, method_structure 51, reasoning_quality 54. 120 of 1095 = 11% major disagreements on A. Never on website.
 Where: Footnote in agreement panel.
-Why: Granular evidence for the 25% pass-flip headline.
+Why: Granular evidence for the 25% keyword-judge disagreement headline.
 
 **[D-1.24] Tolerance-sensitivity excludes 50 of 1230 base runs**
 Type: BURIED_FINDING
@@ -621,11 +621,11 @@ Content: Verbalized ECE rank: gemini #5 (worst, 0.097), claude #2 (0.067). Consi
 Where: New visualization (5 lines crossing). Or KeyFindings card.
 Why: Visceral evidence "calibration is method-dependent."
 
-**[D-6.02] Per-model α correlates with per-model pass-flip**
+**[D-6.02] Per-model α correlates with per-model keyword-judge disagreement**
 Type: CROSS_CUTTING_CONNECTION
 Severity: MEDIUM
 Source: krippendorff_agreement.json:per_model + combined_pass_flip_analysis.json:per_model
-Content: Models with lower α have higher pass-flip rate. Claude α=0.50 / pass-flip=27.7%. Mistral α=0.594 / pass-flip=21.4%. Direction is clear, n=5 too small for formal Spearman. Both metrics measure the same thing from different angles; consistency lift the headline.
+Content: Models with lower α have higher keyword-judge disagreement rate. Claude α=0.50 / keyword-judge disagreement=27.7%. Mistral α=0.594 / keyword-judge disagreement=21.4%. Direction is clear, n=5 too small for formal Spearman. Both metrics measure the same thing from different angles; consistency lift the headline.
 Where: Methodology §4 OR per-model judge validation panel.
 Why: Two metrics agreeing is stronger than one.
 
@@ -685,11 +685,11 @@ Content: Two independent calibration metrics agree gemini is best on consistency
 Where: Calibration panel.
 Why: Multi-metric convergence.
 
-**[D-6.10] Pass-flip on numerical perturbations is HIGHEST despite numerical-perturbation being smallest robustness-Δ population**
+**[D-6.10] Keyword-judge disagreement on numerical perturbations is HIGHEST despite numerical-perturbation being smallest robustness-Δ population**
 Type: CROSS_CUTTING_CONNECTION
 Severity: MEDIUM
 Source: combined_pass_flip_analysis.json:per_perturbation_type + robustness_v2.json:per_perturbation_type
-Content: Numerical perturbation pass-flip rate 22.7% (highest of 3 types). But numerical perturbation robustness Δ is mid-pack (0.0093 mistral negative, 0.0463 gemini). Pass-flip and robustness Δ measure different things — pass-flip captures keyword-vs-judge disagreement under perturbation; robustness captures score change. Different stories per perturbation type.
+Content: Numerical perturbation keyword-judge disagreement rate 22.7% (highest of 3 types). But numerical perturbation robustness Δ is mid-pack (0.0093 mistral negative, 0.0463 gemini). Keyword-judge disagreement and robustness Δ measure different things — keyword-judge disagreement captures keyword-vs-judge disagreement under perturbation; robustness captures score change. Different stories per perturbation type.
 Where: Methodology §4 OR Robustness panel.
 Why: The two RQ4-adjacent metrics are not the same; honest framing.
 
@@ -773,10 +773,10 @@ happen during Group B. File paths included.)
 5. **Limitations.jsx L4 single-judge** — expand to 4 sentences: external, 5 distinct providers (anti family-pref Feuer), Groq cross-check, strictness audit. Add "judge prompt template choices have larger effects than judge model choice" (Yamauchi). (D-5.08 + D-4.02 + D-4.09)
 6. **Limitations.jsx L5 self-consistency** — rewrite as "RESOLVED via Phase 1C" per limitations_disclosures.md (e). Use complex FermiEval framing (matches under one method, contradicts under another). (D-4.11)
 7. **Limitations.jsx new L6** — length-correlation in RQ scoring (gemini verification). Body from limitations_disclosures.md (g). (D-5.10)
-8. **Limitations.jsx new L7** — CONCEPTUAL 10-task exclusion + 135-task pass-flip exclusion + post-hoc weight risk. Three filter rationales. (D-2.08 + D-5.03)
+8. **Limitations.jsx new L7** — CONCEPTUAL 10-task exclusion + 135-task keyword-judge disagreement exclusion + post-hoc weight risk. Three filter rationales. (D-2.08 + D-5.03)
 9. **App.jsx RQS array** — drop `weight:'40%' / '15%'` fields per rq_restructuring.md Phase 1B decision. Update RQ4 detail "ChatGPT/DeepSeek noise-equivalent" → "ChatGPT/Mistral noise-equivalent" (D-1.08 corrects false attribution). Update RQ5 detail to reflect complex FermiEval framing. (D-4.11 + D-1.08)
 10. **App.jsx:967-968** — drop "(40%)" and "(15% each)" from copy.
-11. **KeyFindings.jsx static fallback** — Phase 1B numbers (Gemini 0.776 / Claude 0.712 / Krippendorff 0.55 / pass-flip 25%). Live cards already correct via API.
+11. **KeyFindings.jsx static fallback** — Phase 1B numbers (Gemini 0.776 / Claude 0.712 / Krippendorff 0.55 / keyword-judge disagreement 25%). Live cards already correct via API.
 12. **visualizations.js bootstrap_ci entry** — subtitle to literature-weighted CI (Gemini 0.776 [0.753, 0.799] / Claude 0.712 [0.689, 0.736]); caption update. (Audit F8.04)
 13. **visualizations.js robustness_heatmap entry** — caption "Mistral degrades most" is INVERTED — Mistral now ranks #1 robustness. Rewrite. (D-3.07)
 14. **visualizations.js self_consistency entry** — title "B3 proxy" → "Phase 1C full coverage." Caption update. (D-3.07)
@@ -788,7 +788,7 @@ happen during Group B. File paths included.)
 1. **a4b_per_dim_robustness panel + visualizations.js entry** — already mirrored to public dir, just needs manifest entry. (D-3.04)
 2. **a5b_per_dim_calibration panel + visualizations.js entry** — same. (D-3.05)
 3. **combined_pass_flip_comparison panel + visualizations.js entry** — same. (D-3.06)
-4. **Per-model pass-flip card / panel** — D-1.05 data; visualization could be 5-bar grouped. Strengthens RQ1 from 1 number to 5.
+4. **Per-model keyword-judge disagreement card / panel** — D-1.05 data; visualization could be 5-bar grouped. Strengthens RQ1 from 1 number to 5.
 5. **Per-model failure-mode stacked bar** — D-1.16 + D-7.02 data. Closes prof-critique #12.
 6. **Cross-method calibration ranking inversion figure** — D-6.01 (5 lines crossing). Most compelling RQ5 visual.
 7. **Per-NMACR-dim ECE table** — D-1.11 data; renders nice as 5×5 heatmap (already exists as a5b but not in manifest).
@@ -826,7 +826,7 @@ happen during Group B. File paths included.)
 - D-6.07 Length-correlation generalization (4 of 5 models, gemini outlier) — paper Discussion.
 - D-6.08 Three task families uniformly robust — paper Discussion.
 - D-6.09 Brier-ECE agreement on gemini — paper Discussion.
-- D-6.10 Pass-flip vs robustness Δ on numerical perturbations — paper Discussion.
+- D-6.10 Keyword-judge disagreement vs robustness Δ on numerical perturbations — paper Discussion.
 - D-7.01 Per-model Spearman / Cohen κ — paper Tables.
 
 ---
@@ -851,7 +851,7 @@ Total findings: 47
 - LOW (paper-scope): 11
 
 Top 5 highest-value buried findings:
-1. D-1.05: Per-model pass-flip rate decomposition (claude 27.7% / chatgpt 19.1% spread) — combined_pass_flip_analysis.json
+1. D-1.05: Per-model keyword-judge disagreement rate decomposition (claude 27.7% / chatgpt 19.1% spread) — combined_pass_flip_analysis.json
 2. D-1.10: α NEGATIVE on reasoning_quality and method_structure (active disagreement, not just questionable) — krippendorff_agreement.json
 3. D-5.01: Methodology.jsx still says "Five equal-weight dimensions (0.20 each)" — contradicts Phase 1B canonical
 4. D-1.16: Per-model L1 failure-mode distribution (chatgpt assumption-dominated; claude math-dominated) — error_taxonomy_v2.json:by_model_l1
@@ -859,7 +859,7 @@ Top 5 highest-value buried findings:
 
 Top 3 cross-cutting connections never made explicit:
 1. D-6.01: Calibration ranking inversion across extraction methods (Gemini #5 verbalized → #1 consistency)
-2. D-6.02: Per-model α anti-correlates with per-model pass-flip (Claude lowest α + highest pass-flip; Mistral highest α + moderate)
+2. D-6.02: Per-model α anti-correlates with per-model keyword-judge disagreement (Claude lowest α + highest keyword-judge disagreement; Mistral highest α + moderate)
 3. D-6.05: 2 of 5 models robust at noise-equivalent (chatgpt + mistral CIs cross zero — corrects deployed App.jsx false attribution to DeepSeek)
 
 Top 3 literature insights not propagated to website:
@@ -889,7 +889,7 @@ full), `D-PN-NN` (paper notes).
 Type: BURIED_FINDING / STALE_NARRATIVE
 Severity: HIGH
 Source: PosterCompanion.jsx:6-31
-Content: 4 hardcoded headline cards (25% pass-flip / α=0.55 / 46.9% / 3 ≠). All Phase 1A. Cards do NOT pull from `/api/v2/headline_numbers` like the main-site KeyFindings — they are static. So poster page ships old numbers regardless of backend deploy. Phase 1B/1C/1.5 additions (Gemini #1 accuracy, formatting_failure_rate, combined 22.16% pass-flip, accuracy_calibration_correlation) are absent.
+Content: 4 hardcoded headline cards (25% keyword-judge disagreement / α=0.55 / 46.9% / 3 ≠). All Phase 1A. Cards do NOT pull from `/api/v2/headline_numbers` like the main-site KeyFindings — they are static. So poster page ships old numbers regardless of backend deploy. Phase 1B/1C/1.5 additions (Gemini #1 accuracy, formatting_failure_rate, combined 22.16% keyword-judge disagreement, accuracy_calibration_correlation) are absent.
 Where: Either (a) refactor to fetch /api/v2/headline_numbers like main KeyFindings, OR (b) update static card text to Phase 1B numbers + add 2 cards (e.g. "α negative on RQ" and "Gemini #1 accuracy under literature weights").
 Why: PosterCompanion has its own QR code — the live poster URL gets traffic from physical-poster scans. Stale numbers there are public-facing.
 
@@ -1154,7 +1154,7 @@ Recommended website surface: visualizations.js three_rankings caption — quote 
 
 #### Paper 08 — BrittleBench (2026)
 Buried claims worth surfacing:
-- "Numerical perturbations reveal arithmetic-vs-conceptual brittleness mismatch" — pre-anchors D-6.10 (numerical-perturbation pass-flip 22.7% highest).
+- "Numerical perturbations reveal arithmetic-vs-conceptual brittleness mismatch" — pre-anchors D-6.10 (numerical-perturbation keyword-judge disagreement 22.7% highest).
 - "Robustness deltas often within stochastic noise — must be tested for separability" — direct anchor for D-1.08 (chatgpt + mistral CIs cross zero).
 - "Semantic perturbations expose memorization artifacts" — explanatory framing for our semantic-perturbation findings (5.96pp keyword degradation differential, D-1.01).
 Methodology details for project:
@@ -1305,13 +1305,13 @@ Combined HIGH-severity items, sorted by file location for efficient implementati
 - D-3.08: 274/1094 → 274/1095
 
 **Cross-cutting (Group C scope):**
-- D-1.05: Per-model pass-flip card / panel
+- D-1.05: Per-model keyword-judge disagreement card / panel
 - D-1.16: Per-model failure-mode stacked bar
 - D-6.01: Cross-method calibration ranking inversion figure
 - D-1.11: Per-NMACR-dim ECE table panel
 - D-1.12: Accuracy-calibration correlation card
 - D-1.01: Keyword degradation finding propagation
-- D-1.03: Combined 22.16% pass-flip headline decision
+- D-1.03: Combined 22.16% keyword-judge disagreement headline decision
 - D-PN-05: Methodology §4 separability multi-source convergence
 - D-PN-06: Methodology §2 multi-source rubric convergence
 - D-4.01/D-PN-01: RQ3 panel 3-way convergence (Du + Boye-Moell + this work)

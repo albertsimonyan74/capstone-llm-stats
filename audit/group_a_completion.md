@@ -172,7 +172,7 @@ Group C (new panels):
 - Per-dim robustness panel
 - Per-dim calibration panel
 - Accuracy-calibration correlation panel
-- Per-model pass-flip card
+- Per-model keyword-judge disagreement card
 - Keyword-degradation visualization integration
 - visualizations.js entries for a4b/a5b/combined_pass_flip
 

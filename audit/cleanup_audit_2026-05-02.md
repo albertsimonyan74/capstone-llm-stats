@@ -559,7 +559,7 @@ before the archival execution pass. Read-only; no files moved.
 ### CL-A2 (audit/day2_audit_report.md)
 
 - **D-7 fold status:** PARTIALLY covered in comprehensive. F1.01 carries
-  the headline 274/1095 = 25.022% pass-flip number and explicitly notes
+  the headline 274/1095 = 25.022% keyword-judge disagreement number and explicitly notes
   the 274/1094 off-by-one in day2; F2.01 covers the 135-task
   CONCEPTUAL/MINIMAX/BAYES_RISK exclusion pattern (P-6 in day2). However,
   D-7's Spearman ρ=0.59 on assumption + near-zero on method_structure

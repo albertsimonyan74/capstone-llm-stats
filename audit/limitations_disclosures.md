@@ -47,9 +47,9 @@ claim within the noise-equivalent band is unsupported at this sample
 size. Cite Hochlehnert et al. (2025, Statistical Fragility): single-question
 swaps shift Pass@1 ≥ 3 pp.
 
-### d) Single-judge caveat on the 25% pass-flip headline
+### d) Single-judge caveat on the 25% keyword-judge disagreement headline
 
-The 25.0% keyword-vs-judge pass-flip on `assumption_compliance`
+The 25.0% keyword-vs-judge keyword-judge disagreement on `assumption_compliance`
 (274 / 1095 runs) rests on a single external judge model — Llama 3.3
 70B Instruct via Together AI. We verified cross-provider agreement
 (Groq vs Together) and ran strictness spot-checks on borderline cases,

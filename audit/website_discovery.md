@@ -156,7 +156,7 @@ Every `expandedStats` block in `RQS` references stale numbers (`Claude N-score 0
 | `RQ4 ≈ 0.91` (RQ4 metric badge) | Replace with three-rankings statement; ChatGPT Δ=−0.0007, DeepSeek Δ=+0.0006, claude Δ=0.0194, mistral Δ=+0.0135, gemini Δ=0.016 |
 | `8 error categories E1-E8` (About CountUp + RQ3) | 4 L1 buckets × 9 L2 codes; only 4 L2 codes (E1, E3, E6, E7) actually hit. Disclose empties. |
 | `Total calibration scores 1,230` (RQ5) | Empty high-confidence bucket (verbalized) → overconfidence reappears (consistency); contrast with FermiEval |
-| (no mention) | **NEW headline:** 25% pass-flip on `assumption_compliance` (274/1094 runs); Krippendorff α=0.55 (Park 2025 questionable threshold); Spearman ρ=0.59 |
+| (no mention) | **NEW headline:** 25% keyword-judge disagreement on `assumption_compliance` (274/1094 runs); Krippendorff α=0.55 (Park 2025 questionable threshold); Spearman ρ=0.59 |
 
 ### 5.4 References — 10 papers to add
 

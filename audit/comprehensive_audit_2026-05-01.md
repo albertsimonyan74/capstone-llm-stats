@@ -52,7 +52,7 @@ PosterCompanion,References}.jsx,data/visualizations.js}}.
 
 ### Category 1 — Numerical inconsistencies across artifacts
 
-**[F1.01] 25% pass-flip headline — consistent across canonical layer; out-of-date in deployed static_data**
+**[F1.01] 25% keyword-judge disagreement headline — consistent across canonical layer; out-of-date in deployed static_data**
 Severity: CRITICAL
 Category: Numerical inconsistencies
 Finding: 274/1095 = 25.022% is the canonical headline. Verified in
@@ -313,7 +313,7 @@ Recommendation: Edit v2_routes.py:314 + :412 to read
 `sc.get("ece_comparison_full") or sc.get("ece_comparison", {})` (preserves
 backward compat). Coordinate with F1.07 refresh.
 
-**[F1.11] Run counts (1230 base, 2365 perturbations, 2415 self-consistency, 1095 pass-flip eligible, 143 failure analysis) — consistent**
+**[F1.11] Run counts (1230 base, 2365 perturbations, 2415 self-consistency, 1095 keyword-judge disagreement eligible, 143 failure analysis) — consistent**
 Severity: INFO
 Category: Numerical inconsistencies
 Finding: All five canonical counts verified:
@@ -322,7 +322,7 @@ Finding: All five canonical counts verified:
   AND deployed match)
 - 2415 self-consistency: 161 tasks × 5 models × 3 reruns = 2415 (recompute_log.md
   "Cost: $11.688... Coverage: 2,415 calls")
-- 1095 pass-flip eligible: keyword_vs_judge_agreement.json:n_compared = 1095
+- 1095 keyword-judge disagreement eligible: keyword_vs_judge_agreement.json:n_compared = 1095
 - 143 failure-analysis classified: error_taxonomy_v2.json:n_failures_classified
 
 Day 2 audit and Methodology.jsx use 1094 (off-by-one carry-over from earlier
@@ -333,7 +333,7 @@ Recommendation: Reconcile day2_audit_report.md and Methodology.jsx to 1095.
 
 ### Category 2 — Partial analyses with unclear scope
 
-**[F2.01] Pass-flip 135-task exclusion documented**
+**[F2.01] Keyword-judge disagreement 135-task exclusion documented**
 Severity: INFO
 Category: Partial analyses
 Finding: 135 ≈ 1230 − 1095 = 135. audit/limitations_disclosures.md does NOT
@@ -769,7 +769,7 @@ Disclosure × Layer matrix. ✓ = present; ✗ = missing.
 
 | Disclosure | audit/limitations_disclosures.md | research-narrative.md §6 | website Limitations.jsx |
 |---|---|---|---|
-| (a) Pass-flip 135-task exclusion | ✗ (no entry) | ✗ | ✗ |
+| (a) Keyword-judge disagreement 135-task exclusion | ✗ (no entry) | ✗ | ✗ |
 | (b) Self-consistency 10-task CONCEPTUAL exclusion | ✓ (f) | ✓ | ✗ |
 | (c) Self-consistency stratification — RESOLVED Phase 1C | ✓ (e) | ✓ | ✗ (still describes B3 as open caveat) |
 | (d) HALLUCINATION = 0 (real vs single-judge) | ✓ (a) | ✓ | ✓ (L1) |
@@ -780,7 +780,7 @@ Disclosure × Layer matrix. ✓ = present; ✗ = missing.
 | (i) NMACR weighting choice — literature-derived, post-hoc risk | ✗ (audit/methodology_continuity.md handles this) | ✓ §2 | ✗ |
 | (j) Calibration measurement method-dependent | ✓ (e) wraps this | ✓ RQ5 | ✗ (Limitations.jsx L5 still describes B3 as open) |
 
-**[F6.01] Pass-flip 135-task exclusion missing from all 3 layers**
+**[F6.01] Keyword-judge disagreement 135-task exclusion missing from all 3 layers**
 Severity: MAJOR
 Category: Methodology gaps
 Finding: 1230 base − 1095 eligible = 135 excluded. The exclusion design

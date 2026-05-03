@@ -15,7 +15,7 @@ const CAVEATS = [
   {
     title: 'Empty high-confidence bucket (verbalized) — Gemini specifically zero-signal',
     body: `All five models produced 0 responses classified as high-confidence (claimed p ≥ 0.85)
-    by our keyword-based extractor, leaving the 0.9 ECE bucket empty. Reported verbalized ECE
+    by the keyword-based extractor, leaving the 0.9 ECE bucket empty. Reported verbalized ECE
     values (0.06–0.18) are weighted MAEs over three populated buckets (0.3 / 0.5 / 0.6) — they
     capture calibration across the low-to-moderate confidence range only. Gemini specifically
     returned 0 verbalized confidence signals across 246 base runs and is excluded from the
@@ -35,16 +35,16 @@ const CAVEATS = [
   },
   {
     title: 'Single-judge limitation (model AND prompt template)',
-    body: `The combined 22.2% pass-flip headline rests on a single external judge — Llama 3.3
-    70B Instruct via Together AI — with a single prompt template. Yamauchi et al. (2025) report
-    that judge-prompt template choices have larger effects than judge-model choices; we address
-    model choice (5 distinct providers + 1 external judge family) but not template variance.
-    Cross-provider agreement (Groq vs Together) was verified and strictness spot-checks were
-    run on borderline cases; true cross-judge validation against an independent family
-    (e.g., GPT-4 class or Claude Opus as judge) and multi-template ensembling are paper-scope
-    future work. Cite Feuer et al. (2025) "Judgment Becomes Noise" for the systematic-noise
-    framing; our 5-provider design is the architectural counter-design to family-preference
-    bias.`,
+    body: `The combined 22.2% keyword-judge disagreement headline rests on a single external
+    judge — Llama 3.3 70B Instruct via Together AI — with a single prompt template. Yamauchi et
+    al. (2025) report that judge-prompt template choices have larger effects than judge-model
+    choices; this design addresses model choice (5 distinct providers + 1 external judge family)
+    but not template variance. Cross-provider agreement (Groq vs Together) was verified and
+    strictness spot-checks were run on borderline cases; true cross-judge validation against an
+    independent family (e.g., GPT-4 class or Claude Opus as judge) and multi-template ensembling
+    are paper-scope future work. Cite Feuer et al. (2025) "Judgment Becomes Noise" for the
+    systematic-noise framing; the 5-provider design is the architectural counter-design to
+    family-preference bias.`,
   },
   {
     title: 'B3 stratification — RESOLVED via Phase 1C',
@@ -57,8 +57,8 @@ const CAVEATS = [
     misleading: 0.33 → 0.73 (+0.40 ECE delta).`,
   },
   {
-    title: '135-task pass-flip exclusion (CONCEPTUAL / MINIMAX / BAYES_RISK)',
-    body: `Pass-flip is computed on 1,095 of 1,230 base runs. The 135 excluded runs come from
+    title: '135-task keyword-judge disagreement exclusion (CONCEPTUAL / MINIMAX / BAYES_RISK)',
+    body: `Keyword-judge disagreement is computed on 1,095 of 1,230 base runs. The 135 excluded runs come from
     CONCEPTUAL/MINIMAX/BAYES_RISK task families with empty required_assumption_checks —
     keyword and judge scoring of assumption articulation cannot be compared on tasks that don't
     require assumption articulation. The same eligibility filter applies to the 2,100 of 2,365

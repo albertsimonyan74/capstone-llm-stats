@@ -71,7 +71,7 @@ function TooltipBox({ children }) {
   )
 }
 
-// ─── Panel 1: per-model pass-flip ────────────────────────────────
+// ─── Panel 1: per-model keyword-judge disagreement ───────────────
 const STATIC_PASSFLIP = {
   combined: {
     pct_pass_flip: 0.2216,
@@ -110,7 +110,7 @@ export function PerModelPassFlipPanel() {
 
   return (
     <PanelShell
-      title="Pass-flip rate by model"
+      title="Keyword-judge disagreement by model"
       subtitle="Combined base + perturbation analysis (n=3,195 eligible runs)"
       accent="#00B4D8"
       caption={`Claude shows the highest keyword-judge disagreement (${rows[0].pct.toFixed(1)}%) while ChatGPT and DeepSeek tie for the lowest (${rows[rows.length - 1].pct.toFixed(1)}%). The 8.6pp spread suggests Claude's response style is more keyword-friendly without engaging with assumptions substantively. ChatGPT and DeepSeek's lower disagreement may indicate more literal keyword matching to actual reasoning content. Dashed line = combined cohort average (${avgPct.toFixed(2)}%).`}
@@ -133,7 +133,7 @@ export function PerModelPassFlipPanel() {
                 return (
                   <TooltipBox>
                     <div style={{ color: MODEL_COLORS[r.model], fontWeight: 700, marginBottom: 4 }}>{r.model}</div>
-                    <div>pass-flip: {r.pct.toFixed(2)}%</div>
+                    <div>disagreement: {r.pct.toFixed(2)}%</div>
                     <div>{r.n_pass_flip} / {r.n_eligible} runs</div>
                   </TooltipBox>
                 )

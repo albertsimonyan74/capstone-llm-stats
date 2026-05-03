@@ -107,11 +107,11 @@ const PERT_TYPE = [
 ]
 
 const LITERATURE_CONVERGENCE = [
-  'Multi-dimensional rubrics (vs single accuracy) per Lu et al. (2025), Liu et al. (2025), and Boye & Moell (2025) — our N·M·A·C·R rubric extends this convention to Bayesian inference.',
-  'Bootstrap CI separability of rankings is a methodological mandate per Longjohn et al. (2025), Hochlehnert et al. (2025), Au et al. (2025), and BrittleBench (2026) — our separability matrix follows this convention.',
-  'Variance-as-first-class evaluation (not just accuracy) per Au et al. (2025), BrittleBench (2026), and Hochlehnert et al. (2025) — our three-rankings framework directly implements this framing.',
-  'Verbalized confidence is unreliable for calibration per Nagarkar et al. (2026), FermiEval (2025), and Multi-Answer Confidence (2026) — our Gemini-zero-verbalized-signals finding confirms this in the Bayesian setting.',
-  'Three-way convergence on assumption violations as primary failure mode: Du et al. (2025), Boye & Moell (2025), and our 46.9% empirical finding independently agree.',
+  'Multi-dimensional rubrics (vs single accuracy) per Lu et al. (2025), Liu et al. (2025), and Boye & Moell (2025) — the N·M·A·C·R rubric extends this convention to Bayesian inference.',
+  'Bootstrap CI separability of rankings is a methodological mandate per Longjohn et al. (2025), Hochlehnert et al. (2025), Au et al. (2025), and BrittleBench (2026) — the separability matrix follows this convention.',
+  'Variance-as-first-class evaluation (not just accuracy) per Au et al. (2025), BrittleBench (2026), and Hochlehnert et al. (2025) — the three-rankings framework directly implements this framing.',
+  'Verbalized confidence is unreliable for calibration per Nagarkar et al. (2026), FermiEval (2025), and Multi-Answer Confidence (2026) — the Gemini-zero-verbalized-signals finding confirms this in the Bayesian setting.',
+  'Three-way convergence on assumption violations as primary failure mode: Du et al. (2025), Boye & Moell (2025), and the 46.9% empirical finding here independently agree.',
   'Single-judge limitations require multi-judge ensembling per Yamauchi et al. (2025) and Feuer et al. (2025) — explicitly disclosed as project limitation; multi-judge is paper-scope future work.',
 ]
 
@@ -135,18 +135,19 @@ export default function Methodology() {
           <Card>
             <p style={{ color: 'rgba(232,244,248,0.85)', fontSize: 14, lineHeight: 1.85, margin: 0 }}>
               This benchmark extends StatEval (Lu et al., 2025) from descriptive and hypothesis-testing
-              statistics to Bayesian inference. Where StatEval uses multiple-choice format, we adopt
-              free-response with a 5-dimensional rubric (N·M·A·C·R) following the multi-dimensional
-              convention of MathEval (Liu et al., 2025). Our prompting baseline is the single shipped
-              strategy: zero-shot Chain-of-Thought (Wei et al., 2022). Methodology rigour combines
-              external-judge validation via Llama 3.3 70B (Yamauchi et al., 2025), bootstrap-CI
-              separability motivated by Statistical Fragility (Hochlehnert et al., 2025) and Longjohn
-              et al. (2025), perturbation robustness adapted from BrittleBench (2026), and the
-              variance-as-first-class framing of ReasonBench (Au et al., 2025). Calibration concerns
-              are raised by Nagarkar et al. (2026); we measure both verbalized and consistency-based
-              extraction (Multi-Answer Confidence, 2026) and find calibration is method-dependent.
-              Limitations around single-judge bias are framed by Judgment-Becomes-Noise (Feuer et al.,
-              2025); future work toward multi-judge ensembling is explicitly scoped.
+              statistics to Bayesian inference. Where StatEval uses multiple-choice format, this
+              benchmark adopts free-response with a 5-dimensional rubric (N·M·A·C·R) following the
+              multi-dimensional convention of MathEval (Liu et al., 2025). The prompting baseline is
+              the single shipped strategy: zero-shot Chain-of-Thought (Wei et al., 2022). Methodology
+              rigour combines external-judge validation via Llama 3.3 70B (Yamauchi et al., 2025),
+              bootstrap-CI separability motivated by Statistical Fragility (Hochlehnert et al., 2025)
+              and Longjohn et al. (2025), perturbation robustness adapted from BrittleBench (2026),
+              and the variance-as-first-class framing of ReasonBench (Au et al., 2025). Calibration
+              concerns are raised by Nagarkar et al. (2026); both verbalized and consistency-based
+              extraction (Multi-Answer Confidence, 2026) are measured, revealing that calibration is
+              method-dependent. Limitations around single-judge bias are framed by
+              Judgment-Becomes-Noise (Feuer et al., 2025); future work toward multi-judge ensembling
+              is explicitly scoped.
             </p>
           </Card>
         </FadeIn>
@@ -222,7 +223,7 @@ export default function Methodology() {
               assumption, reasoning quality + completeness). Krippendorff α between keyword and
               judge: assumption_compliance α = 0.55 (95% CI [0.50, 0.60], questionable per Park et al.
               2025); reasoning_quality α = -0.13 (CI entirely below zero); method_structure α = -0.04.
-              Combined pass-flip across 1,095 base + 2,100 perturbation runs: 708 / 3,195 = 22.2%.
+              Combined keyword-judge disagreement across 1,095 base + 2,100 perturbation runs: 708 / 3,195 = 22.2%.
             </p>
             <Callout color="#00B4D8" title="Keyword vs judge under perturbation">
               Across the 3,195 eligible runs sharing the assumption-compliance rubric, keyword
@@ -248,7 +249,7 @@ export default function Methodology() {
               show keyword/judge divergence, not one.
             </Callout>
             <p style={{ color: 'rgba(232,244,248,0.7)', fontSize: 12, lineHeight: 1.7, margin: '14px 0 0' }}>
-              Per-perturbation-type pass-flip: rephrase 21.6% (162/750), numerical 22.7% (136/600),
+              Per-perturbation-type keyword-judge disagreement: rephrase 21.6% (162/750), numerical 22.7% (136/600),
               semantic 18.1% (136/750). Numerical perturbations expose assumption-checking gaps
               most aggressively; semantic reframing exposes them least.
             </p>
@@ -269,7 +270,7 @@ export default function Methodology() {
           </Card>
         </FadeIn>
 
-        {/* 3.5 — Per-model pass-flip panel */}
+        {/* 3.5 — Per-model keyword-judge disagreement panel */}
         <FadeIn delay={165}>
           <PerModelPassFlipPanel />
         </FadeIn>
@@ -357,7 +358,7 @@ export default function Methodology() {
           <Subhead>6 · Calibration is method-dependent</Subhead>
           <Card>
             <p style={{ color: 'rgba(232,244,248,0.78)', fontSize: 13, lineHeight: 1.75, margin: '0 0 12px' }}>
-              We measure calibration two ways and find substantively different conclusions.
+              Calibration measured two ways yields substantively different conclusions.
               Verbalized extraction (n=246 base/model) is hedge-heavy: ECE 0.06–0.18, no model
               produces high-confidence (p ≥ 0.85) records. Phase 1C consistency extraction (3 reruns
               at T=0.7, n=161 numeric tasks × 5 models) reveals all 5 models severely overconfident
@@ -390,7 +391,7 @@ export default function Methodology() {
           <Subhead>7 · Eligibility filters and disclosures</Subhead>
           <Card>
             <p style={{ color: 'rgba(232,244,248,0.78)', fontSize: 13, lineHeight: 1.75, margin: 0 }}>
-              Pass-flip is computed on 1,095 of 1,230 base runs. The 135 excluded runs come from
+              Keyword-judge disagreement is computed on 1,095 of 1,230 base runs. The 135 excluded runs come from
               CONCEPTUAL/MINIMAX/BAYES_RISK task families with empty
               <code style={{ fontSize: 11 }}> required_assumption_checks</code> — keyword and judge
               scoring of assumption articulation cannot be compared on tasks that don't require

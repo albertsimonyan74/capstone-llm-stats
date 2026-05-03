@@ -64,7 +64,7 @@ Component class names are minified, so check by distinctive chart titles + recha
 
 | Panel | Source | Title in bundle | Recharts wired | API endpoint hit | Static fallback | Diagnosis |
 |-------|--------|-----------------|----------------|------------------|-----------------|-----------|
-| 1. Per-Model Pass-Flip | [MethodologyPanels.jsx:90-154](capstone-website/frontend/src/components/MethodologyPanels.jsx#L90-L154) | "Pass-flip rate by model" ✓ | BarChart ✓ | `/api/v2/pass_flip` ✓ | STATIC_PASSFLIP inlined ✓ | PRESENT |
+| 1. Per-Model Pass-Flip | [MethodologyPanels.jsx:90-154](capstone-website/frontend/src/components/MethodologyPanels.jsx#L90-L154) | "Keyword-judge disagreement rate by model" ✓ | BarChart ✓ | `/api/v2/pass_flip` ✓ | STATIC_PASSFLIP inlined ✓ | PRESENT |
 | 2. Keyword-Degradation PNG | [MethodologyPanels.jsx:157-176](capstone-website/frontend/src/components/MethodologyPanels.jsx#L157-L176) | "Keyword vs Judge PASS rates" ✓ | n/a (PNG) | n/a (static asset) | `/visualizations/png/v2/combined_pass_flip_comparison.png` 200 ✓ | PRESENT |
 | 3. Per-Dim Robustness | [MethodologyPanels.jsx:195-268](capstone-website/frontend/src/components/MethodologyPanels.jsx#L195-L268) | "Robustness degradation by NMACR" ✓ | BarChart ✓ | `/api/v2/robustness` ✓ | STATIC_PER_DIM_DELTA ✓ | PRESENT |
 | 4. Per-Dim Calibration | [MethodologyPanels.jsx:279-344](capstone-website/frontend/src/components/MethodologyPanels.jsx#L279-L344) | "Calibration ECE by NMACR" ✓ | BarChart ✓ | `/api/v2/calibration` ✓ | STATIC_PER_DIM_ECE ✓ | PRESENT |
