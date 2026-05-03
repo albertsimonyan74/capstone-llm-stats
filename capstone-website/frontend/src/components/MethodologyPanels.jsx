@@ -153,25 +153,211 @@ export function PerModelPassFlipPanel() {
   )
 }
 
-// ─── Panel 2: keyword-degradation PNG ────────────────────────────
+// ─── Panel 2: keyword-judge disagreement (3 interactive bar panels) ─
+const STATIC_KJ_CHARTS = {
+  base: {
+    n_eligible: 1095,
+    pct_pass_flip: 0.2502283105022831,
+    per_model: {
+      claude:   { n_pass_flip: 67, n_eligible: 219, pct: 0.3059360730593607 },
+      chatgpt:  { n_pass_flip: 46, n_eligible: 219, pct: 0.2100456621004566 },
+      gemini:   { n_pass_flip: 54, n_eligible: 219, pct: 0.2465753424657534 },
+      deepseek: { n_pass_flip: 49, n_eligible: 219, pct: 0.2237442922374429 },
+      mistral:  { n_pass_flip: 58, n_eligible: 219, pct: 0.2648401826484018 },
+    },
+  },
+  perturbation: {
+    n_eligible: 2100,
+    pct_pass_flip: 0.20666666666666667,
+    per_model: {
+      claude:   { n_pass_flip: 110, n_eligible: 420, pct: 0.2619047619047619 },
+      chatgpt:  { n_pass_flip: 76,  n_eligible: 420, pct: 0.18095238095238095 },
+      gemini:   { n_pass_flip: 96,  n_eligible: 420, pct: 0.22857142857142856 },
+      deepseek: { n_pass_flip: 73,  n_eligible: 420, pct: 0.1738095238095238 },
+      mistral:  { n_pass_flip: 79,  n_eligible: 420, pct: 0.1880952380952381 },
+    },
+  },
+  combined: {
+    n_eligible: 3195,
+    pct_pass_flip: 0.2216,
+    per_model: {
+      claude:   { n_pass_flip: 177, n_eligible: 639, pct: 0.27699530516431925 },
+      chatgpt:  { n_pass_flip: 122, n_eligible: 639, pct: 0.19092331768388107 },
+      gemini:   { n_pass_flip: 150, n_eligible: 639, pct: 0.2347417840375587 },
+      deepseek: { n_pass_flip: 122, n_eligible: 639, pct: 0.19092331768388107 },
+      mistral:  { n_pass_flip: 137, n_eligible: 639, pct: 0.21439749608763695 },
+    },
+  },
+}
+
+function KJBar({ panelKey, data }) {
+  const block = data?.[panelKey] ?? STATIC_KJ_CHARTS[panelKey]
+  const pm = block.per_model
+  const overallPct = (block.pct_pass_flip ?? 0) * 100
+  const rows = MODELS.map(m => ({
+    model: m,
+    pct: (pm[m]?.pct ?? 0) * 100,
+    n_pass_flip: pm[m]?.n_pass_flip ?? 0,
+    n_eligible: pm[m]?.n_eligible ?? 0,
+  }))
+  const TITLES = { base: 'Base', perturbation: 'Perturbation', combined: 'Combined' }
+  return (
+    <div className="kj-chart-panel">
+      <div className="kj-chart-title">
+        {TITLES[panelKey]} <span className="kj-chart-n">n_eligible = {block.n_eligible.toLocaleString()}</span>
+      </div>
+      <div style={{ width: '100%', height: 240 }}>
+        <ResponsiveContainer>
+          <BarChart data={rows} margin={{ top: 14, right: 14, bottom: 4, left: 0 }}>
+            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.07)" />
+            <XAxis dataKey="model" tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 10 }} />
+            <YAxis
+              tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 10 }}
+              tickFormatter={v => `${v}%`}
+              domain={[0, 35]}
+            />
+            <Tooltip
+              cursor={{ fill: 'rgba(0,255,224,0.05)' }}
+              content={({ active, payload }) => {
+                if (!active || !payload?.[0]) return null
+                const r = payload[0].payload
+                return (
+                  <TooltipBox>
+                    <div style={{ color: MODEL_COLORS[r.model], fontWeight: 700, marginBottom: 4 }}>{r.model}</div>
+                    <div>{r.pct.toFixed(2)}% ({r.n_pass_flip}/{r.n_eligible})</div>
+                  </TooltipBox>
+                )
+              }}
+            />
+            <ReferenceLine
+              y={overallPct} stroke="#FFB347" strokeDasharray="4 4"
+              label={{ value: `overall ${overallPct.toFixed(1)}%`, fill: '#FFB347', fontSize: 9, position: 'right' }}
+            />
+            <Bar dataKey="pct" radius={[4, 4, 0, 0]}>
+              {rows.map(r => <Cell key={r.model} fill={MODEL_COLORS[r.model]} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  )
+}
+
 export function KeywordDegradationPanel() {
+  const [data, setData] = useState(null)
+  useEffect(() => {
+    fetch(`${API}/api/v2/pass_flip`)
+      .then(r => r.ok ? r.json() : null)
+      .then(j => { if (j?.combined?.per_model) setData(j) })
+      .catch(() => {})
+  }, [])
   return (
     <PanelShell
-      title="Keyword vs Judge PASS rates: base vs perturbation"
+      title="Keyword vs Judge disagreement: per-model · per-cohort"
       accent="#00B4D8"
-      caption="Side-by-side comparison of PASS rates per model under base prompts and perturbed prompts, for both scoring methods. Note the divergence: keyword PASS rate (left bars per model) drops from base to perturbation while judge PASS rate (right bars) rises. The gap is largest on semantic perturbations, where vocabulary changes most aggressively break keyword regex matches."
+      caption="Three panels show keyword-judge disagreement rate (keyword PASS but judge FAIL on assumption_compliance) per model, broken out by cohort. The dashed line marks the cohort overall rate. Disagreement is highest under base prompts (overall 25.0%), drops on perturbations (20.7%), and lands at 22.2% combined — keyword's regex-based scoring is more sensitive to surface-form changes than the LLM judge."
       subCaption="Base: 1,095 runs · Perturbation: 2,100 runs · Combined: 3,195 runs. Per-perturbation-type differential: rephrase 1.96pp, numerical 2.92pp, semantic 5.96pp."
     >
-      <img
-        src="/visualizations/png/v2/combined_pass_flip_comparison.png"
-        alt="Keyword vs judge PASS rates: base vs perturbation, per model"
-        style={{
-          width: '100%', height: 'auto', display: 'block',
-          borderRadius: 8, background: 'rgba(255,255,255,0.02)',
-        }}
-        loading="lazy"
-      />
+      <div className="kj-charts-grid">
+        <KJBar panelKey="base" data={data}/>
+        <KJBar panelKey="perturbation" data={data}/>
+        <KJBar panelKey="combined" data={data}/>
+      </div>
     </PanelShell>
+  )
+}
+
+// ─── Panel 2.5: per-model failure modes (5 cards 3+2) ──────────────
+const STATIC_FAILURES = {
+  by_model_l1: {
+    chatgpt:  { ASSUMPTION_VIOLATION: 25, MATHEMATICAL_ERROR: 4,  FORMATTING_FAILURE: 6, CONCEPTUAL_ERROR: 3 },
+    claude:   { MATHEMATICAL_ERROR: 10, ASSUMPTION_VIOLATION: 9 },
+    gemini:   { ASSUMPTION_VIOLATION: 10, MATHEMATICAL_ERROR: 9, CONCEPTUAL_ERROR: 4, FORMATTING_FAILURE: 1 },
+    deepseek: { ASSUMPTION_VIOLATION: 15, MATHEMATICAL_ERROR: 13, FORMATTING_FAILURE: 6, CONCEPTUAL_ERROR: 2 },
+    mistral:  { MATHEMATICAL_ERROR: 12, ASSUMPTION_VIOLATION: 8, FORMATTING_FAILURE: 5, CONCEPTUAL_ERROR: 1 },
+  },
+}
+
+const L1_LABEL = {
+  ASSUMPTION_VIOLATION: 'Assumption violation',
+  MATHEMATICAL_ERROR:   'Math error',
+  FORMATTING_FAILURE:   'Format',
+  CONCEPTUAL_ERROR:     'Conceptual',
+  HALLUCINATION:        'Hallucination',
+}
+
+const FAILURE_SUMMARY = {
+  chatgpt:  { mode: 'Assumption-dominated', summary: 'Tends to skip required assumption checks.' },
+  claude:   { mode: 'Math-dominated',       summary: 'Computational errors dominate.' },
+  gemini:   { mode: 'Balanced split',       summary: 'No single dominant failure mode.' },
+  deepseek: { mode: 'Mixed (A + math)',     summary: 'Both A and math contribute substantially.' },
+  mistral:  { mode: 'Math-dominated',       summary: 'Math errors are primary failure mode.' },
+}
+
+function buildFailureCards(byModelL1) {
+  return MODELS.map(m => {
+    const counts = byModelL1[m] || {}
+    const entries = Object.entries(counts).sort((a, b) => b[1] - a[1])
+    const total = entries.reduce((s, [, n]) => s + n, 0)
+    const breakdown = entries.map(([k, n]) => ({
+      label: L1_LABEL[k] || k,
+      count: n,
+      percent: total ? Math.round((100 * n) / total) : 0,
+    }))
+    const dominant = breakdown[0] ?? { count: 0, label: '—' }
+    return {
+      model: m,
+      color: MODEL_COLORS[m],
+      mode: FAILURE_SUMMARY[m]?.mode ?? '—',
+      summary: FAILURE_SUMMARY[m]?.summary ?? '',
+      dominantCount: dominant.count,
+      total,
+      breakdown,
+    }
+  })
+}
+
+export function PerModelFailuresPanel() {
+  const [data, setData] = useState(STATIC_FAILURES)
+  useEffect(() => {
+    fetch(`${API}/api/v2/error_taxonomy`)
+      .then(r => r.ok ? r.json() : null)
+      .then(j => { if (j?.by_model_l1) setData({ by_model_l1: j.by_model_l1 }) })
+      .catch(() => {})
+  }, [])
+  const cards = buildFailureCards(data?.by_model_l1 ?? STATIC_FAILURES.by_model_l1)
+  const MODEL_LABEL = { claude: 'Claude', chatgpt: 'ChatGPT', gemini: 'Gemini', deepseek: 'DeepSeek', mistral: 'Mistral' }
+  return (
+    <div className="failure-modes-grid">
+      {cards.map(c => {
+        const dominantPct = c.total ? Math.round((100 * c.dominantCount) / c.total) : 0
+        return (
+          <div key={c.model} className="failure-mode-card" style={{ borderTopColor: c.color }}>
+            <div className="failure-mode-header">
+              <h4 className="failure-mode-model" style={{ color: c.color }}>{MODEL_LABEL[c.model]}</h4>
+              <div className="failure-mode-tag">{c.mode}</div>
+            </div>
+            <div className="failure-mode-stat">
+              <span className="failure-mode-count">{c.dominantCount} / {c.total}</span>
+              <span className="failure-mode-percent">({dominantPct}% of failures)</span>
+            </div>
+            <div className="failure-mode-breakdown">
+              {c.breakdown.map(item => (
+                <div key={item.label} className="breakdown-row">
+                  <div className="breakdown-label">{item.label}</div>
+                  <div className="breakdown-bar-wrapper">
+                    <div className="breakdown-bar"
+                      style={{ width: `${item.percent}%`, background: c.color, opacity: 0.7 }}/>
+                  </div>
+                  <div className="breakdown-count">{item.count} ({item.percent}%)</div>
+                </div>
+              ))}
+            </div>
+            <p className="failure-mode-summary">{c.summary}</p>
+          </div>
+        )
+      })}
+    </div>
   )
 }
 

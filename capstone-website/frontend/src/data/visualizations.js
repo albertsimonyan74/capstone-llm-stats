@@ -48,14 +48,6 @@ export const VISUALIZATIONS = [
     png: '/visualizations/png/v2/agreement_metrics_comparison.png',
   },
   {
-    id: 'combined_pass_flip', category: 'judge', featured: true,
-    title: 'Combined Keyword-Judge Disagreement — Phase 1.5',
-    subtitle: '708 / 3,195 = 22.2% across base + perturbation',
-    caption: 'Base 25.0% (274/1,095), perturbation 20.7% (434/2,100), combined 22.2%. Disagreement attenuates 4.4pp under perturbation — a stable rubric property, not an artefact of base wording.',
-    source: 'experiments/results_v2/combined_pass_flip_analysis.json',
-    png: '/visualizations/png/v2/combined_pass_flip_comparison.png',
-  },
-  {
     id: 'judge_scatter', category: 'judge',
     title: 'Judge vs Keyword — Per-Run Scatter',
     subtitle: '274 / 1,095 base runs flip pass/fail',

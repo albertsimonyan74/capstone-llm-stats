@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'motion/react'
 import {
   PerModelPassFlipPanel, KeywordDegradationPanel, PerDimRobustnessPanel,
-  PerDimCalibrationPanel, AccCalibScatterPanel,
+  PerDimCalibrationPanel, AccCalibScatterPanel, PerModelFailuresPanel,
 } from '../components/MethodologyPanels'
 
 const ICON = {
@@ -170,14 +170,6 @@ function Callout({ color = '#FFB347', title, children }) {
     </div>
   )
 }
-
-const PER_MODEL_FAILURE = [
-  { model: 'ChatGPT',  dominant: 'Assumption violation', n_dom: 25, n_total: 38, breakdown: 'A 25 · M-error 4 · Format 6 · Conceptual 3', color: '#7FFFD4' },
-  { model: 'Claude',   dominant: 'Math error',           n_dom: 10, n_total: 19, breakdown: 'M-error 10 · A 9',                              color: '#00CED1' },
-  { model: 'Gemini',   dominant: 'Balanced split',       n_dom: 10, n_total: 24, breakdown: 'A 10 · M-error 9 · Conceptual 4 · Format 1',    color: '#FF6B6B' },
-  { model: 'DeepSeek', dominant: 'Mixed (A + math)',     n_dom: 15, n_total: 36, breakdown: 'A 15 · M-error 13 · Format 6 · Conceptual 2',   color: '#4A90D9' },
-  { model: 'Mistral',  dominant: 'Math error',           n_dom: 12, n_total: 26, breakdown: 'M-error 12 · A 8 · Format 5 · Conceptual 1',    color: '#A78BFA' },
-]
 
 const PERT_TYPE = [
   { kind: 'rephrase',   pct: 21.6, n: 162, total: 750 },
@@ -428,36 +420,14 @@ export default function Methodology() {
         {/* 4 — Per-model failure modes */}
         <FadeIn delay={180}>
           <Subhead>4 · Per-model failure modes</Subhead>
-          <Card>
-            <p style={{ color: 'rgba(232,244,248,0.78)', fontSize: 13, lineHeight: 1.75, margin: '0 0 14px' }}>
-              The 46.9% assumption-violation headline (RQ3) hides that 2 of 5 models have math errors
-              as their dominant failure mode. ChatGPT is assumption-dominated (25/38 of its failures
-              are assumption violations); Claude and Mistral are math-dominated; DeepSeek is mixed;
-              Gemini is balanced. This is the actionable cross-cutting pattern beneath the cohort
-              average.
-            </p>
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
-                <thead>
-                  <tr>
-                    {['Model', 'Dominant mode', 'Dominant / total', 'Full breakdown'].map(c => (
-                      <th key={c} style={{ textAlign: 'left', padding: '8px 10px', borderBottom: '1px solid rgba(0,255,224,0.25)', color: 'rgba(232,244,248,0.55)', fontWeight: 700 }}>{c}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {PER_MODEL_FAILURE.map(m => (
-                    <tr key={m.model}>
-                      <td style={{ padding: '8px 10px', color: m.color, fontWeight: 700 }}>{m.model}</td>
-                      <td style={{ padding: '8px 10px', color: '#fff' }}>{m.dominant}</td>
-                      <td style={{ padding: '8px 10px', color: 'rgba(232,244,248,0.7)', fontFamily: 'monospace' }}>{m.n_dom} / {m.n_total}</td>
-                      <td style={{ padding: '8px 10px', color: 'rgba(232,244,248,0.6)', fontSize: 11 }}>{m.breakdown}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Card>
+          <p style={{ color: 'rgba(232,244,248,0.82)', fontSize: 14, lineHeight: 1.75, margin: '0 0 16px' }}>
+            The 46.9% assumption-violation headline (RQ3) hides that 2 of 5 models have math errors
+            as their dominant failure mode. ChatGPT is assumption-dominated (25/38 of its failures
+            are assumption violations); Claude and Mistral are math-dominated; DeepSeek is mixed;
+            Gemini is balanced. This is the actionable cross-cutting pattern beneath the cohort
+            average.
+          </p>
+          <PerModelFailuresPanel />
         </FadeIn>
 
         {/* 4.5 — Per-dim robustness panel */}
