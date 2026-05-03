@@ -904,6 +904,7 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 .alpha-scale {
   position: relative;
   margin: 28px 24px 0 24px;
+  padding-top: 32px;
   padding-bottom: 70px;
 }
 .alpha-scale-track {
