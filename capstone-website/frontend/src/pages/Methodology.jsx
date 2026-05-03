@@ -64,6 +64,26 @@ const ICON = {
       <path d="M12 9v4"/><path d="M12 17h.01"/>
     </svg>
   ),
+  Calculator: (p) => (
+    <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="16" height="20" x="4" y="2" rx="2"/>
+      <line x1="8" x2="16" y1="6" y2="6"/>
+      <line x1="16" x2="16" y1="14" y2="18"/>
+      <path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/>
+      <path d="M12 14h.01"/><path d="M8 14h.01"/>
+      <path d="M12 18h.01"/><path d="M8 18h.01"/>
+    </svg>
+  ),
+  Languages: (p) => (
+    <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m5 8 6 6"/>
+      <path d="m4 14 6-6 2-3"/>
+      <path d="M2 5h12"/>
+      <path d="M7 2h1"/>
+      <path d="m22 22-5-10-5 10"/>
+      <path d="M14 18h6"/>
+    </svg>
+  ),
 }
 
 const JUDGE_FACTS = [
@@ -497,6 +517,92 @@ export default function Methodology() {
               evaluation, where the goal is to measure reasoning competence independent of surface
               phrasing.
             </Callout>
+
+            <div className="perturbation-explainer">
+              <div className="perturbation-explainer-header">
+                <h4 className="perturbation-explainer-title">HOW PERTURBATIONS ARE GENERATED</h4>
+                <p className="perturbation-explainer-subtitle">
+                  Three transformation types preserve the math while varying the surface
+                </p>
+              </div>
+
+              <div className="perturbation-types-grid">
+                <div className="perturbation-type-card pert-rephrase">
+                  <div className="pert-card-header">
+                    <ICON.MessageSquare size={18} />
+                    <span className="pert-label">REPHRASE</span>
+                  </div>
+                  <p className="pert-description">Same problem, different wording. Math identical.</p>
+                  <div className="pert-example">
+                    <div className="pert-example-row pert-before">
+                      <span className="pert-tag">BEFORE</span>
+                      <span className="pert-text">A coin is flipped 10 times and lands heads 7 times. Beta(2,2) prior.</span>
+                    </div>
+                    <div className="pert-arrow">↓</div>
+                    <div className="pert-example-row pert-after">
+                      <span className="pert-tag">AFTER</span>
+                      <span className="pert-text">Out of 10 coin flips, 7 came up heads. Beta(2,2) prior.</span>
+                    </div>
+                  </div>
+                  <div className="pert-card-footer">
+                    <span className="pert-rate">21.6%</span>
+                    <span className="pert-rate-label">disagreement</span>
+                  </div>
+                </div>
+
+                <div className="perturbation-type-card pert-numerical">
+                  <div className="pert-card-header">
+                    <ICON.Calculator size={18} />
+                    <span className="pert-label">NUMERICAL</span>
+                  </div>
+                  <p className="pert-description">Same structure, different numbers. New correct answer.</p>
+                  <div className="pert-example">
+                    <div className="pert-example-row pert-before">
+                      <span className="pert-tag">BEFORE</span>
+                      <span className="pert-text">10 flips, 7 heads → posterior Beta(9, 5)</span>
+                    </div>
+                    <div className="pert-arrow">↓</div>
+                    <div className="pert-example-row pert-after">
+                      <span className="pert-tag">AFTER</span>
+                      <span className="pert-text">15 flips, 11 heads → posterior Beta(14, 7)</span>
+                    </div>
+                  </div>
+                  <div className="pert-card-footer">
+                    <span className="pert-rate">22.7%</span>
+                    <span className="pert-rate-label">disagreement</span>
+                  </div>
+                </div>
+
+                <div className="perturbation-type-card pert-semantic">
+                  <div className="pert-card-header">
+                    <ICON.Languages size={18} />
+                    <span className="pert-label">SEMANTIC</span>
+                  </div>
+                  <p className="pert-description">Same math, different domain. Vocabulary changed.</p>
+                  <div className="pert-example">
+                    <div className="pert-example-row pert-before">
+                      <span className="pert-tag">BEFORE</span>
+                      <span className="pert-text">10 coin flips, 7 heads, Beta(2,2) prior</span>
+                    </div>
+                    <div className="pert-arrow">↓</div>
+                    <div className="pert-example-row pert-after">
+                      <span className="pert-tag">AFTER</span>
+                      <span className="pert-text">10 patients tested, 7 positive, Beta(2,2) prior</span>
+                    </div>
+                  </div>
+                  <div className="pert-card-footer">
+                    <span className="pert-rate">18.1%</span>
+                    <span className="pert-rate-label">largest semantic gap effect</span>
+                  </div>
+                </div>
+              </div>
+
+              <p className="perturbation-explainer-caption">
+                All variants pre-generated and stored canonically — every model sees identical prompts.
+                Total: 2,365 perturbation runs across 171 base tasks.
+              </p>
+            </div>
+
             <KeywordDegradationPanel />
             <div style={{ marginTop: 14, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
               {PERT_TYPE.map(p => (
