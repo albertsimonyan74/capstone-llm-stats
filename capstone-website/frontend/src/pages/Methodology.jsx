@@ -222,10 +222,6 @@ export default function Methodology() {
               )
             })}
           </div>
-          <p style={{ color: 'rgba(232,244,248,0.65)', fontSize: 12.5, lineHeight: 1.7, fontStyle: 'italic', margin: '0 0 8px' }}>
-            Single-judge bias is acknowledged as a limitation per Feuer et al. (2025);
-            multi-judge ensembling is paper-scope future work.
-          </p>
         </FadeIn>
 
         {/* 2 — N·M·A·C·R Rubric */}
@@ -263,7 +259,7 @@ export default function Methodology() {
               Weights sum to 1.00. Dimensions weighted by literature convergence
               (Du 2025, Boye-Moell 2025, Yamauchi 2025).
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+            <div className="nmacr-cards-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14 }}>
               {SCORE_DIMS.map(d => (
                 <div key={d.dim} style={{
                   border: `1px solid ${d.color}33`,

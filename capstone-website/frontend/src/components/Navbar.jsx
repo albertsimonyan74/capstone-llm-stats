@@ -4,9 +4,8 @@ import { motion, AnimatePresence } from 'motion/react'
 const NAV_SECTIONS = [
   { id: 'overview',       label: 'Overview'     },
   { id: 'pipeline',       label: 'Pipeline'     },
-  { id: 'difficulty',     label: 'Difficulty'   },
-  { id: 'formula',        label: 'Formula'      },
   { id: 'models',         label: 'Models'       },
+  { id: 'difficulty',     label: 'Difficulty'   },
   { id: 'tasks',          label: 'Tasks'        },
   { id: 'methodology',    label: 'Methodology'  },
   { id: 'research',       label: 'Research'     },

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo, createContext, useContext } from 'react'
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'motion/react'
+import { PieChart, Pie, Cell, Tooltip as RTooltip, Legend, ResponsiveContainer } from 'recharts'
 import './App.css'
 import tasksData from './data/tasks.json'
 import statsData from './data/stats.json'
@@ -1214,34 +1215,183 @@ function Pipeline() {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  3. DIFFICULTY LADDER (extracted standalone section)
+//  DIFFICULTY LADDER (relocated under Models · enhanced content)
 // ═══════════════════════════════════════════════════════════════
-function DifficultyLadder() {
+const TIER_DETAIL = {
+  1: {
+    label: 'BASIC',
+    color: '#5EEAD4',
+    tasks: 9,
+    pct: 5,
+    description: 'Direct application of Bayes theorem. No multi-step reasoning required. Tests foundational probability mechanics.',
+    skills: 'Conjugate updating · Direct posterior derivation · Closed-form algebra',
+    example: 'Beta-Binomial posterior given Bernoulli successes (k=3, n=10).',
+    challenges: ['Single conjugate update', 'Direct Bayes theorem application', 'Closed-form posterior'],
+    types: ['BETA_BINOM', 'GAMMA_POISSON', 'BINOM_FLAT', 'NORMAL_GAMMA', 'DIRICHLET'],
+  },
+  2: {
+    label: 'INTERMEDIATE',
+    color: '#22D3EE',
+    tasks: 58,
+    pct: 34,
+    description: 'Multi-step inference combining priors, likelihoods, and posterior summaries. Requires recognition of distribution families and parameterization choices.',
+    skills: 'Distribution-family recognition · Hierarchical priors · Posterior summarization',
+    example: 'Frequentist CI vs Bayesian credible interval under conjugate Normal prior (n=20).',
+    challenges: ['Chained multi-step inference', 'MCMC sampling basics (Gibbs/MH/VB)', 'HPD region & credible-interval derivation'],
+    types: ['DISC_MEDIAN', 'UNIFORM_MLE', 'BAYES_RISK', 'BOX_MULLER', 'HPD', 'JEFFREYS', 'MLE_MAP', 'CI_CREDIBLE', 'CONCEPTUAL', 'GIBBS', 'MH', 'VB'],
+  },
+  3: {
+    label: 'ADVANCED',
+    color: '#3B82F6',
+    tasks: 84,
+    pct: 49,
+    description: 'Sampling-based inference, hierarchical models, and non-conjugate posteriors. Largest tier — represents the most realistic Bayesian workflow.',
+    skills: 'MCMC reasoning · Non-conjugate inference · Convergence diagnostics',
+    example: 'Bayes-factor model comparison Beta(1,1) vs Beta(0.5,0.5) given x=3, n=10.',
+    challenges: ['Computational Bayes (HMC / RJMCMC / ABC)', 'Bayes factor & marginal-likelihood reasoning', 'Hierarchical-model posterior simulation'],
+    types: ['MINIMAX', 'BIAS_VAR', 'FISHER_INFO', 'RC_BOUND', 'MARKOV', 'ORDER_STAT', 'REGRESSION', 'BAYES_FACTOR', 'PPC', 'BAYES_REG', 'LOG_ML', 'HMC', 'RJMCMC', 'ABC', 'HIERARCHICAL'],
+  },
+  4: {
+    label: 'EXPERT',
+    color: '#A855F7',
+    tasks: 20,
+    pct: 12,
+    description: 'Decision-theoretic reasoning, model comparison, and expert-level Bayesian workflow. Tests integration of multiple skills under realistic uncertainty.',
+    skills: 'Bayesian decision theory · Model comparison · Expected utility maximization',
+    example: 'MSE comparison across competing estimators under Uniform(0, θ), n=5.',
+    challenges: ['Competing-estimator MSE optimization', 'Asymptotic efficiency under MLE', 'Advanced MCMC at scale'],
+    types: ['OPT_SCALED', 'MSE_COMPARE', 'MLE_EFFICIENCY', 'GIBBS', 'MH', 'HMC', 'RJMCMC', 'VB', 'ABC', 'HIERARCHICAL'],
+  },
+}
+
+function DifficultyPie() {
+  const data = [1,2,3,4].map(t => ({
+    name: `T${t} ${TIER_DETAIL[t].label}`,
+    value: TIER_DETAIL[t].tasks,
+    pct: TIER_DETAIL[t].pct,
+    color: TIER_DETAIL[t].color,
+  }))
   return (
-    <Section id="difficulty" minHeight="auto">
-      <SectionTitle sub="171 tasks across 4 difficulty tiers — from conjugate updates to MCMC and decision theory">Difficulty Ladder</SectionTitle>
-      <FadeIn>
-        <div style={{ maxWidth:1200, margin:'0 auto' }}>
-          <Card><TierLadder/></Card>
-        </div>
-      </FadeIn>
-    </Section>
+    <ResponsiveContainer width="100%" height={300}>
+      <PieChart>
+        <Pie
+          data={data}
+          dataKey="value"
+          nameKey="name"
+          cx="50%"
+          cy="50%"
+          innerRadius={62}
+          outerRadius={108}
+          paddingAngle={1.5}
+          stroke="rgba(0,0,0,0.5)"
+          label={({ name, pct }) => `${name} · ${pct}%`}
+          labelLine={{ stroke: 'rgba(255,255,255,0.4)' }}
+        >
+          {data.map((d, i) => <Cell key={i} fill={d.color}/>)}
+        </Pie>
+        <RTooltip
+          formatter={(v, name) => [`${v} tasks`, name]}
+          contentStyle={{ background:'rgba(0,0,0,0.9)', border:'1px solid rgba(255,255,255,0.15)', borderRadius:8, fontSize:12 }}
+        />
+        <Legend verticalAlign="bottom" iconType="circle" wrapperStyle={{ fontSize:11, paddingTop:8 }}/>
+      </PieChart>
+    </ResponsiveContainer>
   )
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  4. COMPOSITE FORMULA (extracted standalone section)
-// ═══════════════════════════════════════════════════════════════
-function CompositeFormula() {
+function DifficultyLadder() {
   return (
-    <Section id="formula" minHeight="auto">
-      <SectionTitle sub="Five-dimensional NMACR rubric — literature-derived weights">Composite Formula</SectionTitle>
+    <Section id="difficulty" minHeight="auto">
+      <SectionTitle sub="171 tasks across 4 difficulty tiers — from conjugate updates to decision theory">Difficulty Ladder</SectionTitle>
       <FadeIn>
         <div style={{ maxWidth:1200, margin:'0 auto' }}>
-          <Card>
-            <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:20 }}>SCORING FORMULA</div>
-            <AnimatedScoringBars/>
+          <Card style={{ marginBottom:20 }}>
+            <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:8, textAlign:'center' }}>
+              TIER DISTRIBUTION
+            </div>
+            <DifficultyPie/>
           </Card>
+          <div className="difficulty-cards-grid">
+            {[1,2,3,4].map(tier => {
+              const d = TIER_DETAIL[tier]
+              return (
+                <div key={tier} style={{
+                  background: `linear-gradient(135deg, ${d.color}14, transparent)`,
+                  border: `1px solid ${d.color}55`,
+                  borderTop: `3px solid ${d.color}`,
+                  borderRadius: 12,
+                  padding: '16px 16px 14px',
+                  display: 'flex', flexDirection: 'column', gap: 10,
+                }}>
+                  {/* header: T-badge + name + count */}
+                  <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                    <div style={{
+                      width:36, height:36, borderRadius:8,
+                      background:`${d.color}22`, border:`1.5px solid ${d.color}`,
+                      display:'flex', alignItems:'center', justifyContent:'center',
+                      color:d.color, fontWeight:800, fontSize:12, fontFamily:'var(--font-mono)',
+                    }}>T{tier}</div>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ color:d.color, fontWeight:700, fontSize:11, letterSpacing:'0.1em' }}>{d.label}</div>
+                      <div style={{ color:'var(--text-muted)', fontSize:10, fontFamily:'var(--font-mono)' }}>
+                        {d.tasks} tasks · {d.pct}%
+                      </div>
+                    </div>
+                  </div>
+                  {/* difficulty dots */}
+                  <div style={{ display:'flex', gap:5 }}>
+                    {[1,2,3,4].map(i => (
+                      <div key={i} style={{
+                        flex:1, height:4, borderRadius:2,
+                        background: i<=tier ? d.color : `${d.color}22`,
+                        boxShadow: i<=tier ? `0 0 6px ${d.color}66` : 'none',
+                      }}/>
+                    ))}
+                  </div>
+                  {/* description */}
+                  <div style={{ color:'rgba(232,244,248,0.78)', fontSize:12, lineHeight:1.6 }}>
+                    {d.description}
+                  </div>
+                  {/* reasoning skills */}
+                  <div>
+                    <div style={{ color:`${d.color}cc`, fontSize:9, fontWeight:700, letterSpacing:'0.14em', marginBottom:4 }}>REASONING SKILLS</div>
+                    <div style={{ color:'rgba(232,244,248,0.7)', fontSize:11.5, lineHeight:1.55 }}>{d.skills}</div>
+                  </div>
+                  {/* example */}
+                  <div>
+                    <div style={{ color:`${d.color}cc`, fontSize:9, fontWeight:700, letterSpacing:'0.14em', marginBottom:4 }}>EXAMPLE</div>
+                    <div style={{ color:'rgba(232,244,248,0.7)', fontSize:11.5, lineHeight:1.55, fontStyle:'italic' }}>{d.example}</div>
+                  </div>
+                  {/* key challenges */}
+                  <div>
+                    <div style={{ color:`${d.color}cc`, fontSize:9, fontWeight:700, letterSpacing:'0.14em', marginBottom:6 }}>KEY CHALLENGES</div>
+                    <ul style={{ margin:0, padding:0, listStyle:'none', display:'flex', flexDirection:'column', gap:3 }}>
+                      {d.challenges.map(c => (
+                        <li key={c} style={{ display:'flex', alignItems:'flex-start', gap:6 }}>
+                          <span style={{ color:d.color, fontSize:7, marginTop:6, flexShrink:0 }}>◆</span>
+                          <span style={{ color:'rgba(232,244,248,0.7)', fontSize:11.5, lineHeight:1.5 }}>{c}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  {/* task types badges */}
+                  <div style={{ marginTop:'auto' }}>
+                    <div style={{ color:`${d.color}cc`, fontSize:9, fontWeight:700, letterSpacing:'0.14em', marginBottom:6 }}>TASK TYPES</div>
+                    <div style={{ display:'flex', flexWrap:'wrap', gap:4 }}>
+                      {d.types.map(k => (
+                        <span key={k} style={{
+                          fontSize:9.5, padding:'3px 7px', borderRadius:4,
+                          background:`${d.color}18`, color:d.color,
+                          border:`1px solid ${d.color}33`, fontFamily:'var(--font-mono)',
+                          letterSpacing:'0.02em',
+                        }}>{k}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </FadeIn>
     </Section>
@@ -2175,11 +2325,9 @@ export default function App() {
       <SectionDivider/>
       <Pipeline/>
       <SectionDivider/>
-      <DifficultyLadder/>
-      <SectionDivider/>
-      <CompositeFormula/>
-      <SectionDivider/>
       <Models/>
+      <SectionDivider/>
+      <DifficultyLadder/>
       <SectionDivider/>
       <Tasks onOpenModal={setModal} isOpen={tasksOpen} onToggle={()=>setTasksOpen(o=>!o)}/>
       <SectionDivider/>
@@ -2198,7 +2346,7 @@ export default function App() {
       {/* Footer */}
       <footer style={{ borderTop:'1px solid rgba(0,255,224,0.1)', padding:'28px 64px 32px', textAlign:'center', background:'rgba(0,0,0,0.25)' }}>
         <nav style={{ display:'flex', justifyContent:'center', flexWrap:'wrap', gap:'6px 20px', marginBottom:14 }}>
-          {['overview','pipeline','difficulty','formula','models','tasks','methodology','research','visualizations','limitations','user-study','references'].map(id => (
+          {['overview','pipeline','models','difficulty','tasks','methodology','research','visualizations','limitations','user-study','references'].map(id => (
             <a key={id} href={`#${id}`}
               style={{ color:'rgba(0,255,224,0.5)', fontSize:11, fontWeight:600, letterSpacing:'0.08em', textDecoration:'none', textTransform:'uppercase', transition:'color 0.18s' }}
               onMouseEnter={e=>e.currentTarget.style.color='#00FFE0'}
