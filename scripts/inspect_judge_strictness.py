@@ -17,7 +17,7 @@ from pathlib import Path
 JUDGE_PATH = Path("experiments/results_v2/llm_judge_scores_sample.jsonl")
 RUNS_PATH = Path("experiments/results_v1/runs.jsonl")
 TASKS_PATH = Path("data/benchmark_v1/tasks_all.json")
-PERT_PATH = Path("data/synthetic/perturbations.json")
+PERT_PATH = Path("data/synthetic/perturbations_all.json")
 
 KEYWORDS = ["assume", "assumption", "iid", "i.i.d.", "independent",
             "identically", "prior", "likelihood"]

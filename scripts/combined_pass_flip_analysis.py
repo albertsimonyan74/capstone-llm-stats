@@ -57,7 +57,10 @@ PERT_RUNS = Path("experiments/results_v2/perturbation_runs.jsonl")
 PERT_JUDGE = Path("experiments/results_v2/perturbation_judge_scores.jsonl")
 
 TASKS_PATH = Path("data/benchmark_v1/tasks_all.json")
-PERT_SPECS_PATH = Path("data/synthetic/perturbations.json")
+PERT_SPECS_PATH = Path("data/synthetic/perturbations_all.json")
+# v1-pert specs (75 task_ids) — used to filter v1-pert rows out of base runs.jsonl.
+# Empty after B-2 cleanup.
+V1_PERT_PATH = Path("data/synthetic/perturbations.json")
 
 OUT_JSON = Path("experiments/results_v2/combined_pass_flip_analysis.json")
 OUT_FIG = Path("report_materials/figures/combined_pass_flip_comparison.png")
@@ -276,12 +279,20 @@ def main() -> int:
     elig = load_eligibility()
     print(f"task specs loaded: {len(elig)} (eligible={sum(elig.values())})")
 
-    base_runs = load_jsonl(BASE_RUNS)
-    base_judge = load_jsonl(BASE_JUDGE)
+    base_runs_raw = load_jsonl(BASE_RUNS)
+    base_judge_raw = load_jsonl(BASE_JUDGE)
     pert_runs = load_jsonl(PERT_RUNS)
     pert_judge = load_jsonl(PERT_JUDGE)
+
+    v1_pert_ids: frozenset[str] = (
+        frozenset(p["task_id"] for p in json.loads(V1_PERT_PATH.read_text()))
+        if V1_PERT_PATH.exists() else frozenset()
+    )
+    base_runs = [r for r in base_runs_raw if r.get("task_id") not in v1_pert_ids]
+    base_judge = [j for j in base_judge_raw if j.get("task_id") not in v1_pert_ids]
     print(
-        f"base runs={len(base_runs)} judge={len(base_judge)} | "
+        f"base runs: raw {len(base_runs_raw)} → after v1-pert filter {len(base_runs)} | "
+        f"base judge: raw {len(base_judge_raw)} → {len(base_judge)} | "
         f"pert runs={len(pert_runs)} judge={len(pert_judge)}"
     )
 

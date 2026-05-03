@@ -5,66 +5,66 @@
   "method": "non-parametric bootstrap on per-run aggregate_new (literature-weighted NMACR); 95% percentile CI",
   "accuracy": {
     "claude": {
-      "mean": 0.697605,
-      "ci_lower": 0.669381,
-      "ci_upper": 0.724888,
-      "n": 171
+      "mean": 0.694466,
+      "ci_lower": 0.672195,
+      "ci_upper": 0.716937,
+      "n": 246
     },
     "chatgpt": {
-      "mean": 0.67326,
-      "ci_lower": 0.644917,
-      "ci_upper": 0.701192,
-      "n": 171
+      "mean": 0.673524,
+      "ci_lower": 0.65114,
+      "ci_upper": 0.695963,
+      "n": 246
     },
     "gemini": {
-      "mean": 0.73142,
-      "ci_lower": 0.706015,
-      "ci_upper": 0.756507,
-      "n": 171
+      "mean": 0.732576,
+      "ci_lower": 0.711736,
+      "ci_upper": 0.753172,
+      "n": 246
     },
     "deepseek": {
-      "mean": 0.668568,
-      "ci_lower": 0.638375,
-      "ci_upper": 0.698828,
-      "n": 171
+      "mean": 0.650091,
+      "ci_lower": 0.627322,
+      "ci_upper": 0.672763,
+      "n": 246
     },
     "mistral": {
-      "mean": 0.667635,
-      "ci_lower": 0.640096,
-      "ci_upper": 0.69491,
-      "n": 171
+      "mean": 0.658222,
+      "ci_lower": 0.635899,
+      "ci_upper": 0.679949,
+      "n": 246
     }
   },
   "robustness": {
     "claude": {
-      "mean_delta": 0.030488,
-      "ci_lower": 0.016254,
-      "ci_upper": 0.04449,
-      "n": 398
+      "mean_delta": 0.028463,
+      "ci_lower": 0.015228,
+      "ci_upper": 0.041933,
+      "n": 473
     },
     "chatgpt": {
-      "mean_delta": 0.00029,
-      "ci_lower": -0.013283,
-      "ci_upper": 0.014355,
-      "n": 398
+      "mean_delta": 0.001878,
+      "ci_lower": -0.010682,
+      "ci_upper": 0.014621,
+      "n": 473
     },
     "gemini": {
-      "mean_delta": 0.012851,
-      "ci_lower": -0.002581,
-      "ci_upper": 0.028768,
-      "n": 398
+      "mean_delta": 0.010967,
+      "ci_lower": -0.003561,
+      "ci_upper": 0.025703,
+      "n": 473
     },
     "deepseek": {
-      "mean_delta": 0.038778,
-      "ci_lower": 0.021494,
-      "ci_upper": 0.056034,
-      "n": 398
+      "mean_delta": 0.035217,
+      "ci_lower": 0.019631,
+      "ci_upper": 0.05107,
+      "n": 473
     },
     "mistral": {
-      "mean_delta": 0.001268,
-      "ci_lower": -0.011612,
-      "ci_upper": 0.014156,
-      "n": 398
+      "mean_delta": -0.003953,
+      "ci_lower": -0.016078,
+      "ci_upper": 0.008033,
+      "n": 473
     }
   },
   "separability": {
@@ -175,10 +175,10 @@
   },
   "calibration_note": "ECE point estimates per model; bootstrap CI requires binned resampling (deferred). See per_dim_calibration.json for per-NMACR-dimension ECE.",
   "calibration_ece_points": {
-    "claude": 0.03343079922027293,
-    "chatgpt": 0.03391812865497071,
-    "gemini": 0.07651072124756333,
-    "deepseek": 0.19766081871345031,
-    "mistral": 0.08109161793372323
+    "claude": 0.0665989159891599,
+    "chatgpt": 0.06260162601626021,
+    "gemini": 0.09728997289972899,
+    "deepseek": 0.17947154471544713,
+    "mistral": 0.08401084010840104
   }
 }

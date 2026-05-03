@@ -417,7 +417,7 @@ def main() -> int:
     p.add_argument("--runs", type=Path, required=True, help="Path to runs.jsonl")
     p.add_argument("--tasks", type=Path, required=True, help="Path to tasks_all.json")
     p.add_argument("--perturbations", type=Path, default=None,
-                   help="Optional path to perturbations.json (merged into task spec lookup)")
+                   help="Optional path to perturbations_all.json (merged into task spec lookup)")
     p.add_argument("--output", type=Path, required=True, help="Output JSONL path (append-safe)")
     p.add_argument("--sample", default="all",
                    help="Number of runs to sample, or 'all' (default: all). Stratified by model+task_type.")

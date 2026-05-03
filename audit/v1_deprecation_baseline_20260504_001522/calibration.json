@@ -1,6 +1,6 @@
 {
   "chatgpt": {
-    "n_total": 171,
+    "n_total": 246,
     "per_bucket": {
       "low": {
         "n": 0,
@@ -8,8 +8,8 @@
         "claimed_confidence": 0.3
       },
       "medium": {
-        "n": 63,
-        "mean_accuracy": 0.5793650793650794,
+        "n": 91,
+        "mean_accuracy": 0.6181318681318682,
         "claimed_confidence": 0.6
       },
       "high": {
@@ -18,16 +18,16 @@
         "claimed_confidence": 0.9
       },
       "unstated": {
-        "n": 108,
-        "mean_accuracy": 0.5416666666666666,
+        "n": 155,
+        "mean_accuracy": 0.5887096774193549,
         "claimed_confidence": 0.5
       }
     },
-    "ece": 0.03391812865497071,
-    "overall_accuracy": 0.5555555555555556
+    "ece": 0.06260162601626021,
+    "overall_accuracy": 0.5995934959349594
   },
   "claude": {
-    "n_total": 171,
+    "n_total": 246,
     "per_bucket": {
       "low": {
         "n": 4,
@@ -35,8 +35,8 @@
         "claimed_confidence": 0.3
       },
       "medium": {
-        "n": 75,
-        "mean_accuracy": 0.6533333333333333,
+        "n": 120,
+        "mean_accuracy": 0.6666666666666666,
         "claimed_confidence": 0.6
       },
       "high": {
@@ -45,16 +45,16 @@
         "claimed_confidence": 0.9
       },
       "unstated": {
-        "n": 92,
-        "mean_accuracy": 0.4900362318840579,
+        "n": 122,
+        "mean_accuracy": 0.5621584699453552,
         "claimed_confidence": 0.5
       }
     },
-    "ece": 0.03343079922027293,
-    "overall_accuracy": 0.5618908382066277
+    "ece": 0.0665989159891599,
+    "overall_accuracy": 0.6121273712737126
   },
   "deepseek": {
-    "n_total": 171,
+    "n_total": 246,
     "per_bucket": {
       "low": {
         "n": 8,
@@ -62,8 +62,8 @@
         "claimed_confidence": 0.3
       },
       "medium": {
-        "n": 84,
-        "mean_accuracy": 0.3908730158730158,
+        "n": 120,
+        "mean_accuracy": 0.4444444444444444,
         "claimed_confidence": 0.6
       },
       "high": {
@@ -72,25 +72,25 @@
         "claimed_confidence": 0.9
       },
       "unstated": {
-        "n": 79,
-        "mean_accuracy": 0.70042194092827,
+        "n": 118,
+        "mean_accuracy": 0.7125706214689265,
         "claimed_confidence": 0.5
       }
     },
-    "ece": 0.19766081871345031,
-    "overall_accuracy": 0.5272904483430799
+    "ece": 0.17947154471544713,
+    "overall_accuracy": 0.5667344173441734
   },
   "gemini": {
-    "n_total": 171,
+    "n_total": 246,
     "per_bucket": {
       "low": {
-        "n": 8,
+        "n": 9,
         "mean_accuracy": 0.5,
         "claimed_confidence": 0.3
       },
       "medium": {
-        "n": 89,
-        "mean_accuracy": 0.5028089887640449,
+        "n": 118,
+        "mean_accuracy": 0.5402542372881356,
         "claimed_confidence": 0.6
       },
       "high": {
@@ -99,25 +99,25 @@
         "claimed_confidence": 0.9
       },
       "unstated": {
-        "n": 74,
-        "mean_accuracy": 0.5382882882882882,
+        "n": 119,
+        "mean_accuracy": 0.626750700280112,
         "claimed_confidence": 0.5
       }
     },
-    "ece": 0.07651072124756333,
-    "overall_accuracy": 0.5180311890838207
+    "ece": 0.09728997289972899,
+    "overall_accuracy": 0.5806233062330622
   },
   "mistral": {
-    "n_total": 171,
+    "n_total": 246,
     "per_bucket": {
       "low": {
-        "n": 0,
-        "mean_accuracy": null,
+        "n": 1,
+        "mean_accuracy": 1.0,
         "claimed_confidence": 0.3
       },
       "medium": {
-        "n": 92,
-        "mean_accuracy": 0.5271739130434783,
+        "n": 123,
+        "mean_accuracy": 0.556910569105691,
         "claimed_confidence": 0.6
       },
       "high": {
@@ -126,27 +126,27 @@
         "claimed_confidence": 0.9
       },
       "unstated": {
-        "n": 79,
-        "mean_accuracy": 0.5907172995780592,
+        "n": 122,
+        "mean_accuracy": 0.6202185792349726,
         "claimed_confidence": 0.5
       }
     },
-    "ece": 0.08109161793372323,
-    "overall_accuracy": 0.5565302144249513
+    "ece": 0.08401084010840104,
+    "overall_accuracy": 0.590108401084011
   },
   "accuracy_calibration_correlation": {
-    "claude": 0.4164,
-    "chatgpt": 0.3632,
-    "gemini": 0.3876,
-    "deepseek": 0.4204,
-    "mistral": 0.4245
+    "claude": 0.427,
+    "chatgpt": 0.3445,
+    "gemini": 0.3368,
+    "deepseek": 0.3107,
+    "mistral": 0.3782
   },
   "accuracy_calibration_correlation_note": "Pearson r between per-task aggregate_new (literature-weighted NMACR) and per-task confidence proxy (dim_C). Positive = well-calibrated answers tend to be accurate; negative = overconfident wrong / underconfident right.",
   "formatting_failure_rate_per_model": {
     "claude": 0.0,
-    "chatgpt": 3.51,
-    "deepseek": 3.51,
-    "mistral": 2.92,
-    "gemini": 0.58
+    "chatgpt": 2.44,
+    "deepseek": 2.44,
+    "mistral": 2.03,
+    "gemini": 0.41
   }
 }

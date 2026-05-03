@@ -25,7 +25,7 @@ from datetime import datetime, timezone
 
 ROOT          = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RUNS_PATH     = os.path.join(ROOT, "experiments", "results_v1", "runs.jsonl")
-PERT_PATH     = os.path.join(ROOT, "data", "synthetic", "perturbations.json")
+PERT_PATH     = os.path.join(ROOT, "data", "synthetic", "perturbations_all.json")
 OUTPUT_PATH   = os.path.join(ROOT, "experiments", "results_v1", "rq4_analysis.json")
 
 

@@ -19,39 +19,39 @@
   ],
   "per_dim_ece": {
     "N": {
-      "claude": 0.1612,
-      "chatgpt": 0.1669,
-      "gemini": 0.1541,
-      "deepseek": 0.1673,
-      "mistral": 0.1599
+      "claude": 0.1685,
+      "chatgpt": 0.1708,
+      "gemini": 0.1571,
+      "deepseek": 0.1702,
+      "mistral": 0.1631
     },
     "M": {
-      "claude": 0.1443,
-      "chatgpt": 0.1419,
-      "gemini": 0.1484,
-      "deepseek": 0.1396,
-      "mistral": 0.1435
+      "claude": 0.1427,
+      "chatgpt": 0.1392,
+      "gemini": 0.1474,
+      "deepseek": 0.1371,
+      "mistral": 0.1424
     },
     "A": {
-      "claude": 0.1657,
-      "chatgpt": 0.1654,
-      "gemini": 0.1677,
-      "deepseek": 0.1685,
-      "mistral": 0.1724
+      "claude": 0.1637,
+      "chatgpt": 0.1614,
+      "gemini": 0.1661,
+      "deepseek": 0.1611,
+      "mistral": 0.1678
     },
     "C": {
-      "claude": 0.0534,
-      "chatgpt": 0.0593,
-      "gemini": 0.0448,
-      "deepseek": 0.0393,
-      "mistral": 0.0474
+      "claude": 0.0536,
+      "chatgpt": 0.0622,
+      "gemini": 0.0447,
+      "deepseek": 0.035,
+      "mistral": 0.049
     },
     "R": {
-      "claude": 0.1125,
-      "chatgpt": 0.0926,
-      "gemini": 0.1292,
-      "deepseek": 0.091,
-      "mistral": 0.0999
+      "claude": 0.1173,
+      "chatgpt": 0.0968,
+      "gemini": 0.1295,
+      "deepseek": 0.1064,
+      "mistral": 0.1023
     }
   }
 }

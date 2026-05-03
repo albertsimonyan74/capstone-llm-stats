@@ -25,7 +25,10 @@ from baseline.utils_task_id import task_type_from_id as derive_task_type
 RUNS_PATH = Path("experiments/results_v1/runs.jsonl")
 JUDGE_PATH = Path("experiments/results_v2/llm_judge_scores_full.jsonl")
 TASKS_PATH = Path("data/benchmark_v1/tasks_all.json")
-PERT_PATH = Path("data/synthetic/perturbations.json")
+PERT_PATH = Path("data/synthetic/perturbations_all.json")
+# v1-pert specs (75 task_ids) — used to filter v1-pert rows out of base runs.jsonl
+# (those rows were historically appended; not 'base'). Empty after B-2 cleanup.
+V1_PERT_PATH = Path("data/synthetic/perturbations.json")
 OUT_JSON = Path("experiments/results_v2/keyword_vs_judge_agreement.json")
 TOP_JSON = Path("experiments/results_v2/top_disagreements_assumption.json")
 FIG_SCATTER = Path("report_materials/figures/judge_validation_scatter.png")
@@ -256,10 +259,20 @@ def make_bar_figure(per_model: dict, path: Path) -> None:
 
 
 def main() -> int:
-    runs = load_jsonl(RUNS_PATH)
-    judge = load_jsonl(JUDGE_PATH)
+    runs_raw = load_jsonl(RUNS_PATH)
+    judge_raw = load_jsonl(JUDGE_PATH)
     tasks = load_task_specs()
-    print(f"runs.jsonl: {len(runs)} | judge: {len(judge)} | task specs: {len(tasks)}")
+
+    v1_pert_ids: frozenset[str] = (
+        frozenset(p["task_id"] for p in json.loads(V1_PERT_PATH.read_text()))
+        if V1_PERT_PATH.exists() else frozenset()
+    )
+    runs = [r for r in runs_raw if r.get("task_id") not in v1_pert_ids]
+    judge = [j for j in judge_raw if j.get("task_id") not in v1_pert_ids]
+    print(
+        f"runs.jsonl: raw {len(runs_raw)} → base after v1-pert filter {len(runs)} "
+        f"| judge: raw {len(judge_raw)} → {len(judge)} | task specs: {len(tasks)}"
+    )
     joined_all = join_records(runs, judge, tasks)
     print(f"joined (judge OK + run match): {len(joined_all)}")
     # Exclude tasks that have NO required_assumption_checks — those score 1.0 trivially

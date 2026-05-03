@@ -36,6 +36,10 @@ ROOT = Path(__file__).resolve().parents[1]
 NMACR = ROOT / "experiments" / "results_v2" / "nmacr_scores_v2.jsonl"
 TASKS_ALL = ROOT / "data" / "benchmark_v1" / "tasks_all.json"
 TAXONOMY = ROOT / "experiments" / "results_v2" / "error_taxonomy_v2.json"
+# v1-pert specs — used to filter v1-pert task_ids out of nmacr_scores rows that
+# carry perturbation=False (historical mislabel: v1-pert rows were loaded into
+# base runs.jsonl). Empty after B-2 cleanup.
+V1_PERT_PATH = ROOT / "data" / "synthetic" / "perturbations.json"
 
 OUT_BOOT = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
 OUT_ROB = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
@@ -59,7 +63,12 @@ SEED = 42
 
 # ─── helpers ──────────────────────────────────────────────────────
 def load_records() -> List[Dict[str, Any]]:
+    v1_pert_ids: frozenset[str] = (
+        frozenset(p["task_id"] for p in json.loads(V1_PERT_PATH.read_text()))
+        if V1_PERT_PATH.exists() else frozenset()
+    )
     out: List[Dict[str, Any]] = []
+    skipped_v1 = 0
     with NMACR.open() as f:
         for line in f:
             line = line.strip()
@@ -68,7 +77,12 @@ def load_records() -> List[Dict[str, Any]]:
             r = json.loads(line)
             if "_header" in r:
                 continue
+            if r.get("task_id") in v1_pert_ids:
+                skipped_v1 += 1
+                continue
             out.append(r)
+    if skipped_v1:
+        print(f"load_records: filtered {skipped_v1} v1-pert rows; kept {len(out)}")
     return out
 
 

@@ -44,7 +44,7 @@ load_dotenv()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-_SYNTHETIC_PATH = "data/synthetic/perturbations.json"
+_SYNTHETIC_PATH = "data/synthetic/perturbations_all.json"
 
 
 def _task_prefix(task_id: str) -> str:

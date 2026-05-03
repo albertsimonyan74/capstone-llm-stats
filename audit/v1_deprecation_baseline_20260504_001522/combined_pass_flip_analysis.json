@@ -3,42 +3,42 @@
   "_methodology_citation": "Yamauchi et al. 2025 (arxiv 2506.13639) \u2014 methodology baseline; Phase 1.5 audit-driven extension to perturbation population.",
   "_supersedes_field": "keyword_vs_judge_agreement.json:pass_flip_assumption (base-only original retained for backward compat)",
   "base": {
-    "n_total": 855,
-    "n_eligible": 750,
-    "n_pass_flip": 157,
-    "n_inverse_flip": 42,
-    "pct_pass_flip": 0.20933333333333334,
-    "pct_inverse_flip": 0.056,
+    "n_total": 1230,
+    "n_eligible": 1095,
+    "n_pass_flip": 274,
+    "n_inverse_flip": 54,
+    "pct_pass_flip": 0.2502283105022831,
+    "pct_inverse_flip": 0.049315068493150684,
     "per_model": {
       "claude": {
-        "n_total": 171,
-        "n_eligible": 150,
-        "n_pass_flip": 39,
-        "pct": 0.26
+        "n_total": 246,
+        "n_eligible": 219,
+        "n_pass_flip": 67,
+        "pct": 0.3059360730593607
       },
       "chatgpt": {
-        "n_total": 171,
-        "n_eligible": 150,
-        "n_pass_flip": 27,
-        "pct": 0.18
+        "n_total": 246,
+        "n_eligible": 219,
+        "n_pass_flip": 46,
+        "pct": 0.2100456621004566
       },
       "gemini": {
-        "n_total": 171,
-        "n_eligible": 150,
-        "n_pass_flip": 34,
-        "pct": 0.22666666666666666
+        "n_total": 246,
+        "n_eligible": 219,
+        "n_pass_flip": 54,
+        "pct": 0.2465753424657534
       },
       "deepseek": {
-        "n_total": 171,
-        "n_eligible": 150,
-        "n_pass_flip": 27,
-        "pct": 0.18
+        "n_total": 246,
+        "n_eligible": 219,
+        "n_pass_flip": 49,
+        "pct": 0.2237442922374429
       },
       "mistral": {
-        "n_total": 171,
-        "n_eligible": 150,
-        "n_pass_flip": 30,
-        "pct": 0.2
+        "n_total": 246,
+        "n_eligible": 219,
+        "n_pass_flip": 58,
+        "pct": 0.2648401826484018
       }
     }
   },
@@ -103,48 +103,48 @@
     }
   },
   "combined": {
-    "n_total": 3220,
-    "n_eligible": 2850,
-    "n_pass_flip": 591,
-    "n_inverse_flip": 131,
-    "pct_pass_flip": 0.2073684210526316,
-    "pct_inverse_flip": 0.04596491228070176,
+    "n_total": 3595,
+    "n_eligible": 3195,
+    "n_pass_flip": 708,
+    "n_inverse_flip": 143,
+    "pct_pass_flip": 0.2215962441314554,
+    "pct_inverse_flip": 0.04475743348982786,
     "n_runid_collisions": 0,
     "per_model": {
       "claude": {
-        "n_total": 644,
-        "n_eligible": 570,
-        "n_pass_flip": 149,
-        "pct": 0.2614035087719298
+        "n_total": 719,
+        "n_eligible": 639,
+        "n_pass_flip": 177,
+        "pct": 0.27699530516431925
       },
       "chatgpt": {
-        "n_total": 644,
-        "n_eligible": 570,
-        "n_pass_flip": 103,
-        "pct": 0.18070175438596492
+        "n_total": 719,
+        "n_eligible": 639,
+        "n_pass_flip": 122,
+        "pct": 0.19092331768388107
       },
       "gemini": {
-        "n_total": 644,
-        "n_eligible": 570,
-        "n_pass_flip": 130,
-        "pct": 0.22807017543859648
+        "n_total": 719,
+        "n_eligible": 639,
+        "n_pass_flip": 150,
+        "pct": 0.2347417840375587
       },
       "deepseek": {
-        "n_total": 644,
-        "n_eligible": 570,
-        "n_pass_flip": 100,
-        "pct": 0.17543859649122806
+        "n_total": 719,
+        "n_eligible": 639,
+        "n_pass_flip": 122,
+        "pct": 0.19092331768388107
       },
       "mistral": {
-        "n_total": 644,
-        "n_eligible": 570,
-        "n_pass_flip": 109,
-        "pct": 0.1912280701754386
+        "n_total": 719,
+        "n_eligible": 639,
+        "n_pass_flip": 137,
+        "pct": 0.21439749608763695
       }
     }
   },
   "comparison": {
-    "base_vs_perturbation_diff_pp": -0.26666666666666783,
-    "interpretation": "Pass-flip rate is essentially unchanged on perturbations (<1pp shift), indicating the keyword-vs-judge disagreement is a stable property of the rubric, not an artefact of the base task wording."
+    "base_vs_perturbation_diff_pp": -4.356164383561644,
+    "interpretation": "Pass-flip rate is 4.4pp lower on perturbations vs base, indicating the keyword/judge disagreement attenuates when surface form changes while underlying mathematics stays fixed."
   }
 }

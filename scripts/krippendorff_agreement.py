@@ -11,7 +11,7 @@ silent noise (Judgment-Becomes-Noise 2025), so α is required to bound that nois
 Inputs (same join as scripts/keyword_vs_judge_agreement.py):
 - experiments/results_v1/runs.jsonl
 - experiments/results_v2/llm_judge_scores_full.jsonl
-- data/benchmark_v1/tasks_all.json (+ data/synthetic/perturbations.json)
+- data/benchmark_v1/tasks_all.json (+ data/synthetic/perturbations_all.json)
 
 Outputs:
 - experiments/results_v2/krippendorff_agreement.json
@@ -40,8 +40,10 @@ JUDGE_PATH = ROOT / "experiments/results_v2/llm_judge_scores_full.jsonl"
 PERT_RUNS_PATH = ROOT / "experiments/results_v2/perturbation_runs.jsonl"
 PERT_JUDGE_PATH = ROOT / "experiments/results_v2/perturbation_judge_scores.jsonl"
 TASKS_PATH = ROOT / "data/benchmark_v1/tasks_all.json"
-PERT_PATH = ROOT / "data/synthetic/perturbations.json"
 PERT_ALL_PATH = ROOT / "data/synthetic/perturbations_all.json"
+# v1 perturbations.json is deprecated — task specs for the 75 v1 task_ids
+# are preserved verbatim inside perturbations_all.json (473 records total).
+V1_PERT_PATH = ROOT / "data/synthetic/perturbations.json"
 OUT_JSON = ROOT / "experiments/results_v2/krippendorff_agreement.json"
 EXISTING_AGREEMENT = ROOT / "experiments/results_v2/keyword_vs_judge_agreement.json"
 FIG_OUT = ROOT / "report_materials/figures/agreement_metrics_comparison.png"
@@ -89,11 +91,22 @@ def load_jsonl(path: Path) -> list[dict]:
 
 def load_task_specs() -> dict[str, dict]:
     out = {t["task_id"]: t for t in json.loads(TASKS_PATH.read_text())}
-    if PERT_PATH.exists():
-        out.update({t["task_id"]: t for t in json.loads(PERT_PATH.read_text())})
     if PERT_ALL_PATH.exists():
         out.update({t["task_id"]: t for t in json.loads(PERT_ALL_PATH.read_text())})
     return out
+
+
+def load_v1_pert_ids() -> frozenset[str]:
+    """v1-pert task_ids that must be filtered out of base runs.jsonl.
+
+    v1 perturbations were appended into experiments/results_v1/runs.jsonl
+    historically; those rows are not 'base' and must be excluded from base-scope
+    analyses. Specs for the same 75 task_ids are preserved inside
+    perturbations_all.json. Returns empty set if v1 file is gone (B-2 cleanup).
+    """
+    if not V1_PERT_PATH.exists():
+        return frozenset()
+    return frozenset(p["task_id"] for p in json.loads(V1_PERT_PATH.read_text()))
 
 
 def join_records(runs: list[dict], judge: list[dict], tasks: dict[str, dict]) -> list[dict]:
@@ -263,10 +276,20 @@ def make_comparison_figure(overall: dict, existing_spearman: dict, path: Path) -
 
 
 def main() -> int:
-    runs_base = load_jsonl(RUNS_PATH)
-    judge_base = load_jsonl(JUDGE_PATH)
+    runs_base_raw = load_jsonl(RUNS_PATH)
+    judge_base_raw = load_jsonl(JUDGE_PATH)
     tasks = load_task_specs()
-    print(f"runs.jsonl: {len(runs_base)} | judge: {len(judge_base)} | task specs: {len(tasks)}")
+
+    # Filter v1 perturbation rows out of base scope. v1-pert task_ids were
+    # historically appended to results_v1/runs.jsonl; they are not 'base' runs
+    # and the corresponding judge scores must be excluded as well.
+    v1_pert_ids = load_v1_pert_ids()
+    runs_base = [r for r in runs_base_raw if r.get("task_id") not in v1_pert_ids]
+    judge_base = [j for j in judge_base_raw if j.get("task_id") not in v1_pert_ids]
+    print(
+        f"runs.jsonl: raw {len(runs_base_raw)} → base after v1-pert filter {len(runs_base)} "
+        f"| judge: raw {len(judge_base_raw)} → {len(judge_base)} | task specs: {len(tasks)}"
+    )
 
     runs_pert = load_jsonl(PERT_RUNS_PATH) if PERT_RUNS_PATH.exists() else []
     judge_pert = load_jsonl(PERT_JUDGE_PATH) if PERT_JUDGE_PATH.exists() else []

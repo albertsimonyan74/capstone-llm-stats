@@ -1,0 +1,57 @@
+{
+  "_methodology_citation": "Multi-dimensional calibration extension of FermiEval (2025). Per NMACR dimension, bucket scores into {low<0.4, med<0.7, high}; ECE = sum_b w_b * |bucket_center - bucket_mean|. Lower = better calibrated.",
+  "buckets": [
+    {
+      "lo": 0.0,
+      "hi": 0.4,
+      "center": 0.2
+    },
+    {
+      "lo": 0.4,
+      "hi": 0.7,
+      "center": 0.55
+    },
+    {
+      "lo": 0.7,
+      "hi": 1.0,
+      "center": 0.85
+    }
+  ],
+  "per_dim_ece": {
+    "N": {
+      "claude": 0.1612,
+      "chatgpt": 0.1669,
+      "gemini": 0.1541,
+      "deepseek": 0.1673,
+      "mistral": 0.1599
+    },
+    "M": {
+      "claude": 0.1443,
+      "chatgpt": 0.1419,
+      "gemini": 0.1484,
+      "deepseek": 0.1396,
+      "mistral": 0.1435
+    },
+    "A": {
+      "claude": 0.1657,
+      "chatgpt": 0.1654,
+      "gemini": 0.1677,
+      "deepseek": 0.1685,
+      "mistral": 0.1724
+    },
+    "C": {
+      "claude": 0.0534,
+      "chatgpt": 0.0593,
+      "gemini": 0.0448,
+      "deepseek": 0.0393,
+      "mistral": 0.0474
+    },
+    "R": {
+      "claude": 0.1125,
+      "chatgpt": 0.0926,
+      "gemini": 0.1292,
+      "deepseek": 0.091,
+      "mistral": 0.0999
+    }
+  }
+}

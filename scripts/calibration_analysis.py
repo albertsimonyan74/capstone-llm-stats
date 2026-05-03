@@ -34,6 +34,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from llm_runner.response_parser import extract_confidence
 
 RUNS_PATH = Path("experiments/results_v1/runs.jsonl")
+# v1-pert specs (75 task_ids) — filter v1-pert rows out of base scope. Empty after B-2.
+V1_PERT_PATH = Path("data/synthetic/perturbations.json")
 JUDGE_PATH = Path("experiments/results_v2/llm_judge_scores_full.jsonl")
 OUT_JSON = Path("experiments/results_v2/calibration.json")
 FIG_RELIABILITY = Path("report_materials/figures/calibration_reliability.png")
@@ -211,9 +213,18 @@ def make_ece_figure(per_model: dict, path: Path) -> None:
 
 
 def main() -> int:
-    runs = load_jsonl(RUNS_PATH)
-    judge = load_jsonl(JUDGE_PATH)
-    print(f"runs={len(runs)} | judge={len(judge)}")
+    runs_raw = load_jsonl(RUNS_PATH)
+    judge_raw = load_jsonl(JUDGE_PATH)
+    v1_pert_ids: frozenset[str] = (
+        frozenset(p["task_id"] for p in json.loads(V1_PERT_PATH.read_text()))
+        if V1_PERT_PATH.exists() else frozenset()
+    )
+    runs = [r for r in runs_raw if r.get("task_id") not in v1_pert_ids]
+    judge = [j for j in judge_raw if j.get("task_id") not in v1_pert_ids]
+    print(
+        f"runs: raw {len(runs_raw)} → after v1-pert filter {len(runs)} "
+        f"| judge: raw {len(judge_raw)} → {len(judge)}"
+    )
     joined = join_records(runs, judge)
     print(f"joined (with accuracy + confidence): {len(joined)}")
 

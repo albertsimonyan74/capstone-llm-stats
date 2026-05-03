@@ -33,6 +33,23 @@ app.include_router(v2_router)
 BASE_DIR   = Path(os.environ.get("DATA_ROOT", str(Path(__file__).parent.parent.parent)))
 TASKS_FILE = BASE_DIR / "data" / "benchmark_v1" / "tasks_all.json"
 RUNS_FILE  = BASE_DIR / "experiments" / "results_v1" / "runs.jsonl"
+# v1 perturbations.json carries 75 task_ids that were historically appended into
+# runs.jsonl. They are not 'base' runs and must be excluded from /api/runs.
+# Empty after B-2 cleanup deletes the file.
+V1_PERT_FILE = BASE_DIR / "data" / "synthetic" / "perturbations.json"
+
+
+def _v1_pert_ids() -> frozenset:
+    if not V1_PERT_FILE.exists():
+        return frozenset()
+    try:
+        with open(V1_PERT_FILE) as f:
+            return frozenset(p["task_id"] for p in json.load(f))
+    except Exception:
+        return frozenset()
+
+
+_V1_PERT_IDS = _v1_pert_ids()
 
 
 def _load_tasks():
@@ -46,11 +63,15 @@ def _load_runs():
         with open(RUNS_FILE) as f:
             for line in f:
                 line = line.strip()
-                if line:
-                    try:
-                        runs.append(json.loads(line))
-                    except Exception:
-                        pass
+                if not line:
+                    continue
+                try:
+                    r = json.loads(line)
+                except Exception:
+                    continue
+                if r.get("task_id") in _V1_PERT_IDS:
+                    continue
+                runs.append(r)
     return runs
 
 

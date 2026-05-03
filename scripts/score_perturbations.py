@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Score 473 perturbations × 5 models — keyword rubric only.
 
-Combines v1 (75) + v2 (398) perturbations, queries each model, scores via
-keyword rubric (`response_parser.full_score`), appends to
+Loads the canonical merged perturbation set from data/synthetic/perturbations_all.json
+(473 records: the 75 historical hand-authored task_ids preserved verbatim plus 398
+generated v2 perturbations), queries each model, scores via keyword rubric
+(`response_parser.full_score`), appends to
 `experiments/results_v2/perturbation_runs.jsonl`. Resume-safe: skips any
 (model_family, task_id) pair already present with non-empty raw_response and
 no error. After this completes, run the external Llama judge via:
@@ -34,30 +36,14 @@ from llm_runner.model_clients import get_client, GeminiQuotaExhausted
 from llm_runner.response_parser import full_score
 from baseline.utils_task_id import task_type_from_id
 
-PERT_V1 = Path("data/synthetic/perturbations.json")
-PERT_V2 = Path("data/synthetic/perturbations_v2.json")
 COMBINED = Path("data/synthetic/perturbations_all.json")
 DEFAULT_OUTPUT = Path("experiments/results_v2/perturbation_runs.jsonl")
 ALL_MODELS = ["claude", "gemini", "chatgpt", "deepseek", "mistral"]
 
 
-def combine_perturbations() -> List[Dict[str, Any]]:
-    v1 = json.loads(PERT_V1.read_text())
-    v2 = json.loads(PERT_V2.read_text())
-    seen: set[str] = set()
-    out: List[Dict[str, Any]] = []
-    for r in v1 + v2:
-        tid = r["task_id"]
-        if tid in seen:
-            continue
-        seen.add(tid)
-        out.append(r)
-    return out
-
-
-def write_combined(perts: List[Dict[str, Any]]) -> None:
-    COMBINED.parent.mkdir(parents=True, exist_ok=True)
-    COMBINED.write_text(json.dumps(perts, indent=2))
+def load_perturbations() -> List[Dict[str, Any]]:
+    """Load the canonical 473-record merged perturbation set."""
+    return json.loads(COMBINED.read_text())
 
 
 def load_completed(output_path: Path) -> set:
@@ -123,18 +109,13 @@ def main() -> int:
     ap.add_argument("--models", nargs="+", choices=ALL_MODELS, default=ALL_MODELS)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     ap.add_argument("--limit", type=int, default=None,
-                    help="Only score the first N perturbations (after combine).")
+                    help="Only score the first N perturbations.")
     ap.add_argument("--delay", type=float, default=3.0,
                     help="Inter-request delay for Gemini.")
-    ap.add_argument("--write-combined", action="store_true",
-                    help="Write data/synthetic/perturbations_all.json (473 records).")
     args = ap.parse_args()
 
-    perts = combine_perturbations()
-    print(f"Combined v1+v2: {len(perts)} unique perturbations")
-    if args.write_combined:
-        write_combined(perts)
-        print(f"  → wrote {COMBINED} ({len(perts)} records)")
+    perts = load_perturbations()
+    print(f"Loaded {len(perts)} perturbations from {COMBINED}")
     if args.limit:
         perts = perts[:args.limit]
 

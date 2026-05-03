@@ -21,7 +21,7 @@ from llm_runner.response_parser import full_score
 
 RUNS_PATH  = Path("experiments/results_v1/runs.jsonl")
 TASKS_PATH = Path("data/benchmark_v1/tasks_all.json")
-PERTS_PATH = Path("data/synthetic/perturbations.json")
+PERTS_PATH = Path("data/synthetic/perturbations_all.json")
 
 
 def main() -> None:
