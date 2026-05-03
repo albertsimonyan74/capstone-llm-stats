@@ -11,9 +11,18 @@ The benchmark has two scoring implementations that must stay in sync. When chang
 1. `llm_runner/response_parser.py` — Path A (live runner)
 2. `evaluation/metrics.py` — Path B (formal evaluation)
 
-Both files contain the same `WEIGHTS` dict:
+Both files contain the same NMACR weights (literature-derived, sole
+canonical scheme since Approach A 2026-05-03):
 ```python
-WEIGHTS = {"N": 0.20, "M": 0.20, "C": 0.20, "A": 0.20, "R": 0.20}
+# evaluation/metrics.py
+NMACR_WEIGHTS = {"A": 0.30, "R": 0.25, "M": 0.20, "C": 0.15, "N": 0.10}
+
+# llm_runner/response_parser.py
+W_N = 0.10  # Numerical Accuracy
+W_M = 0.20  # Method Structure
+W_A = 0.30  # Assumption Compliance
+W_C = 0.15  # Confidence Calibration
+W_R = 0.25  # Reasoning Quality
 ```
 
 ## How to Verify Sync
@@ -30,6 +39,11 @@ If weights diverge:
 ## What Happened Before (History)
 - C and R weights were 0.00 in both files before confidence calibration was implemented
 - N was previously 0.60 — reduced to 0.20 when C and R were activated
+- All scoring weights were equal at 0.20 each from 2026-04-26 to 2026-05-03
+- Approach A (2026-05-03) migrated runtime weights to the literature-derived
+  scheme that Phase 1B (2026-05-01) had been applying post-hoc; verified
+  byte-identical regeneration of canonical surfaces. See
+  [audit/recompute_log.md §"Phase 1.6 — Approach A"](../../../audit/recompute_log.md)
 - All existing runs were backfilled via `scripts/recompute_scores.py`
 
 ## How to Apply

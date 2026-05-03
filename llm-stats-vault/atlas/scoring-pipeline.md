@@ -5,18 +5,33 @@ date: 2026-04-26
 
 # Scoring Pipeline
 
-## Two Parallel Paths — Same Weights
+## Single Canonical Scheme — Literature-Derived NMACR
 
 **Critical rule**: [[scoring-weights-must-be-updated-in-two-files]]  
-Both paths use: **N = M = A = C = R = 0.20**
+Both paths use the literature-derived NMACR scheme (sole canonical scheme
+since Approach A 2026-05-03):
 
-### Path A — Runner Path (live, per-run)
+| Dim | Weight | Citations |
+|-----|--------|-----------|
+| A | 0.30 | Du 2025, Boye & Moell 2025, Yamauchi 2025 |
+| R | 0.25 | Yamauchi 2025, Boye & Moell 2025, ReasonBench 2025 |
+| M | 0.20 | Wei 2022, Chen 2022, Bishop 2006 |
+| C | 0.15 | Nagarkar 2026, FermiEval 2025, Multi-Answer 2026 |
+| N | 0.10 | Liu 2025, Boye & Moell 2025 |
+
+Pre-Approach-A history: from 2026-04-26 to 2026-05-03 the runtime paths
+used equal weights (0.20 each) and the literature-weighted aggregate
+was produced post-hoc by `scripts/recompute_nmacr.py`. Approach A
+consolidated to one scheme. See
+[audit/aggregation_locus.md](../../audit/aggregation_locus.md).
+
+### Live runner
 - File: `llm_runner/response_parser.py`
 - Entry: `full_score(raw_response: str, task: dict) -> Dict`
 - Called by `run_all_tasks.py` during API runs
 - Scores written to each record in `runs.jsonl`
 
-### Path B — Formal Evaluation (post-hoc, aggregate)
+### Formal evaluator (post-hoc on TaskRun objects)
 - File: `evaluation/metrics.py`
 - Entry: `score_all_models(tasks: Dict[str, TaskSpec], runs: List[TaskRun])`
 - Called by `experiments/run_benchmark.py`
@@ -25,13 +40,13 @@ Both paths use: **N = M = A = C = R = 0.20**
 
 ## Five Scoring Components
 
-| Component | Key | Weight | Source in Path A | Source in Path B |
-|-----------|-----|--------|-----------------|-----------------|
-| Numerical Accuracy | N | 0.20 | `parse_answer()` extracts floats | `TaskRun.extracted_numbers` |
+| Component | Key | Weight | Live runner source | Formal evaluator source |
+|-----------|-----|--------|--------------------|--------------------------|
+| Numerical Accuracy | N | 0.10 | `parse_answer()` extracts floats | `TaskRun.extracted_numbers` |
 | Method/Structure | M | 0.20 | structure keyword checks | `TaskRun.structure_flags` |
-| Assumption Compliance | A | 0.20 | assumption keyword checks | `TaskRun.assumption_flags` |
-| Confidence Calibration | C | 0.20 | `extract_confidence()` | `TaskRun.confidence_calib_score` |
-| Reasoning Quality | R | 0.20 | `reasoning_quality_score()` | `TaskRun.reasoning_qual_score` |
+| Assumption Compliance | A | 0.30 | assumption keyword checks | `TaskRun.assumption_flags` |
+| Confidence Calibration | C | 0.15 | `extract_confidence()` | `TaskRun.confidence_calib_score` |
+| Reasoning Quality | R | 0.25 | `reasoning_quality_score()` | `TaskRun.reasoning_qual_score` |
 
 ## Numerical Scoring Formula
 

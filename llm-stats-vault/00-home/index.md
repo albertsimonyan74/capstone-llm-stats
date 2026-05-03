@@ -19,7 +19,7 @@ date: 2026-04-26
 
 **Total:** 1230 records (855 benchmark + 375 synthetic). No error records.
 
-## Current leaderboard (literature-weighted NMACR, Phase 1B)
+## Current leaderboard (literature-weighted NMACR — sole canonical scheme)
 
 | Rank | Model | Score | 95% CI |
 |------|-------|-------|--------|
@@ -30,11 +30,15 @@ date: 2026-04-26
 | 5 | DeepSeek V3 | 0.663 | [0.641, 0.687] |
 
 Weighting scheme: A=0.30, R=0.25, M=0.20, C=0.15, N=0.10 (literature-derived per
-Du 2025, Boye-Moell 2025, Yamauchi 2025). Updated 2026-05-02.
+Du 2025, Boye-Moell 2025, Yamauchi 2025). Sole canonical scheme since
+Approach A (2026-05-03) consolidated runtime + post-hoc paths.
 
-Note: Equal-weight ranking (Phase 1A) ranks Claude #1; literature-weighting (Phase 1B) ranks Gemini #1. Compare via three-rankings figure.
-
-**Equal-weight Phase 1A (historical, paper appendix):** Claude 0.683 > Mistral 0.644 > Gemini 0.642 > DeepSeek 0.625 > ChatGPT 0.621.
+Historical comparison (paper appendix only): under the equal-weight scheme
+used in Phase 1A pilot (2026-04-26 to 2026-05-03), Claude ranked #1
+(0.683 > Mistral 0.644 > Gemini 0.642 > DeepSeek 0.625 > ChatGPT 0.621).
+The reordering between schemes is itself a finding — benchmark rankings
+depend on the weighting scheme, so the scheme must be principled rather
+than defaulted. See three-rankings figure.
 
 **results.json:** ✅ Populated (5 models × 171 tasks = 855 entries)  
 **rq4_analysis.json:** ✅ Complete (375 triples, all 5 models)  
@@ -54,7 +58,7 @@ Note: Equal-weight ranking (Phase 1A) ranks Claude #1; literature-weighting (Pha
 
 ### Key Knowledge
 - [[five-research-questions-define-benchmark-scope]] — RQ1–RQ5
-- [[all-scoring-weights-are-equal-at-0.20]] — why N=M=A=C=R=0.20
+- [[all-scoring-weights-are-equal-at-0.20]] — historical equal-weight decision (RESOLVED 2026-05-03 by Approach A → literature weights)
 - [[adding-a-new-task-type-requires-4-changes]] — contribution checklist
 - [[scoring-weights-must-be-updated-in-two-files]] — critical sync rule
 - [[obsidian-vault-is-persistent-session-memory]] — vault + CLAUDE.md division of responsibility

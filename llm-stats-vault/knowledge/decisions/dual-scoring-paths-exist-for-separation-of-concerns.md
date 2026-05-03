@@ -26,6 +26,9 @@ Two separate scoring implementations co-exist and must stay in sync:
 - See [[scoring-pipeline]] for full details on each path
 
 ## Current State
-- Both paths confirmed identical weights (N=M=A=C=R=0.20) as of 2026-04-25 audit
+- Both paths confirmed identical weights as of 2026-05-03 (Approach A migration)
+- Sole canonical scheme: A=0.30, R=0.25, M=0.20, C=0.15, N=0.10 (literature-derived)
+- Pre-2026-05-03 history: equal weights N=M=A=C=R=0.20 (see
+  [[all-scoring-weights-are-equal-at-0.20]] RESOLVED section)
 - Path B (run_benchmark.py) has never successfully written results.json — it's currently empty
 - Root cause: Gemini runs incomplete → blocked downstream

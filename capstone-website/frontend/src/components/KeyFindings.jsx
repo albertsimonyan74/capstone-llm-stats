@@ -58,8 +58,8 @@ function buildCards(d, pf) {
     {
       big: 'Gemini #1',
       label: "The 'best' model depends on what you measure",
-      desc: 'Equal-weight scoring (treat all 5 evaluation dimensions the same) ranks Claude #1. Literature-weighted scoring (emphasize what published research says matters most: assumption articulation and reasoning quality) ranks Gemini #1.',
-      why: 'Benchmark rankings depend on the weighting scheme. Researchers should justify their weights, not pick equal weighting by default.',
+      desc: 'Under the canonical literature-weighted NMACR scheme (A=30%, R=25%, M=20%, C=15%, N=10% — emphasizing assumption articulation and reasoning quality per Du 2025, Boye-Moell 2025, Yamauchi 2025), Gemini ranks #1. Under an equal-weight scheme used in the pilot phase (treat all 5 dimensions the same), Claude ranked #1.',
+      why: 'Benchmark rankings depend on the weighting scheme. Researchers should justify their weights from the literature rather than default to equal weighting — the same data produces different leaderboards under different weightings.',
     },
     {
       big: '3 different rankings',

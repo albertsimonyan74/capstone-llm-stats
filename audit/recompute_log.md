@@ -317,3 +317,81 @@ DECISION POINT: Headline framing for website (deferred to user):
 - Option A: keep "25% keyword-judge disagreement on 1,095 base runs" as headline
 - Option B: switch to "22.2% keyword-judge disagreement on 3,195 combined runs"
 - Option C: present both as a comparison
+
+---
+
+## Phase 1.6 — Approach A: Runtime Migration of Literature Weights (2026-05-03)
+
+User-driven consolidation. Eliminates the dual-path design (Path A runtime
+equal weights vs Path B post-hoc literature weights). Literature weights
+become the SOLE canonical scheme across the entire project, including
+runtime scoring code.
+
+### Why
+Eliminates a documentation hazard: the prior dual-path design required
+keeping two scoring schemes mentally co-resident — equal-weight at runtime,
+literature-weighted post-hoc. Future readers (and future-Albert) need only
+one canonical scheme. The literature defense in
+`audit/methodology_continuity.md` §"NMACR weighting" already justified
+the literature-derived scheme as canonical; Approach A makes the codebase
+match that defense.
+
+### Changes
+- `evaluation/metrics.py`: `WEIGHTS` renamed to `NMACR_WEIGHTS`, values
+  migrated from `{N=M=A=C=R=0.20}` to `{A=0.30, R=0.25, M=0.20, C=0.15, N=0.10}`.
+  `WEIGHTS` retained as an alias for defensive backwards compat (no
+  remaining importers).
+- `llm_runner/response_parser.py`: `W_N…W_R` constants migrated to the
+  same literature-derived values.
+- Both files updated with citation comments per dimension.
+- Sum-to-1.0 assertion added in both files.
+
+### Verification — byte-identical regeneration
+
+The migration is mathematically a no-op on the canonical surfaces because
+`scripts/recompute_nmacr.py` already aggregated under literature weights
+(its output `nmacr_scores_v2.jsonl` was the single source of truth for
+all downstream analyses since Phase 1B). Re-running the recompute
+pipeline post-migration produces:
+
+| File | Status |
+|------|--------|
+| `experiments/results_v2/bootstrap_ci.json` | byte-identical (sha256 match) |
+| `experiments/results_v2/robustness_v2.json` | byte-identical (sha256 match) |
+| `experiments/results_v2/nmacr_scores_v2.jsonl` | byte-identical modulo `_header.generated_at` timestamp |
+
+Pre-migration sha256 captured in `audit/approach_a_baseline_snapshot.json`.
+Step 4 deep-compare passed at 1e-12 numeric tolerance for all 3 files.
+
+### Files moved
+- `scripts/recompute_nmacr.py` → `llm-stats-vault/90-archive/superseded_scripts/`
+  Archived (not deleted) for provenance and as a regression-test reference.
+
+### Files updated
+- `audit/aggregation_locus.md` — rewritten as single canonical path
+- `audit/methodology_continuity.md` — equal-weight references reframed
+  historical
+- `audit/recompute_log.md` — this section
+- `audit/rq_ieee_formulations.md` — citation alignment
+- `llm-stats-vault/00-home/research-narrative.md` — equal-weight references
+  reframed historical
+- `llm-stats-vault/00-home/index.md` — verified consistent
+- `llm-stats-vault/knowledge/decisions/all-scoring-weights-are-equal-at-0.20.md`
+  — appended RESOLVED 2026-05-03 section
+- `capstone-website/frontend/src/components/KeyFindings.jsx` — Card 4
+  reframed as historical comparison
+- `capstone-website/frontend/src/pages/Methodology.jsx` — dual-path
+  framing dropped
+- `capstone-website/frontend/src/pages/Limitations.jsx` — L9 weighting
+  framing updated
+
+### Production verification
+- `/api/v2/rankings` returns `weighting_scheme: literature_v1` (unchanged)
+- Top accuracy ranking unchanged: gemini → claude → chatgpt → mistral → deepseek
+- 11 v2 files all loadable
+
+### Notes for future readers
+The `aggregate_old` field in `nmacr_scores_v2.jsonl` (computed under
+old equal weights) is preserved in records as a historical reference.
+Future regenerations could drop it; preserved here so the Phase 1B
+"old vs new" tables in this document remain reproducible.

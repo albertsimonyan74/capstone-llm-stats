@@ -84,15 +84,16 @@ const CAVEATS = [
     and a multi-judge ensemble are recommended methodology refinements deferred to future work.`,
   },
   {
-    title: 'NMACR literature-derived weighting (post-hoc risk acknowledged)',
-    body: `The N·M·A·C·R weights (A=0.30, R=0.25, M=0.20, C=0.15, N=0.10) were chosen based on
-    prior literature predating this benchmark's data, not derived from the data itself.
-    Citations: Du 2025, Boye & Moell 2025, and Yamauchi 2025 for A; Yamauchi 2025 and Au 2025
-    for R; Wei 2022, Chen 2022, and Bishop 2006 for M; Nagarkar 2026, FermiEval 2025, and
-    Multi-Answer Confidence 2026 for C; Liu 2025 and Boye & Moell 2025 for N. The runtime
-    aggregation paths remain at equal 0.20 weights for v1 reproducibility; literature weights
-    apply only via the Phase 1B recompute wrapper. Both schemes are honestly disclosed; the
-    literature scheme is the canonical aggregate.`,
+    title: 'NMACR weighting is literature-derived',
+    body: `The N·M·A·C·R weights (A=0.30, R=0.25, M=0.20, C=0.15, N=0.10) are literature-derived,
+    not learned from this benchmark's data. Citations: Du 2025, Boye & Moell 2025, and Yamauchi
+    2025 for A; Yamauchi 2025 and Au 2025 for R; Wei 2022, Chen 2022, and Bishop 2006 for M;
+    Nagarkar 2026, FermiEval 2025, and Multi-Answer Confidence 2026 for C; Liu 2025 and Boye &
+    Moell 2025 for N. As of 2026-05-03, the literature-weighted scheme is applied at runtime in
+    both aggregation paths (evaluation/metrics.py and llm_runner/response_parser.py) — there is
+    no separate post-hoc reweighting step. The weighting choice is principled but reflects a
+    specific reading of the literature; alternative weighting schemes may yield different
+    rankings (the historical equal-weight ranking is preserved as a paper-appendix comparison).`,
   },
   {
     title: 'PoT prompting explored but not in scored runs',

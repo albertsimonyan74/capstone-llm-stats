@@ -195,14 +195,15 @@ export default function Methodology() {
               ))}
             </div>
             <p style={{ color: 'rgba(232,244,248,0.55)', fontSize: 11, lineHeight: 1.7, margin: '14px 0 0' }}>
-              <strong>Aggregation locus:</strong> the runtime parser
-              (<code style={{ fontSize: 10 }}>llm_runner/response_parser.py</code>) and post-hoc metric
-              path (<code style={{ fontSize: 10 }}>evaluation/metrics.py</code>) remain locked at equal
-              0.20 weights for v1 reproducibility. Phase 1B literature weights apply via a wrapper
-              recompute (<code style={{ fontSize: 10 }}>scripts/recompute_nmacr.py</code>) producing
-              <code style={{ fontSize: 10 }}> nmacr_scores_v2.jsonl</code> — the single source of truth
-              for the literature-weighted aggregate. CONCEPTUAL tasks (no N) renormalize remaining
-              weights to 1.0; mirrors runtime <code style={{ fontSize: 10 }}>full_score()</code>.
+              <strong>Aggregation locus:</strong> the literature-derived weights are applied at the
+              source — the runtime parser (<code style={{ fontSize: 10 }}>llm_runner/response_parser.py</code>)
+              and the post-hoc metric path (<code style={{ fontSize: 10 }}>evaluation/metrics.py</code>)
+              both use the same NMACR_WEIGHTS = (A=0.30, R=0.25, M=0.20, C=0.15, N=0.10) since
+              Approach A (2026-05-03). Per-run aggregates are stored in
+              <code style={{ fontSize: 10 }}> nmacr_scores_v2.jsonl</code>, the single source of truth
+              for downstream analyses (bootstrap CI, robustness, calibration). CONCEPTUAL tasks
+              (no N) renormalize remaining weights to 1.0; mirrors runtime
+              <code style={{ fontSize: 10 }}>full_score()</code>.
             </p>
           </Card>
         </FadeIn>

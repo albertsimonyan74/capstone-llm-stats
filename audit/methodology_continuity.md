@@ -20,7 +20,7 @@ Judgment-Becomes-Noise (Feuer et al., 2025); future work toward
 multi-judge ensembling and consistency-based confidence (Multi-Answer
 Confidence, 2026) is explicitly scoped.
 
-## NMACR weighting — literature-derived (Phase 1B)
+## NMACR weighting — literature-derived (sole canonical scheme)
 
 The five NMACR dimensions are not weighted equally. The locked scheme
 A=0.30, R=0.25, M=0.20, C=0.15, N=0.10 is anchored in the prior literature
@@ -39,3 +39,15 @@ Boye & Moell (2025) — N=0.10. See
 [`llm-stats-vault/00-home/research-narrative.md`](../llm-stats-vault/00-home/research-narrative.md)
 §2 for the full per-dimension defense and
 [`audit/recompute_log.md`](recompute_log.md) for the data-layer effect.
+
+### History — pre-Approach-A dual-path
+Phase 1A initially scored runs under equal weights (N=M=A=C=R=0.20) at
+runtime, with the literature-weighted aggregate produced post-hoc by
+`scripts/recompute_nmacr.py` (Phase 1B, 2026-05-01). On 2026-05-03,
+Approach A consolidated both paths: the literature-weighted scheme is
+now applied at runtime in `evaluation/metrics.py` and
+`llm_runner/response_parser.py`, and is the SOLE canonical scheme.
+The post-hoc script is archived at
+`llm-stats-vault/90-archive/superseded_scripts/recompute_nmacr.py`. See
+[`audit/recompute_log.md`](recompute_log.md) §"Phase 1.6 — Approach A"
+for the migration audit trail.

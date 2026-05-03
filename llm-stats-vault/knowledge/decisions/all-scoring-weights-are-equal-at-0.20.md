@@ -36,10 +36,33 @@ Old scores in `runs.jsonl` were backfilled via `scripts/recompute_scores.py`.
 
 ## Update — 2026-05-02
 
-This decision remains canonical for the runtime scoring paths
-(`response_parser.py`, `metrics.py`). Phase 1B introduced an additional
-**post-hoc literature-derived weighting** in `scripts/recompute_nmacr.py`
-that produces a different aggregate score for analysis purposes. The two
-paths coexist by design — see [audit/aggregation_locus.md](../../../audit/aggregation_locus.md)
-and [audit/recompute_log.md](../../../audit/recompute_log.md) for the rationale.
+Phase 1B introduced an additional **post-hoc literature-derived weighting**
+in `scripts/recompute_nmacr.py` that produced a different aggregate score
+for analysis purposes. At that point the two paths coexisted by design.
+
+---
+
+## RESOLVED — 2026-05-03 (Approach A)
+
+This decision is **superseded**. Equal weighting is no longer canonical.
+
+The literature-derived NMACR scheme (A=0.30, R=0.25, M=0.20, C=0.15, N=0.10)
+is now the **sole canonical scheme** and is applied at runtime in both
+`evaluation/metrics.py` and `llm_runner/response_parser.py`.
+
+Approach A (2026-05-03) consolidated the dual-path design: runtime
+aggregation now uses the same literature-derived weights that
+`scripts/recompute_nmacr.py` had been producing post-hoc. Verification
+confirmed byte-identical regeneration of all canonical surfaces
+(`bootstrap_ci.json`, `robustness_v2.json`, `nmacr_scores_v2.jsonl`).
+
+The post-hoc script is preserved at
+`llm-stats-vault/90-archive/superseded_scripts/recompute_nmacr.py` as a
+regression-test reference. See:
+- [`audit/aggregation_locus.md`](../../../audit/aggregation_locus.md) — single canonical path
+- [`audit/recompute_log.md`](../../../audit/recompute_log.md) §"Phase 1.6 — Approach A"
+- [`audit/methodology_continuity.md`](../../../audit/methodology_continuity.md) §"NMACR weighting"
+
+This note is preserved in place (rather than archived) so future readers
+see the historical decision and its resolution in one location.
 
