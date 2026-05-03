@@ -1031,54 +1031,17 @@ function Overview() {
   )
 }
 
-// ─── Extra info cards for How It Works ───────────────────────
-const HOW_EXTRA = [
-  {
-    color:'#00CED1',
-    title:'Cloud Deployment',
-    icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>,
-    lines:[
-      'Frontend → Vercel edge CDN, instant global deploy',
-      'Backend → Render Docker (FastAPI + httpx, no vendor SDKs)',
-      '5 model API keys · REST proxy via /api/* rewrite rules',
-    ],
-  },
-  {
-    color:'#00FFE0',
-    title:'Research Question Integration',
-    icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
-    lines:[
-      'RQ1 PRIMARY: external-judge validation — 22.2% combined keyword-judge disagreement, α = 0.55 (negative on R, M)',
-      'RQ2–5 SUPPORTING: hardest categories, failure mode, robustness, calibration',
-      'RQ4: 2,365 perturbation runs across 3 types (rephrase / numerical / semantic)',
-    ],
-  },
-  {
-    color:'#A78BFA',
-    title:'Referenced Paper Analysis',
-    icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
-    lines:[
-      'Wei et al. 2022 → zero-shot CoT baseline prompting (the single shipped strategy)',
-      'Yamauchi et al. 2025 → external Llama 3.3 70B judge methodology',
-      'StatEval / MathEval → comparative benchmark baseline',
-    ],
-  },
-  {
-    color:'#FF6B6B',
-    title:'Interactive User Study',
-    icon:<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-    lines:[
-      'Users submit Bayesian questions + optional image',
-      'All 5 models respond in parallel via live API calls',
-      'Votes collected, buffered in memory, aggregated live',
-    ],
-  },
+// ─── RQ Integration callout content (rendered inside Research) ──
+const RQ_INTEGRATION_LINES = [
+  'RQ1 PRIMARY: external-judge validation — 22.2% combined keyword-judge disagreement, α = 0.55 (negative on R, M)',
+  'RQ2–5 SUPPORTING: hardest categories, failure mode, robustness, calibration',
+  'RQ4: 2,365 perturbation runs across 3 types (rephrase / numerical / semantic)',
 ]
 
 // ═══════════════════════════════════════════════════════════════
-//  2. BENCHMARK
+//  2. PIPELINE
 // ═══════════════════════════════════════════════════════════════
-function BenchmarkSection() {
+function Pipeline() {
   const [expanded, setExpanded] = useState(null)
 
   const R_FRAC = 0.40
@@ -1091,8 +1054,8 @@ function BenchmarkSection() {
   }
 
   return (
-    <Section id="benchmark" minHeight="auto">
-      <SectionTitle sub="Six-step pipeline from task generation to scoring — click any node to expand">How It Works</SectionTitle>
+    <Section id="pipeline" minHeight="auto">
+      <SectionTitle sub="Six-step pipeline from task generation to scoring — click any node to expand">Pipeline</SectionTitle>
 
       {/* Circular pipeline diagram */}
       <FadeIn>
@@ -1173,21 +1136,6 @@ function BenchmarkSection() {
                 />
               )
             })}
-            {HOW_EXTRA.map((_,i) => {
-              const R_INNER = 0.21
-              const angle = (i / 4) * 2 * Math.PI
-              const idx = 10 + i
-              return (
-                <line key={`inner-${i}`}
-                  x1="50%" y1="50%"
-                  x2={`${(0.5 + R_INNER * Math.cos(angle)) * 100}%`}
-                  y2={`${(0.5 + R_INNER * Math.sin(angle)) * 100}%`}
-                  stroke={expanded===idx ? `${HOW_EXTRA[i].color}66` : `${HOW_EXTRA[i].color}18`}
-                  strokeWidth={expanded===idx ? 1.5 : 1}
-                  strokeDasharray="3 4"
-                />
-              )
-            })}
           </svg>
 
           {/* Center hub */}
@@ -1231,39 +1179,6 @@ function BenchmarkSection() {
             )
           })}
 
-          {/* Inner ring nodes — 4 HOW_EXTRA items at R=0.21, cardinal directions */}
-          {HOW_EXTRA.map((item, i) => {
-            const R_INNER = 0.21
-            const angle = (i / 4) * 2 * Math.PI
-            const idx = 10 + i
-            const isActive = expanded === idx
-            const pos = {
-              left: `${(0.5 + R_INNER * Math.cos(angle)) * 100}%`,
-              top:  `${(0.5 + R_INNER * Math.sin(angle)) * 100}%`,
-            }
-            return (
-              <div key={`inner-${i}`} style={{ position:'absolute', ...pos, transform:'translate(-50%,-50%)', width:78, zIndex:2 }}>
-                <motion.div
-                  style={{
-                    background: isActive ? `${item.color}18` : 'rgba(0,0,0,0.55)',
-                    border:`1px solid ${isActive ? item.color : item.color+'44'}`,
-                    borderRadius:10, padding:'8px 6px 7px', cursor:'pointer', textAlign:'center',
-                    boxShadow: isActive ? `0 0 14px ${item.color}33` : 'none',
-                    transition:'background 0.2s, border-color 0.2s, box-shadow 0.2s',
-                    backdropFilter:'blur(4px)',
-                  }}
-                  onClick={() => setExpanded(isActive ? null : idx)}
-                  whileHover={{ scale:1.10 }}
-                  whileTap={{ scale:0.95 }}
-                  transition={{ type:'spring', stiffness:440, damping:26 }}
-                >
-                  <div style={{ color: isActive ? item.color : item.color+'cc', marginBottom:4, display:'flex', justifyContent:'center', transform:'scale(0.8)' }}>{item.icon}</div>
-                  <div style={{ color: isActive ? item.color : 'rgba(255,255,255,0.8)', fontSize:7.5, fontWeight:700, letterSpacing:'0.04em', lineHeight:1.3 }}>{item.title}</div>
-                  <div style={{ color: isActive ? item.color+'99' : 'rgba(255,255,255,0.25)', fontSize:6.5, marginTop:3 }}>{isActive ? '▲' : '▼'}</div>
-                </motion.div>
-              </div>
-            )
-          })}
         </div>
 
         {/* Expanded detail */}
@@ -1277,51 +1192,55 @@ function BenchmarkSection() {
               transition={{ duration:0.28, ease:[0.22,1,0.36,1] }}
               style={{ overflow:'hidden', maxWidth:600, margin:'0 auto 16px' }}
             >
-              {expanded < 10 ? (
-                <Card glow style={{ padding:'20px 28px', textAlign:'center' }}>
-                  <div style={{ marginBottom:8, color:'var(--aqua)', display:'flex', justifyContent:'center' }}>{PIPELINE_ICONS[expanded]}</div>
-                  <div style={{ color:'var(--aqua)', fontWeight:700, fontSize:10, letterSpacing:'0.1em', marginBottom:4 }}>
-                    STEP {expanded+1} — {PIPELINE[expanded].label.toUpperCase()}
-                  </div>
-                  <div style={{ color:'var(--text-primary)', fontWeight:700, fontSize:15, marginBottom:10 }}>
-                    {PIPELINE[expanded].title}
-                  </div>
-                  <p style={{ color:'var(--text-secondary)', fontSize:12.5, lineHeight:1.75, margin:0 }}>
-                    {PIPELINE[expanded].desc}
-                  </p>
-                </Card>
-              ) : (() => {
-                const item = HOW_EXTRA[expanded - 10]
-                return (
-                  <Card style={{ padding:'20px 28px', borderColor: item.color + '44' }}>
-                    <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:14 }}>
-                      <div style={{ color:item.color }}>{item.icon}</div>
-                      <div style={{ color:item.color, fontWeight:700, fontSize:14 }}>{item.title}</div>
-                    </div>
-                    <ul style={{ margin:0, padding:0, listStyle:'none' }}>
-                      {item.lines.map((l,j) => (
-                        <li key={j} style={{ display:'flex', alignItems:'flex-start', gap:8, marginBottom:8 }}>
-                          <span style={{ color:item.color, fontSize:8, marginTop:4, flexShrink:0 }}>◆</span>
-                          <span style={{ color:'var(--text-secondary)', fontSize:13, lineHeight:1.6 }}>{l}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </Card>
-                )
-              })()}
+              <Card glow style={{ padding:'20px 28px', textAlign:'center' }}>
+                <div style={{ marginBottom:8, color:'var(--aqua)', display:'flex', justifyContent:'center' }}>{PIPELINE_ICONS[expanded]}</div>
+                <div style={{ color:'var(--aqua)', fontWeight:700, fontSize:10, letterSpacing:'0.1em', marginBottom:4 }}>
+                  STEP {expanded+1} — {PIPELINE[expanded].label.toUpperCase()}
+                </div>
+                <div style={{ color:'var(--text-primary)', fontWeight:700, fontSize:15, marginBottom:10 }}>
+                  {PIPELINE[expanded].title}
+                </div>
+                <p style={{ color:'var(--text-secondary)', fontSize:12.5, lineHeight:1.75, margin:0 }}>
+                  {PIPELINE[expanded].desc}
+                </p>
+              </Card>
             </motion.div>
           )}
         </AnimatePresence>
       </FadeIn>
 
-      {/* Tier Ladder + Scoring — stacked vertically, each full-width */}
-      <FadeIn delay={180}>
-        <div style={{ display:'flex', flexDirection:'column', gap:20, maxWidth:1200, margin:'0 auto' }}>
+    </Section>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  3. DIFFICULTY LADDER (extracted standalone section)
+// ═══════════════════════════════════════════════════════════════
+function DifficultyLadder() {
+  return (
+    <Section id="difficulty" minHeight="auto">
+      <SectionTitle sub="171 tasks across 4 difficulty tiers — from conjugate updates to MCMC and decision theory">Difficulty Ladder</SectionTitle>
+      <FadeIn>
+        <div style={{ maxWidth:1200, margin:'0 auto' }}>
           <Card><TierLadder/></Card>
+        </div>
+      </FadeIn>
+    </Section>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  4. COMPOSITE FORMULA (extracted standalone section)
+// ═══════════════════════════════════════════════════════════════
+function CompositeFormula() {
+  return (
+    <Section id="formula" minHeight="auto">
+      <SectionTitle sub="Five-dimensional NMACR rubric — literature-derived weights">Composite Formula</SectionTitle>
+      <FadeIn>
+        <div style={{ maxWidth:1200, margin:'0 auto' }}>
           <Card>
             <div style={{ color:'var(--aqua)', fontSize:10, fontWeight:700, letterSpacing:'0.12em', marginBottom:20 }}>SCORING FORMULA</div>
             <AnimatedScoringBars/>
-            <LiveResults/>
           </Card>
         </div>
       </FadeIn>
@@ -2022,11 +1941,31 @@ const SCORE_DIMS = [
   { dim:'R', name:'Reasoning Quality',      color:'#A78BFA' },
 ]
 
-function About() {
+function Research() {
   const [openRQ, setOpenRQ] = useState(null)
   return (
-    <Section id="about" minHeight="auto">
-      <SectionTitle>About This Research</SectionTitle>
+    <Section id="research" minHeight="auto">
+      <SectionTitle>Research</SectionTitle>
+
+      {/* § 0 — Research Question Integration callout (moved from Pipeline) */}
+      <FadeIn>
+        <div style={{ maxWidth:1100, margin:'0 auto 28px' }}>
+          <Card style={{ padding:'18px 24px', borderColor:'rgba(0,255,224,0.28)' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00FFE0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <div style={{ color:'#00FFE0', fontWeight:700, fontSize:13, letterSpacing:'0.08em' }}>RESEARCH QUESTION INTEGRATION</div>
+            </div>
+            <ul style={{ margin:0, padding:0, listStyle:'none' }}>
+              {RQ_INTEGRATION_LINES.map((l, j) => (
+                <li key={j} style={{ display:'flex', alignItems:'flex-start', gap:8, marginBottom: j < RQ_INTEGRATION_LINES.length - 1 ? 8 : 0 }}>
+                  <span style={{ color:'#00FFE0', fontSize:8, marginTop:5, flexShrink:0 }}>◆</span>
+                  <span style={{ color:'var(--text-secondary)', fontSize:13, lineHeight:1.6 }}>{l}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </div>
+      </FadeIn>
 
       {/* § 1 — Research Questions (5 cards, equal size, 3+2 grid) */}
       <FadeIn>
@@ -2164,7 +2103,14 @@ function About() {
         </Card>
       </FadeIn>
 
-      {/* § 3 — Key Findings (moved inside About, after RQ cards + stats) */}
+      {/* § 2.5 — Live Results panel (moved from Pipeline) */}
+      <FadeIn delay={70}>
+        <div style={{ maxWidth:1100, margin:'0 auto 48px' }}>
+          <LiveResults/>
+        </div>
+      </FadeIn>
+
+      {/* § 3 — Key Findings */}
       <FadeIn delay={80}>
         <div className="kf-inside-about" style={{ maxWidth:1300, margin:'0 auto 48px' }}>
           <div style={{ color:'var(--aqua)', fontSize:13, fontWeight:700, letterSpacing:'0.16em', textAlign:'center', marginBottom:24 }}>
@@ -2227,28 +2173,32 @@ export default function App() {
       <Navbar/>
       <Overview/>
       <SectionDivider/>
-      <About/>
+      <Pipeline/>
       <SectionDivider/>
-      <Methodology/>
+      <DifficultyLadder/>
       <SectionDivider/>
-      <BenchmarkSection/>
+      <CompositeFormula/>
       <SectionDivider/>
       <Models/>
       <SectionDivider/>
       <Tasks onOpenModal={setModal} isOpen={tasksOpen} onToggle={()=>setTasksOpen(o=>!o)}/>
       <SectionDivider/>
+      <Methodology/>
+      <SectionDivider/>
+      <Research/>
+      <SectionDivider/>
       <Visualizations setFullImg={setFullImg}/>
       <SectionDivider/>
-      <UserStudy/>
-      <SectionDivider/>
       <Limitations/>
+      <SectionDivider/>
+      <UserStudy/>
       <SectionDivider/>
       <References/>
 
       {/* Footer */}
       <footer style={{ borderTop:'1px solid rgba(0,255,224,0.1)', padding:'28px 64px 32px', textAlign:'center', background:'rgba(0,0,0,0.25)' }}>
         <nav style={{ display:'flex', justifyContent:'center', flexWrap:'wrap', gap:'6px 20px', marginBottom:14 }}>
-          {['overview','about','methodology','benchmark','models','tasks','visualizations','user-study','limitations','references'].map(id => (
+          {['overview','pipeline','difficulty','formula','models','tasks','methodology','research','visualizations','limitations','user-study','references'].map(id => (
             <a key={id} href={`#${id}`}
               style={{ color:'rgba(0,255,224,0.5)', fontSize:11, fontWeight:600, letterSpacing:'0.08em', textDecoration:'none', textTransform:'uppercase', transition:'color 0.18s' }}
               onMouseEnter={e=>e.currentTarget.style.color='#00FFE0'}

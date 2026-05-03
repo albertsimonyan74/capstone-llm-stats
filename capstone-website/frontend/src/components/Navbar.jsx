@@ -3,13 +3,16 @@ import { motion, AnimatePresence } from 'motion/react'
 
 const NAV_SECTIONS = [
   { id: 'overview',       label: 'Overview'     },
-  { id: 'about',          label: 'Research'     },
-  { id: 'methodology',    label: 'Methodology'  },
-  { id: 'benchmark',      label: 'How It Works' },
+  { id: 'pipeline',       label: 'Pipeline'     },
+  { id: 'difficulty',     label: 'Difficulty'   },
+  { id: 'formula',        label: 'Formula'      },
   { id: 'models',         label: 'Models'       },
   { id: 'tasks',          label: 'Tasks'        },
+  { id: 'methodology',    label: 'Methodology'  },
+  { id: 'research',       label: 'Research'     },
   { id: 'visualizations', label: 'Visualizations' },
   { id: 'limitations',    label: 'Limitations'  },
+  { id: 'user-study',     label: 'User Study'   },
   { id: 'references',     label: 'References'   },
 ]
 

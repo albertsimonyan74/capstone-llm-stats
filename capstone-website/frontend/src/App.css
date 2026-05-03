@@ -317,12 +317,13 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 }
 
 /* ─── Section radial backgrounds ─────────────────────────────── */
-.sec-overview  { background: radial-gradient(ellipse 80% 50% at 50% 0%,   rgba(0,206,209,0.08) 0%, transparent 70%) var(--bg-primary); }
-.sec-benchmark { background: radial-gradient(ellipse 60% 60% at 0%  50%,  rgba(0,191,255,0.05) 0%, transparent 70%) var(--bg-primary); }
-.sec-models    { background: radial-gradient(ellipse 60% 60% at 100% 50%, rgba(0,206,209,0.05) 0%, transparent 70%) var(--bg-primary); }
-.sec-tasks     { background: radial-gradient(ellipse 60% 60% at 20% 80%,  rgba(0,191,255,0.05) 0%, transparent 70%) var(--bg-primary); }
-.sec-results   { background: radial-gradient(ellipse 60% 60% at 50% 50%,  rgba(0,206,209,0.05) 0%, transparent 70%) var(--bg-primary); }
-.sec-about     { background: radial-gradient(ellipse 60% 60% at 50% 100%, rgba(0,191,255,0.05) 0%, transparent 70%) var(--bg-primary); }
+.sec-overview   { background: radial-gradient(ellipse 80% 50% at 50% 0%,   rgba(0,206,209,0.08) 0%, transparent 70%) var(--bg-primary); }
+.sec-pipeline   { background: radial-gradient(ellipse 60% 60% at 0%  50%,  rgba(0,191,255,0.05) 0%, transparent 70%) var(--bg-primary); }
+.sec-difficulty { background: radial-gradient(ellipse 60% 60% at 100% 30%, rgba(0,206,209,0.05) 0%, transparent 70%) var(--bg-primary); }
+.sec-formula    { background: radial-gradient(ellipse 60% 60% at 30% 30%,  rgba(0,191,255,0.05) 0%, transparent 70%) var(--bg-primary); }
+.sec-models     { background: radial-gradient(ellipse 60% 60% at 100% 50%, rgba(0,206,209,0.05) 0%, transparent 70%) var(--bg-primary); }
+.sec-tasks      { background: radial-gradient(ellipse 60% 60% at 20% 80%,  rgba(0,191,255,0.05) 0%, transparent 70%) var(--bg-primary); }
+.sec-research   { background: radial-gradient(ellipse 60% 60% at 50% 100%, rgba(0,191,255,0.05) 0%, transparent 70%) var(--bg-primary); }
 
 /* Grid line overlay on overview */
 .sec-overview::after {
@@ -625,13 +626,24 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 }
 
 /* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 1280px) {
+  .nav-btn { padding: 7px 9px; font-size: 12px; }
+  .nav-links { gap: 0; }
+}
+
 @media (max-width: 1100px) {
-  .navbar { padding: 0 24px; }
+  .navbar { padding: 0 20px; }
+  .nav-btn { padding: 6px 7px; font-size: 11px; letter-spacing: 0.01em; }
 }
 
 @media (max-width: 900px) {
-  .nav-btn { padding: 8px 10px; font-size: 12px; }
+  .nav-btn { padding: 6px 6px; font-size: 11px; }
   section { padding: 100px 32px 60px !important; }
+}
+
+@media (max-width: 820px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
 }
 
 @media (max-width: 640px) {
