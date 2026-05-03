@@ -744,6 +744,104 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   }
 }
 
+/* ─── Methodology §3 judge hero infographic ────────────────────── */
+.judge-hero-infographic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 24px;
+  margin: 12px 0 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.judge-hero-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  justify-content: center;
+}
+.judge-hero-block {
+  flex: 1;
+  max-width: 300px;
+  padding: 16px 20px;
+  border: 1px solid;
+  border-radius: 8px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.18);
+}
+.judge-hero-block-keyword { border-color: rgba(0, 180, 216, 0.5); }
+.judge-hero-block-judge   { border-color: rgba(255, 179, 71, 0.5); }
+.judge-hero-block-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 800;
+  color: rgba(232, 244, 248, 0.55);
+  margin-bottom: 8px;
+}
+.judge-hero-block-detail {
+  font-size: 13px;
+  color: #fff;
+  line-height: 1.4;
+}
+.llama-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(255, 179, 71, 0.12);
+  border: 1px solid rgba(255, 179, 71, 0.45);
+  border-radius: 4px;
+  font-family: var(--font-mono, monospace);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: #FFB347;
+}
+.judge-hero-vs {
+  font-family: var(--font-mono, monospace);
+  font-size: 16px;
+  color: rgba(232, 244, 248, 0.45);
+  font-weight: 700;
+}
+.judge-hero-arrow {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: rgba(232, 244, 248, 0.45);
+  letter-spacing: 0.05em;
+}
+.judge-hero-stat {
+  text-align: center;
+  padding: 14px 32px;
+  border: 1px solid rgba(127, 255, 212, 0.35);
+  background: rgba(127, 255, 212, 0.05);
+  border-radius: 8px;
+  min-width: 240px;
+}
+.judge-hero-stat-number {
+  font-size: 36px;
+  font-weight: 800;
+  font-family: var(--font-mono, monospace);
+  color: #7FFFD4;
+  line-height: 1;
+}
+.judge-hero-stat-label {
+  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(232, 244, 248, 0.7);
+  line-height: 1.45;
+}
+@media (max-width: 700px) {
+  .judge-hero-row {
+    flex-direction: column;
+    gap: 14px;
+  }
+  .judge-hero-vs { transform: rotate(90deg); }
+  .judge-hero-stat-number { font-size: 28px; }
+  .judge-hero-block { max-width: none; width: 100%; }
+}
+
 /* ─── Difficulty Ladder cards (4 → 2 → 1) ───────────────────────── */
 .difficulty-cards-grid {
   display: grid;

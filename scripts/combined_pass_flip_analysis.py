@@ -246,7 +246,7 @@ def make_figure(
         ax.set_xticks(np.arange(len(MODELS)))
         ax.set_xticklabels(MODELS, color="white", fontsize=12)
         ax.set_ylim(0, max(0.5, max(rates) * 1.25))
-        ax.set_ylabel("Pass-flip rate", color="white", fontsize=13)
+        ax.set_ylabel("Disagreement rate", color="white", fontsize=13)
         ax.set_title(
             f"{title}  (n_eligible = {n_elig_panel})",
             color="white", fontsize=15, pad=10,
@@ -256,7 +256,7 @@ def make_figure(
             spine.set_color("white"); spine.set_alpha(0.5)
         ax.grid(True, axis="y", alpha=0.15, color="white")
     fig.suptitle(
-        "Pass-flip rate (keyword PASS, judge FAIL) on assumption_compliance",
+        "Keyword-judge disagreement rate (keyword PASS, judge FAIL) on assumption_compliance",
         color="white", fontsize=18, y=1.02,
     )
     fig.text(

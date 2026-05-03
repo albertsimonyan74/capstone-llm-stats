@@ -1,5 +1,4 @@
 {
-  "_terminology_note": "Field 'pass_flip' refers to keyword-judge disagreement: cases where the regex keyword scorer returned PASS but the LLM judge returned FAIL on the same response. Project user-facing term: 'keyword-judge disagreement'. Code identifiers retain pass_flip for backward compatibility.",
   "_methodology": "Combined base + perturbation pass-flip analysis on assumption_compliance dimension. Run-id deduplicated set union. Eligibility: tasks with non-empty required_assumption_checks.",
   "_methodology_citation": "Yamauchi et al. 2025 (arxiv 2506.13639) \u2014 methodology baseline; Phase 1.5 audit-driven extension to perturbation population.",
   "_supersedes_field": "keyword_vs_judge_agreement.json:pass_flip_assumption (base-only original retained for backward compat)",

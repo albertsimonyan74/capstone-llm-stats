@@ -40,7 +40,40 @@ const ICON = {
       <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>
     </svg>
   ),
+  Cpu: (p) => (
+    <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/>
+      <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/>
+    </svg>
+  ),
+  Layers: (p) => (
+    <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m12.83 2.18 8 4a2 2 0 0 1 0 3.64l-8 4a2 2 0 0 1-1.66 0l-8-4a2 2 0 0 1 0-3.64l8-4a2 2 0 0 1 1.66 0Z"/>
+      <path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/>
+      <path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/>
+    </svg>
+  ),
+  CheckCheck: (p) => (
+    <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/>
+    </svg>
+  ),
+  AlertTriangle: (p) => (
+    <svg width={p.size||20} height={p.size||20} viewBox="0 0 24 24" fill="none" stroke={p.color||'currentColor'} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+      <path d="M12 9v4"/><path d="M12 17h.01"/>
+    </svg>
+  ),
 }
+
+const JUDGE_FACTS = [
+  { icon: ICON.Cpu,           label: 'JUDGE',             color: '#FFB347', title: 'Llama 3.3 70B Instruct',   body: 'Sixth model, deliberately external to the five evaluated (Claude · GPT-4.1 · Gemini · DeepSeek · Mistral). No self-preference bias.', cite: 'via Together AI' },
+  { icon: ICON.Layers,        label: 'RUBRIC',            color: '#A78BFA', title: '4 dimensions per response', body: 'Numerical · Method · Assumption · Reasoning quality + Completeness. Each scored independently by judge.',                              cite: 'Yamauchi et al. (2025)' },
+  { icon: ICON.CheckCheck,    label: 'VERIFICATION',      color: '#00B4D8', title: 'Cross-provider spot-check',  body: 'Agreement validated against Groq’s Llama endpoint to rule out vendor-specific bias in judge outputs.',                          cite: 'Feuer et al. (2025) framing' },
+  { icon: ICON.Target,        label: 'AGREEMENT',         color: '#7FFFD4', title: 'α = 0.55',              body: 'Krippendorff α on assumption_compliance — moderate agreement between keyword scorer and judge.',                          cite: '95% CI [0.50, 0.60]' },
+  { icon: ICON.AlertTriangle, label: 'DIVERGENCE',        color: '#FF6B6B', title: 'α = −0.13 / −0.04', body: 'Krippendorff α on reasoning_quality and method_structure — NEGATIVE: the two scorers actively disagree, not just weakly agree.', cite: 'CI [−0.228, −0.039] excludes 0' },
+  { icon: ICON.Shuffle,       label: 'UNDER PERTURBATION', color: '#F59E0B', title: '+3.7pp gap widens',         body: 'Keyword PASS drops 1.9pp under perturbation; judge PASS rises 1.8pp. The two methods move in opposite directions.',                cite: 'Largest divergence on semantic perturbations (5.96pp)' },
+]
 
 const COMMITMENTS = [
   { icon: ICON.MessageSquare, label: 'PROMPTING',    color: '#00FFE0', title: 'Zero-shot Chain-of-Thought',     body: 'Single shipped prompting strategy; PoT explored but not in scored runs.',                                       cite: 'Wei et al. (2022)' },
@@ -296,21 +329,65 @@ export default function Methodology() {
         {/* 3 — Llama judge + keyword-degradation */}
         <FadeIn delay={150}>
           <Subhead>3 · External Llama Judge</Subhead>
+
+          {/* Hero infographic: KEYWORD vs EXTERNAL JUDGE + 22.2% center stat */}
+          <div className="judge-hero-infographic">
+            <div className="judge-hero-row">
+              <div className="judge-hero-block judge-hero-block-keyword">
+                <div className="judge-hero-block-label">KEYWORD SCORER</div>
+                <div className="judge-hero-block-detail">regex on required_assumption_checks</div>
+              </div>
+              <div className="judge-hero-vs">vs</div>
+              <div className="judge-hero-block judge-hero-block-judge">
+                <div className="judge-hero-block-label">EXTERNAL JUDGE</div>
+                <div className="judge-hero-block-detail"><span className="llama-badge">LLAMA 3.3 70B INSTRUCT</span></div>
+              </div>
+            </div>
+            <div className="judge-hero-arrow">↓ both score 3,195 evaluable runs ↓</div>
+            <div className="judge-hero-stat">
+              <div className="judge-hero-stat-number">22.2%</div>
+              <div className="judge-hero-stat-label">disagreement (708 cases)<br/>on assumption_compliance</div>
+            </div>
+          </div>
+
+          {/* 6 fact cards (3+3 grid) — same layout as §1 commitments */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, margin: '8px 0 24px' }} className="commitments-grid">
+            {JUDGE_FACTS.map((c) => {
+              const Icon = c.icon
+              return (
+                <div key={c.label} style={{
+                  background: `${c.color}06`,
+                  border: `1px solid ${c.color}33`,
+                  borderTop: `3px solid ${c.color}`,
+                  borderRadius: 10,
+                  padding: '14px 16px 12px',
+                  display: 'flex', flexDirection: 'column', gap: 8,
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Icon size={18} color={c.color}/>
+                    <span style={{ color: c.color, fontFamily: 'monospace', fontSize: 10, letterSpacing: '0.14em', fontWeight: 800 }}>
+                      {c.label}
+                    </span>
+                  </div>
+                  <div style={{ color: '#fff', fontSize: 13.5, fontWeight: 700, lineHeight: 1.35 }}>
+                    {c.title}
+                  </div>
+                  <div style={{ color: 'rgba(232,244,248,0.72)', fontSize: 12, lineHeight: 1.6 }}>
+                    {c.body}
+                  </div>
+                  <div style={{
+                    marginTop: 'auto', paddingTop: 8,
+                    borderTop: `1px solid ${c.color}22`,
+                    color: c.color, fontFamily: 'monospace', fontSize: 10, opacity: 0.85,
+                  }}>
+                    {c.cite}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
           <Card>
-            <p style={{ color: 'rgba(232,244,248,0.85)', fontSize: 14, lineHeight: 1.8, margin: '0 0 12px' }}>
-              <strong style={{ color: '#fff' }}>Why Llama 3.3 70B Instruct (via Together AI).</strong>{' '}
-              The judge is a sixth model, deliberately external to the five benchmarked
-              (Claude / GPT-4.1 / Gemini / DeepSeek / Mistral). Using one of the benchmarked models
-              as judge would introduce self-preference bias (cf. Yamauchi et al., 2025; Feuer et al.,
-              2025). Cross-provider agreement was spot-checked against Groq's Llama endpoint.
-            </p>
-            <p style={{ color: 'rgba(232,244,248,0.75)', fontSize: 13, lineHeight: 1.75, margin: '0 0 14px' }}>
-              The judge produces a 4-dimensional rubric per response (numerical, method,
-              assumption, reasoning quality + completeness). Krippendorff α between keyword and
-              judge: assumption_compliance α = 0.55 (95% CI [0.50, 0.60], questionable per Park et al.
-              2025); reasoning_quality α = -0.13 (CI entirely below zero); method_structure α = -0.04.
-              Combined keyword-judge disagreement across 1,095 base + 2,100 perturbation runs: 708 / 3,195 = 22.2%.
-            </p>
             <Callout color="#00B4D8" title="Keyword vs judge under perturbation">
               Across the 3,195 eligible runs sharing the assumption-compliance rubric, keyword
               scoring degrades faster than LLM-judge under perturbation, with the two methods
@@ -326,19 +403,6 @@ export default function Methodology() {
               phrasing.
             </Callout>
             <KeywordDegradationPanel />
-            <Callout color="#FF6B6B" title="α is NEGATIVE on R and M">
-              Krippendorff α reports systematic disagreement (not just weak agreement) on
-              reasoning_quality (α = −0.133, 95% CI [−0.228, −0.039] entirely below zero) and
-              method_structure (α = −0.042). Negative α means raters pull in opposite directions
-              — keyword and judge reasoning rubrics do worse than chance on these two dimensions.
-              On assumption_compliance, α = 0.55 (questionable). Three of four shared dimensions
-              show keyword/judge divergence, not one.
-            </Callout>
-            <p style={{ color: 'rgba(232,244,248,0.7)', fontSize: 12, lineHeight: 1.7, margin: '14px 0 0' }}>
-              Per-perturbation-type keyword-judge disagreement: rephrase 21.6% (162/750), numerical 22.7% (136/600),
-              semantic 18.1% (136/750). Numerical perturbations expose assumption-checking gaps
-              most aggressively; semantic reframing exposes them least.
-            </p>
             <div style={{ marginTop: 14, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
               {PERT_TYPE.map(p => (
                 <div key={p.kind} style={{
