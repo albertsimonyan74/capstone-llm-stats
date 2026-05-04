@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 const SECTIONS = [
   { id: 'overview',       label: 'Overview'       },
@@ -47,11 +48,12 @@ export default function SideNav() {
     window.scrollTo({ top, behavior: 'smooth' })
   }
 
-  return (
+  const nav = (
     <nav
       className={`sidenav${visible ? ' sidenav--visible' : ''}`}
       aria-label="Section navigation"
     >
+      <div className="sidenav__track" aria-hidden="true" />
       <ul className="sidenav__list">
         {SECTIONS.map(s => (
           <li key={s.id} className="sidenav__item">
@@ -68,4 +70,7 @@ export default function SideNav() {
       </ul>
     </nav>
   )
+
+  if (typeof document === 'undefined') return null
+  return createPortal(nav, document.body)
 }
