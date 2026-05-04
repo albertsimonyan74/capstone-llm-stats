@@ -73,7 +73,7 @@ export const VISUALIZATIONS = [
     id: 'taxonomy_sunburst', category: 'errors', featured: true,
     title: 'Error Taxonomy — Hierarchical',
     subtitle: 'L1 buckets × L2 codes · 143 base failures',
-    caption: 'ASSUMPTION_VIOLATION 67 · MATHEMATICAL_ERROR 48 · FORMATTING 18 · CONCEPTUAL 10 · HALLUCINATION 0.',
+    caption: 'ASSUMPTION_VIOLATION 67 · MATHEMATICAL_ERROR 48 · FORMATTING 18 · CONCEPTUAL 10 (4 populated L1 buckets; HALLUCINATION empty — see Limitations).',
     source: 'experiments/results_v2/error_taxonomy_v2.json',
     png: '/visualizations/png/v2/error_taxonomy_hierarchical.png',
   },

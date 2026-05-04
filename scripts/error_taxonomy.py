@@ -67,14 +67,17 @@ L1_TO_L2 = {
 }
 L2_TO_L1 = {l2: l1 for l1, codes in L1_TO_L2.items() for l2 in codes}
 
+# L1 fill palette: distinct from site model palette (teal/mint/pink/blue/lavender).
+# Saturated, high-contrast hues that read on both light and dark slide backgrounds.
+# HALLUCINATION omitted from visualization (0/143 across all models — see Limitations L1).
 L1_COLORS = {
-    "MATHEMATICAL_ERROR":   "#E07A5F",
-    "ASSUMPTION_VIOLATION": "#81B29A",
-    "CONCEPTUAL_ERROR":     "#F2CC8F",
-    "FORMATTING_FAILURE":   "#3D5A80",
-    "HALLUCINATION":        "#9B5DE5",
+    "ASSUMPTION_VIOLATION": "#f59e0b",  # amber
+    "MATHEMATICAL_ERROR":   "#ef4444",  # red
+    "FORMATTING_FAILURE":   "#64748b",  # slate
+    "CONCEPTUAL_ERROR":     "#a855f7",  # purple
 }
 
+# Model identity carried via x-axis tick label color (not bar border)
 MODEL_BORDER = {
     "claude":   "#00CED1",
     "chatgpt":  "#7FFFD4",
@@ -450,10 +453,14 @@ def make_chart(summary: dict) -> None:
     import numpy as np
 
     by_model = summary["by_model_l1"]
-    l1_order = list(L1_COLORS.keys())  # stable color order
+    # Only iterate over populated L1 buckets (HALLUCINATION = 0/143; hidden from
+    # visualization — see Limitations L1 for methodological disclosure).
+    l1_order = list(L1_COLORS.keys())
     models = [m for m in MODEL_ORDER if m in by_model]
 
-    fig, ax = plt.subplots(figsize=(9, 6), dpi=300)
+    fig, ax = plt.subplots(figsize=(10, 6.5), dpi=300)
+    fig.patch.set_alpha(0)
+
     x = np.arange(len(models))
     bottoms = np.zeros(len(models))
 
@@ -462,34 +469,53 @@ def make_chart(summary: dict) -> None:
         ax.bar(
             x, heights, bottom=bottoms,
             color=L1_COLORS[l1],
-            edgecolor=[MODEL_BORDER[m] for m in models],
-            linewidth=2.5,
+            edgecolor="white",
+            linewidth=1.0,
             label=l1.replace("_", " ").title(),
         )
-        bottoms += heights
-        for i, (h, b) in enumerate(zip(heights, bottoms - heights)):
+        for i, h in enumerate(heights):
             if h >= 1:
-                ax.text(x[i], b + h / 2, str(int(h)),
-                        ha="center", va="center", fontsize=9,
+                ax.text(x[i], bottoms[i] + h / 2, str(int(h)),
+                        ha="center", va="center", fontsize=10,
                         color="white", fontweight="bold")
+        bottoms += heights
 
+    # Per-model totals above bars (cohort header line, neutral charcoal so
+    # it does not compete with model-color tick labels below the axis).
+    for i in range(len(models)):
+        total = int(bottoms[i])
+        ax.text(x[i], total + 0.6, str(total), ha="center", va="bottom",
+                fontsize=11, fontweight="bold", color="#222")
+
+    # X-axis labels: model identity carried via tick color (matches site palette).
     ax.set_xticks(x)
-    ax.set_xticklabels(models, fontsize=11)
-    ax.set_ylabel("Failure count", fontsize=12)
-    ax.set_title("Hierarchical error taxonomy across models (n=143 base failures)", fontsize=13)
+    ax.set_xticklabels([m.upper() for m in models], fontsize=11, fontweight="bold")
+    for tick, m in zip(ax.get_xticklabels(), models):
+        tick.set_color(MODEL_BORDER.get(m, "#222"))
+
+    ax.set_ylabel("Failure count", fontsize=11)
+    ax.set_title("Hierarchical error taxonomy across models (n=143 base failures)",
+                 fontsize=13, fontweight="bold", pad=14)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     ax.grid(axis="y", linestyle="--", alpha=0.3)
-    ax.legend(loc="upper right", frameon=False, fontsize=10, title="L1 bucket")
+    ax.set_ylim(0, max(bottoms) * 1.18)
 
-    for i, m in enumerate(models):
-        total = int(bottoms[i])
-        ax.text(x[i], total + 0.5, str(total), ha="center", va="bottom",
-                fontsize=10, fontweight="bold", color=MODEL_BORDER[m])
+    # Legend below chart, horizontal, 4 columns — out of bar-tops collision zone.
+    ax.legend(
+        loc="upper center",
+        bbox_to_anchor=(0.5, -0.10),
+        ncol=4,
+        frameon=False,
+        fontsize=10,
+        title="L1 failure bucket",
+        title_fontsize=10,
+    )
 
     FIG_PATH.parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
-    fig.savefig(FIG_PATH, dpi=300, transparent=True, bbox_inches="tight")
+    fig.subplots_adjust(bottom=0.18)
+    fig.savefig(FIG_PATH, dpi=150, transparent=True, bbox_inches="tight")
     plt.close(fig)
 
 

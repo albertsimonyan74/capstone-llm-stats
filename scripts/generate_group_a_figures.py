@@ -54,12 +54,14 @@ MODEL_LABEL = {
 }
 MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
 
+# 4 populated L1 buckets. HALLUCINATION omitted — 0/143 across all models
+# (canonical experiments/results_v2/error_taxonomy_v2.json). See Limitations L1
+# for methodological framing on the empty bucket.
 L1_COLORS = {
-    "ASSUMPTION_VIOLATION": "#E07B54",
-    "MATHEMATICAL_ERROR":   "#5B8DB8",
-    "FORMATTING_FAILURE":   "#8DBF6A",
-    "CONCEPTUAL_ERROR":     "#B07DC9",
-    "HALLUCINATION":        "#F5C842",
+    "ASSUMPTION_VIOLATION": "#f59e0b",  # amber
+    "MATHEMATICAL_ERROR":   "#ef4444",  # red
+    "FORMATTING_FAILURE":   "#64748b",  # slate
+    "CONCEPTUAL_ERROR":     "#a855f7",  # purple
 }
 L1_ORDER = list(L1_COLORS.keys())
 
@@ -294,6 +296,12 @@ def figure_a2():
 # ─────────────────────────────────────────────────────────────────────────────
 
 def figure_a3():
+    """Failure heatmap — portrait (task_types as rows, models as columns).
+
+    Matches the robustness_heatmap pattern: category bands on left margin
+    with bracket connectors, model labels at top color-coded, significance-
+    thresholded labels (cells with failure rate ≥15% labeled).
+    """
     out = FIG_DIR / "a3_failure_heatmap.png"
 
     base_runs = list(load_base_runs())
@@ -305,62 +313,117 @@ def figure_a3():
         tt = task_type_from_id(r["task_id"])
         cell_scores[(m, tt)].append(float(r["final_score"]))
 
-    task_types = sorted({tt for _, tt in cell_scores.keys()})
+    task_types_all = sorted({tt for _, tt in cell_scores.keys()})
 
-    fail_rate_by_tt = {
-        tt: 1 - np.mean([np.mean(cell_scores.get((m, tt), [1.0])) for m in MODELS])
-        for tt in task_types
-    }
-    task_types.sort(key=lambda tt: -fail_rate_by_tt[tt])
+    # Cluster rows by category (CATEGORY_ORDER), alphabetical inside.
+    grouped: dict[str, list[str]] = {c: [] for c in CATEGORY_ORDER}
+    for tt in task_types_all:
+        grouped.setdefault(category_of(tt), []).append(tt)
+    ordered_types: list[str] = []
+    cat_spans: list[tuple[str, int, int]] = []
+    row = 0
+    for cat in CATEGORY_ORDER:
+        items = grouped.get(cat, [])
+        if not items:
+            continue
+        cat_spans.append((cat, row, row + len(items) - 1))
+        ordered_types.extend(items)
+        row += len(items)
 
-    M = np.full((len(MODELS), len(task_types)), np.nan)
-    for i, m in enumerate(MODELS):
-        for j, tt in enumerate(task_types):
+    # Matrix shape: (n_task_types, n_models) — failure rate = 1 − mean(final_score)
+    M = np.full((len(ordered_types), len(MODELS)), np.nan)
+    for i, tt in enumerate(ordered_types):
+        for j, m in enumerate(MODELS):
             scores = cell_scores.get((m, tt), [])
             if scores:
                 M[i, j] = 1.0 - float(np.mean(scores))
 
-    fig, ax = plt.subplots(figsize=(14, 6), dpi=300)
+    fig, ax = plt.subplots(figsize=(8, 14), dpi=150)
     fig.patch.set_alpha(0)
 
-    cmap = plt.get_cmap("RdYlGn_r")
-    im = ax.imshow(M, cmap=cmap, vmin=0.0, vmax=1.0, aspect="auto")
+    cmap = plt.get_cmap("Reds")
+    im = ax.imshow(M, cmap=cmap, vmin=0.0, vmax=1.0, aspect="auto", origin="upper")
 
-    for i in range(len(MODELS)):
-        for j in range(len(task_types)):
+    # Models on TOP x-axis, color-coded
+    ax.set_xticks(range(len(MODELS)))
+    ax.set_xticklabels([MODEL_LABEL[m] for m in MODELS], fontsize=11, fontweight="bold")
+    ax.xaxis.tick_top()
+    ax.xaxis.set_label_position("top")
+    ax.tick_params(axis="x", which="major", pad=6)
+    for tick, m in zip(ax.get_xticklabels(), MODELS):
+        tick.set_color(MODEL_COLORS.get(m, "#111"))
+
+    # Task types on Y-axis, monospace
+    ax.set_yticks(range(len(ordered_types)))
+    ax.set_yticklabels(ordered_types, fontsize=8.5, family="monospace")
+
+    # Significance-thresholded labels (cells with failure rate ≥15% — color
+    # carries the rest, removes label clutter on near-zero cells).
+    SIG_THRESHOLD = 0.15
+    for i in range(len(ordered_types)):
+        for j in range(len(MODELS)):
             v = M[i, j]
             if np.isnan(v):
                 ax.text(j, i, "—", ha="center", va="center", fontsize=7, color="#888")
-            else:
-                txt_color = "white" if (v > 0.7 or v < 0.18) else "#111"
-                ax.text(j, i, f"{v:.1f}", ha="center", va="center",
-                        fontsize=7.5, color=txt_color)
+            elif v >= SIG_THRESHOLD:
+                txt_color = "#fff" if v > 0.6 else "#111"
+                ax.text(j, i, f"{v*100:.0f}", ha="center", va="center",
+                        fontsize=8, color=txt_color, fontweight="bold")
 
-    ax.set_xticks(range(len(task_types)))
-    ax.set_xticklabels(task_types, rotation=45, ha="right", fontsize=8.5)
-    ax.set_yticks(range(len(MODELS)))
-    ax.set_yticklabels([MODEL_LABEL[m] for m in MODELS], fontsize=11, fontweight="bold")
-    for i, m in enumerate(MODELS):
-        ax.get_yticklabels()[i].set_color(MODEL_COLORS[m])
+    # Horizontal dividers between category bands
+    for _, _, end_row in cat_spans[:-1]:
+        ax.axhline(end_row + 0.5, color="#222", linewidth=1.4, alpha=0.85)
 
-    ax.set_xticks(np.arange(-.5, len(task_types), 1), minor=True)
-    ax.set_yticks(np.arange(-.5, len(MODELS), 1), minor=True)
-    ax.grid(which="minor", color="white", linewidth=1.0)
+    # Category labels in left margin: bracket + label (mirrors robustness_heatmap)
+    n_models = len(MODELS)
+    bracket_x = -1.95
+    label_horiz_x = -3.55
+    label_vert_x = -3.30
+    for cat, s, e in cat_spans:
+        span = e - s + 1
+        mid = (s + e) / 2
+        if span <= 2:
+            ax.text(label_horiz_x, mid, CATEGORY_LABEL.get(cat, cat),
+                    ha="left", va="center", rotation=0,
+                    fontsize=10, fontweight="bold", color="#222",
+                    clip_on=False)
+        else:
+            ax.text(label_vert_x, mid, CATEGORY_LABEL.get(cat, cat),
+                    ha="center", va="center", rotation=90,
+                    fontsize=11, fontweight="bold", color="#222",
+                    clip_on=False)
+        ax.plot([bracket_x, bracket_x], [s - 0.4, e + 0.4],
+                color="#444", linewidth=1.4, clip_on=False)
+        for y_cap in (s - 0.4, e + 0.4):
+            ax.plot([bracket_x, bracket_x + 0.20], [y_cap, y_cap],
+                    color="#444", linewidth=1.4, clip_on=False)
+
+    ax.set_xlim(-4.0, n_models - 0.5)
+
+    ax.set_title(
+        "Failure Heatmap · per-model failure rate by task type",
+        fontsize=12, fontweight="bold", pad=24,
+    )
+    cbar = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
+    cbar.set_label("Failure rate (1 − mean(final_score))\n labels show % for cells ≥ 15%",
+                   fontsize=9)
+    cbar.ax.tick_params(labelsize=8)
+
+    ax.set_xticks(np.arange(-.5, len(MODELS), 1), minor=True)
+    ax.set_yticks(np.arange(-.5, len(ordered_types), 1), minor=True)
+    ax.grid(which="minor", color="#ddd", linewidth=0.4)
     ax.tick_params(which="minor", length=0)
+    ax.tick_params(which="major", length=0)
 
-    cbar = fig.colorbar(im, ax=ax, fraction=0.025, pad=0.015)
-    cbar.set_label("Failure Rate (1 - mean(final_score))", fontsize=10)
-    cbar.ax.tick_params(labelsize=9)
-
-    ax.set_xlabel("Task type (sorted by mean failure rate, hardest left)")
-    ax.set_ylabel("")
-
-    fig.tight_layout()
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=150, transparent=True, bbox_inches="tight")
     plt.close(fig)
 
-    hardest = task_types[0]
-    return out, f"hardest task_type: {hardest} (mean failure {fail_rate_by_tt[hardest]:.2f}); top-3 hardest: {', '.join(task_types[:3])}"
+    fail_rate_by_tt = {
+        tt: float(np.nanmean(M[i])) for i, tt in enumerate(ordered_types)
+    }
+    sorted_hard = sorted(fail_rate_by_tt, key=lambda tt: -fail_rate_by_tt[tt])
+    hardest = sorted_hard[0]
+    return out, f"hardest task_type: {hardest} (mean failure {fail_rate_by_tt[hardest]:.2f}); top-3 hardest: {', '.join(sorted_hard[:3])}"
 
 
 # ─────────────────────────────────────────────────────────────────────────────

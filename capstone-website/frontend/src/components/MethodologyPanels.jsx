@@ -278,12 +278,12 @@ const STATIC_FAILURES = {
   },
 }
 
+// 4 populated L1 buckets (HALLUCINATION = 0/143; see Limitations L1).
 const L1_LABEL = {
   ASSUMPTION_VIOLATION: 'Assumption violation',
   MATHEMATICAL_ERROR:   'Math error',
   FORMATTING_FAILURE:   'Format',
   CONCEPTUAL_ERROR:     'Conceptual',
-  HALLUCINATION:        'Hallucination',
 }
 
 const FAILURE_SUMMARY = {
