@@ -12,19 +12,20 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    apply_site_theme,
+)
+
+apply_site_theme()
+
 ROOT = Path(__file__).resolve().parents[1]
 CALIB_PATH = ROOT / "experiments" / "results_v2" / "calibration.json"
 ROBUST_PATH = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
 BOOTSTRAP_PATH = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
 OUT_PATH = ROOT / "report_materials" / "figures" / "three_rankings.png"
-
-MODEL_COLORS = {
-    "claude": "#00CED1",
-    "chatgpt": "#7FFFD4",
-    "gemini": "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral": "#A78BFA",
-}
 MODEL_LABEL = {
     "claude": "Claude",
     "chatgpt": "ChatGPT",
@@ -79,7 +80,7 @@ def draw_column(ax, x_center, ranking, header, score_fmt, *, pending=False,
         va="center",
         fontsize=15,
         fontweight="bold",
-        color="#222",
+        color=SITE_FG,
     )
 
     rank_centers = {}
@@ -87,7 +88,7 @@ def draw_column(ax, x_center, ranking, header, score_fmt, *, pending=False,
         y = y_top - (rank - 1) * dy
         color = MODEL_COLORS[model]
         face = color if not pending else "#cccccc"
-        edge = "#222" if not pending else "#888"
+        edge = SITE_BG if not pending else SITE_FG_MUTED
         alpha = 1.0 if not pending else 0.45
 
         box = FancyBboxPatch(
@@ -110,7 +111,7 @@ def draw_column(ax, x_center, ranking, header, score_fmt, *, pending=False,
             va="center",
             fontsize=12,
             fontweight="bold",
-            color="#444" if not pending else "#888",
+            color=SITE_FG_MUTED if not pending else "#888",
         )
 
         ax.text(
@@ -121,7 +122,7 @@ def draw_column(ax, x_center, ranking, header, score_fmt, *, pending=False,
             va="center",
             fontsize=12,
             fontweight="bold",
-            color="#111",
+            color=SITE_BG,
             alpha=alpha,
         )
         score_txt = score_fmt(score) if score is not None else "—"
@@ -132,7 +133,7 @@ def draw_column(ax, x_center, ranking, header, score_fmt, *, pending=False,
             ha="center",
             va="center",
             fontsize=9.5,
-            color="#222",
+            color=SITE_BG,
             alpha=alpha,
         )
 
@@ -146,7 +147,7 @@ def draw_column(ax, x_center, ranking, header, score_fmt, *, pending=False,
                 va="center",
                 fontsize=9.5,
                 fontweight="bold",
-                color="#B22222",
+                color="#f87171",
             )
 
         rank_centers[model] = (x_center + box_w / 2, x_center - box_w / 2, y)
@@ -160,7 +161,7 @@ def draw_column(ax, x_center, ranking, header, score_fmt, *, pending=False,
             va="center",
             fontsize=34,
             fontweight="bold",
-            color="#666",
+            color=SITE_FG_MUTED,
             alpha=0.28,
             rotation=20,
         )
@@ -168,7 +169,9 @@ def draw_column(ax, x_center, ranking, header, score_fmt, *, pending=False,
     return rank_centers
 
 
-def draw_tier_bracket(ax, x_left, y_top, y_bot, label, *, color="#444"):
+def draw_tier_bracket(ax, x_left, y_top, y_bot, label, *, color=None):
+    if color is None:
+        color = SITE_FG_MUTED
     """Vertical bracket on the left side spanning rows; label sits beside it."""
     tip = 0.012
     bx = x_left
@@ -205,11 +208,11 @@ def draw_arrow(ax, start_xy, end_xy, color, *, lw=1.6, alpha=0.85, highlight=Fal
 
 
 def main():
-    fig, ax = plt.subplots(figsize=(10, 8), dpi=300)
+    fig, ax = plt.subplots(figsize=(10, 8), dpi=300, facecolor=SITE_BG)
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.set_axis_off()
-    fig.patch.set_alpha(0)
+    ax.set_facecolor(SITE_BG)
 
     bootstrap = load_bootstrap()
     accuracy_ranking = load_accuracy_ranking(bootstrap)
@@ -285,7 +288,7 @@ def main():
         va="center",
         fontsize=11,
         style="italic",
-        color="#333",
+        color=SITE_FG,
     )
     ax.text(
         0.5,
@@ -294,7 +297,7 @@ def main():
         ha="center",
         va="center",
         fontsize=9.5,
-        color="#555",
+        color=SITE_FG_MUTED,
     )
     ax.text(
         0.5,
@@ -305,11 +308,11 @@ def main():
         va="center",
         fontsize=8.5,
         style="italic",
-        color="#666",
+        color=SITE_FG_MUTED,
     )
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT_PATH, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(OUT_PATH, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {OUT_PATH}")
 

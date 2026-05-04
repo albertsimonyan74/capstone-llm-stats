@@ -22,6 +22,15 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    apply_site_theme, color_code_model_ticks, dim_remaining_spines,
+)
+
+apply_site_theme()
+
 ROOT = Path(__file__).resolve().parents[1]
 BASE_RUNS = ROOT / "experiments" / "results_v1" / "runs.jsonl"
 PERT_RUNS = ROOT / "experiments" / "results_v2" / "perturbation_runs.jsonl"
@@ -30,13 +39,7 @@ OUT_JSON = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
 OUT_FIG = ROOT / "report_materials" / "figures" / "bootstrap_ci.png"
 
 MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
-COLORS = {
-    "claude": "#00CED1",
-    "chatgpt": "#7FFFD4",
-    "gemini": "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral": "#A78BFA",
-}
+COLORS = MODEL_COLORS
 PERT_SUFFIX_RE = re.compile(r"_(rephrase|numerical|semantic)(?:_v\d+)?$")
 B = 10_000
 SEED = 42
@@ -171,8 +174,7 @@ def main():
 
 
 def plot_ci(acc_ci, rob_ci):
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.5), dpi=300)
-    fig.patch.set_alpha(0)
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.5), dpi=300, facecolor=SITE_BG)
 
     # Accuracy panel — sort high→low
     order_a = sorted(acc_ci.keys(), key=lambda m: -acc_ci[m][0])
@@ -182,7 +184,7 @@ def plot_ci(acc_ci, rob_ci):
     err_lo_a = [m - lo for m, lo in zip(means_a, los_a)]
     err_hi_a = [hi - m for m, hi in zip(means_a, his_a)]
     ax = axes[0]
-    ax.patch.set_alpha(0)
+    ax.set_facecolor(SITE_BG)
     x = np.arange(len(order_a))
     for i, m in enumerate(order_a):
         ax.errorbar(
@@ -190,15 +192,16 @@ def plot_ci(acc_ci, rob_ci):
             yerr=[[err_lo_a[i]], [err_hi_a[i]]],
             fmt="o", color=COLORS[m], ecolor=COLORS[m],
             elinewidth=2.4, capsize=6, capthick=2, markersize=10,
-            markeredgecolor="#111", markeredgewidth=0.6,
+            markeredgecolor=SITE_BG, markeredgewidth=0.6,
         )
     ax.set_xticks(x)
     ax.set_xticklabels([m.upper() for m in order_a], fontsize=10, fontweight="bold")
-    ax.set_ylabel("Accuracy (mean final_score)", fontsize=10)
-    ax.set_title("Accuracy — 95% bootstrap CI (n=171/model, B=10k)", fontsize=11, fontweight="bold")
-    ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.5)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
+    color_code_model_ticks(ax)
+    ax.set_ylabel("Accuracy (mean final_score)", fontsize=10, color=SITE_FG_MUTED)
+    ax.set_title("Accuracy — 95% bootstrap CI (n=171/model, B=10k)",
+                 fontsize=11, fontweight="bold", color=SITE_FG)
+    ax.grid(axis="y", linestyle="-", linewidth=0.5, alpha=0.06, color="#ffffff")
+    dim_remaining_spines(ax)
 
     # Robustness panel — sort low→high delta (best→worst)
     order_r = sorted(rob_ci.keys(), key=lambda m: rob_ci[m][0])
@@ -208,28 +211,30 @@ def plot_ci(acc_ci, rob_ci):
     err_lo_r = [m - lo for m, lo in zip(means_r, los_r)]
     err_hi_r = [hi - m for m, hi in zip(means_r, his_r)]
     ax = axes[1]
-    ax.patch.set_alpha(0)
+    ax.set_facecolor(SITE_BG)
     x = np.arange(len(order_r))
-    ax.axhline(0, color="#888", linestyle="--", linewidth=1, zorder=0)
+    ax.axhline(0, color=SITE_FG_MUTED, linestyle="--", linewidth=1, alpha=0.6, zorder=0)
     for i, m in enumerate(order_r):
         ax.errorbar(
             x[i], means_r[i],
             yerr=[[err_lo_r[i]], [err_hi_r[i]]],
             fmt="o", color=COLORS[m], ecolor=COLORS[m],
             elinewidth=2.4, capsize=6, capthick=2, markersize=10,
-            markeredgecolor="#111", markeredgewidth=0.6,
+            markeredgecolor=SITE_BG, markeredgewidth=0.6,
         )
     ax.set_xticks(x)
     ax.set_xticklabels([m.upper() for m in order_r], fontsize=10, fontweight="bold")
-    ax.set_ylabel("Robustness Δ (base − pert; lower = more robust)", fontsize=10)
-    ax.set_title("Robustness Δ — 95% bootstrap CI (n=473/model, B=10k)", fontsize=11, fontweight="bold")
-    ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.5)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
+    color_code_model_ticks(ax)
+    ax.set_ylabel("Robustness Δ (base − pert; lower = more robust)",
+                  fontsize=10, color=SITE_FG_MUTED)
+    ax.set_title("Robustness Δ — 95% bootstrap CI (n=473/model, B=10k)",
+                 fontsize=11, fontweight="bold", color=SITE_FG)
+    ax.grid(axis="y", linestyle="-", linewidth=0.5, alpha=0.06, color="#ffffff")
+    dim_remaining_spines(ax)
 
     fig.tight_layout()
     OUT_FIG.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT_FIG, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(OUT_FIG, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
 

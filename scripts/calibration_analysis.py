@@ -33,6 +33,15 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from llm_runner.response_parser import extract_confidence
 
+# Canonical site palette (single source of truth).
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    apply_site_theme, color_code_model_ticks, dim_remaining_spines,
+)
+
+apply_site_theme()
+
 RUNS_PATH = Path("experiments/results_v1/runs.jsonl")
 # v1-pert specs (75 task_ids) — filter v1-pert rows out of base scope. Empty after B-2.
 V1_PERT_PATH = Path("data/synthetic/perturbations.json")
@@ -43,14 +52,6 @@ FIG_RELIABILITY_WEB = Path(
     "capstone-website/frontend/public/visualizations/png/v2/calibration_reliability.png"
 )
 FIG_ECE = Path("report_materials/figures/calibration_ece_ranking.png")
-
-MODEL_COLORS = {
-    "claude":   "#5eead4",
-    "chatgpt":  "#86efac",
-    "gemini":   "#fda4af",
-    "deepseek": "#93c5fd",
-    "mistral":  "#c4b5fd",
-}
 
 # Bucket → numeric confidence claim (per spec)
 BUCKET_CONF = {"high": 0.9, "medium": 0.6, "low": 0.3, "unstated": 0.5}
@@ -230,25 +231,25 @@ def make_ece_figure(per_model: dict, path: Path) -> None:
     items = sorted(per_model.items(), key=lambda kv: kv[1]["ece"])
     models = [m for m, _ in items]
     eces = [info["ece"] for _, info in items]
-    colors = [MODEL_COLORS.get(m, "#aaa") for m in models]
+    colors = [MODEL_COLORS.get(m, SITE_FG_MUTED) for m in models]
 
-    fig, ax = plt.subplots(figsize=(12, 6.5), facecolor="none")
-    ax.set_facecolor("#0a0a14")
-    bars = ax.bar(models, eces, color=colors, edgecolor="white", linewidth=0.7)
+    fig, ax = plt.subplots(figsize=(12, 6.5), facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
+    bars = ax.bar(models, eces, color=colors, edgecolor=SITE_BG, linewidth=0.7)
     for bar, e in zip(bars, eces):
         ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.005,
-                f"{e:.3f}", ha="center", color="white", fontsize=13, fontweight="bold")
+                f"{e:.3f}", ha="center", color=SITE_FG, fontsize=13, fontweight="bold")
     ax.set_ylabel("Expected Calibration Error (lower is better)",
-                  fontsize=15, color="white")
+                  fontsize=15, color=SITE_FG_MUTED)
     ax.set_title("Calibration ranking — ECE per model",
-                 fontsize=20, color="white", pad=14)
-    ax.tick_params(colors="white", labelsize=13)
-    for spine in ax.spines.values():
-        spine.set_color("white"); spine.set_alpha(0.5)
-    ax.grid(True, axis="y", alpha=0.18, color="white")
+                 fontsize=20, color=SITE_FG, pad=14)
+    ax.tick_params(colors=SITE_FG_MUTED, labelsize=13)
+    color_code_model_ticks(ax)
+    dim_remaining_spines(ax)
+    ax.grid(True, axis="y", alpha=0.06, color="#ffffff")
     ax.set_ylim(0, max(eces) * 1.18)
     plt.tight_layout()
-    fig.savefig(path, dpi=300, bbox_inches="tight", transparent=True)
+    fig.savefig(path, dpi=300, bbox_inches="tight", facecolor=SITE_BG)
     plt.close(fig)
 
 

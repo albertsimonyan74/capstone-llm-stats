@@ -24,6 +24,14 @@ sys.path.insert(0, str(ROOT))
 
 from baseline.utils_task_id import task_type_from_id  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (  # noqa: E402
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    apply_site_theme, color_code_model_ticks, dim_remaining_spines,
+    style_colorbar,
+)
+
+apply_site_theme()
 plt.rcParams["font.size"] = 11
 
 FIG_DIR = ROOT / "report_materials" / "figures"
@@ -38,13 +46,6 @@ CALIB = ROOT / "experiments" / "results_v2" / "calibration.json"
 BOOTSTRAP = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
 JUDGE_DIM_MEANS = ROOT / "experiments" / "results_v2" / "judge_dimension_means.json"
 
-MODEL_COLORS = {
-    "claude":   "#00CED1",
-    "chatgpt":  "#7FFFD4",
-    "gemini":   "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral":  "#A78BFA",
-}
 MODEL_LABEL = {
     "claude":   "Claude",
     "chatgpt":  "ChatGPT",
@@ -65,11 +66,8 @@ L1_COLORS = {
 }
 L1_ORDER = list(L1_COLORS.keys())
 
-# Site theme (matches capstone-website/frontend/src/App.css :root vars).
-SITE_BG = "#0A0F1E"        # bg-primary
-SITE_FG = "#E8F4F8"        # text-primary
-SITE_FG_MUTED = "#8BAFC0"  # text-secondary
-SITE_GRID_ALPHA = 0.08
+# Theme constants from canonical site_palette module.
+SITE_GRID_ALPHA = 0.06
 
 PERT_SUFFIX_RE = re.compile(r"_(rephrase|numerical|semantic)(?:_v\d+)?$")
 
@@ -273,8 +271,8 @@ def figure_a2():
 
     overall_mean = float(np.mean(overall)) if overall else 0.0
 
-    fig, ax = plt.subplots(figsize=(10, 6), dpi=300)
-    fig.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(10, 6), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
 
     n_cat = len(CATEGORY_ORDER)
     n_mod = len(MODELS)
@@ -291,25 +289,25 @@ def figure_a2():
             his.append(hi - mean)
         offset = (i - (n_mod - 1) / 2) * width
         ax.bar(x + offset, means, width=width,
-               color=MODEL_COLORS[m], edgecolor="white", linewidth=0.5,
+               color=MODEL_COLORS[m], edgecolor=SITE_BG, linewidth=0.5,
                label=MODEL_LABEL[m],
-               yerr=[los, his], ecolor="#333", capsize=2)
+               yerr=[los, his], ecolor=SITE_FG_MUTED, capsize=2)
 
-    ax.axhline(overall_mean, color="#444", lw=1.2, ls="--", alpha=0.7,
+    ax.axhline(overall_mean, color=SITE_FG_MUTED, lw=1.2, ls="--", alpha=0.7,
                label=f"Overall mean = {overall_mean:.3f}")
 
     ax.set_xticks(x)
-    ax.set_xticklabels([CATEGORY_LABEL[c] for c in CATEGORY_ORDER], fontsize=10)
-    ax.set_ylabel("Accuracy (final_score)")
-    ax.set_xlabel("Task category")
+    ax.set_xticklabels([CATEGORY_LABEL[c] for c in CATEGORY_ORDER],
+                       fontsize=10, color=SITE_FG_MUTED)
+    ax.set_ylabel("Accuracy (final_score)", color=SITE_FG_MUTED)
+    ax.set_xlabel("Task category", color=SITE_FG_MUTED)
     ax.set_ylim(0, 1.0)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.grid(axis="y", linestyle="--", alpha=0.3)
-    ax.legend(loc="upper right", frameon=False, ncol=2, fontsize=9)
+    dim_remaining_spines(ax)
+    ax.grid(axis="y", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
+    ax.legend(loc="upper right", frameon=False, ncol=2, fontsize=9, labelcolor=SITE_FG_MUTED)
 
     fig.tight_layout()
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     cat_means = {cat: np.mean([by_model_cat[(m, cat)] for m in MODELS for _ in [0]
@@ -335,10 +333,6 @@ def figure_a3():
     import matplotlib.colors as mcolors
 
     out = FIG_DIR / "a3_failure_heatmap.png"
-
-    SITE_BG = "#0f1118"
-    SITE_FG = "#e2e8f0"
-    SITE_FG_MUTED = "#94a3b8"
 
     # Site-harmonized colormap: dark (blends with bg) → coral-red
     custom_cmap = mcolors.LinearSegmentedColormap.from_list(
@@ -500,8 +494,8 @@ def figure_a4():
     pert_types = ["rephrase", "numerical", "semantic"]
     pert_label = {"rephrase": "Rephrase", "numerical": "Numerical", "semantic": "Semantic"}
 
-    fig, ax = plt.subplots(figsize=(10, 6), dpi=300)
-    fig.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(10, 6), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
 
     n_grp = len(pert_types)
     n_mod = len(MODELS)
@@ -518,10 +512,10 @@ def figure_a4():
         ys = [deltas[(m, pt)] for pt in pert_types]
         offset = (i - (n_mod - 1) / 2) * width
         ax.bar(x + offset, ys, width=width,
-               color=MODEL_COLORS[m], edgecolor="white", linewidth=0.5,
+               color=MODEL_COLORS[m], edgecolor=SITE_BG, linewidth=0.5,
                label=MODEL_LABEL[m])
 
-    ax.axhline(0.0, color="#222", lw=1.0, ls="--", alpha=0.7)
+    ax.axhline(0.0, color=SITE_FG_MUTED, lw=1.0, ls="--", alpha=0.6)
 
     max_key = max(deltas, key=lambda k: deltas[k])
     mi = MODELS.index(max_key[0])
@@ -531,22 +525,21 @@ def figure_a4():
         f"largest fragility:\n{MODEL_LABEL[max_key[0]]}, {pert_label[max_key[1]]} ({deltas[max_key]:+.3f})",
         xy=(x[pi] + offset, deltas[max_key]),
         xytext=(x[pi] + offset + 0.18, deltas[max_key] + 0.008),
-        fontsize=9, ha="left", color="#222", fontweight="bold",
-        arrowprops=dict(arrowstyle="->", color="#444", lw=0.8),
+        fontsize=9, ha="left", color=SITE_FG, fontweight="bold",
+        arrowprops=dict(arrowstyle="->", color=SITE_FG_MUTED, lw=0.8),
     )
 
     ax.set_xticks(x)
-    ax.set_xticklabels([pert_label[p] for p in pert_types])
-    ax.set_ylabel("Δ score (base − perturbation)")
-    ax.set_xlabel("Perturbation type")
+    ax.set_xticklabels([pert_label[p] for p in pert_types], color=SITE_FG_MUTED)
+    ax.set_ylabel("Δ score (base − perturbation)", color=SITE_FG_MUTED)
+    ax.set_xlabel("Perturbation type", color=SITE_FG_MUTED)
     ax.set_ylim(-0.04, max(deltas.values()) * 1.85)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.grid(axis="y", linestyle="--", alpha=0.3)
-    ax.legend(loc="lower left", frameon=False, ncol=5, fontsize=9)
+    dim_remaining_spines(ax)
+    ax.grid(axis="y", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
+    ax.legend(loc="lower left", frameon=False, ncol=5, fontsize=9, labelcolor=SITE_FG_MUTED)
 
     fig.tight_layout()
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     biggest_drop = max(deltas, key=lambda k: deltas[k])
@@ -562,10 +555,10 @@ def figure_a5():
 
     calib = load_calibration()
 
-    fig, ax = plt.subplots(figsize=(8, 6), dpi=300)
-    fig.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(8, 6), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
 
-    ax.plot([0, 1], [0, 1], color="#444", lw=1.2, ls="--", alpha=0.6,
+    ax.plot([0, 1], [0, 1], color=SITE_FG_MUTED, lw=1.2, ls="--", alpha=0.6,
             label="perfect calibration")
 
     MIN_N = 3
@@ -582,7 +575,7 @@ def figure_a5():
             continue
         color = MODEL_COLORS[m]
         ax.plot(xs, ys, color=color, lw=2.0, marker="o", markersize=10,
-                markeredgecolor="white", markeredgewidth=1.0,
+                markeredgecolor=SITE_BG, markeredgewidth=1.0,
                 label=f"{MODEL_LABEL[m]} (ECE={info['ece']:.3f})")
         ax.annotate(
             f"{MODEL_LABEL[m]}",
@@ -593,20 +586,19 @@ def figure_a5():
 
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    ax.set_xlabel("Claimed confidence (bucket midpoint)")
-    ax.set_ylabel("Empirical accuracy")
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    ax.grid(True, alpha=0.25)
-    ax.legend(loc="upper left", frameon=False, fontsize=9)
+    ax.set_xlabel("Claimed confidence (bucket midpoint)", color=SITE_FG_MUTED)
+    ax.set_ylabel("Empirical accuracy", color=SITE_FG_MUTED)
+    dim_remaining_spines(ax)
+    ax.grid(True, alpha=SITE_GRID_ALPHA, color="#ffffff")
+    ax.legend(loc="upper left", frameon=False, fontsize=9, labelcolor=SITE_FG_MUTED)
 
     fig.text(0.5, 0.02,
              "High confidence bucket (claimed ≥ 0.9) empty for all models — keyword extractor never triggered. "
              "Buckets with n < 3 hidden. ECE is a 3-bucket weighted MAE.",
-             ha="center", fontsize=8.5, style="italic", color="#666", wrap=True)
+             ha="center", fontsize=8.5, style="italic", color=SITE_FG_MUTED, wrap=True)
 
     fig.tight_layout(rect=(0, 0.05, 1, 1))
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     best_model = min(MODELS, key=lambda m: calib[m]["ece"])
@@ -647,8 +639,7 @@ def figure_a6():
     rank_order = sorted(MODELS, key=lambda m: -bootstrap["accuracy"][m]["mean"])
     label_map = [MODEL_LABEL[m] for m in rank_order]
 
-    fig, axes = plt.subplots(4, 1, figsize=(8, 7), dpi=300, sharey=False)
-    fig.patch.set_alpha(0)
+    fig, axes = plt.subplots(4, 1, figsize=(8, 7), dpi=300, sharey=False, facecolor=SITE_BG)
 
     panels = [
         ("Accuracy (mean)", "accuracy_mean"),
@@ -658,6 +649,7 @@ def figure_a6():
     ]
 
     for ax, (title, key) in zip(axes, panels):
+        ax.set_facecolor(SITE_BG)
         ys = list(range(len(rank_order)))
         xs, los_minus, his_plus = [], [], []
         for m in rank_order:
@@ -681,8 +673,8 @@ def figure_a6():
         for y, x, lo, hi, m in zip(ys, xs, los_minus, his_plus, rank_order):
             ax.errorbar(x, y, xerr=[[lo], [hi]] if (lo or hi) else None,
                         fmt="o", markersize=10, color=MODEL_COLORS[m],
-                        markeredgecolor="white", markeredgewidth=1.0,
-                        ecolor="#444", elinewidth=1.0, capsize=3)
+                        markeredgecolor=SITE_BG, markeredgewidth=1.0,
+                        ecolor=SITE_FG_MUTED, elinewidth=1.0, capsize=3)
 
         ax.set_yticks(ys)
         ax.set_yticklabels(label_map, fontsize=10)
@@ -690,13 +682,12 @@ def figure_a6():
             tick.set_color(MODEL_COLORS[m])
             tick.set_fontweight("bold")
         ax.invert_yaxis()
-        ax.set_xlabel(title)
-        ax.spines["top"].set_visible(False)
-        ax.spines["right"].set_visible(False)
-        ax.grid(axis="x", linestyle="--", alpha=0.3)
+        ax.set_xlabel(title, color=SITE_FG_MUTED)
+        dim_remaining_spines(ax)
+        ax.grid(axis="x", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
 
         if key == "robustness_delta":
-            ax.axvline(0.0, color="#222", lw=0.8, ls="--", alpha=0.6)
+            ax.axvline(0.0, color=SITE_FG_MUTED, lw=0.8, ls="--", alpha=0.6)
 
         if key in ("accuracy_mean", "robustness_delta"):
             sep_key = "accuracy" if key == "accuracy_mean" else "robustness"
@@ -708,19 +699,19 @@ def figure_a6():
                 ax.annotate(
                     "",
                     xy=(x_anchor, j), xytext=(x_anchor, i),
-                    arrowprops=dict(arrowstyle="-", color="#888", lw=1.4),
+                    arrowprops=dict(arrowstyle="-", color=SITE_FG_MUTED, lw=1.4),
                     annotation_clip=False,
                 )
                 ax.text(x_anchor - (xmax - xmin) * 0.02, (i + j) / 2,
                         "n.s.", ha="right", va="center", fontsize=8.5,
-                        color="#888", fontweight="bold")
+                        color=SITE_FG_MUTED, fontweight="bold")
 
     fig.text(0.5, 0.005,
              "Models sorted by Accuracy. n.s. = adjacent ranks not statistically separable (95% bootstrap CI, B=10,000).",
-             ha="center", fontsize=8.5, style="italic", color="#666")
+             ha="center", fontsize=8.5, style="italic", color=SITE_FG_MUTED)
 
     fig.tight_layout(rect=(0, 0.025, 1, 1))
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     return out, f"top by accuracy: {MODEL_LABEL[rank_order[0]]}; rankings disagree across panels — see arrows on three_rankings figure for visualization"

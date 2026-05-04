@@ -32,6 +32,16 @@ from typing import Any, Dict, List, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    apply_site_theme, color_code_model_ticks, dim_remaining_spines,
+    style_colorbar,
+)
+
+apply_site_theme()
+
 ROOT = Path(__file__).resolve().parents[1]
 NMACR = ROOT / "experiments" / "results_v2" / "nmacr_scores_v2.jsonl"
 TASKS_ALL = ROOT / "data" / "benchmark_v1" / "tasks_all.json"
@@ -50,13 +60,7 @@ FIG_DIR = ROOT / "report_materials" / "figures"
 
 MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
 DIMS = ["N", "M", "A", "C", "R"]
-COLORS = {
-    "claude": "#00CED1",
-    "chatgpt": "#7FFFD4",
-    "gemini": "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral": "#A78BFA",
-}
+COLORS = MODEL_COLORS
 B = 10_000
 SEED = 42
 
@@ -340,18 +344,19 @@ def fig_a4b_per_dim_robustness(rob: Dict[str, Any]) -> None:
             if cell:
                 matrix[i, j] = cell["mean_delta"]
 
-    fig, ax = plt.subplots(figsize=(7, 4.5), dpi=300)
-    fig.patch.set_alpha(0)
-    ax.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(7, 4.5), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
     vmax = np.nanmax(np.abs(matrix))
     vmax = max(vmax, 0.05)
     im = ax.imshow(matrix, cmap="RdBu_r", vmin=-vmax, vmax=vmax, aspect="auto")
     ax.set_xticks(range(len(DIMS)))
-    ax.set_xticklabels(DIMS, fontsize=11, fontweight="bold")
+    ax.set_xticklabels(DIMS, fontsize=11, fontweight="bold", color=SITE_FG_MUTED)
     ax.set_yticks(range(len(M)))
     ax.set_yticklabels([m.upper() for m in M], fontsize=10, fontweight="bold")
-    ax.set_xlabel("NMACR dimension", fontsize=10)
-    ax.set_title("Per-dimension robustness Δ (base − perturbation)", fontsize=11, fontweight="bold")
+    color_code_model_ticks(ax, axis="y")
+    ax.set_xlabel("NMACR dimension", fontsize=10, color=SITE_FG_MUTED)
+    ax.set_title("Per-dimension robustness Δ (base − perturbation)",
+                 fontsize=11, fontweight="bold", color=SITE_FG)
 
     for i in range(len(M)):
         for j in range(len(DIMS)):
@@ -361,14 +366,14 @@ def fig_a4b_per_dim_robustness(rob: Dict[str, Any]) -> None:
             text = f"{v:+.03f}"
             if abs(v) > 0.03:
                 text += "*"
-            color = "white" if abs(v) > vmax * 0.55 else "#111"
+            color = "white" if abs(v) > vmax * 0.55 else SITE_BG
             ax.text(j, i, text, ha="center", va="center", color=color, fontsize=9)
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.04, pad=0.04)
-    cbar.set_label("Δ (negative = robust gain)", fontsize=9)
+    style_colorbar(cbar, label="Δ (negative = robust gain)")
     fig.tight_layout()
     out = FIG_DIR / "a4b_per_dim_robustness.png"
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {out}")
 
@@ -419,32 +424,33 @@ def fig_a5b_per_dim_calibration(cal: Dict[str, Any]) -> None:
             if v is not None:
                 matrix[i, j] = v
 
-    fig, ax = plt.subplots(figsize=(7, 4.5), dpi=300)
-    fig.patch.set_alpha(0)
-    ax.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(7, 4.5), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
     vmax = np.nanmax(matrix)
     vmax = max(vmax, 0.1)
     im = ax.imshow(matrix, cmap="Greens_r", vmin=0.0, vmax=vmax, aspect="auto")
     ax.set_xticks(range(len(DIMS)))
-    ax.set_xticklabels(DIMS, fontsize=11, fontweight="bold")
+    ax.set_xticklabels(DIMS, fontsize=11, fontweight="bold", color=SITE_FG_MUTED)
     ax.set_yticks(range(len(MODELS)))
     ax.set_yticklabels([m.upper() for m in MODELS], fontsize=10, fontweight="bold")
-    ax.set_xlabel("NMACR dimension", fontsize=10)
-    ax.set_title("Per-dimension calibration ECE (lower = better)", fontsize=11, fontweight="bold")
+    color_code_model_ticks(ax, axis="y")
+    ax.set_xlabel("NMACR dimension", fontsize=10, color=SITE_FG_MUTED)
+    ax.set_title("Per-dimension calibration ECE (lower = better)",
+                 fontsize=11, fontweight="bold", color=SITE_FG)
 
     for i in range(len(MODELS)):
         for j in range(len(DIMS)):
             v = matrix[i, j]
             if np.isnan(v):
                 continue
-            color = "white" if v < vmax * 0.4 else "#111"
+            color = "white" if v < vmax * 0.4 else SITE_BG
             ax.text(j, i, f"{v:.03f}", ha="center", va="center", color=color, fontsize=9)
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.04, pad=0.04)
-    cbar.set_label("ECE", fontsize=9)
+    style_colorbar(cbar, label="ECE")
     fig.tight_layout()
     out = FIG_DIR / "a5b_per_dim_calibration.png"
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {out}")
 
@@ -507,12 +513,11 @@ def _formatting_failure_rate(records: List[Dict[str, Any]]) -> Dict[str, float]:
 
 # ─── 3e — three rankings ─────────────────────────────────────────
 def fig_three_rankings(boot: Dict[str, Any], _rob: Dict[str, Any]) -> None:
-    fig, axes = plt.subplots(1, 3, figsize=(13, 4.5), dpi=300)
-    fig.patch.set_alpha(0)
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4.5), dpi=300, facecolor=SITE_BG)
 
     # ACCURACY
     ax = axes[0]
-    ax.patch.set_alpha(0)
+    ax.set_facecolor(SITE_BG)
     items = sorted(boot["accuracy"].items(), key=lambda kv: -kv[1]["mean"])
     xs = np.arange(len(items))
     means = [v["mean"] for _, v in items]
@@ -523,17 +528,18 @@ def fig_three_rankings(boot: Dict[str, Any], _rob: Dict[str, Any]) -> None:
     for i, (m, _) in enumerate(items):
         ax.errorbar(xs[i], means[i], yerr=[[err_lo[i]], [err_hi[i]]], fmt="o",
                     color=COLORS[m], elinewidth=2.4, capsize=6, capthick=2,
-                    markersize=10, markeredgecolor="#111", markeredgewidth=0.6)
+                    markersize=10, markeredgecolor=SITE_BG, markeredgewidth=0.6)
     ax.set_xticks(xs)
     ax.set_xticklabels([m.upper() for m, _ in items], fontsize=9, fontweight="bold")
-    ax.set_title("Accuracy (NMACR aggregate)", fontsize=10, fontweight="bold")
-    ax.set_ylabel("mean aggregate_new", fontsize=9)
-    ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.4)
-    ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
+    color_code_model_ticks(ax)
+    ax.set_title("Accuracy (NMACR aggregate)", fontsize=10, fontweight="bold", color=SITE_FG)
+    ax.set_ylabel("mean aggregate_new", fontsize=9, color=SITE_FG_MUTED)
+    ax.grid(axis="y", linestyle="-", linewidth=0.5, alpha=0.06, color="#ffffff")
+    dim_remaining_spines(ax)
 
     # ROBUSTNESS — lowest |delta| best
     ax = axes[1]
-    ax.patch.set_alpha(0)
+    ax.set_facecolor(SITE_BG)
     items = sorted(boot["robustness"].items(), key=lambda kv: kv[1]["mean_delta"])
     xs = np.arange(len(items))
     means = [v["mean_delta"] for _, v in items]
@@ -544,38 +550,40 @@ def fig_three_rankings(boot: Dict[str, Any], _rob: Dict[str, Any]) -> None:
     for i, (m, _) in enumerate(items):
         ax.errorbar(xs[i], means[i], yerr=[[err_lo[i]], [err_hi[i]]], fmt="s",
                     color=COLORS[m], elinewidth=2.4, capsize=6, capthick=2,
-                    markersize=10, markeredgecolor="#111", markeredgewidth=0.6)
-    ax.axhline(0, color="#666", linewidth=0.6)
+                    markersize=10, markeredgecolor=SITE_BG, markeredgewidth=0.6)
+    ax.axhline(0, color=SITE_FG_MUTED, linewidth=0.6)
     ax.set_xticks(xs)
     ax.set_xticklabels([m.upper() for m, _ in items], fontsize=9, fontweight="bold")
-    ax.set_title("Robustness Δ (lower = robust)", fontsize=10, fontweight="bold")
-    ax.set_ylabel("mean(base − perturbed)", fontsize=9)
-    ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.4)
-    ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
+    color_code_model_ticks(ax)
+    ax.set_title("Robustness Δ (lower = robust)", fontsize=10, fontweight="bold", color=SITE_FG)
+    ax.set_ylabel("mean(base − perturbed)", fontsize=9, color=SITE_FG_MUTED)
+    ax.grid(axis="y", linestyle="-", linewidth=0.5, alpha=0.06, color="#ffffff")
+    dim_remaining_spines(ax)
 
     # CALIBRATION (ECE — independent of weighting)
     ax = axes[2]
-    ax.patch.set_alpha(0)
+    ax.set_facecolor(SITE_BG)
     eces = boot.get("calibration_ece_points", {})
     items = sorted(eces.items(), key=lambda kv: kv[1])
     xs = np.arange(len(items))
     for i, (m, ece) in enumerate(items):
-        ax.bar(xs[i], ece, color=COLORS[m], edgecolor="#111", linewidth=0.5, width=0.7)
+        ax.bar(xs[i], ece, color=COLORS[m], edgecolor=SITE_BG, linewidth=0.5, width=0.7)
     ax.set_xticks(xs)
     ax.set_xticklabels([m.upper() for m, _ in items], fontsize=9, fontweight="bold")
-    ax.set_title("Calibration ECE (lower = better)", fontsize=10, fontweight="bold")
-    ax.set_ylabel("ECE (3-bucket weighted MAE)", fontsize=9)
-    ax.grid(axis="y", linestyle=":", linewidth=0.5, alpha=0.4)
-    ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
+    color_code_model_ticks(ax)
+    ax.set_title("Calibration ECE (lower = better)", fontsize=10, fontweight="bold", color=SITE_FG)
+    ax.set_ylabel("ECE (3-bucket weighted MAE)", fontsize=9, color=SITE_FG_MUTED)
+    ax.grid(axis="y", linestyle="-", linewidth=0.5, alpha=0.06, color="#ffffff")
+    dim_remaining_spines(ax)
 
     fig.suptitle("Three rankings — accuracy ≠ robustness ≠ calibration",
-                 fontsize=12, fontweight="bold", y=1.02)
+                 fontsize=12, fontweight="bold", y=1.02, color=SITE_FG)
     fig.text(0.5, -0.03,
              "NMACR weighted A=0.30, R=0.25, M=0.20, C=0.15, N=0.10 (literature-derived)",
-             ha="center", fontsize=8, color="#666")
+             ha="center", fontsize=8, color=SITE_FG_MUTED)
     fig.tight_layout()
     out = FIG_DIR / "three_rankings.png"
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {out}")
 
@@ -617,26 +625,29 @@ def fig_a2_by_category(records: List[Dict[str, Any]]) -> None:
             if vals:
                 matrix[i, j] = float(np.mean(vals))
 
-    fig, ax = plt.subplots(figsize=(10, 4.5), dpi=300)
-    fig.patch.set_alpha(0); ax.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(10, 4.5), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
     im = ax.imshow(matrix, cmap="viridis", vmin=0.0, vmax=1.0, aspect="auto")
     ax.set_xticks(range(len(CATEGORY_ORDER)))
-    ax.set_xticklabels(CATEGORY_ORDER, fontsize=9, fontweight="bold", rotation=20, ha="right")
+    ax.set_xticklabels(CATEGORY_ORDER, fontsize=9, fontweight="bold",
+                       rotation=20, ha="right", color=SITE_FG_MUTED)
     ax.set_yticks(range(len(MODELS)))
     ax.set_yticklabels([m.upper() for m in MODELS], fontsize=10, fontweight="bold")
+    color_code_model_ticks(ax, axis="y")
     ax.set_title("Mean aggregate_new by Bayesian category (literature-weighted)",
-                 fontsize=11, fontweight="bold")
+                 fontsize=11, fontweight="bold", color=SITE_FG)
     for i in range(len(MODELS)):
         for j in range(len(CATEGORY_ORDER)):
             v = matrix[i, j]
             if np.isnan(v):
                 continue
-            color = "white" if v < 0.55 else "#111"
+            color = "white" if v < 0.55 else SITE_BG
             ax.text(j, i, f"{v:.2f}", ha="center", va="center", color=color, fontsize=9)
-    plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02, label="mean aggregate_new")
+    cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
+    style_colorbar(cbar, label="mean aggregate_new")
     fig.tight_layout()
     out = FIG_DIR / "a2_accuracy_by_category.png"
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {out}")
 
@@ -657,19 +668,21 @@ def fig_a3_failure_heatmap(records: List[Dict[str, Any]]) -> None:
                 fail = sum(1 for v in vals if v < 0.5) / len(vals)
                 matrix[i, j] = fail
 
-    fig, ax = plt.subplots(figsize=(max(11, 0.34 * len(types)), 4.5), dpi=300)
-    fig.patch.set_alpha(0); ax.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(max(11, 0.34 * len(types)), 4.5), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
     im = ax.imshow(matrix, cmap="Reds", vmin=0.0, vmax=1.0, aspect="auto")
     ax.set_xticks(range(len(types)))
-    ax.set_xticklabels(types, fontsize=8, rotation=70, ha="right")
+    ax.set_xticklabels(types, fontsize=8, rotation=70, ha="right", color=SITE_FG_MUTED)
     ax.set_yticks(range(len(MODELS)))
     ax.set_yticklabels([m.upper() for m in MODELS], fontsize=10, fontweight="bold")
+    color_code_model_ticks(ax, axis="y")
     ax.set_title("Failure rate (aggregate_new < 0.5) per model × task_type",
-                 fontsize=11, fontweight="bold")
-    plt.colorbar(im, ax=ax, fraction=0.025, pad=0.02, label="failure rate")
+                 fontsize=11, fontweight="bold", color=SITE_FG)
+    cbar = plt.colorbar(im, ax=ax, fraction=0.025, pad=0.02)
+    style_colorbar(cbar, label="failure rate")
     fig.tight_layout()
     out = FIG_DIR / "a3_failure_heatmap.png"
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {out}")
 
@@ -683,44 +696,44 @@ def fig_a6_aggregate_ranking(records: List[Dict[str, Any]],
     means = [v["mean"] for _, v in items]
     cis = [(v["ci_lower"], v["ci_upper"]) for _, v in items]
 
-    fig, axes = plt.subplots(1, 2, figsize=(11, 4.0), dpi=300,
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.0), dpi=300, facecolor=SITE_BG,
                              gridspec_kw={"width_ratios": [3, 1]})
-    fig.patch.set_alpha(0)
 
     # Aggregate ranking
     ax = axes[0]
-    ax.patch.set_alpha(0)
+    ax.set_facecolor(SITE_BG)
     ys = np.arange(len(M))[::-1]
     for i, m in enumerate(M):
         lo, hi = cis[i]
         ax.errorbar(means[i], ys[i], xerr=[[means[i] - lo], [hi - means[i]]],
                     fmt="o", color=COLORS[m], elinewidth=2.4, capsize=6,
-                    capthick=2, markersize=11, markeredgecolor="#111", markeredgewidth=0.6)
+                    capthick=2, markersize=11, markeredgecolor=SITE_BG, markeredgewidth=0.6)
         ax.text(means[i] + 0.005, ys[i] + 0.18, f"{means[i]:.3f}",
-                fontsize=9, color="#111")
+                fontsize=9, color=SITE_FG)
     ax.set_yticks(ys)
     ax.set_yticklabels([m.upper() for m in M], fontsize=10, fontweight="bold")
-    ax.set_xlabel("Aggregate score (literature-weighted NMACR)", fontsize=10)
-    ax.set_title("Aggregate ranking with 95% bootstrap CI", fontsize=11, fontweight="bold")
-    ax.grid(axis="x", linestyle=":", linewidth=0.5, alpha=0.4)
-    ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
+    color_code_model_ticks(ax, axis="y")
+    ax.set_xlabel("Aggregate score (literature-weighted NMACR)", fontsize=10, color=SITE_FG_MUTED)
+    ax.set_title("Aggregate ranking with 95% bootstrap CI", fontsize=11, fontweight="bold", color=SITE_FG)
+    ax.grid(axis="x", linestyle="-", linewidth=0.5, alpha=0.06, color="#ffffff")
+    dim_remaining_spines(ax)
 
     # formatting_failure_rate column
     ax = axes[1]
-    ax.patch.set_alpha(0)
+    ax.set_facecolor(SITE_BG)
     for i, m in enumerate(M):
         rate = fmt_rates.get(m, 0.0)
-        ax.barh(ys[i], rate, color=COLORS[m], edgecolor="#111", linewidth=0.5)
-        ax.text(rate + 0.05, ys[i], f"{rate:.2f}%", va="center", fontsize=9)
+        ax.barh(ys[i], rate, color=COLORS[m], edgecolor=SITE_BG, linewidth=0.5)
+        ax.text(rate + 0.05, ys[i], f"{rate:.2f}%", va="center", fontsize=9, color=SITE_FG)
     ax.set_yticks([])
-    ax.set_xlabel("formatting_failure_rate (%)", fontsize=10)
-    ax.set_title("Pre-rubric exclusions", fontsize=11, fontweight="bold")
+    ax.set_xlabel("formatting_failure_rate (%)", fontsize=10, color=SITE_FG_MUTED)
+    ax.set_title("Pre-rubric exclusions", fontsize=11, fontweight="bold", color=SITE_FG)
     ax.set_xlim(0, max(max(fmt_rates.values(), default=0.0) * 1.5, 3.0))
-    ax.spines["top"].set_visible(False); ax.spines["right"].set_visible(False)
+    dim_remaining_spines(ax)
 
     fig.tight_layout()
     out = FIG_DIR / "a6_aggregate_ranking.png"
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {out}")
 

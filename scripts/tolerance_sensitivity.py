@@ -27,6 +27,15 @@ from typing import Dict, List, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED,
+    apply_site_theme, dim_remaining_spines,
+)
+
+apply_site_theme()
+
 ROOT = Path(__file__).resolve().parent.parent
 RUNS_PATH = ROOT / "experiments" / "results_v1" / "runs.jsonl"
 OUT_JSON = ROOT / "experiments" / "results_v2" / "tolerance_sensitivity.json"
@@ -74,34 +83,37 @@ def plot_grouped_bars(results: Dict[str, Dict[str, Dict]], path: Path) -> None:
     levels = list(TOLERANCE_LEVELS.keys())
     x = np.arange(len(MODELS))
     width = 0.27
-    colors = {"tight": "#3b6dd0", "default": "#888888", "loose": "#d06b3b"}
+    # Cool blue → neutral slate → warm coral mirrors tight→default→loose semantic.
+    colors = {"tight": "#93c5fd", "default": "#94a3b8", "loose": "#f87171"}
 
-    fig, ax = plt.subplots(figsize=(8.5, 4.6), dpi=300)
-    fig.patch.set_alpha(0.0)
-    ax.set_facecolor((0, 0, 0, 0))
+    fig, ax = plt.subplots(figsize=(8.5, 4.6), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
 
     for i, lvl in enumerate(levels):
         accs = [results[lvl][m]["accuracy"] for m in MODELS]
         offset = (i - 1) * width
         bars = ax.bar(x + offset, accs, width,
                       label=f"{lvl} (abs={TOLERANCE_LEVELS[lvl][0]}, rel={TOLERANCE_LEVELS[lvl][1]})",
-                      color=colors[lvl], edgecolor="black", linewidth=0.5)
+                      color=colors[lvl], edgecolor=SITE_BG, linewidth=0.5)
         for b, a in zip(bars, accs):
             ax.text(b.get_x() + b.get_width() / 2, a + 0.005,
-                    f"{a:.2f}", ha="center", va="bottom", fontsize=7)
+                    f"{a:.2f}", ha="center", va="bottom", fontsize=7,
+                    color=SITE_FG)
 
     ax.set_xticks(x)
-    ax.set_xticklabels([m.capitalize() for m in MODELS])
-    ax.set_ylabel("Accuracy (all numeric targets within tolerance)")
-    ax.set_title("Tolerance Sensitivity — Per-Model Accuracy at 3 Tolerance Levels")
+    ax.set_xticklabels([m.capitalize() for m in MODELS], color=SITE_FG_MUTED)
+    ax.set_ylabel("Accuracy (all numeric targets within tolerance)", color=SITE_FG_MUTED)
+    ax.set_title("Tolerance Sensitivity — Per-Model Accuracy at 3 Tolerance Levels",
+                 color=SITE_FG)
     ax.set_ylim(0, max(0.6, max(
         results[lvl][m]["accuracy"] for lvl in levels for m in MODELS
     ) + 0.08))
-    ax.grid(axis="y", linestyle="--", alpha=0.4)
-    ax.legend(loc="upper right", fontsize=8, framealpha=0.85)
+    ax.grid(axis="y", linestyle="-", alpha=0.06, color="#ffffff")
+    ax.legend(loc="upper right", fontsize=8, frameon=False, labelcolor=SITE_FG_MUTED)
+    dim_remaining_spines(ax)
 
     plt.tight_layout()
-    plt.savefig(path, dpi=300, transparent=True, bbox_inches="tight")
+    plt.savefig(path, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
 

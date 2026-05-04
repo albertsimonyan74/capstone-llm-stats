@@ -24,6 +24,15 @@ import matplotlib.colors as mcolors
 import matplotlib.pyplot as plt
 import numpy as np
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    apply_site_theme, style_colorbar,
+)
+
+apply_site_theme()
+
 ROOT = Path(__file__).resolve().parents[1]
 CANONICAL_JSON = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
 OUT_FIG = ROOT / "report_materials" / "figures" / "robustness_heatmap.png"
@@ -33,14 +42,6 @@ PERT_TT_RE = re.compile(
 )
 
 MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
-
-MODEL_COLORS = {
-    "claude":   "#00CED1",
-    "chatgpt":  "#7FFFD4",
-    "gemini":   "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral":  "#A78BFA",
-}
 
 # Same 6-group taxonomy as scripts/generate_group_a_figures.py
 CATEGORY_ORDER = ["BAYESIAN_CORE", "MLE_FREQ", "MCMC", "REGRESSION", "CAUSAL_PRED", "ADVANCED"]
@@ -131,8 +132,8 @@ def plot_heatmap(heatmap, task_types, models):
             if cell is not None:
                 M[i, j] = cell["delta"]
 
-    fig, ax = plt.subplots(figsize=(11, 14), dpi=150)
-    fig.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(11, 14), dpi=150, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
 
     vmax = float(np.nanmax(np.abs(M))) if np.isfinite(M).any() else 0.5
     vmax = max(vmax, 0.05)
@@ -148,27 +149,29 @@ def plot_heatmap(heatmap, task_types, models):
     ax.xaxis.set_label_position("top")
     ax.tick_params(axis="x", which="major", pad=6)
     for tick, m in zip(ax.get_xticklabels(), models):
-        tick.set_color(MODEL_COLORS.get(m, "#111"))
+        tick.set_color(MODEL_COLORS.get(m, SITE_FG))
 
     # Task types on Y-axis, full row, monospace, no rotation
     ax.set_yticks(range(len(ordered_types)))
-    ax.set_yticklabels(ordered_types, fontsize=8.5, family="monospace")
+    ax.set_yticklabels(ordered_types, fontsize=8.5, family="monospace",
+                       color=SITE_FG_MUTED)
 
     for i in range(len(ordered_types)):
         for j in range(len(models)):
             v = M[i, j]
             if np.isnan(v):
-                ax.text(j, i, "—", ha="center", va="center", fontsize=6, color="#888")
+                ax.text(j, i, "—", ha="center", va="center", fontsize=6,
+                        color=SITE_FG_MUTED)
                 continue
             if v == 0:
                 continue
-            txt_color = "#fff" if abs(v) >= 0.18 else "#1a1a1a"
+            txt_color = "#fff" if abs(v) >= 0.18 else SITE_BG
             ax.text(j, i, f"{v:+.2f}", ha="center", va="center",
                     fontsize=7, color=txt_color, fontweight="bold")
 
     # Horizontal dividers between category bands
     for _, _, end_row in cat_spans[:-1]:
-        ax.axhline(end_row + 0.5, color="#222", linewidth=1.4, alpha=0.85)
+        ax.axhline(end_row + 0.5, color=SITE_FG_MUTED, linewidth=1.0, alpha=0.5)
 
     # Category labels in left margin: horizontal text + vertical bracket.
     # Narrow categories (span ≤ 2 rows) use rotation=0 for legibility;
@@ -185,38 +188,36 @@ def plot_heatmap(heatmap, task_types, models):
         if span <= 2:
             ax.text(label_horiz_x, mid, CATEGORY_LABEL.get(cat, cat),
                     ha="left", va="center", rotation=0,
-                    fontsize=10, fontweight="bold", color="#222",
+                    fontsize=10, fontweight="bold", color=SITE_FG,
                     clip_on=False)
         else:
             ax.text(label_vert_x, mid, CATEGORY_LABEL.get(cat, cat),
                     ha="center", va="center", rotation=90,
-                    fontsize=11, fontweight="bold", color="#222",
+                    fontsize=11, fontweight="bold", color=SITE_FG,
                     clip_on=False)
         ax.plot([bracket_x, bracket_x], [s - 0.4, e + 0.4],
-                color="#444", linewidth=1.4, clip_on=False)
+                color=SITE_FG_MUTED, linewidth=1.4, alpha=0.5, clip_on=False)
         for y_cap in (s - 0.4, e + 0.4):
             ax.plot([bracket_x, bracket_x + 0.20], [y_cap, y_cap],
-                    color="#444", linewidth=1.4, clip_on=False)
+                    color=SITE_FG_MUTED, linewidth=1.4, alpha=0.5, clip_on=False)
 
     ax.set_xlim(-4.0, n_models - 0.5)
 
     ax.set_title(
         "Robustness Heatmap · Δ (base − perturbation) per task type × model",
-        fontsize=12, fontweight="bold", pad=24,
+        fontsize=12, fontweight="bold", color=SITE_FG, pad=24,
     )
     cbar = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
-    cbar.set_label("Δ score (base − perturbation)\npositive = drop under perturbation",
-                   fontsize=9)
-    cbar.ax.tick_params(labelsize=8)
+    style_colorbar(cbar, label="Δ score (base − perturbation)\npositive = drop under perturbation")
 
     ax.set_xticks(np.arange(-.5, len(models), 1), minor=True)
     ax.set_yticks(np.arange(-.5, len(ordered_types), 1), minor=True)
-    ax.grid(which="minor", color="#ddd", linewidth=0.4)
+    ax.grid(which="minor", color=SITE_FG_MUTED, linewidth=0.3, alpha=0.15)
     ax.tick_params(which="minor", length=0)
     ax.tick_params(which="major", length=0)
 
     OUT_FIG.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT_FIG, dpi=150, transparent=True, bbox_inches="tight")
+    fig.savefig(OUT_FIG, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
 

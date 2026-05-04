@@ -4,23 +4,18 @@ import {
   ReferenceLine, ResponsiveContainer, ScatterChart, Scatter, ZAxis,
   LabelList, Cell, ErrorBar, LineChart, Line,
 } from 'recharts'
+import { MODEL_COLORS, SITE_PALETTE, ACCENTS, RECHARTS_THEME, SEMANTIC } from '../data/sitePalette'
 
 const API = import.meta.env.VITE_API_URL || ''
 
-const MODEL_COLORS = {
-  claude:   '#00CED1',
-  gemini:   '#FF6B6B',
-  chatgpt:  '#7FFFD4',
-  deepseek: '#4A90D9',
-  mistral:  '#A78BFA',
-}
-
+// NMACR dimensions — use distinct accents drawn from the canonical palette
+// so dim identity stays separable from model identity.
 const DIM_COLORS = {
-  N: '#00FFE0',
-  M: '#00B4D8',
-  A: '#7FFFD4',
-  C: '#4A90D9',
-  R: '#A78BFA',
+  N: ACCENTS.teal,
+  M: '#7FFFD4',
+  A: ACCENTS.gold,
+  C: '#93c5fd',
+  R: ACCENTS.purple,
 }
 
 const MODELS = ['claude', 'chatgpt', 'gemini', 'deepseek', 'mistral']
@@ -64,8 +59,9 @@ function PanelShell({ title, subtitle, accent = '#00FFE0', children, caption, su
 function TooltipBox({ children }) {
   return (
     <div style={{
-      background: 'rgba(8,12,18,0.95)', border: '1px solid rgba(0,255,224,0.4)',
-      borderRadius: 6, padding: '8px 12px', fontSize: 12, color: '#fff',
+      ...RECHARTS_THEME.tooltipContentStyle,
+      fontSize: 12,
+      color: SITE_PALETTE.fg,
       fontFamily: 'monospace',
     }}>{children}</div>
   )
@@ -118,10 +114,10 @@ export function PerModelPassFlipPanel() {
       <div style={{ width: '100%', height: 260 }}>
         <ResponsiveContainer>
           <BarChart data={rows} margin={{ top: 16, right: 12, bottom: 8, left: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.07)" />
-            <XAxis dataKey="model" tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 11 }} />
+            <CartesianGrid strokeDasharray="2 4" stroke={RECHARTS_THEME.gridStroke} />
+            <XAxis dataKey="model" tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 11 }} />
             <YAxis
-              tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 11 }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 11 }}
               tickFormatter={v => `${v}%`}
               domain={[0, 35]}
             />
@@ -140,8 +136,8 @@ export function PerModelPassFlipPanel() {
               }}
             />
             <ReferenceLine
-              y={avgPct} stroke="#FFB347" strokeDasharray="4 4"
-              label={{ value: `avg ${avgPct.toFixed(2)}%`, fill: '#FFB347', fontSize: 10, position: 'right' }}
+              y={avgPct} stroke={ACCENTS.gold} strokeDasharray="4 4"
+              label={{ value: `avg ${avgPct.toFixed(2)}%`, fill: ACCENTS.gold, fontSize: 10, position: 'right' }}
             />
             <Bar dataKey="pct" radius={[4, 4, 0, 0]}>
               {rows.map(r => <Cell key={r.model} fill={MODEL_COLORS[r.model]} />)}
@@ -209,10 +205,10 @@ function KJBar({ panelKey, data }) {
       <div style={{ width: '100%', height: 240 }}>
         <ResponsiveContainer>
           <BarChart data={rows} margin={{ top: 14, right: 14, bottom: 4, left: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.07)" />
-            <XAxis dataKey="model" tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 10 }} />
+            <CartesianGrid strokeDasharray="2 4" stroke={RECHARTS_THEME.gridStroke} />
+            <XAxis dataKey="model" tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 10 }} />
             <YAxis
-              tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 10 }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 10 }}
               tickFormatter={v => `${v}%`}
               domain={[0, 35]}
             />
@@ -230,8 +226,8 @@ function KJBar({ panelKey, data }) {
               }}
             />
             <ReferenceLine
-              y={overallPct} stroke="#FFB347" strokeDasharray="4 4"
-              label={{ value: `overall ${overallPct.toFixed(1)}%`, fill: '#FFB347', fontSize: 9, position: 'right' }}
+              y={overallPct} stroke={ACCENTS.gold} strokeDasharray="4 4"
+              label={{ value: `overall ${overallPct.toFixed(1)}%`, fill: ACCENTS.gold, fontSize: 9, position: 'right' }}
             />
             <Bar dataKey="pct" radius={[4, 4, 0, 0]}>
               {rows.map(r => <Cell key={r.model} fill={MODEL_COLORS[r.model]} />)}
@@ -419,10 +415,10 @@ export function PerDimRobustnessPanel() {
       <div style={{ width: '100%', height: 280 }}>
         <ResponsiveContainer>
           <BarChart data={rows} margin={{ top: 16, right: 12, bottom: 8, left: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.07)" />
-            <XAxis dataKey="dim" tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 11 }} />
+            <CartesianGrid strokeDasharray="2 4" stroke={RECHARTS_THEME.gridStroke} />
+            <XAxis dataKey="dim" tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 11 }} />
             <YAxis
-              tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 11 }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 11 }}
               tickFormatter={v => v.toFixed(2)}
             />
             <Tooltip
@@ -441,8 +437,8 @@ export function PerDimRobustnessPanel() {
                 )
               }}
             />
-            <Legend wrapperStyle={{ fontSize: 11, color: 'rgba(232,244,248,0.7)' }} />
-            <ReferenceLine y={0} stroke="rgba(255,255,255,0.35)" />
+            <Legend wrapperStyle={{ fontSize: 11, color: SITE_PALETTE.fgMuted }} />
+            <ReferenceLine y={0} stroke={SITE_PALETTE.fgMuted} />
             {MODELS.map(m => (
               <Bar key={m} dataKey={m} fill={MODEL_COLORS[m]} radius={[3, 3, 0, 0]} />
             ))}
@@ -491,10 +487,10 @@ export function PerDimCalibrationPanel() {
       <div style={{ width: '100%', height: 280 }}>
         <ResponsiveContainer>
           <BarChart data={rows} margin={{ top: 16, right: 12, bottom: 8, left: 0 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.07)" />
-            <XAxis dataKey="dim" tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 11 }} />
+            <CartesianGrid strokeDasharray="2 4" stroke={RECHARTS_THEME.gridStroke} />
+            <XAxis dataKey="dim" tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 11 }} />
             <YAxis
-              tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 11 }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 11 }}
               domain={[0, 0.22]}
               tickFormatter={v => v.toFixed(2)}
             />
@@ -514,10 +510,10 @@ export function PerDimCalibrationPanel() {
                 )
               }}
             />
-            <Legend wrapperStyle={{ fontSize: 11, color: 'rgba(232,244,248,0.7)' }} />
+            <Legend wrapperStyle={{ fontSize: 11, color: SITE_PALETTE.fgMuted }} />
             <ReferenceLine
-              y={0.10} stroke="#FFB347" strokeDasharray="4 4"
-              label={{ value: 'well-calibrated 0.10', fill: '#FFB347', fontSize: 10, position: 'right' }}
+              y={0.10} stroke={ACCENTS.gold} strokeDasharray="4 4"
+              label={{ value: 'well-calibrated 0.10', fill: ACCENTS.gold, fontSize: 10, position: 'right' }}
             />
             {MODELS.map(m => (
               <Bar key={m} dataKey={m} fill={MODEL_COLORS[m]} radius={[3, 3, 0, 0]} />
@@ -581,18 +577,18 @@ export function AccCalibScatterPanel() {
       <div style={{ width: '100%', height: 300 }}>
         <ResponsiveContainer>
           <ScatterChart margin={{ top: 16, right: 24, bottom: 32, left: 8 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.07)" />
+            <CartesianGrid strokeDasharray="2 4" stroke={RECHARTS_THEME.gridStroke} />
             <XAxis
               type="number" dataKey="accuracy" name="accuracy"
               domain={[0.6, 0.8]}
-              tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 11 }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 11 }}
               tickFormatter={v => v.toFixed(2)}
               label={{ value: 'accuracy (literature-weighted NMACR)', position: 'insideBottom', offset: -16, fill: 'rgba(232,244,248,0.6)', fontSize: 11 }}
             />
             <YAxis
               type="number" dataKey="r" name="r"
               domain={[-0.1, 0.6]}
-              tick={{ fill: 'rgba(232,244,248,0.7)', fontSize: 11 }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 11 }}
               tickFormatter={v => v.toFixed(2)}
               label={{ value: 'acc–calib r', angle: -90, position: 'insideLeft', fill: 'rgba(232,244,248,0.6)', fontSize: 11 }}
             />
@@ -612,15 +608,15 @@ export function AccCalibScatterPanel() {
               }}
             />
             <ReferenceLine
-              y={0} stroke="#FFB347" strokeDasharray="4 4"
-              label={{ value: 'r = 0', fill: '#FFB347', fontSize: 10, position: 'right' }}
+              y={0} stroke={ACCENTS.gold} strokeDasharray="4 4"
+              label={{ value: 'r = 0', fill: ACCENTS.gold, fontSize: 10, position: 'right' }}
             />
             <Scatter data={points} shape="circle">
-              {points.map(p => <Cell key={p.model} fill={MODEL_COLORS[p.model]} stroke="#fff" strokeWidth={1} />)}
+              {points.map(p => <Cell key={p.model} fill={MODEL_COLORS[p.model]} stroke={SITE_PALETTE.bg} strokeWidth={1} />)}
               <LabelList
                 dataKey="model"
                 position="top"
-                style={{ fill: 'rgba(232,244,248,0.85)', fontSize: 11, fontFamily: 'monospace' }}
+                style={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace' }}
               />
             </Scatter>
           </ScatterChart>
@@ -664,18 +660,18 @@ function ForestChart({ data, domain, refX = null, valueLabel = 'mean', height = 
     <div style={{ width: '100%', height }}>
       <ResponsiveContainer>
         <ScatterChart margin={{ top: 26, right: 28, bottom: 24, left: 8 }}>
-          <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.06)" horizontal={false} />
+          <CartesianGrid strokeDasharray="2 4" stroke={RECHARTS_THEME.gridStroke} horizontal={false} />
           <XAxis
             type="number"
             dataKey="mean"
             domain={domain}
-            tick={{ fill: 'rgba(232,244,248,0.6)', fontSize: 10, fontFamily: 'monospace' }}
+            tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 10, fontFamily: 'monospace' }}
             tickFormatter={v => v.toFixed(3)}
           />
           <YAxis
             type="category"
             dataKey="model"
-            tick={{ fill: 'rgba(232,244,248,0.9)', fontSize: 11, fontFamily: 'monospace' }}
+            tick={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace' }}
             width={70}
             interval={0}
             padding={{ top: 18, bottom: 8 }}
@@ -698,29 +694,29 @@ function ForestChart({ data, domain, refX = null, valueLabel = 'mean', height = 
           {refX !== null && (
             <ReferenceLine
               x={refX}
-              stroke="#FFB347"
+              stroke={ACCENTS.gold}
               strokeWidth={1.5}
               strokeDasharray="3 3"
-              label={{ value: `Δ = ${refX}`, fill: '#FFB347', fontSize: 11, fontWeight: 700, position: 'top', offset: 4 }}
+              label={{ value: `Δ = ${refX}`, fill: ACCENTS.gold, fontSize: 11, fontWeight: 700, position: 'top', offset: 4 }}
             />
           )}
           <Scatter data={points} shape="circle">
             {points.map(p => (
-              <Cell key={p.model} fill={MODEL_COLORS[p.model]} stroke="#fff" strokeWidth={1.4} />
+              <Cell key={p.model} fill={MODEL_COLORS[p.model]} stroke={SITE_PALETTE.bg} strokeWidth={1.4} />
             ))}
             <ErrorBar
               dataKey="err"
               direction="x"
               width={6}
               strokeWidth={2}
-              stroke="rgba(232,244,248,0.55)"
+              stroke={SITE_PALETTE.fgMuted}
             />
             <LabelList
               dataKey="mean"
               position="top"
               offset={10}
               formatter={(v) => (v >= 0 ? '' : '−') + Math.abs(v).toFixed(3)}
-              style={{ fill: 'rgba(232,244,248,0.95)', fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
+              style={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
             />
           </Scatter>
         </ScatterChart>
@@ -791,9 +787,9 @@ const KRIPP_DIMS = [
 ]
 
 const ALPHA_TONE_COLOR = {
-  positive: '#7FFFD4',
-  negative: '#FF6B6B',
-  neutral:  '#8BAFC0',
+  positive: SEMANTIC.good,
+  negative: SEMANTIC.bad,
+  neutral:  SITE_PALETTE.fgMuted,
 }
 
 function AlphaForestChart() {
@@ -809,18 +805,18 @@ function AlphaForestChart() {
     <div style={{ width: '100%', height: 240 }}>
       <ResponsiveContainer>
         <ScatterChart margin={{ top: 38, right: 28, bottom: 24, left: 8 }}>
-          <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.06)" horizontal={false} />
+          <CartesianGrid strokeDasharray="2 4" stroke={RECHARTS_THEME.gridStroke} horizontal={false} />
           <XAxis
             type="number"
             dataKey="alpha"
             domain={[-0.30, 0.70]}
-            tick={{ fill: 'rgba(232,244,248,0.6)', fontSize: 10, fontFamily: 'monospace' }}
+            tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 10, fontFamily: 'monospace' }}
             tickFormatter={v => v.toFixed(2)}
           />
           <YAxis
             type="category"
             dataKey="label"
-            tick={{ fill: 'rgba(232,244,248,0.9)', fontSize: 11, fontFamily: 'monospace' }}
+            tick={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace' }}
             width={140}
             interval={0}
             padding={{ top: 14, bottom: 8 }}
@@ -842,28 +838,28 @@ function AlphaForestChart() {
           />
           <ReferenceLine
             x={0}
-            stroke="#FFB347"
+            stroke={ACCENTS.gold}
             strokeWidth={1.6}
             strokeDasharray="3 3"
-            label={{ value: 'α = 0 (chance)', fill: '#FFB347', fontSize: 11, fontWeight: 700, position: 'top', offset: 8 }}
+            label={{ value: 'α = 0 (chance)', fill: ACCENTS.gold, fontSize: 11, fontWeight: 700, position: 'top', offset: 8 }}
           />
           <Scatter data={data} shape="circle">
             {data.map(d => (
-              <Cell key={d.label} fill={ALPHA_TONE_COLOR[d.tone]} stroke="#fff" strokeWidth={1.4} />
+              <Cell key={d.label} fill={ALPHA_TONE_COLOR[d.tone]} stroke={SITE_PALETTE.bg} strokeWidth={1.4} />
             ))}
             <ErrorBar
               dataKey="err"
               direction="x"
               width={6}
               strokeWidth={2}
-              stroke="rgba(232,244,248,0.55)"
+              stroke={SITE_PALETTE.fgMuted}
             />
             <LabelList
               dataKey="alpha"
               position="top"
               offset={10}
               formatter={(v) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(3)}
-              style={{ fill: 'rgba(232,244,248,0.95)', fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
+              style={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
             />
           </Scatter>
         </ScatterChart>
@@ -938,17 +934,17 @@ function ToleranceBandPanel({ header, range, data }) {
       <div style={{ width: '100%', height: 150 }}>
         <ResponsiveContainer>
           <BarChart layout="vertical" data={data} margin={{ top: 4, right: 56, bottom: 4, left: 4 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.05)" horizontal={false} />
+            <CartesianGrid strokeDasharray="2 4" stroke={RECHARTS_THEME.gridStroke} horizontal={false} />
             <XAxis
               type="number"
               domain={[0.40, 0.65]}
-              tick={{ fill: 'rgba(232,244,248,0.55)', fontSize: 9, fontFamily: 'monospace' }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 9, fontFamily: 'monospace' }}
               tickFormatter={v => v.toFixed(2)}
             />
             <YAxis
               type="category"
               dataKey="model"
-              tick={{ fill: 'rgba(232,244,248,0.9)', fontSize: 11, fontFamily: 'monospace' }}
+              tick={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace' }}
               width={70}
               interval={0}
             />
@@ -972,7 +968,7 @@ function ToleranceBandPanel({ header, range, data }) {
                 position="right"
                 offset={8}
                 formatter={v => v.toFixed(3)}
-                style={{ fill: 'rgba(232,244,248,0.95)', fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
+                style={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
               />
             </Bar>
           </BarChart>
@@ -1173,7 +1169,7 @@ export function EligibilityFunnelPanel() {
         <div className="eligibility-rationale">
           <strong style={{ color: 'rgba(232,244,248,0.85)' }}>Why excluded:</strong> 21 distinct task families ×
           5 models — CONCEPTUAL · MINIMAX · BAYES_RISK plus the MARKOV_04 outlier — share empty
-          <code style={{ fontSize: 11, padding: '0 4px', color: '#FFB347' }}>required_assumption_checks</code>.
+          <code style={{ fontSize: 11, padding: '0 4px', color: ACCENTS.gold }}>required_assumption_checks</code>.
           Keyword and judge scoring of assumption articulation cannot be compared on tasks that don&apos;t
           require assumption articulation. The same filter applies symmetrically to perturbation runs
           (each excluded base task contributes 2–3 perturbations × 5 models).

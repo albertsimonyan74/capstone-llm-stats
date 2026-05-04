@@ -3,16 +3,9 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Cell, LabelList,
 } from 'recharts'
+import { MODEL_COLORS, SITE_PALETTE, ACCENTS, RECHARTS_THEME } from '../data/sitePalette'
 
 const API = import.meta.env.VITE_API_URL || ''
-
-const MODEL_COLORS = {
-  claude:   '#00CED1',
-  gemini:   '#FF6B6B',
-  chatgpt:  '#7FFFD4',
-  deepseek: '#4A90D9',
-  mistral:  '#A78BFA',
-}
 
 // Canonical numbers post Phase 1.8 v1 deprecation (2026-05-04) from bootstrap_ci.json + robustness_v2.json + calibration.json
 const STATIC_RANKINGS = {
@@ -52,32 +45,31 @@ function rankingPanel({ title, accent, items, lowerIsBetter, valueFmt }) {
         color: accent, fontSize: 11, fontWeight: 800, letterSpacing: '0.16em',
         textTransform: 'uppercase', marginBottom: 4,
       }}>{title}</div>
-      <div style={{ color: 'rgba(232,244,248,0.55)', fontSize: 11, marginBottom: 10 }}>
+      <div style={{ color: SITE_PALETTE.fgMuted, fontSize: 11, marginBottom: 10 }}>
         {lowerIsBetter ? 'Lower is better' : 'Higher is better'} · ranked 1→5
       </div>
       <div style={{ width: '100%', height: 240 }}>
         <ResponsiveContainer>
           <BarChart data={items} layout="vertical" margin={{ top: 4, right: 48, bottom: 0, left: 8 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.07)" horizontal={false} />
+            <CartesianGrid strokeDasharray={RECHARTS_THEME.gridStrokeDasharray} stroke={RECHARTS_THEME.gridStroke} horizontal={false} />
             <XAxis
               type="number"
-              tick={{ fill: 'rgba(232,244,248,0.55)', fontSize: 10 }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 10 }}
+              stroke={RECHARTS_THEME.axisStroke}
               tickFormatter={valueFmt}
               domain={[0, 'dataMax']}
             />
             <YAxis
               dataKey="model" type="category"
-              tick={{ fill: 'rgba(232,244,248,0.85)', fontSize: 11, fontFamily: 'monospace' }}
+              tick={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace' }}
+              stroke={RECHARTS_THEME.axisStroke}
               width={70}
             />
             <Tooltip
-              cursor={{ fill: 'rgba(0,255,224,0.05)' }}
-              contentStyle={{
-                background: 'rgba(8,12,18,0.95)', border: '1px solid rgba(0,255,224,0.4)',
-                borderRadius: 6, fontSize: 12,
-              }}
-              labelStyle={{ color: '#ffffff' }}
-              itemStyle={{ color: '#ffffff' }}
+              cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+              contentStyle={RECHARTS_THEME.tooltipContentStyle}
+              labelStyle={RECHARTS_THEME.tooltipLabelStyle}
+              itemStyle={RECHARTS_THEME.tooltipItemStyle}
               formatter={(v) => [valueFmt(v), title]}
             />
             <Bar dataKey="value" radius={[0, 4, 4, 0]}>
@@ -87,7 +79,7 @@ function rankingPanel({ title, accent, items, lowerIsBetter, valueFmt }) {
               <LabelList
                 dataKey="value" position="right"
                 formatter={valueFmt}
-                style={{ fill: 'rgba(232,244,248,0.85)', fontSize: 11, fontFamily: 'monospace' }}
+                style={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace' }}
               />
             </Bar>
           </BarChart>
@@ -140,15 +132,15 @@ export default function ThreeRankingsComparison() {
       }}>Three rankings · the same data tells three stories</div>
       <div className="three-rankings-grid">
         {rankingPanel({
-          title: 'Accuracy', accent: '#00FFE0',
+          title: 'Accuracy', accent: ACCENTS.teal,
           items: data.accuracy, lowerIsBetter: false, valueFmt: fmt3,
         })}
         {rankingPanel({
-          title: 'Robustness (Δ)', accent: '#FFB347',
+          title: 'Robustness (Δ)', accent: ACCENTS.gold,
           items: data.robustness, lowerIsBetter: true, valueFmt: fmt3,
         })}
         {rankingPanel({
-          title: 'Calibration (ECE)', accent: '#A78BFA',
+          title: 'Calibration (ECE)', accent: ACCENTS.purple,
           items: data.calibration, lowerIsBetter: true, valueFmt: fmt3,
         })}
       </div>

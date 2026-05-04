@@ -22,6 +22,15 @@ from sklearn.metrics import cohen_kappa_score
 
 from baseline.utils_task_id import task_type_from_id as derive_task_type
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    apply_site_theme, color_code_model_ticks, dim_remaining_spines,
+)
+
+apply_site_theme()
+
 RUNS_PATH = Path("experiments/results_v1/runs.jsonl")
 JUDGE_PATH = Path("experiments/results_v2/llm_judge_scores_full.jsonl")
 TASKS_PATH = Path("data/benchmark_v1/tasks_all.json")
@@ -33,14 +42,6 @@ OUT_JSON = Path("experiments/results_v2/keyword_vs_judge_agreement.json")
 TOP_JSON = Path("experiments/results_v2/top_disagreements_assumption.json")
 FIG_SCATTER = Path("report_materials/figures/judge_validation_scatter.png")
 FIG_BARS = Path("report_materials/figures/judge_validation_by_model.png")
-
-MODEL_COLORS = {
-    "claude":   "#00CED1",
-    "chatgpt":  "#7FFFD4",
-    "gemini":   "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral":  "#A78BFA",
-}
 
 # (label, keyword field, judge dimension key)
 DIMS = [
@@ -183,7 +184,7 @@ def top_disagreements(joined: list[dict], n: int = 30) -> list[dict]:
 
 def make_scatter_figure(joined: list[dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    fig, axes = plt.subplots(1, 4, figsize=(22, 6), facecolor="none")
+    fig, axes = plt.subplots(1, 4, figsize=(22, 6), facecolor=SITE_BG)
     panels = [
         ("Method / Structure",      "kw_structure",  "judge_method"),
         ("Assumption Compliance",   "kw_assumption", "judge_assumption"),
@@ -191,7 +192,7 @@ def make_scatter_figure(joined: list[dict], path: Path) -> None:
         ("Reasoning Completeness",  None,            "judge_completeness"),
     ]
     for ax, (title, kw_field, jd_field) in zip(axes, panels):
-        ax.set_facecolor("#0a0a14")
+        ax.set_facecolor(SITE_BG)
         for m, color in MODEL_COLORS.items():
             xs, ys = [], []
             for r in joined:
@@ -209,21 +210,20 @@ def make_scatter_figure(joined: list[dict], path: Path) -> None:
                     xs.append(kw + np.random.uniform(-0.02, 0.02))
                     ys.append(jd + np.random.uniform(-0.02, 0.02))
             ax.scatter(xs, ys, s=20, alpha=0.55, c=color, label=m, edgecolors="none")
-        ax.plot([0, 1], [0, 1], color="white", lw=1.2, ls="--", alpha=0.4)
+        ax.plot([0, 1], [0, 1], color=SITE_FG_MUTED, lw=1.2, ls="--", alpha=0.5)
         ax.set_xlim(-0.05, 1.05); ax.set_ylim(-0.05, 1.05)
-        ax.set_title(title, fontsize=18, color="white", pad=10)
+        ax.set_title(title, fontsize=18, color=SITE_FG, pad=10)
         ax.set_xlabel("Keyword rubric" if kw_field else "(no keyword equivalent)",
-                      fontsize=14, color="white")
-        ax.set_ylabel("LLM judge", fontsize=14, color="white")
-        ax.tick_params(colors="white", labelsize=11)
-        for spine in ax.spines.values():
-            spine.set_color("white"); spine.set_alpha(0.5)
-        ax.grid(True, alpha=0.15, color="white")
-    axes[0].legend(loc="upper left", fontsize=11, frameon=False, labelcolor="white")
+                      fontsize=14, color=SITE_FG_MUTED)
+        ax.set_ylabel("LLM judge", fontsize=14, color=SITE_FG_MUTED)
+        ax.tick_params(colors=SITE_FG_MUTED, labelsize=11)
+        dim_remaining_spines(ax)
+        ax.grid(True, alpha=0.06, color="#ffffff")
+    axes[0].legend(loc="upper left", fontsize=11, frameon=False, labelcolor=SITE_FG_MUTED)
     fig.suptitle("Keyword rubric vs external LLM judge — per-dimension scatter",
-                 fontsize=20, color="white", y=1.02)
+                 fontsize=20, color=SITE_FG, y=1.02)
     plt.tight_layout()
-    fig.savefig(path, dpi=300, bbox_inches="tight", transparent=True)
+    fig.savefig(path, dpi=300, bbox_inches="tight", facecolor=SITE_BG)
     plt.close(fig)
 
 
@@ -231,8 +231,8 @@ def make_bar_figure(per_model: dict, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     dims = [d[0] for d in DIMS]
     models = sorted(per_model.keys())
-    fig, ax = plt.subplots(figsize=(14, 7), facecolor="none")
-    ax.set_facecolor("#0a0a14")
+    fig, ax = plt.subplots(figsize=(14, 7), facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
     width = 0.15
     x = np.arange(len(dims))
     for i, m in enumerate(models):
@@ -241,20 +241,19 @@ def make_bar_figure(per_model: dict, path: Path) -> None:
             rho = per_model[m][d].get("spearman_rho")
             rhos.append(rho if rho is not None else 0.0)
         ax.bar(x + i*width - width*(len(models)-1)/2, rhos, width=width,
-               color=MODEL_COLORS.get(m, "#888"), label=m, edgecolor="none")
-    ax.axhline(0, color="white", lw=0.7, alpha=0.5)
-    ax.set_xticks(x); ax.set_xticklabels(dims, fontsize=14, color="white")
-    ax.set_ylabel("Spearman ρ (keyword vs judge)", fontsize=15, color="white")
+               color=MODEL_COLORS.get(m, SITE_FG_MUTED), label=m, edgecolor="none")
+    ax.axhline(0, color=SITE_FG_MUTED, lw=0.7, alpha=0.6)
+    ax.set_xticks(x); ax.set_xticklabels(dims, fontsize=14, color=SITE_FG_MUTED)
+    ax.set_ylabel("Spearman ρ (keyword vs judge)", fontsize=15, color=SITE_FG_MUTED)
     ax.set_title("Per-model agreement between keyword rubric and external judge",
-                 fontsize=18, color="white", pad=14)
+                 fontsize=18, color=SITE_FG, pad=14)
     ax.set_ylim(-0.6, 1.0)
-    ax.tick_params(colors="white", labelsize=12)
-    for spine in ax.spines.values():
-        spine.set_color("white"); spine.set_alpha(0.5)
-    ax.grid(True, axis="y", alpha=0.15, color="white")
-    ax.legend(loc="upper right", fontsize=12, frameon=False, labelcolor="white", ncol=5)
+    ax.tick_params(colors=SITE_FG_MUTED, labelsize=12)
+    dim_remaining_spines(ax)
+    ax.grid(True, axis="y", alpha=0.06, color="#ffffff")
+    ax.legend(loc="upper right", fontsize=12, frameon=False, labelcolor=SITE_FG_MUTED, ncol=5)
     plt.tight_layout()
-    fig.savefig(path, dpi=300, bbox_inches="tight", transparent=True)
+    fig.savefig(path, dpi=300, bbox_inches="tight", facecolor=SITE_BG)
     plt.close(fig)
 
 

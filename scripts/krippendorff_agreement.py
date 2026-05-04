@@ -34,6 +34,15 @@ import numpy as np
 
 from baseline.utils_task_id import task_type_from_id as derive_task_type
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS, ACCENT_GOLD, ACCENT_CORAL,
+    apply_site_theme, dim_remaining_spines,
+)
+
+apply_site_theme()
+
 ROOT = Path(__file__).resolve().parents[1]
 RUNS_PATH = ROOT / "experiments/results_v1/runs.jsonl"
 JUDGE_PATH = ROOT / "experiments/results_v2/llm_judge_scores_full.jsonl"
@@ -47,14 +56,6 @@ V1_PERT_PATH = ROOT / "data/synthetic/perturbations.json"
 OUT_JSON = ROOT / "experiments/results_v2/krippendorff_agreement.json"
 EXISTING_AGREEMENT = ROOT / "experiments/results_v2/keyword_vs_judge_agreement.json"
 FIG_OUT = ROOT / "report_materials/figures/agreement_metrics_comparison.png"
-
-MODEL_COLORS = {
-    "claude":   "#00CED1",
-    "chatgpt":  "#7FFFD4",
-    "gemini":   "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral":  "#A78BFA",
-}
 
 # (label, kw_field, judge_field). reasoning_completeness has no keyword equivalent
 # so it cannot be α-validated against keywords; we still report keyword vs the
@@ -244,34 +245,33 @@ def make_comparison_figure(overall: dict, existing_spearman: dict, path: Path) -
     alpha_ci_lo = [overall[d]["alpha"] - overall[d]["ci_lower"] for d in dims]
     alpha_ci_hi = [overall[d]["ci_upper"] - overall[d]["alpha"] for d in dims]
 
-    fig, ax = plt.subplots(figsize=(8, 5), facecolor="none")
-    ax.set_facecolor("#0a0a14")
+    fig, ax = plt.subplots(figsize=(8, 5), facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
     x = np.arange(len(dims))
     width = 0.36
     ax.bar(x - width/2, rhos, width=width, label="Spearman ρ",
-           color="#4A90D9", edgecolor="none")
+           color=MODEL_COLORS["deepseek"], edgecolor="none")
     ax.bar(x + width/2, alphas, width=width, label="Krippendorff α (ordinal)",
-           color="#FF6B6B", edgecolor="none",
-           yerr=[alpha_ci_lo, alpha_ci_hi], ecolor="white", capsize=4)
-    ax.axhline(0.667, color="#FFB347", lw=0.8, ls="--", alpha=0.6,
+           color=ACCENT_CORAL, edgecolor="none",
+           yerr=[alpha_ci_lo, alpha_ci_hi], ecolor=SITE_FG_MUTED, capsize=4)
+    ax.axhline(0.667, color=ACCENT_GOLD, lw=0.8, ls="--", alpha=0.7,
                label="α=0.667 (acceptable)")
-    ax.axhline(0.0, color="white", lw=0.6, alpha=0.4)
+    ax.axhline(0.0, color=SITE_FG_MUTED, lw=0.6, alpha=0.5)
     ax.set_xticks(x)
-    ax.set_xticklabels(dims, fontsize=11, color="white")
-    ax.set_ylabel("Agreement coefficient", fontsize=12, color="white")
+    ax.set_xticklabels(dims, fontsize=11, color=SITE_FG_MUTED)
+    ax.set_ylabel("Agreement coefficient", fontsize=12, color=SITE_FG_MUTED)
     ax.set_title("Inter-rater agreement: Spearman ρ vs Krippendorff α",
-                 fontsize=13, color="white", pad=10)
+                 fontsize=13, color=SITE_FG, pad=10)
     ax.set_ylim(-0.3, 1.0)
-    ax.tick_params(colors="white", labelsize=10)
-    for spine in ax.spines.values():
-        spine.set_color("white"); spine.set_alpha(0.5)
-    ax.grid(True, axis="y", alpha=0.15, color="white")
-    ax.legend(loc="upper right", fontsize=9, frameon=False, labelcolor="white")
+    ax.tick_params(colors=SITE_FG_MUTED, labelsize=10)
+    dim_remaining_spines(ax)
+    ax.grid(True, axis="y", alpha=0.06, color="#ffffff")
+    ax.legend(loc="upper right", fontsize=9, frameon=False, labelcolor=SITE_FG_MUTED)
     fig.text(0.5, -0.02,
              "α: Park et al. (2025) | ρ: Spearman rank baseline",
-             ha="center", color="white", fontsize=8, alpha=0.85)
+             ha="center", color=SITE_FG_MUTED, fontsize=8, alpha=0.85)
     plt.tight_layout()
-    fig.savefig(path, dpi=300, bbox_inches="tight", transparent=True)
+    fig.savefig(path, dpi=300, bbox_inches="tight", facecolor=SITE_BG)
     plt.close(fig)
 
 

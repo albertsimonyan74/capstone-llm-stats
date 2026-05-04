@@ -25,6 +25,13 @@ from typing import Any
 import httpx
 from dotenv import load_dotenv
 
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS as _MC,
+    apply_site_theme, color_code_model_ticks, dim_remaining_spines,
+)
+
 load_dotenv()
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -78,20 +85,15 @@ L1_COLORS = {
 }
 
 # Model identity carried via x-axis tick label color (canonical site palette).
-MODEL_BORDER = {
-    "claude":   "#00CED1",
-    "chatgpt":  "#7FFFD4",
-    "gemini":   "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral":  "#A78BFA",
-}
+MODEL_BORDER = _MC
 MODEL_ORDER = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
 
-# Site theme (matches capstone-website/frontend/src/App.css :root vars).
-SITE_BG = "#0A0F1E"        # bg-primary
-SITE_FG = "#E8F4F8"        # text-primary
-SITE_FG_MUTED = "#8BAFC0"  # text-secondary
+# Theme constants come from canonical site_palette module (imported above).
 SITE_GRID_ALPHA = 0.08
+
+apply_site_theme()
+_ = color_code_model_ticks  # exported for downstream use; module-level no-op alias
+_ = dim_remaining_spines
 
 JUDGE_PROMPT = """You are an expert grader classifying a FAILED Bayesian-statistics LLM response into a hierarchical error taxonomy.
 

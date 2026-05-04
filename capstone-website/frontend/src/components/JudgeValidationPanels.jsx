@@ -3,6 +3,7 @@ import {
   ReferenceLine, ResponsiveContainer,
   ScatterChart, Scatter, Cell, ErrorBar, LabelList,
 } from 'recharts'
+import { SITE_PALETTE, ACCENTS, RECHARTS_THEME, SEMANTIC } from '../data/sitePalette'
 
 const KRIPP_DIMS = [
   {
@@ -23,9 +24,9 @@ const KRIPP_DIMS = [
 ]
 
 const TONE_COLOR = {
-  positive: '#7FFFD4',
-  negative: '#FF6B6B',
-  neutral:  '#8BAFC0',
+  positive: SEMANTIC.good,
+  negative: SEMANTIC.bad,
+  neutral:  SITE_PALETTE.fgMuted,
 }
 
 const fmtSigned = (v) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(3)
@@ -33,13 +34,9 @@ const fmtSigned = (v) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(3)
 function TooltipBox({ children }) {
   return (
     <div style={{
-      background: 'rgba(8,12,24,0.96)',
-      border: '1px solid rgba(0,255,224,0.4)',
-      borderRadius: 6,
-      padding: '8px 12px',
+      ...RECHARTS_THEME.tooltipContentStyle,
       fontFamily: 'monospace',
       fontSize: 11,
-      color: '#fff',
       lineHeight: 1.55,
     }}>{children}</div>
   )
@@ -65,26 +62,28 @@ export function AgreementMetricsForestPanel() {
       <div style={{ width: '100%', height: 240 }}>
         <ResponsiveContainer>
           <ScatterChart margin={{ top: 38, right: 28, bottom: 24, left: 8 }}>
-            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.06)" horizontal={false} />
+            <CartesianGrid strokeDasharray={RECHARTS_THEME.gridStrokeDasharray} stroke={RECHARTS_THEME.gridStroke} horizontal={false} />
             <XAxis
               type="number"
               dataKey="alpha"
               domain={[-0.30, 0.70]}
               ticks={[-0.25, 0, 0.25, 0.5]}
-              tick={{ fill: 'rgba(232,244,248,0.6)', fontSize: 10, fontFamily: 'monospace' }}
+              tick={{ fill: RECHARTS_THEME.axisTickColor, fontSize: 10, fontFamily: 'monospace' }}
+              stroke={RECHARTS_THEME.axisStroke}
               tickFormatter={v => v.toFixed(2)}
             />
             <YAxis
               type="category"
               dataKey="label"
-              tick={{ fill: 'rgba(232,244,248,0.9)', fontSize: 11, fontFamily: 'monospace' }}
+              tick={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace' }}
+              stroke={RECHARTS_THEME.axisStroke}
               width={140}
               interval={0}
               padding={{ top: 14, bottom: 8 }}
             />
             <ZAxis range={[120, 120]} />
             <Tooltip
-              cursor={{ stroke: 'rgba(0,255,224,0.3)', strokeDasharray: '3 3' }}
+              cursor={{ stroke: SITE_PALETTE.fgMuted, strokeDasharray: '3 3' }}
               content={({ active, payload }) => {
                 if (!active || !payload?.[0]) return null
                 const p = payload[0].payload
@@ -99,28 +98,28 @@ export function AgreementMetricsForestPanel() {
             />
             <ReferenceLine
               x={0}
-              stroke="#FFB347"
+              stroke={ACCENTS.gold}
               strokeWidth={1.6}
               strokeDasharray="3 3"
-              label={{ value: 'α = 0 (chance)', fill: '#FFB347', fontSize: 11, fontWeight: 700, position: 'top', offset: 8 }}
+              label={{ value: 'α = 0 (chance)', fill: ACCENTS.gold, fontSize: 11, fontWeight: 700, position: 'top', offset: 8 }}
             />
             <Scatter data={data} shape="circle">
               {data.map(d => (
-                <Cell key={d.label} fill={TONE_COLOR[d.tone]} stroke="#fff" strokeWidth={1.4} />
+                <Cell key={d.label} fill={TONE_COLOR[d.tone]} stroke={SITE_PALETTE.fg} strokeWidth={1.4} />
               ))}
               <ErrorBar
                 dataKey="err"
                 direction="x"
                 width={6}
                 strokeWidth={2}
-                stroke="rgba(232,244,248,0.55)"
+                stroke={SITE_PALETTE.fgMuted}
               />
               <LabelList
                 dataKey="alpha"
                 position="top"
                 offset={10}
                 formatter={fmtSigned}
-                style={{ fill: 'rgba(232,244,248,0.95)', fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
+                style={{ fill: SITE_PALETTE.fg, fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
               />
             </Scatter>
           </ScatterChart>

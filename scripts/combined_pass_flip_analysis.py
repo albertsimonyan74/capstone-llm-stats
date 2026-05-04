@@ -50,6 +50,15 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from site_palette import (
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    apply_site_theme, color_code_model_ticks, dim_remaining_spines,
+)
+
+apply_site_theme()
+
 # ── Paths ────────────────────────────────────────────────────────────────────
 BASE_RUNS = Path("experiments/results_v1/runs.jsonl")
 BASE_JUDGE = Path("experiments/results_v2/llm_judge_scores_full.jsonl")
@@ -69,14 +78,6 @@ OUT_FIG = Path("report_materials/figures/combined_pass_flip_comparison.png")
 THRESHOLD = 0.5
 MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
 PERT_TYPES = ["rephrase", "numerical", "semantic"]
-
-MODEL_COLORS = {
-    "claude":   "#00CED1",
-    "chatgpt":  "#7FFFD4",
-    "gemini":   "#FF6B6B",
-    "deepseek": "#4A90D9",
-    "mistral":  "#A78BFA",
-}
 
 
 # ── Loaders ──────────────────────────────────────────────────────────────────
@@ -210,14 +211,14 @@ def make_figure(
     path: Path,
 ) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    fig, axes = plt.subplots(1, 3, figsize=(18, 6), facecolor="none")
+    fig, axes = plt.subplots(1, 3, figsize=(18, 6), facecolor=SITE_BG)
     panels = [
         ("Base", base_rows, n_base_elig),
         ("Perturbation", pert_rows, n_pert_elig),
         ("Combined", combined_rows, n_comb_elig),
     ]
     for ax, (title, rows, n_elig_panel) in zip(axes, panels):
-        ax.set_facecolor("#0a0a14")
+        ax.set_facecolor(SITE_BG)
         per_m = per_model(rows)
         rates = [per_m[m]["pct"] for m in MODELS]
         bars = ax.bar(
@@ -233,44 +234,44 @@ def make_figure(
                 rate + 0.01,
                 f"{100*rate:.1f}%",
                 ha="center", va="bottom",
-                color="white", fontsize=11,
+                color=SITE_FG, fontsize=11,
             )
         # Overall rate dashed line
         agg = aggregate(rows)
         overall = agg["pct_pass_flip"]
-        ax.axhline(overall, color="white", lw=1.2, ls="--", alpha=0.55)
+        ax.axhline(overall, color=SITE_FG_MUTED, lw=1.2, ls="--", alpha=0.7)
         ax.text(
             len(MODELS) - 0.5,
             overall + 0.012,
             f"overall = {100*overall:.1f}%",
             ha="right", va="bottom",
-            color="white", fontsize=11, alpha=0.85,
+            color=SITE_FG_MUTED, fontsize=11, alpha=0.85,
         )
         ax.set_xticks(np.arange(len(MODELS)))
-        ax.set_xticklabels(MODELS, color="white", fontsize=12)
+        ax.set_xticklabels(MODELS, color=SITE_FG_MUTED, fontsize=12)
+        color_code_model_ticks(ax)
         ax.set_ylim(0, max(0.5, max(rates) * 1.25))
-        ax.set_ylabel("Disagreement rate", color="white", fontsize=13)
+        ax.set_ylabel("Disagreement rate", color=SITE_FG_MUTED, fontsize=13)
         ax.set_title(
             f"{title}  (n_eligible = {n_elig_panel})",
-            color="white", fontsize=15, pad=10,
+            color=SITE_FG, fontsize=15, pad=10,
         )
-        ax.tick_params(colors="white", labelsize=11)
-        for spine in ax.spines.values():
-            spine.set_color("white"); spine.set_alpha(0.5)
-        ax.grid(True, axis="y", alpha=0.15, color="white")
+        ax.tick_params(colors=SITE_FG_MUTED, labelsize=11)
+        dim_remaining_spines(ax)
+        ax.grid(True, axis="y", alpha=0.06, color="#ffffff")
     fig.suptitle(
         "Keyword-judge disagreement rate (keyword PASS, judge FAIL) on assumption_compliance",
-        color="white", fontsize=18, y=1.02,
+        color=SITE_FG, fontsize=18, y=1.02,
     )
     fig.text(
         0.5, -0.05,
         "Eligibility: tasks with non-empty required_assumption_checks. "
         f"n_base_eligible={n_base_elig}, n_pert_eligible={n_pert_elig}, "
         f"n_combined_eligible={n_comb_elig}.",
-        ha="center", color="white", fontsize=10, alpha=0.85,
+        ha="center", color=SITE_FG_MUTED, fontsize=10, alpha=0.85,
     )
     plt.tight_layout()
-    fig.savefig(path, dpi=300, bbox_inches="tight", transparent=True)
+    fig.savefig(path, dpi=300, bbox_inches="tight", facecolor=SITE_BG)
     plt.close(fig)
 
 
