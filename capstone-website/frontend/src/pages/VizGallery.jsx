@@ -75,17 +75,8 @@ function VizCard({ viz, color, setFullImg }) {
         <div style={{ color: color, fontSize: 11, fontWeight: 600, marginBottom: 10, opacity: 0.85 }}>
           {viz.subtitle}
         </div>
-        <div style={{ color: 'rgba(232,244,248,0.7)', fontSize: 12, lineHeight: 1.6, marginBottom: 12 }}>
+        <div style={{ color: 'rgba(232,244,248,0.7)', fontSize: 12, lineHeight: 1.6, marginTop: 'auto' }}>
           {viz.caption}
-        </div>
-        <div style={{
-          fontFamily: 'monospace', fontSize: 10,
-          color: 'rgba(232,244,248,0.4)', lineHeight: 1.5,
-          background: 'rgba(0,0,0,0.25)',
-          padding: '6px 10px', borderRadius: 6,
-          marginTop: 'auto', wordBreak: 'break-all',
-        }}>
-          {viz.source}
         </div>
       </div>
     </motion.div>

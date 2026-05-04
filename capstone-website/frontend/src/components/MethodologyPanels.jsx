@@ -414,7 +414,7 @@ export function PerDimRobustnessPanel() {
       title="Robustness degradation by NMACR dimension"
       subtitle="Per-dimension change in score from base to perturbation, by model"
       accent="#7FFFD4"
-      caption="Bars above zero = score decreased under perturbation (worse). DeepSeek shows the largest assumption-compliance degradation (+12.8pp on A); Mistral is the only model with a negative R delta (reasoning_quality slightly improves under perturbation, ΔR=−0.008). Numerical correctness (N) is stable to slightly improving for most models — math is robust; assumption articulation (A) is the most brittle dimension. Source: experiments/results_v2/robustness_v2.json (per_dim_delta block)."
+      caption="Bars above zero = score decreased under perturbation (worse). DeepSeek shows the largest assumption-compliance degradation (+12.8pp on A); Mistral is the only model with a negative R delta (reasoning_quality slightly improves under perturbation, ΔR=−0.008). Numerical correctness (N) is stable to slightly improving for most models — math is robust; assumption articulation (A) is the most brittle dimension."
     >
       <div style={{ width: '100%', height: 280 }}>
         <ResponsiveContainer>
@@ -486,7 +486,7 @@ export function PerDimCalibrationPanel() {
       title="Calibration ECE by NMACR dimension"
       subtitle="Expected Calibration Error per dimension, by model (lower is better)"
       accent="#A78BFA"
-      caption="Models calibrate moderately well on M (method) and best on C (verbalized confidence, 0.04–0.06 ECE across all five models). A (assumption) is the weakest dimension across all models (≈0.16–0.17 ECE) — confidence in assumption articulation poorly tracks accuracy. R varies most (DeepSeek 0.09 vs Gemini 0.13). Dashed line = 0.10 reference threshold for well-calibrated. Source: experiments/results_v2/per_dim_calibration.json."
+      caption="Models calibrate moderately well on M (method) and best on C (verbalized confidence, 0.04–0.06 ECE across all five models). A (assumption) is the weakest dimension across all models (≈0.16–0.17 ECE) — confidence in assumption articulation poorly tracks accuracy. R varies most (DeepSeek 0.09 vs Gemini 0.13). Dashed line = 0.10 reference threshold for well-calibrated."
     >
       <div style={{ width: '100%', height: 280 }}>
         <ResponsiveContainer>
@@ -577,7 +577,6 @@ export function AccCalibScatterPanel() {
       subtitle="Pearson r between per-task aggregate (literature-weighted NMACR) and per-task confidence proxy (dim_C)"
       accent="#A78BFA"
       caption="For each model, Pearson correlation between accuracy and calibration. Higher r = confidence tracks accuracy more closely. Post Phase 1.8 (2026-05-04): Mistral r=0.42, DeepSeek r=0.42, Claude r=0.42, Gemini r=0.39, ChatGPT r=0.36 — all five models in a tight band (0.36–0.42), all positive. No model is inversely calibrated. Reference line at r=0 (no correlation)."
-      subCaption="Source: experiments/results_v2/calibration.json (accuracy_calibration_correlation block) + bootstrap_ci.json (accuracy means)."
     >
       <div style={{ width: '100%', height: 300 }}>
         <ResponsiveContainer>
