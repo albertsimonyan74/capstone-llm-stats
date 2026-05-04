@@ -107,7 +107,7 @@ export default function VizGallery({ setFullImg }) {
         >
           <div>
             <div style={{ color: 'rgba(0,255,224,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', marginBottom: 6 }}>
-              // V2 RESULTS · 15 FIGURES · 6 CATEGORIES
+              // V2 RESULTS · 12 FIGURES · 6 CATEGORIES
             </div>
             <h2 style={{ fontSize: 'clamp(28px,3.5vw,42px)', fontWeight: 700, color: '#fff', margin: 0, lineHeight: 1.2 }}>
               Benchmark{' '}

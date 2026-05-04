@@ -29,14 +29,6 @@ export const VISUALIZATIONS = [
     source: 'experiments/results_v2/bootstrap_ci.json',
     png: '/visualizations/png/v2/a6_aggregate_ranking.png',
   },
-  {
-    id: 'bootstrap_ci', category: 'rankings',
-    title: 'Bootstrap CI on Accuracy',
-    subtitle: 'Gemini 0.7314 [0.7060, 0.7565] · Claude 0.6976 [0.6694, 0.7249]',
-    caption: '10,000 bootstrap resamples per model, seed=42, percentile method. Under literature weights, Gemini #1 with a 3.4pp lead over #2 Claude (CIs overlap — pair not_separable).',
-    source: 'experiments/results_v2/bootstrap_ci.json',
-    png: '/visualizations/png/v2/bootstrap_ci.png',
-  },
 
   // ── 2. JUDGE VALIDATION (RQ1 PRIMARY) ─────────────────────────
   {
@@ -55,14 +47,6 @@ export const VISUALIZATIONS = [
     source: 'experiments/results_v2/keyword_vs_judge_agreement.json',
     png: '/visualizations/png/v2/judge_validation_scatter.png',
   },
-  {
-    id: 'judge_by_model', category: 'judge',
-    title: 'Judge vs Keyword — Per Model',
-    subtitle: 'Keyword-judge disagreement rate decomposed by model family',
-    caption: 'Combined per-model keyword-judge disagreement: claude 26.1% (149/570), gemini 22.8%, mistral 19.1%, chatgpt 18.1%, deepseek 17.5%. ~9pp spread under the population mean (20.74%).',
-    source: 'experiments/results_v2/keyword_vs_judge_agreement.json',
-    png: '/visualizations/png/v2/judge_validation_by_model.png',
-  },
 
   // ── 3. ROBUSTNESS (RQ4) ───────────────────────────────────────
   {
@@ -72,14 +56,6 @@ export const VISUALIZATIONS = [
     caption: 'Per-model × per-task-type degradation grid. Three uniformly-robust families: HIERARCHICAL, RJMCMC, VB. Under literature weights, ChatGPT and Mistral are statistically tied at top of robustness — both noise-equivalent.',
     source: 'experiments/results_v2/robustness_v2.json',
     png: '/visualizations/png/v2/robustness_heatmap.png',
-  },
-  {
-    id: 'a4b_per_dim_robustness', category: 'robustness',
-    title: 'Per-Dimension Robustness Δ (Phase 1B Layer 2)',
-    subtitle: '5 models × 5 NMACR dims = 25 deltas',
-    caption: 'Layer 2 of RQ4. DeepSeek / Claude / Gemini lose most on the A dimension under perturbation — directly confirms the RQ3 assumption-violation finding. Cells annotated where |Δ| > 0.03.',
-    source: 'experiments/results_v2/robustness_v2.json (per_dim_delta)',
-    png: '/visualizations/png/v2/a4b_per_dim_robustness.png',
   },
   {
     id: 'robustness_perttype', category: 'robustness',
@@ -124,22 +100,6 @@ export const VISUALIZATIONS = [
     caption: 'Hedge-heavy default-to-medium behaviour. No high-confidence records across any model. Verbalized extraction is sensitive to hedging language — models with less hedging produce fewer high-confidence signals.',
     source: 'experiments/results_v2/calibration.json',
     png: '/visualizations/png/v2/calibration_reliability.png',
-  },
-  {
-    id: 'a5b_per_dim_calibration', category: 'calibration',
-    title: 'Per-Dimension Calibration ECE (Phase 1B Layer 5)',
-    subtitle: '5 models × 5 NMACR dims',
-    caption: 'Multi-dim extension of FermiEval (2025). Bucketed scores into {<0.4, <0.7, ≥0.7}; ECE = Σ_b w_b · |center_b − mean_b|. C dimension populated for all five models post Tier 1.',
-    source: 'experiments/results_v2/per_dim_calibration.json',
-    png: '/visualizations/png/v2/a5b_per_dim_calibration.png',
-  },
-  {
-    id: 'calibration_a5', category: 'calibration',
-    title: 'Calibration — Per-Model Reliability',
-    subtitle: 'Per-model ECE breakdown',
-    caption: 'All five models cluster around medium-confidence — none escape into well-calibrated high-bucket.',
-    source: 'experiments/results_v2/calibration.json',
-    png: '/visualizations/png/v2/a5_calibration_reliability.png',
   },
   {
     id: 'self_consistency', category: 'calibration',
