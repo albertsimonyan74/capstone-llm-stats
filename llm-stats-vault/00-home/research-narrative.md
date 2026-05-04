@@ -246,7 +246,7 @@ framing. Nagarkar et al. (2026) — reliability motivation.
 | CONCEPTUAL_ERROR       | 10    | M failure                | Wrong method / framework choice. |
 | HALLUCINATION          | 0     | R + N failure            | Empirically empty across 143 audited failures. See Limitations. |
 
-### `formatting_failure_rate` per model (base, n=246/model)
+### `formatting_failure_rate` per model (base, n=171/model)
 | Model    | Failures | Rate  |
 |----------|----------|-------|
 | chatgpt  | 6        | 2.44% |
@@ -303,8 +303,8 @@ checkable. See §2 for full per-dimension rationale.
   a 3-bucket weighted MAE (0.3 / 0.5 / 0.6). Cite Multi-Answer Confidence
   (2026) for the consistency-based upgrade path. Verbalized extraction
   is sensitive to hedging language — models with less hedging produce
-  fewer high-confidence signals (Gemini, for instance, defaults 119 of
-  246 base responses to "unstated" and tends toward moderate-bucket
+  fewer high-confidence signals (Gemini, for instance, defaults 74 of
+  171 base responses to "unstated" and tends toward moderate-bucket
   placement when it does hedge).
 - **HALLUCINATION = 0 ambiguity.** Zero hallucinations across 143 audited
   failures may reflect either (a) a real property of closed-form Bayesian
