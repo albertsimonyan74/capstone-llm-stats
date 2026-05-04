@@ -4,6 +4,7 @@ import {
   PerModelPassFlipPanel, KeywordDegradationPanel, PerDimRobustnessPanel,
   PerDimCalibrationPanel, AccCalibScatterPanel, PerModelFailuresPanel,
   BootstrapValidationPanel, AlphaValidationPanel, ToleranceValidationPanel,
+  CalibrationMethodComparisonPanel, EligibilityFunnelPanel,
 } from '../components/MethodologyPanels'
 
 const ICON = {
@@ -651,65 +652,17 @@ export default function Methodology() {
           <ToleranceValidationPanel />
         </FadeIn>
 
-        {/* 6 — Calibration is method-dependent */}
+        {/* 6 — Calibration is method-dependent (visualization-first) */}
         <FadeIn delay={240}>
           <Subhead>6 · Calibration is method-dependent</Subhead>
-          <Card>
-            <p style={{ color: 'rgba(232,244,248,0.78)', fontSize: 13, lineHeight: 1.75, margin: '0 0 12px' }}>
-              Calibration measured two ways yields substantively different conclusions.
-              Verbalized extraction (n=171 base/model) is hedge-heavy: ECE 0.033–0.198, no model
-              produces high-confidence (p ≥ 0.85) records. Phase 1C consistency extraction (3 reruns
-              at T=0.7, n=161 numeric tasks × 5 models) reveals all 5 models severely overconfident
-              under consistency: ECE 0.62–0.73.
-            </p>
-            <Callout color="#FF6B6B" title="Calibration is method-dependent cohort-wide">
-              All five models reverse direction between the two extraction methods —
-              hedge-heavy under verbalized (ECE 0.033–0.198, no high-confidence records),
-              severely overconfident under self-consistency (ECE 0.62–0.73, confident
-              agreement does not predict accuracy). The choice of extraction method
-              substantively changes the calibration conclusion for every model in the cohort.
-            </Callout>
-            <PerDimCalibrationPanel />
-            <p style={{ color: 'rgba(232,244,248,0.7)', fontSize: 12, lineHeight: 1.7, margin: '14px 0 0' }}>
-              <strong>Accuracy-calibration correlation (RQ5 Layer 4):</strong> Pearson r between
-              per-task aggregate (literature-weighted NMACR) and per-task confidence (dim_C):
-              Mistral 0.42, DeepSeek 0.42, Claude 0.42, Gemini 0.39, ChatGPT 0.36. All five
-              models in a tight band 0.36–0.42 — confidence tracks task difficulty more than
-              ground-truth correctness, but does so consistently across the cohort. Honest
-              interpretation: well-calibrated does not mean accurate; it means hedging behaviour
-              tracks task difficulty.
-            </p>
-          </Card>
+          <CalibrationMethodComparisonPanel />
+          <PerDimCalibrationPanel />
         </FadeIn>
 
-        {/* 6.5 — Accuracy-calibration scatter panel */}
-        <FadeIn delay={255}>
-          <AccCalibScatterPanel />
-        </FadeIn>
-
-        {/* 7 — Eligibility filters / disclosures */}
+        {/* 7 — Eligibility filters / disclosures (visualization-first) */}
         <FadeIn delay={270}>
           <Subhead>7 · Eligibility filters and disclosures</Subhead>
-          <Card>
-            <p style={{ color: 'rgba(232,244,248,0.78)', fontSize: 13, lineHeight: 1.75, margin: 0 }}>
-              Keyword-judge disagreement is computed on 750 of 855 truly-base runs. The 105 excluded runs come from 21 distinct task_ids × 5 models — CONCEPTUAL/MINIMAX/BAYES_RISK task families plus the MARKOV_04 outlier, all sharing empty
-              <code style={{ fontSize: 11 }}> required_assumption_checks</code> — keyword and judge
-              scoring of assumption articulation cannot be compared on tasks that don't require
-              assumption articulation.
-            </p>
-            <p style={{ color: 'rgba(232,244,248,0.78)', fontSize: 13, lineHeight: 1.75, margin: '10px 0 0' }}>
-              Self-consistency calibration is computed on 161 of 171 tasks. The 10 CONCEPTUAL
-              tasks are excluded because consistency-rate measurement requires numerical answers,
-              which conceptual tasks don't have.
-            </p>
-            <p style={{ color: 'rgba(232,244,248,0.78)', fontSize: 13, lineHeight: 1.75, margin: '10px 0 0' }}>
-              Error taxonomy is computed on 143 base failures classified by the Llama 3.3 70B
-              judge. FORMATTING_FAILURE (18 / 143 = 12.6%) is reported separately as
-              <code style={{ fontSize: 11 }}> formatting_failure_rate_per_model</code> and excluded
-              from N·M·A·C·R aggregation by design — formatting glitches are orthogonal to
-              substantive Bayesian reasoning.
-            </p>
-          </Card>
+          <EligibilityFunnelPanel />
         </FadeIn>
 
         {/* 8 — Literature convergence */}
