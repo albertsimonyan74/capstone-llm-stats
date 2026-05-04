@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 const SECTIONS = [
@@ -18,8 +18,15 @@ const SECTIONS = [
 export default function SideNav() {
   const [visible, setVisible] = useState(false)
   const [active, setActive] = useState(SECTIONS[0].id)
-  const [expanded, setExpanded] = useState(false)
-  const collapseTimerRef = useRef(null)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1100)
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -42,65 +49,42 @@ export default function SideNav() {
   }, [])
 
   useEffect(() => {
+    if (drawerOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
     return () => {
-      if (collapseTimerRef.current) {
-        clearTimeout(collapseTimerRef.current)
-        collapseTimerRef.current = null
-      }
+      document.body.style.overflow = ''
     }
-  }, [])
+  }, [drawerOpen])
 
-  const cancelCollapse = () => {
-    if (collapseTimerRef.current) {
-      clearTimeout(collapseTimerRef.current)
-      collapseTimerRef.current = null
+  useEffect(() => {
+    if (!drawerOpen) return
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') setDrawerOpen(false)
     }
-  }
+    window.addEventListener('keydown', handleEscape)
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [drawerOpen])
 
-  const triggerCollapseAfterDelay = (delay = 3000) => {
-    cancelCollapse()
-    collapseTimerRef.current = setTimeout(() => {
-      setExpanded(false)
-      collapseTimerRef.current = null
-    }, delay)
-  }
-
-  const handleNavMouseEnter = () => {
-    cancelCollapse()
-    setExpanded(true)
-  }
-
-  const handleNavMouseLeave = () => {
-    triggerCollapseAfterDelay(800)
-  }
-
-  const handleNavTouchStart = () => {
-    cancelCollapse()
-    setExpanded(true)
-  }
-
-  const handleNavTouchEnd = () => {
-    triggerCollapseAfterDelay(3000)
-  }
-
-  const handleClick = (id, e) => {
+  const handleSectionClick = (id, e) => {
     e.preventDefault()
     const el = document.getElementById(id)
-    if (!el) return
-    const offset = 80
-    const top = el.getBoundingClientRect().top + window.scrollY - offset
-    window.scrollTo({ top, behavior: 'smooth' })
-    triggerCollapseAfterDelay(500)
+    if (el) {
+      const offset = 80
+      const top = el.getBoundingClientRect().top + window.scrollY - offset
+      window.scrollTo({ top, behavior: 'smooth' })
+    }
+    if (isMobile) {
+      setTimeout(() => setDrawerOpen(false), 150)
+    }
   }
 
-  const nav = (
+  const desktopRail = (
     <nav
-      className={`sidenav${visible ? ' sidenav--visible' : ''}${expanded ? ' sidenav--expanded' : ''}`}
+      className={`sidenav${visible ? ' sidenav--visible' : ''}`}
       aria-label="Section navigation"
-      onMouseEnter={handleNavMouseEnter}
-      onMouseLeave={handleNavMouseLeave}
-      onTouchStart={handleNavTouchStart}
-      onTouchEnd={handleNavTouchEnd}
     >
       <div className="sidenav__track" aria-hidden="true" />
       <ul className="sidenav__list">
@@ -109,7 +93,7 @@ export default function SideNav() {
             <a
               href={`#${s.id}`}
               className={`sidenav__link${active === s.id ? ' sidenav__link--active' : ''}`}
-              onClick={(e) => handleClick(s.id, e)}
+              onClick={(e) => handleSectionClick(s.id, e)}
             >
               <span className="sidenav__label">{s.label}</span>
               <span className="sidenav__dot" aria-hidden="true" />
@@ -120,6 +104,68 @@ export default function SideNav() {
     </nav>
   )
 
+  const mobileFab = (
+    <>
+      <button
+        className={`sidenav-fab${visible ? ' sidenav-fab--visible' : ''}`}
+        onClick={() => setDrawerOpen(true)}
+        aria-label="Open section navigation"
+        aria-expanded={drawerOpen}
+        type="button"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="4" y1="6" x2="20" y2="6" />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="18" x2="20" y2="18" />
+        </svg>
+      </button>
+
+      {drawerOpen && (
+        <div
+          className="sidenav-drawer-backdrop"
+          onClick={() => setDrawerOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <nav
+        className={`sidenav-drawer${drawerOpen ? ' sidenav-drawer--open' : ''}`}
+        aria-label="Section navigation drawer"
+        aria-hidden={!drawerOpen}
+      >
+        <div className="sidenav-drawer__header">
+          <span className="sidenav-drawer__title">Sections</span>
+          <button
+            className="sidenav-drawer__close"
+            onClick={() => setDrawerOpen(false)}
+            aria-label="Close navigation"
+            type="button"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+
+        <ul className="sidenav-drawer__list">
+          {SECTIONS.map(s => (
+            <li key={s.id} className="sidenav-drawer__item">
+              <a
+                href={`#${s.id}`}
+                className={`sidenav-drawer__link${active === s.id ? ' sidenav-drawer__link--active' : ''}`}
+                onClick={(e) => handleSectionClick(s.id, e)}
+              >
+                <span className="sidenav-drawer__dot" aria-hidden="true" />
+                <span className="sidenav-drawer__label">{s.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </>
+  )
+
   if (typeof document === 'undefined') return null
-  return createPortal(nav, document.body)
+  return createPortal(isMobile ? mobileFab : desktopRail, document.body)
 }

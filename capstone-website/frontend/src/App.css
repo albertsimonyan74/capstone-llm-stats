@@ -2288,101 +2288,222 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   }
 }
 
-/* Compact mode: tablet / narrow laptop — dots only by default; tap/hover expands */
+/* Hide inline rail on mobile/tablet — replaced by FAB + drawer */
 @media (max-width: 1099px) {
   .sidenav {
-    right: 12px;
-  }
-  .sidenav__link {
-    gap: 0;
-    padding: 8px 0;
-  }
-  .sidenav__track {
-    right: 5px;
-  }
-  .app-root {
-    padding-right: 36px;
-  }
-
-  /* Transition-based collapsed default — smooth bidirectional expand/collapse */
-  .sidenav__label {
-    opacity: 0;
-    transform: translateX(8px) translateZ(0);
-    max-width: 0;
-    overflow: hidden;
-    visibility: hidden;
-    transition:
-      opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-      transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-      max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-      visibility 0.25s;
-  }
-
-  .sidenav.sidenav--expanded {
-    background: rgba(10, 14, 24, 0.85);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-radius: 12px;
-    padding: 8px 12px 8px 16px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition:
-      background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-      backdrop-filter 0.25s cubic-bezier(0.4, 0, 0.2, 1),
-      padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: background, padding;
-  }
-  .sidenav.sidenav--expanded .sidenav__label {
-    opacity: 1;
-    transform: translateX(0) translateZ(0);
-    max-width: 200px;
-    visibility: visible;
-  }
-  .sidenav.sidenav--expanded .sidenav__link {
-    gap: 12px;
-    padding: 8px 6px 8px 0;
+    display: none;
   }
 }
 
-/* Phone — smaller dots, larger tap targets, tighter offset */
-@media (max-width: 599px) {
-  .sidenav {
-    right: 8px;
-  }
-  .sidenav__dot {
-    width: 8px;
-    height: 8px;
-  }
-  .sidenav__link--active .sidenav__dot {
-    width: 10px;
-    height: 10px;
-    transform: scale(1.4) translateZ(0);
-  }
-  .sidenav__link {
-    padding: 6px 0;
-    min-height: 28px;
-    align-items: center;
-  }
-  .sidenav__track {
-    right: 3px;
-  }
-  .app-root {
-    padding-right: 24px;
-  }
+/* ─── Mobile FAB (<1100px) ─────────────────────────────────── */
+.sidenav-fab {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%) translateX(80px);
+  z-index: 200;
 
-  /* Reduced blur on phones for GPU performance, compensated by higher opacity */
-  .sidenav.sidenav--expanded {
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    background: rgba(10, 14, 24, 0.92);
-    padding: 6px 10px 6px 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(20, 24, 36, 0.95);
+  color: #00FFE0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.2s ease;
+
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.sidenav-fab--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
+}
+
+.sidenav-fab:active {
+  transform: translateY(-50%) scale(0.92);
+  background: rgba(30, 36, 52, 0.98);
+}
+
+@media (min-width: 1100px) {
+  .sidenav-fab {
+    display: none;
   }
-  .sidenav.sidenav--expanded .sidenav__label {
-    font-size: 11px;
+}
+
+/* ─── Drawer + Backdrop (<1100px) ──────────────────────────── */
+.sidenav-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 998;
+  animation: sidenavBackdropFadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes sidenavBackdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sidenav-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(320px, 85vw);
+  z-index: 999;
+
+  background: rgb(15, 19, 28);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  flex-direction: column;
+
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  will-change: transform;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.sidenav-drawer--open {
+  transform: translateX(0);
+}
+
+@media (min-width: 1100px) {
+  .sidenav-drawer,
+  .sidenav-drawer-backdrop {
+    display: none;
   }
-  .sidenav.sidenav--expanded .sidenav__link {
-    padding: 6px 4px 6px 0;
-    gap: 10px;
-  }
+}
+
+.sidenav-drawer__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.sidenav-drawer__title {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #00FFE0;
+  font-weight: 600;
+}
+
+.sidenav-drawer__close {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sidenav-drawer__close:active {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-primary);
+}
+
+.sidenav-drawer__list {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  overflow-y: auto;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sidenav-drawer__item {
+  margin: 0;
+}
+
+.sidenav-drawer__link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  text-decoration: none;
+  color: var(--text-secondary);
+  font-family: var(--font-mono, monospace);
+  font-size: 14px;
+  letter-spacing: 0.03em;
+
+  min-height: 52px;
+
+  transition: background 0.15s ease, color 0.15s ease;
+
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.sidenav-drawer__link:active {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sidenav-drawer__link--active {
+  color: #00FFE0;
+  background: rgba(0, 255, 224, 0.06);
+  font-weight: 600;
+}
+
+.sidenav-drawer__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sidenav-drawer__link--active .sidenav-drawer__dot {
+  opacity: 1;
+  transform: scale(1.4);
+  box-shadow: 0 0 8px #00FFE0;
+}
+
+.sidenav-drawer__label {
+  flex: 1;
 }
 
 /* ─── Judge Validation gallery panels (Panel 1: forest plot) ──── */
