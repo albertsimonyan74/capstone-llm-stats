@@ -2213,7 +2213,7 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   opacity: 1;
   white-space: nowrap;
   text-align: right;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
 }
 
 .sidenav__dot {
@@ -2252,8 +2252,58 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   box-shadow: 0 0 12px rgba(0, 255, 224, 0.7);
 }
 
-@media (max-width: 1100px) {
-  .sidenav { display: none; }
+/* Reserve right gutter for full label rail at desktop sizes */
+@media (min-width: 1100px) {
+  .app-root {
+    padding-right: 200px;
+  }
+}
+
+/* Compact mode: tablet / narrow laptop — dots only, no labels */
+@media (max-width: 1099px) {
+  .sidenav {
+    right: 12px;
+  }
+  .sidenav__label {
+    display: none;
+  }
+  .sidenav__link {
+    gap: 0;
+    padding: 8px 0;
+  }
+  .sidenav__track {
+    right: 5px;
+  }
+  .app-root {
+    padding-right: 36px;
+  }
+}
+
+/* Phone — smaller dots, larger tap targets, tighter offset */
+@media (max-width: 599px) {
+  .sidenav {
+    right: 8px;
+  }
+  .sidenav__dot {
+    width: 8px;
+    height: 8px;
+  }
+  .sidenav__link--active .sidenav__dot {
+    width: 10px;
+    height: 10px;
+    transform: scale(1.4);
+  }
+  .sidenav__link {
+    padding: 6px 0;
+    min-height: 28px;
+    align-items: center;
+  }
+  .sidenav__track {
+    right: 3px;
+  }
+  .app-root {
+    padding-right: 24px;
+  }
 }
 
 /* ─── Judge Validation gallery panels (Panel 1: forest plot) ──── */
