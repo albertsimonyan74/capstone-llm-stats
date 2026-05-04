@@ -2165,17 +2165,20 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   position: fixed;
   top: 50%;
   right: 28px;
-  transform: translateY(-50%);
+  transform: translateY(-50%) translateX(20px);
   z-index: 150;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease;
+  transition:
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   isolation: isolate;
 }
 
 .sidenav--visible {
   opacity: 1;
   pointer-events: auto;
+  transform: translateY(-50%) translateX(0);
 }
 
 .sidenav__track {
@@ -2213,14 +2216,19 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   font-size: 13px;
   letter-spacing: 0.05em;
   cursor: pointer;
-  transition: color 0.2s ease;
+  transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
 
 .sidenav__label {
-  opacity: 1;
   white-space: nowrap;
   text-align: right;
-  transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+  transition:
+    color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidenav__dot {
@@ -2229,7 +2237,12 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   border-radius: 50%;
   background: rgba(232, 244, 248, 0.32);
   flex-shrink: 0;
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transform: translateZ(0);
+  will-change: transform, background;
+  transition:
+    background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sidenav__link:hover {
@@ -2242,7 +2255,12 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 
 .sidenav__link:hover .sidenav__dot {
   background: #00FFE0;
-  transform: scale(1.2);
+  transform: scale(1.2) translateZ(0);
+}
+
+.sidenav__link:active .sidenav__dot {
+  transform: scale(0.85) translateZ(0);
+  transition: transform 0.1s ease-out;
 }
 
 .sidenav__link--active {
@@ -2255,8 +2273,12 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 
 .sidenav__link--active .sidenav__dot {
   background: #00FFE0;
-  transform: scale(1.5);
+  transform: scale(1.5) translateZ(0);
   box-shadow: 0 0 12px rgba(0, 255, 224, 0.7);
+}
+
+.sidenav__link--active:active .sidenav__dot {
+  transform: scale(1.4) translateZ(0);
 }
 
 /* Reserve right gutter for full label rail at desktop sizes */
@@ -2271,9 +2293,6 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   .sidenav {
     right: 12px;
   }
-  .sidenav__label {
-    display: none;
-  }
   .sidenav__link {
     gap: 0;
     padding: 8px 0;
@@ -2285,6 +2304,20 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
     padding-right: 36px;
   }
 
+  /* Transition-based collapsed default — smooth bidirectional expand/collapse */
+  .sidenav__label {
+    opacity: 0;
+    transform: translateX(8px) translateZ(0);
+    max-width: 0;
+    overflow: hidden;
+    visibility: hidden;
+    transition:
+      opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      max-width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      visibility 0.25s;
+  }
+
   .sidenav.sidenav--expanded {
     background: rgba(10, 14, 24, 0.85);
     backdrop-filter: blur(8px);
@@ -2292,11 +2325,17 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
     border-radius: 12px;
     padding: 8px 12px 8px 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: background 0.2s ease, padding 0.2s ease;
+    transition:
+      background 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      backdrop-filter 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+      padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: background, padding;
   }
   .sidenav.sidenav--expanded .sidenav__label {
-    display: inline-block;
-    animation: labelFadeIn 0.2s ease;
+    opacity: 1;
+    transform: translateX(0) translateZ(0);
+    max-width: 200px;
+    visibility: visible;
   }
   .sidenav.sidenav--expanded .sidenav__link {
     gap: 12px;
@@ -2316,7 +2355,7 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   .sidenav__link--active .sidenav__dot {
     width: 10px;
     height: 10px;
-    transform: scale(1.4);
+    transform: scale(1.4) translateZ(0);
   }
   .sidenav__link {
     padding: 6px 0;
@@ -2330,7 +2369,11 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
     padding-right: 24px;
   }
 
+  /* Reduced blur on phones for GPU performance, compensated by higher opacity */
   .sidenav.sidenav--expanded {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    background: rgba(10, 14, 24, 0.92);
     padding: 6px 10px 6px 14px;
   }
   .sidenav.sidenav--expanded .sidenav__label {
@@ -2339,17 +2382,6 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   .sidenav.sidenav--expanded .sidenav__link {
     padding: 6px 4px 6px 0;
     gap: 10px;
-  }
-}
-
-@keyframes labelFadeIn {
-  from {
-    opacity: 0;
-    transform: translateX(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 
