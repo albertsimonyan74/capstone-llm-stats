@@ -47,6 +47,14 @@ a property of Gemini's responses. Post-fix coverage: Gemini has 127/246
 extractable signals and accuracy_calibration_correlation r = 0.337,
 in-band with the other four models (0.31–0.43).]
 
+[Phase 1.8 update 2026-05-04: post-v1-deprecation truly-base scope
+yields 74 of 171 unstated for Gemini (was 119 of 246 under
+pre-deprecation contaminated scope). Gemini extractable signals
+recompute to 97/171; accuracy_calibration_correlation r = 0.3876,
+in-band with the cohort (0.36–0.42). Tier 1 numbers above (119/246,
+127/246, r=0.337, cohort 0.31–0.43) stand as historical reference;
+the Phase 1.8 numbers are canonical.]
+
 ### c) Robustness ranking — top-2 not statistically separable
 
 Post-Phase-1.8, ChatGPT (Δ=+0.0003, CI [−0.013, +0.014]) and Mistral

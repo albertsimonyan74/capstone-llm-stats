@@ -545,6 +545,12 @@ correlation r=0.337, in-band with the other four models. The cohort-wide
 method-dependence finding stands; the Gemini-specific inversion
 subclaim is FALSIFIED and removed.]
 
+[Phase 1.8 update 2026-05-04: post-v1-deprecation truly-base scope is
+n=171/model. Gemini extractable signals recompute to 97/171 (74
+unstated); accuracy_calibration_correlation r=0.3876, cohort range
+0.36–0.42. Tier 1 numbers above (127/246, r=0.337, cohort 0.31–0.43)
+stand as historical reference; the Phase 1.8 numbers are canonical.]
+
 **Citations used.**
 - **Nagarkar et al. (2026)** [arXiv:2601.14479] — confidence claims
   rarely track empirical accuracy in statistical-domain LLM reasoning.
@@ -651,7 +657,7 @@ RQ formulations.
 | 3 | ~~Bibtex key `park2025judge` actually points to Yamauchi et al.~~ | **VERIFIED 2026-05-03 (no rename).** Bibtex key `park2025judge` retained for citation stability per Day-3 housekeeping convention; bibtex `author={...}` field correctly says "Yamauchi" so any LaTeX `\cite{park2025judge}` resolves to "Yamauchi et al." in printed references. All in-text references across project use "Yamauchi et al. (2025)". No further action needed pre-submission unless reviewer queries the key mismatch. |
 | 4 | ~~Boye & Moell — bibtex year 2026 vs arXiv Feb 2025…~~ | **RESOLVED 2026-05-03.** Bibtex key renamed `mathfail2026` → `mathfail2025`; year field updated `2026 → 2025`. Vault note `papers/13-new-math-reasoning-failures-2026.md` Year + Citation-in-poster + Citation-in-paper + Bibtex-key fields all aligned to 2025. Filename retains legacy `-2026` suffix for stability (logged in metadata). README + poster-citations + audit/literature_comparison.md + audit/personal_todo_status.md updated. static_data mirror synced. |
 | 5 | Post Phase 1.8 (2026-05-04), the 20.74% combined keyword-judge disagreement uses `pct_pass_flip` from `combined_pass_flip_analysis.json` (n_eligible 2,850); the base-only headline is 20.93% (n_eligible 750). Both are canonical at their own scope. | Paper picks 20.74% for the headline (larger denominator); base-only footnoted. Website surfaces both via the `useKeyFindings` hook. |
-| 6 | ~~Gemini "all 246 base responses unstated" — verify…~~ | **RESOLVED 2026-05-03 (Tier 1).** Falsified by Fix B. Post-fix gemini bucket counts: low 9, medium 118, high 0, unstated 119 (sum 246). 127/246 extractable signals; correlation r = 0.337. See `audit/gemini_forensic_2026-05-03.md`. |
+| 6 | ~~Gemini "all 246 base responses unstated" — verify…~~ | **RESOLVED 2026-05-03 (Tier 1); RECOMPUTED 2026-05-04 (Phase 1.8).** Tier 1 falsified original 0/246 claim with Fix B (low 9, medium 118, high 0, unstated 119; sum 246; 127/246 extractable; r=0.337). Phase 1.8 v1-deprecation reduced truly-base scope to n=171/model: gemini buckets recompute to low 8, medium 89, high 0, unstated 74; 97/171 extractable; r=0.3876. Tier 1 numbers stand as historical reference; Phase 1.8 numbers are canonical. See `audit/gemini_forensic_2026-05-03.md` + `audit/recompute_log.md` §"Phase 1.8". |
 | 7 | Phase 1C self-consistency cost reported as $11.688 in `recompute_log.md`; verify this matches the run-log artifacts before citing in paper. | Cross-check `experiments/results_v2/self_consistency_runs.jsonl` token counts against vendor-quoted $/M-token rates. |
 
 ---
