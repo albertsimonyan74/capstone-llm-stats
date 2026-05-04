@@ -776,17 +776,17 @@ const KRIPP_DIMS = [
   {
     key: 'A', name: 'assumption_compliance', label: 'A · assumption',
     alpha:  0.5730, ci_low:  0.5155, ci_high:  0.6219,
-    interp: 'moderate agreement', tone: 'positive',
+    interp: 'moderate', tone: 'positive',
   },
   {
     key: 'R', name: 'reasoning_quality', label: 'R · reasoning',
     alpha: -0.1246, ci_low: -0.1967, ci_high: -0.0589,
-    interp: 'CI excludes 0 — systematic disagreement', tone: 'negative',
+    interp: 'CI excludes 0', tone: 'negative',
   },
   {
     key: 'M', name: 'method_structure', label: 'M · method',
     alpha: -0.0090, ci_low: -0.0723, ci_high:  0.0617,
-    interp: 'CI contains 0 — chance-level', tone: 'neutral',
+    interp: 'CI contains 0', tone: 'neutral',
   },
 ]
 

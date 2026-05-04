@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'motion/react'
 import { VISUALIZATIONS, VIZ_CATEGORIES } from '../data/visualizations'
+import ExpandablePanel from '../components/ExpandablePanel'
 
 function FadeIn({ children, delay = 0, style = {} }) {
   const ref = useRef(null)
@@ -44,7 +45,7 @@ function VizCard({ viz, color, setFullImg }) {
             borderBottom: `1px solid ${color}1A`,
           }}
         >
-          <Comp />
+          <ExpandablePanel title={viz.title}><Comp /></ExpandablePanel>
         </div>
       ) : (
         <button

@@ -6,6 +6,7 @@ import {
   BootstrapValidationPanel, AlphaValidationPanel, ToleranceValidationPanel,
   CalibrationMethodComparisonPanel, EligibilityFunnelPanel,
 } from '../components/MethodologyPanels'
+import ExpandablePanel from '../components/ExpandablePanel'
 
 const ICON = {
   MessageSquare: (p) => (
@@ -603,7 +604,7 @@ export default function Methodology() {
               </p>
             </div>
 
-            <KeywordDegradationPanel />
+            <ExpandablePanel title="Keyword vs Judge disagreement"><KeywordDegradationPanel /></ExpandablePanel>
             <div style={{ marginTop: 14, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
               {PERT_TYPE.map(p => (
                 <div key={p.kind} style={{
@@ -623,7 +624,7 @@ export default function Methodology() {
 
         {/* 3.5 — Per-model keyword-judge disagreement panel */}
         <FadeIn delay={165}>
-          <PerModelPassFlipPanel />
+          <ExpandablePanel title="Per-model keyword-judge disagreement"><PerModelPassFlipPanel /></ExpandablePanel>
         </FadeIn>
 
         {/* 4 — Per-model failure modes */}
@@ -641,28 +642,28 @@ export default function Methodology() {
 
         {/* 4.5 — Per-dim robustness panel */}
         <FadeIn delay={195}>
-          <PerDimRobustnessPanel />
+          <ExpandablePanel title="Per-dimension robustness"><PerDimRobustnessPanel /></ExpandablePanel>
         </FadeIn>
 
         {/* 5 — Statistical validation (visualization-first) */}
         <FadeIn delay={210}>
           <Subhead>5 · Statistical Validation</Subhead>
-          <BootstrapValidationPanel />
-          <AlphaValidationPanel />
-          <ToleranceValidationPanel />
+          <ExpandablePanel title="Bootstrap CI validation"><BootstrapValidationPanel /></ExpandablePanel>
+          <ExpandablePanel title="Krippendorff α validation"><AlphaValidationPanel /></ExpandablePanel>
+          <ExpandablePanel title="Tolerance sensitivity"><ToleranceValidationPanel /></ExpandablePanel>
         </FadeIn>
 
         {/* 6 — Calibration is method-dependent (visualization-first) */}
         <FadeIn delay={240}>
           <Subhead>6 · Calibration is method-dependent</Subhead>
-          <CalibrationMethodComparisonPanel />
-          <PerDimCalibrationPanel />
+          <ExpandablePanel title="Calibration method comparison"><CalibrationMethodComparisonPanel /></ExpandablePanel>
+          <ExpandablePanel title="Per-dimension calibration ECE"><PerDimCalibrationPanel /></ExpandablePanel>
         </FadeIn>
 
         {/* 7 — Eligibility filters / disclosures (visualization-first) */}
         <FadeIn delay={270}>
           <Subhead>7 · Eligibility filters and disclosures</Subhead>
-          <EligibilityFunnelPanel />
+          <ExpandablePanel title="Eligibility filters funnel"><EligibilityFunnelPanel /></ExpandablePanel>
         </FadeIn>
 
         {/* 8 — Literature convergence */}

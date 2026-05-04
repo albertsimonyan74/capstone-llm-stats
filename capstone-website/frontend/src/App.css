@@ -1504,11 +1504,18 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 .readout-interpretation {
   color: rgba(232, 244, 248, 0.6);
   font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .readout-interpretation.tone-negative { color: #FF6B6B; }
 .readout-interpretation.tone-positive { color: #7FFFD4; }
 .readout-interpretation.tone-neutral  { color: rgba(232, 244, 248, 0.55); }
+
+@media (max-width: 700px) {
+  .readout-interpretation { white-space: normal; }
+}
 
 .tolerance-bands {
   display: flex;
@@ -2374,12 +2381,18 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   font-style: italic;
   font-size: 10.5px;
   opacity: 0.85;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @media (max-width: 700px) {
   .alpha-readout .readout-row {
     grid-template-columns: 1fr;
     gap: 2px;
+  }
+  .alpha-readout .readout-interp {
+    white-space: normal;
   }
 }
 
@@ -2525,5 +2538,128 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
   }
   .confusion-grid .cell-label {
     font-size: 8.5px;
+  }
+}
+
+/* ─── ExpandablePanel — click-to-expand modal for live Recharts panels */
+.expandable-panel {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.expandable-panel:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.expandable-panel:focus-visible {
+  outline: 2px solid #00FFE0;
+  outline-offset: 4px;
+  border-radius: 14px;
+}
+
+.expandable-hint {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(232, 244, 248, 0.55);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  pointer-events: none;
+  text-transform: lowercase;
+  z-index: 2;
+}
+
+.expandable-panel:hover .expandable-hint,
+.expandable-panel:focus-visible .expandable-hint {
+  opacity: 0.85;
+}
+
+.expandable-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(6px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  animation: expandableOverlayFadeIn 0.2s ease;
+}
+
+@keyframes expandableOverlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.expandable-modal-content {
+  position: relative;
+  background: rgba(6, 12, 26, 0.98);
+  border: 1px solid rgba(0, 255, 224, 0.2);
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+  max-width: 1400px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 28px 36px;
+  animation: expandableModalSlideIn 0.22s ease;
+}
+
+@keyframes expandableModalSlideIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.expandable-modal-inner {
+  width: 100%;
+}
+
+.expandable-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+  z-index: 2;
+}
+
+.expandable-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+@media (max-width: 700px) {
+  .expandable-overlay {
+    padding: 16px;
+  }
+  .expandable-modal-content {
+    padding: 18px 16px;
+    max-height: 95vh;
+  }
+  .expandable-hint {
+    opacity: 0.6;
+    font-size: 9px;
   }
 }
