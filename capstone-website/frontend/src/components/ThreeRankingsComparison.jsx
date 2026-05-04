@@ -76,6 +76,8 @@ function rankingPanel({ title, accent, items, lowerIsBetter, valueFmt }) {
                 background: 'rgba(8,12,18,0.95)', border: '1px solid rgba(0,255,224,0.4)',
                 borderRadius: 6, fontSize: 12,
               }}
+              labelStyle={{ color: '#ffffff' }}
+              itemStyle={{ color: '#ffffff' }}
               formatter={(v) => [valueFmt(v), title]}
             />
             <Bar dataKey="value" radius={[0, 4, 4, 0]}>
@@ -150,14 +152,6 @@ export default function ThreeRankingsComparison() {
           items: data.calibration, lowerIsBetter: true, valueFmt: fmt3,
         })}
       </div>
-      <p style={{
-        color: 'rgba(232,244,248,0.55)', fontSize: 11, lineHeight: 1.6,
-        textAlign: 'center', margin: '14px auto 0', maxWidth: 1100,
-      }}>
-        Accuracy = literature-weighted NMACR mean (Phase 1B). Robustness = base − perturbation
-        score delta (smaller = more stable). Calibration = expected calibration error of
-        verbalized confidence (smaller = better calibrated). Source: <code>/api/v2/rankings</code>.
-      </p>
     </div>
   )
 }
