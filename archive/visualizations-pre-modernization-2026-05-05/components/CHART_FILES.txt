@@ -1,0 +1,5 @@
+capstone-website/frontend/src/App.jsx
+capstone-website/frontend/src/App.css
+capstone-website/frontend/src/components/JudgeValidationPanels.jsx
+capstone-website/frontend/src/components/ThreeRankingsComparison.jsx
+capstone-website/frontend/src/components/MethodologyPanels.jsx

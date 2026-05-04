@@ -1,0 +1,17 @@
+a1_failure_by_tasktype.png
+a2_accuracy_by_category.png
+a3_failure_heatmap.png
+a4_robustness_by_perttype.png
+a4b_per_dim_robustness.png
+a5_calibration_reliability.png
+a5b_per_dim_calibration.png
+a6_aggregate_ranking.png
+agreement_metrics_comparison.png
+bootstrap_ci.png
+calibration_reliability.png
+error_taxonomy_hierarchical.png
+judge_validation_by_model.png
+judge_validation_scatter.png
+robustness_heatmap.png
+self_consistency_calibration.png
+three_rankings.png
