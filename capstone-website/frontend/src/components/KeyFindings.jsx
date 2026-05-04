@@ -53,7 +53,7 @@ function buildCards(d, pf) {
     {
       big: 'Almost half',
       label: 'Models skip the reasoning, not the math',
-      desc: `Out of ${d.dominant_failure_total ?? 143} cases where a model failed, ${d.dominant_failure_n ?? 67} (${((d.dominant_failure_pct ?? 0.469) * 100).toFixed(0)}%) failed because they didn't articulate their assumptions — even though their math was often correct. Compare: only 48 (34%) failed because of math errors.`,
+      desc: `Across ${d.dominant_failure_total ?? 143} audited failures, ${d.dominant_failure_n ?? 67} (${((d.dominant_failure_pct ?? 0.469) * 100).toFixed(1)}%) were classified as assumption violations — gaps in articulating priors, distributions, or independence structure. By contrast, 48 (33.6%) were classified as math errors. The primary failure mode is reasoning, not computation.`,
       why: "When LLMs fail at Bayesian reasoning, it's usually not because they can't compute — it's because they skip the reasoning steps. This is the silent failure mode.",
     },
     {
