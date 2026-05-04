@@ -58,12 +58,18 @@ MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
 # (canonical experiments/results_v2/error_taxonomy_v2.json). See Limitations L1
 # for methodological framing on the empty bucket.
 L1_COLORS = {
-    "ASSUMPTION_VIOLATION": "#f59e0b",  # amber
-    "MATHEMATICAL_ERROR":   "#ef4444",  # red
-    "FORMATTING_FAILURE":   "#64748b",  # slate
-    "CONCEPTUAL_ERROR":     "#a855f7",  # purple
+    "ASSUMPTION_VIOLATION": "#fbbf24",  # amber/gold
+    "MATHEMATICAL_ERROR":   "#f87171",  # coral red
+    "FORMATTING_FAILURE":   "#94a3b8",  # slate
+    "CONCEPTUAL_ERROR":     "#a78bfa",  # lavender
 }
 L1_ORDER = list(L1_COLORS.keys())
+
+# Site theme (matches capstone-website/frontend/src/App.css :root vars).
+SITE_BG = "#0A0F1E"        # bg-primary
+SITE_FG = "#E8F4F8"        # text-primary
+SITE_FG_MUTED = "#8BAFC0"  # text-secondary
+SITE_GRID_ALPHA = 0.08
 
 PERT_SUFFIX_RE = re.compile(r"_(rephrase|numerical|semantic)(?:_v\d+)?$")
 
@@ -182,42 +188,64 @@ def figure_a1():
     task_types = sorted(counts.keys(), key=lambda tt: -sum(counts[tt].values()))
     totals = [sum(counts[tt].values()) for tt in task_types]
 
-    fig, ax = plt.subplots(figsize=(14, 7), dpi=300)
-    fig.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(14, 7), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
 
     x = np.arange(len(task_types))
     bottoms = np.zeros(len(task_types))
     for l1 in L1_ORDER:
         heights = np.array([counts[tt].get(l1, 0) for tt in task_types], dtype=float)
         ax.bar(x, heights, bottom=bottoms, color=L1_COLORS[l1],
-               edgecolor="white", linewidth=0.5,
+               edgecolor=SITE_BG, linewidth=1.5,
                label=l1.replace("_", " ").title())
         bottoms += heights
 
+    # Failure RATE labels above each bar (failures / runs), site-light text.
     for i, tt in enumerate(task_types):
         n_runs = runs_by_tt.get(tt, 0)
         rate = totals[i] / n_runs if n_runs else 0.0
         ax.text(x[i], totals[i] + 0.4,
                 f"{rate*100:.0f}%",
                 ha="center", va="bottom",
-                fontsize=8.5, color="#444", fontweight="bold")
+                fontsize=8.5, color=SITE_FG, fontweight="bold")
 
+    # X-axis: task types in muted monospace.
     ax.set_xticks(x)
-    ax.set_xticklabels(task_types, rotation=45, ha="right", fontsize=9)
-    ax.set_ylabel("Failure count (stacked)")
-    ax.set_xlabel("Task type (sorted by total failures)")
+    ax.set_xticklabels(task_types, rotation=45, ha="right",
+                       fontsize=8.5, color=SITE_FG_MUTED, family="monospace")
+
+    # Y-axis muted.
+    ax.set_ylabel("Failure count (stacked)", fontsize=11, color=SITE_FG_MUTED)
+    ax.set_xlabel("Task type (sorted by total failures)",
+                  fontsize=10, color=SITE_FG_MUTED)
+    ax.tick_params(axis="y", colors=SITE_FG_MUTED, labelsize=9)
+
+    # Clean spines.
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.grid(axis="y", linestyle="--", alpha=0.3)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color(SITE_FG_MUTED)
+        ax.spines[side].set_alpha(0.3)
+
+    ax.grid(axis="y", alpha=SITE_GRID_ALPHA, linestyle="-", linewidth=0.5,
+            color=SITE_FG)
+    ax.set_axisbelow(True)
     ax.set_ylim(0, max(totals) * 1.20)
-    ax.legend(loc="upper right", title="L1 Failure Bucket", frameon=False)
+
+    ax.set_title("Failure rate by task type · sorted by total failures",
+                 fontsize=13, fontweight="bold", color=SITE_FG,
+                 pad=18, loc="left")
+
+    legend = ax.legend(loc="upper right", title="L1 failure bucket",
+                       frameon=False, fontsize=10, labelcolor=SITE_FG_MUTED)
+    legend.get_title().set_color(SITE_FG_MUTED)
 
     ax.text(0.005, 0.96,
             "% labels show failure RATE per task_type (failures / runs).",
-            transform=ax.transAxes, fontsize=9, color="#666", style="italic")
+            transform=ax.transAxes, fontsize=9, color=SITE_FG_MUTED, style="italic")
 
     fig.tight_layout()
-    fig.savefig(out, dpi=300, transparent=True, bbox_inches="tight")
+    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     top3 = task_types[:3]

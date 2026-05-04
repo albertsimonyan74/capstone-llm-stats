@@ -68,16 +68,16 @@ L1_TO_L2 = {
 L2_TO_L1 = {l2: l1 for l1, codes in L1_TO_L2.items() for l2 in codes}
 
 # L1 fill palette: distinct from site model palette (teal/mint/pink/blue/lavender).
-# Saturated, high-contrast hues that read on both light and dark slide backgrounds.
+# Saturated, high-contrast hues that read on dark site background.
 # HALLUCINATION omitted from visualization (0/143 across all models — see Limitations L1).
 L1_COLORS = {
-    "ASSUMPTION_VIOLATION": "#f59e0b",  # amber
-    "MATHEMATICAL_ERROR":   "#ef4444",  # red
-    "FORMATTING_FAILURE":   "#64748b",  # slate
-    "CONCEPTUAL_ERROR":     "#a855f7",  # purple
+    "ASSUMPTION_VIOLATION": "#fbbf24",  # amber/gold — most common, foreground
+    "MATHEMATICAL_ERROR":   "#f87171",  # coral red — math errors
+    "FORMATTING_FAILURE":   "#94a3b8",  # slate — formatting (lower urgency)
+    "CONCEPTUAL_ERROR":     "#a78bfa",  # lavender purple
 }
 
-# Model identity carried via x-axis tick label color (not bar border)
+# Model identity carried via x-axis tick label color (canonical site palette).
 MODEL_BORDER = {
     "claude":   "#00CED1",
     "chatgpt":  "#7FFFD4",
@@ -86,6 +86,12 @@ MODEL_BORDER = {
     "mistral":  "#A78BFA",
 }
 MODEL_ORDER = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
+
+# Site theme (matches capstone-website/frontend/src/App.css :root vars).
+SITE_BG = "#0A0F1E"        # bg-primary
+SITE_FG = "#E8F4F8"        # text-primary
+SITE_FG_MUTED = "#8BAFC0"  # text-secondary
+SITE_GRID_ALPHA = 0.08
 
 JUDGE_PROMPT = """You are an expert grader classifying a FAILED Bayesian-statistics LLM response into a hierarchical error taxonomy.
 
@@ -458,8 +464,8 @@ def make_chart(summary: dict) -> None:
     l1_order = list(L1_COLORS.keys())
     models = [m for m in MODEL_ORDER if m in by_model]
 
-    fig, ax = plt.subplots(figsize=(10, 6.5), dpi=300)
-    fig.patch.set_alpha(0)
+    fig, ax = plt.subplots(figsize=(10, 6.5), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
 
     x = np.arange(len(models))
     bottoms = np.zeros(len(models))
@@ -469,53 +475,69 @@ def make_chart(summary: dict) -> None:
         ax.bar(
             x, heights, bottom=bottoms,
             color=L1_COLORS[l1],
-            edgecolor="white",
-            linewidth=1.0,
+            edgecolor=SITE_BG,
+            linewidth=2.0,
             label=l1.replace("_", " ").title(),
         )
+        # Segment count labels: only on segments >=3 (avoids tiny-segment crowding).
         for i, h in enumerate(heights):
-            if h >= 1:
+            if h >= 3:
                 ax.text(x[i], bottoms[i] + h / 2, str(int(h)),
                         ha="center", va="center", fontsize=10,
-                        color="white", fontweight="bold")
+                        color=SITE_BG, fontweight="bold")
         bottoms += heights
 
-    # Per-model totals above bars (cohort header line, neutral charcoal so
-    # it does not compete with model-color tick labels below the axis).
-    for i in range(len(models)):
+    # Per-model totals above bars in model-identity color (site palette).
+    for i, m in enumerate(models):
         total = int(bottoms[i])
         ax.text(x[i], total + 0.6, str(total), ha="center", va="bottom",
-                fontsize=11, fontweight="bold", color="#222")
+                fontsize=12, fontweight="bold",
+                color=MODEL_BORDER.get(m, SITE_FG))
 
     # X-axis labels: model identity carried via tick color (matches site palette).
     ax.set_xticks(x)
     ax.set_xticklabels([m.upper() for m in models], fontsize=11, fontweight="bold")
     for tick, m in zip(ax.get_xticklabels(), models):
-        tick.set_color(MODEL_BORDER.get(m, "#222"))
+        tick.set_color(MODEL_BORDER.get(m, SITE_FG))
 
-    ax.set_ylabel("Failure count", fontsize=11)
-    ax.set_title("Hierarchical error taxonomy across models (n=143 base failures)",
-                 fontsize=13, fontweight="bold", pad=14)
+    # Y-axis
+    ax.set_ylabel("Failure count", fontsize=11, color=SITE_FG_MUTED)
+    ax.tick_params(axis="y", colors=SITE_FG_MUTED, labelsize=9)
+
+    # Clean spines: hide top/right, dim left/bottom.
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
-    ax.grid(axis="y", linestyle="--", alpha=0.3)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color(SITE_FG_MUTED)
+        ax.spines[side].set_alpha(0.3)
+
+    # Subtle horizontal gridlines.
+    ax.grid(axis="y", alpha=SITE_GRID_ALPHA, linestyle="-", linewidth=0.5,
+            color=SITE_FG)
+    ax.set_axisbelow(True)
     ax.set_ylim(0, max(bottoms) * 1.18)
 
+    # Title (left-aligned, light text).
+    ax.set_title("Hierarchical error taxonomy across models · n=143 base failures",
+                 fontsize=13, fontweight="bold", color=SITE_FG, pad=18, loc="left")
+
     # Legend below chart, horizontal, 4 columns — out of bar-tops collision zone.
-    ax.legend(
+    legend = ax.legend(
         loc="upper center",
         bbox_to_anchor=(0.5, -0.10),
         ncol=4,
         frameon=False,
         fontsize=10,
+        labelcolor=SITE_FG_MUTED,
         title="L1 failure bucket",
         title_fontsize=10,
     )
+    legend.get_title().set_color(SITE_FG_MUTED)
 
     FIG_PATH.parent.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
     fig.subplots_adjust(bottom=0.18)
-    fig.savefig(FIG_PATH, dpi=150, transparent=True, bbox_inches="tight")
+    fig.savefig(FIG_PATH, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
 
