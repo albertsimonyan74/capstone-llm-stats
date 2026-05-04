@@ -659,12 +659,12 @@ function shapeForestPoints(rows) {
   }))
 }
 
-function ForestChart({ data, domain, refX = null, valueLabel = 'mean', height = 220 }) {
+function ForestChart({ data, domain, refX = null, valueLabel = 'mean', height = 280 }) {
   const points = shapeForestPoints(data)
   return (
     <div style={{ width: '100%', height }}>
       <ResponsiveContainer>
-        <ScatterChart margin={{ top: 14, right: 90, bottom: 24, left: 8 }}>
+        <ScatterChart margin={{ top: 26, right: 28, bottom: 24, left: 8 }}>
           <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.06)" horizontal={false} />
           <XAxis
             type="number"
@@ -679,6 +679,7 @@ function ForestChart({ data, domain, refX = null, valueLabel = 'mean', height = 
             tick={{ fill: 'rgba(232,244,248,0.9)', fontSize: 11, fontFamily: 'monospace' }}
             width={70}
             interval={0}
+            padding={{ top: 18, bottom: 8 }}
           />
           <ZAxis range={[120, 120]} />
           <Tooltip
@@ -717,8 +718,8 @@ function ForestChart({ data, domain, refX = null, valueLabel = 'mean', height = 
             />
             <LabelList
               dataKey="mean"
-              position="right"
-              offset={14}
+              position="top"
+              offset={10}
               formatter={(v) => (v >= 0 ? '' : '−') + Math.abs(v).toFixed(3)}
               style={{ fill: 'rgba(232,244,248,0.95)', fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
             />
@@ -806,9 +807,9 @@ function AlphaForestChart() {
     tone: d.tone,
   }))
   return (
-    <div style={{ width: '100%', height: 220 }}>
+    <div style={{ width: '100%', height: 240 }}>
       <ResponsiveContainer>
-        <ScatterChart margin={{ top: 22, right: 90, bottom: 24, left: 8 }}>
+        <ScatterChart margin={{ top: 38, right: 28, bottom: 24, left: 8 }}>
           <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.06)" horizontal={false} />
           <XAxis
             type="number"
@@ -823,6 +824,7 @@ function AlphaForestChart() {
             tick={{ fill: 'rgba(232,244,248,0.9)', fontSize: 11, fontFamily: 'monospace' }}
             width={140}
             interval={0}
+            padding={{ top: 14, bottom: 8 }}
           />
           <ZAxis range={[120, 120]} />
           <Tooltip
@@ -844,7 +846,7 @@ function AlphaForestChart() {
             stroke="#FFB347"
             strokeWidth={1.6}
             strokeDasharray="3 3"
-            label={{ value: 'α = 0 (chance)', fill: '#FFB347', fontSize: 11, fontWeight: 700, position: 'top', offset: 6 }}
+            label={{ value: 'α = 0 (chance)', fill: '#FFB347', fontSize: 11, fontWeight: 700, position: 'top', offset: 8 }}
           />
           <Scatter data={data} shape="circle">
             {data.map(d => (
@@ -859,8 +861,8 @@ function AlphaForestChart() {
             />
             <LabelList
               dataKey="alpha"
-              position="right"
-              offset={14}
+              position="top"
+              offset={10}
               formatter={(v) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(3)}
               style={{ fill: 'rgba(232,244,248,0.95)', fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
             />
@@ -919,92 +921,80 @@ const TOLERANCE_ACCURACY = {
   loose:   { claude: 0.6102, chatgpt: 0.5805, gemini: 0.5593, deepseek: 0.5508, mistral: 0.5593 },
 }
 
-// Pre-compute rank-ordered model lists per tolerance level for column rendering.
-function ranksForLevel(level) {
-  const ranks = TOLERANCE_RANKS.find(r => r.level === level)
+// Per-band rows sorted by accuracy descending for stacked horizontal bars.
+function bandRows(level) {
+  const accs = TOLERANCE_ACCURACY[level]
   return MODELS
-    .map(m => ({ model: m, rank: ranks[m], acc: TOLERANCE_ACCURACY[level][m] }))
-    .sort((a, b) => a.rank - b.rank)
+    .map(m => ({ model: m, accuracy: accs[m] }))
+    .sort((a, b) => b.accuracy - a.accuracy)
+}
+
+function ToleranceBandPanel({ header, range, data }) {
+  return (
+    <div className="tolerance-band-panel">
+      <div className="band-header">
+        <span className="band-label">{header}</span>
+        <span className="band-range">{range}</span>
+      </div>
+      <div style={{ width: '100%', height: 150 }}>
+        <ResponsiveContainer>
+          <BarChart layout="vertical" data={data} margin={{ top: 4, right: 56, bottom: 4, left: 4 }}>
+            <CartesianGrid strokeDasharray="2 4" stroke="rgba(255,255,255,0.05)" horizontal={false} />
+            <XAxis
+              type="number"
+              domain={[0.40, 0.65]}
+              tick={{ fill: 'rgba(232,244,248,0.55)', fontSize: 9, fontFamily: 'monospace' }}
+              tickFormatter={v => v.toFixed(2)}
+            />
+            <YAxis
+              type="category"
+              dataKey="model"
+              tick={{ fill: 'rgba(232,244,248,0.9)', fontSize: 11, fontFamily: 'monospace' }}
+              width={70}
+              interval={0}
+            />
+            <Tooltip
+              cursor={{ fill: 'rgba(0,255,224,0.05)' }}
+              content={({ active, payload }) => {
+                if (!active || !payload?.[0]) return null
+                const p = payload[0].payload
+                return (
+                  <TooltipBox>
+                    <div style={{ color: MODEL_COLORS[p.model], fontWeight: 700 }}>{p.model}</div>
+                    <div>accuracy: {p.accuracy.toFixed(4)}</div>
+                  </TooltipBox>
+                )
+              }}
+            />
+            <Bar dataKey="accuracy" radius={[0, 4, 4, 0]} barSize={16}>
+              {data.map(d => <Cell key={d.model} fill={MODEL_COLORS[d.model]} />)}
+              <LabelList
+                dataKey="accuracy"
+                position="right"
+                offset={8}
+                formatter={v => v.toFixed(3)}
+                style={{ fill: 'rgba(232,244,248,0.95)', fontSize: 11, fontFamily: 'monospace', fontWeight: 600 }}
+              />
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  )
 }
 
 export function ToleranceValidationPanel() {
-  const tightRows   = ranksForLevel('tight')
-  const defaultRows = ranksForLevel('default')
-  const looseRows   = ranksForLevel('loose')
-
-  // Track per-model rank by level for connector SVG
-  const rankAt = (level, model) =>
-    TOLERANCE_RANKS.find(r => r.level === level)[model]
-
-  // Models that change rank across any level
-  const movingModels = MODELS.filter(m => {
-    const t = rankAt('tight', m), d = rankAt('default', m), l = rankAt('loose', m)
-    return !(t === d && d === l)
-  })
-
-  // SVG connector geometry (matches CSS row height + grid columns)
-  const ROW_H = 30, ROW_GAP = 12, ROW_OFFSET = 14 // dot vertical alignment within row
-  const yFor = (rank) => 60 + (rank - 1) * (ROW_H + ROW_GAP) + ROW_OFFSET
-  const TOTAL_H = 60 + 5 * (ROW_H + ROW_GAP) + 20
-
   return (
     <div className="validation-panel">
       <div className="validation-panel-header">
         <span className="validation-label">TOLERANCE SENSITIVITY</span>
-        <span className="validation-meta">3 tolerance bands · n=236 numeric runs/level/model</span>
+        <span className="validation-meta">3 bands · same X-domain (0.40–0.65) · n=236 numeric runs/level/model</span>
       </div>
 
-      <div className="tolerance-leaderboards" style={{ minHeight: TOTAL_H }}>
-        {[
-          { key: 'tight',   header: 'TIGHT',   range: '(0.005, 0.025)', rows: tightRows },
-          { key: 'default', header: 'DEFAULT', range: '(0.010, 0.050)', rows: defaultRows },
-          { key: 'loose',   header: 'LOOSE',   range: '(0.020, 0.100)', rows: looseRows },
-        ].map(col => (
-          <div key={col.key} className="tolerance-column">
-            <div className="tolerance-column-header">
-              <div>{col.header}</div>
-              <div style={{ fontSize: 9, opacity: 0.6, marginTop: 2 }}>{col.range}</div>
-            </div>
-            {col.rows.map(r => (
-              <div key={r.model} className="tolerance-rank-row">
-                <span className="tolerance-rank-num">#{r.rank}</span>
-                <span className="tolerance-rank-model">
-                  <span className="tolerance-rank-dot" style={{ background: MODEL_COLORS[r.model] }} />
-                  <span className="tolerance-rank-name">{r.model}</span>
-                </span>
-              </div>
-            ))}
-          </div>
-        ))}
-
-        {/* Bezier connectors for rank-changing models */}
-        <svg className="tolerance-connector-svg" viewBox={`0 0 1000 ${TOTAL_H}`} preserveAspectRatio="none">
-          {movingModels.map(m => {
-            const yT = yFor(rankAt('tight', m))
-            const yD = yFor(rankAt('default', m))
-            const yL = yFor(rankAt('loose', m))
-            const x1 = 333, x2 = 500, x3 = 667, x4 = 833
-            const cps = 60
-            return (
-              <g key={m}>
-                <path
-                  d={`M ${x1} ${yT} C ${x1 + cps} ${yT} ${x2 - cps} ${yD} ${x2} ${yD}`}
-                  stroke={MODEL_COLORS[m]}
-                  strokeWidth={2.2}
-                  fill="none"
-                  opacity={0.85}
-                />
-                <path
-                  d={`M ${x3} ${yD} C ${x3 + cps} ${yD} ${x4 - cps} ${yL} ${x4} ${yL}`}
-                  stroke={MODEL_COLORS[m]}
-                  strokeWidth={2.2}
-                  fill="none"
-                  opacity={0.85}
-                />
-              </g>
-            )
-          })}
-        </svg>
+      <div className="tolerance-stacked-charts">
+        <ToleranceBandPanel header="TIGHT"   range="(0.005, 0.025)" data={bandRows('tight')} />
+        <ToleranceBandPanel header="DEFAULT" range="(0.010, 0.050)" data={bandRows('default')} />
+        <ToleranceBandPanel header="LOOSE"   range="(0.020, 0.100)" data={bandRows('loose')} />
       </div>
 
       <div className="validation-panel-footer">
@@ -1036,15 +1026,16 @@ const CALIB_CONSISTENCY = [
 ]
 
 export function CalibrationMethodComparisonPanel() {
-  // Rank lookup per side
+  // Rank lookup per side (1 = best, lower ECE)
   const verbalRank = Object.fromEntries(CALIB_VERBALIZED.map((r, i) => [r.model, i + 1]))
   const consistRank = Object.fromEntries(CALIB_CONSISTENCY.map((r, i) => [r.model, i + 1]))
 
-  // SVG connector geometry (matches CSS row geometry)
-  const ROW_H = 30, ROW_GAP = 10, ROW_OFFSET = 18
-  const Y_HEADER = 60
-  const yFor = (rank) => Y_HEADER + (rank - 1) * (ROW_H + ROW_GAP) + ROW_OFFSET
-  const TOTAL_H = Y_HEADER + 5 * (ROW_H + ROW_GAP) + 20
+  // Track domains for dot positioning
+  const VERB_MIN = 0, VERB_MAX = 0.22
+  const CONS_MIN = 0.55, CONS_MAX = 0.78
+
+  const verbPctFor = ece => ((ece - VERB_MIN) / (VERB_MAX - VERB_MIN)) * 100
+  const consPctFor = ece => ((ece - CONS_MIN) / (CONS_MAX - CONS_MIN)) * 100
 
   return (
     <div className="validation-panel">
@@ -1055,70 +1046,83 @@ export function CalibrationMethodComparisonPanel() {
 
       <div className="calibration-headline">SAME MODELS · DIFFERENT METHODS · DIFFERENT LEADERBOARDS</div>
 
-      <div className="calibration-method-comparison" style={{ minHeight: TOTAL_H }}>
-        <div className="calibration-column">
-          <div className="calibration-column-header verbalized">
-            <div>VERBALIZED ECE</div>
-            <div style={{ fontSize: 9, opacity: 0.7, marginTop: 2 }}>keyword extraction · n=171/model</div>
-          </div>
-          {CALIB_VERBALIZED.map((r, i) => (
-            <div key={r.model} className="calibration-rank-row">
-              <span className="tolerance-rank-num">#{i + 1}</span>
-              <span className="tolerance-rank-model">
-                <span className="tolerance-rank-dot" style={{ background: MODEL_COLORS[r.model] }} />
-                <span className="tolerance-rank-name">{r.model}</span>
-              </span>
-              <span style={{ color: 'rgba(232,244,248,0.95)', textAlign: 'right' }}>{r.ece.toFixed(3)}</span>
+      <div className="calibration-dot-comparison">
+        <div className="calibration-dot-row">
+
+          {/* LEFT: verbalized */}
+          <div className="calibration-dot-panel">
+            <div className="panel-header">
+              <span>VERBALIZED ECE</span>
+              <span className="panel-meta">keyword extraction · n=171/model · lower is better</span>
             </div>
-          ))}
-          <div className="calibration-summary-line">
-            range 0.03–0.20 — looks well-calibrated
+            {CALIB_VERBALIZED.map((r, i) => (
+              <div key={r.model} className="dot-row">
+                <span className="dot-row-rank">#{i + 1}</span>
+                <span className="dot-row-model">{r.model}</span>
+                <div className="dot-row-track">
+                  <div
+                    className="dot-row-dot"
+                    style={{
+                      left: `${verbPctFor(r.ece)}%`,
+                      background: MODEL_COLORS[r.model],
+                      boxShadow: `0 0 8px ${MODEL_COLORS[r.model]}88`,
+                    }}
+                  />
+                </div>
+                <span className="dot-row-value">{r.ece.toFixed(3)}</span>
+                <span className="rank-shift stable" />{/* spacer column */}
+              </div>
+            ))}
+            <div className="panel-readout">
+              range 0.03–0.20 · looks well-calibrated
+            </div>
           </div>
+
+          {/* RIGHT: self-consistency, with rank-shift arrows */}
+          <div className="calibration-dot-panel">
+            <div className="panel-header">
+              <span>SELF-CONSISTENCY ECE</span>
+              <span className="panel-meta">3 reruns @ T=0.7 · n=161 numeric · lower is better</span>
+            </div>
+            {CALIB_CONSISTENCY.map((r, i) => {
+              const newRank = i + 1
+              const oldRank = verbalRank[r.model]
+              const delta = oldRank - newRank // +ve = rose
+              const dir = delta > 0 ? 'rise' : delta < 0 ? 'fall' : 'stable'
+              const arrow = delta > 0 ? '↑' : delta < 0 ? '↓' : '→'
+              return (
+                <div key={r.model} className="dot-row">
+                  <span className="dot-row-rank">#{newRank}</span>
+                  <span className="dot-row-model">{r.model}</span>
+                  <div className="dot-row-track">
+                    <div
+                      className="dot-row-dot"
+                      style={{
+                        left: `${consPctFor(r.ece)}%`,
+                        background: MODEL_COLORS[r.model],
+                        boxShadow: `0 0 8px ${MODEL_COLORS[r.model]}88`,
+                      }}
+                    />
+                  </div>
+                  <span className="dot-row-value">{r.ece.toFixed(3)}</span>
+                  <span className={`rank-shift ${dir}`} title={`${oldRank} → ${newRank}`}>
+                    {arrow}{delta !== 0 ? Math.abs(delta) : ''}
+                  </span>
+                </div>
+              )
+            })}
+            <div className="panel-readout">
+              range 0.62–0.73 · severely overconfident
+            </div>
+          </div>
+
         </div>
 
-        <div className="calibration-column">
-          <div className="calibration-column-header consistency">
-            <div>SELF-CONSISTENCY ECE</div>
-            <div style={{ fontSize: 9, opacity: 0.7, marginTop: 2 }}>3 reruns @ T=0.7 · n=161 numeric</div>
-          </div>
-          {CALIB_CONSISTENCY.map((r, i) => (
-            <div key={r.model} className="calibration-rank-row">
-              <span className="tolerance-rank-num">#{i + 1}</span>
-              <span className="tolerance-rank-model">
-                <span className="tolerance-rank-dot" style={{ background: MODEL_COLORS[r.model] }} />
-                <span className="tolerance-rank-name">{r.model}</span>
-              </span>
-              <span style={{ color: 'rgba(232,244,248,0.95)', textAlign: 'right' }}>{r.ece.toFixed(3)}</span>
-            </div>
-          ))}
-          <div className="calibration-summary-line">
-            range 0.62–0.73 — severely overconfident
-          </div>
+        <div className="calibration-summary">
+          Every model reverses direction between methods. Claude #1 → #5; Gemini #3 → #1; DeepSeek #5 → #4.
+          Per-task accuracy-calibration correlations stay tight (Mistral 0.42, DeepSeek 0.42, Claude 0.42,
+          Gemini 0.39, ChatGPT 0.36) — the leaderboard flip is method-driven, not signal-strength driven.
         </div>
-
-        {/* Bezier connectors — every model crosses */}
-        <svg className="tolerance-connector-svg" viewBox={`0 0 1000 ${TOTAL_H}`} preserveAspectRatio="none">
-          {MODELS.map(m => {
-            const yL = yFor(verbalRank[m])
-            const yR = yFor(consistRank[m])
-            const x1 = 380, x2 = 620
-            const cps = 80
-            return (
-              <path
-                key={m}
-                d={`M ${x1} ${yL} C ${x1 + cps} ${yL} ${x2 - cps} ${yR} ${x2} ${yR}`}
-                stroke={MODEL_COLORS[m]}
-                strokeWidth={2.4}
-                fill="none"
-                opacity={0.85}
-              />
-            )
-          })}
-        </svg>
-      </div>
-
-      <div className="validation-panel-footer">
-        Every model reverses direction between methods. Claude #1 → #5; Gemini #3 → #1; DeepSeek #5 → #4. Per-task accuracy-calibration correlations stay tight (Mistral 0.42, DeepSeek 0.42, Claude 0.42, Gemini 0.39, ChatGPT 0.36) — the leaderboard flip is method-driven, not signal-strength driven.
       </div>
     </div>
   )
