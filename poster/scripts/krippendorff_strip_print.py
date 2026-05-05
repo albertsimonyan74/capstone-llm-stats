@@ -43,12 +43,19 @@ RED_600  = "#dc2626"
 # Dot fill — dark anchor on saturated gradient
 DOT_FILL = "#0f172a"  # slate-900
 
-# Footer zone backgrounds + borders
-ZONE_BG_NEG    = "#fee2e2"  # red-100
-ZONE_BG_MID    = "#f1f5f9"  # slate-100
-ZONE_BG_POS    = "#ccfbf1"  # teal-100
+# Footer zone backgrounds (echo strip endpoints, deeper than pastel)
+ZONE_BG_NEG    = "#fca5a5"  # red-300
+ZONE_BG_MID    = "#cbd5e1"  # slate-300
+ZONE_BG_POS    = "#5eead4"  # teal-300
 ZONE_BORDER    = "#cbd5e1"  # slate-300
-ZONE_HDR_MID   = "#475569"  # slate-600
+
+# Footer zone header / subtitle colors — high contrast on the deeper bg
+ZONE_HDR_NEG   = "#7f1d1d"  # red-900
+ZONE_HDR_MID   = "#0f172a"  # slate-900
+ZONE_HDR_POS   = "#134e4a"  # teal-900
+ZONE_SUB_NEG   = "#991b1b"  # red-800
+ZONE_SUB_MID   = "#334155"  # slate-700
+ZONE_SUB_POS   = "#115e59"  # teal-800
 
 # Label box border
 BOX_BORDER = "#94a3b8"  # slate-400
@@ -163,23 +170,25 @@ def main():
                    linewidth=2.0, zorder=6)
 
     # ------------------------------------------------------------------
-    # footer zone bar
+    # footer zone bar — pushed below R label box (centred at y=0.32,
+    # half-height 0.055 → R box bottom 0.265). Buffer 0.045 keeps ≥12pt
+    # of clear vertical space between R box and zone-bar top.
     # ------------------------------------------------------------------
-    footer_y0, footer_y1 = 0.05, 0.27
+    footer_y0, footer_y1 = 0.00, 0.22
     fh = footer_y1 - footer_y0
 
     zones = [
         (-1.0,  -1.0/3, ZONE_BG_NEG, "SYSTEMATIC DISAGREEMENT",
-         RED_600,
+         ZONE_HDR_NEG, ZONE_SUB_NEG,
          "Raters pull in opposite directions, beyond chance"),
         (-1.0/3, 1.0/3, ZONE_BG_MID, "CHANCE BASELINE",
-         ZONE_HDR_MID,
+         ZONE_HDR_MID, ZONE_SUB_MID,
          "Agreement equal to random"),
         ( 1.0/3, 1.0,   ZONE_BG_POS, "AGREEMENT BEYOND CHANCE",
-         TEAL_600,
+         ZONE_HDR_POS, ZONE_SUB_POS,
          "Closer to 1 = stronger"),
     ]
-    for x0, x1, bg, header, hcolor, sub in zones:
+    for x0, x1, bg, header, hcolor, scolor, sub in zones:
         ax.add_patch(Rectangle(
             (x0, footer_y0), x1 - x0, fh,
             facecolor=bg, edgecolor=ZONE_BORDER,
@@ -195,7 +204,7 @@ def main():
         ax.text(cx, footer_y0 + fh * 0.28, sub,
                 ha="center", va="center",
                 fontsize=7.5, fontstyle="italic",
-                color="#64748b", zorder=2)
+                color=scolor, zorder=2)
 
     # ------------------------------------------------------------------
     # strip axes chrome
