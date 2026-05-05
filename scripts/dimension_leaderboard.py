@@ -26,7 +26,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from site_palette import (
-    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS, ACCENT_TEAL,
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
     apply_site_theme, dim_remaining_spines,
 )
 
@@ -50,22 +50,13 @@ MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
 
 
 def _draw_panel(ax, sorted_models, values, *, xlim, title, xlabel,
-                value_fmt, best_lower_is_better):
-    """One horizontal-bar panel: sorted bars, end-of-bar value labels,
-    edgecolor highlight on the panel-best bar.
-    """
+                value_fmt):
+    """One horizontal-bar panel: sorted bars with end-of-bar value labels."""
     ax.set_facecolor(SITE_BG)
     y_pos = np.arange(len(sorted_models))
 
-    best_idx = 0 if not best_lower_is_better else 0
-    # sorted order already places the best at index 0 because the caller
-    # sorts ascending for lower-is-better and descending for higher-is-better.
-
     for i, m in enumerate(sorted_models):
-        edge = ACCENT_TEAL if i == best_idx else SITE_BG
-        lw = 2.0 if i == best_idx else 0.8
-        ax.barh(y_pos[i], values[i], color=MODEL_COLORS[m],
-                edgecolor=edge, linewidth=lw, height=0.62)
+        ax.barh(y_pos[i], values[i], color=MODEL_COLORS[m], height=0.62)
 
     span = xlim[1] - xlim[0]
     label_offset = span * 0.012
@@ -110,37 +101,30 @@ def main():
                 [accuracy[m] for m in acc_order],
                 xlim=(0.6, 0.78),
                 title="Accuracy",
-                xlabel="Literature-weighted final_score",
-                value_fmt="{:.3f}",
-                best_lower_is_better=False)
+                xlabel="(A-30, R-25, M-20, C-15, N-10)",
+                value_fmt="{:.3f}")
 
     _draw_panel(axes[1], rob_order,
                 [delta[m] for m in rob_order],
                 xlim=(0.0, 0.045),
                 title="Robustness  ·  Δ (smaller = better)",
                 xlabel="Δ score (base − perturbation)",
-                value_fmt="{:+.4f}",
-                best_lower_is_better=True)
+                value_fmt="{:+.4f}")
 
     _draw_panel(axes[2], cal_order,
                 [ece[m] for m in cal_order],
                 xlim=(0.0, 0.21),
                 title="Calibration  ·  ECE (smaller = better)",
                 xlabel="Verbalized ECE",
-                value_fmt="{:.3f}",
-                best_lower_is_better=True)
+                value_fmt="{:.3f}")
 
     fig.suptitle("Performance leaderboard across three dimensions",
                  fontsize=15, fontweight="700", color=SITE_FG, y=1.02)
-    fig.text(0.5, 0.965,
+    fig.text(0.5, 0.925,
              "Each panel sorted by its own metric. No model wins all three.",
              ha="center", fontsize=10.5, color=SITE_FG_MUTED, style="italic")
-    fig.text(0.5, 0.005,
-             "Best in panel highlighted. Gemini leads Accuracy, "
-             "ChatGPT leads Robustness, Claude leads Calibration.",
-             ha="center", fontsize=9, color=SITE_FG_MUTED)
 
-    fig.tight_layout(rect=(0, 0.025, 1, 0.94))
+    fig.tight_layout(rect=(0, 0.0, 1, 0.9))
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     WEB_OUT.parent.mkdir(parents=True, exist_ok=True)
