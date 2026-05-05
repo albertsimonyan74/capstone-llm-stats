@@ -15,6 +15,8 @@ from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
+import matplotlib.colors as mcolors
+import matplotlib.patheffects as pe
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
@@ -42,6 +44,8 @@ OUT_JSON = Path("experiments/results_v2/keyword_vs_judge_agreement.json")
 TOP_JSON = Path("experiments/results_v2/top_disagreements_assumption.json")
 FIG_SCATTER = Path("report_materials/figures/judge_validation_scatter.png")
 FIG_BARS = Path("report_materials/figures/judge_validation_by_model.png")
+WEB_SCATTER = Path("capstone-website/frontend/public/visualizations/png/v2/judge_validation_scatter.png")
+WEB_BARS = Path("capstone-website/frontend/public/visualizations/png/v2/judge_validation_by_model.png")
 
 # (label, keyword field, judge dimension key)
 DIMS = [
@@ -183,47 +187,86 @@ def top_disagreements(joined: list[dict], n: int = 30) -> list[dict]:
 
 
 def make_scatter_figure(joined: list[dict], path: Path) -> None:
+    """4-panel 2D bin heatmap of keyword rubric vs external judge scores.
+
+    5×5 count grid per panel (bins centered at 0, 0.25, 0.5, 0.75, 1.0).
+    Cell color encodes log(count+1) on viridis. Cells annotated with integer
+    counts (white text + black stroke). Diagonal = perfect agreement.
+    """
     path.parent.mkdir(parents=True, exist_ok=True)
-    fig, axes = plt.subplots(1, 4, figsize=(22, 6), facecolor=SITE_BG)
     panels = [
         ("Method / Structure",      "kw_structure",  "judge_method"),
         ("Assumption Compliance",   "kw_assumption", "judge_assumption"),
         ("Reasoning Quality",       "kw_reasoning",  "judge_reasoning"),
-        ("Reasoning Completeness",  None,            "judge_completeness"),
+        ("Reasoning Completeness",  "kw_reasoning",  "judge_completeness"),
     ]
+    bin_centers = np.array([0.0, 0.25, 0.5, 0.75, 1.0])
+    bin_edges = np.array([-0.125, 0.125, 0.375, 0.625, 0.875, 1.125])
+
+    fig, axes = plt.subplots(1, 4, figsize=(15, 4), dpi=150, facecolor=SITE_BG)
+    cmap = plt.get_cmap("viridis")
+    label_stroke = [pe.withStroke(linewidth=1.4, foreground="black")]
+
     for ax, (title, kw_field, jd_field) in zip(axes, panels):
         ax.set_facecolor(SITE_BG)
-        for m, color in MODEL_COLORS.items():
-            xs, ys = [], []
-            for r in joined:
-                jd = r.get(jd_field)
-                if jd is None or r["model_family"] != m:
+        xs, ys = [], []
+        for r in joined:
+            kw = r.get(kw_field)
+            jd = r.get(jd_field)
+            if kw is None or jd is None:
+                continue
+            xs.append(kw)
+            ys.append(jd)
+        xs = np.array(xs)
+        ys = np.array(ys)
+
+        H, _, _ = np.histogram2d(ys, xs, bins=[bin_edges, bin_edges])
+        total = H.sum()
+        diag = np.trace(H) if H.shape[0] == H.shape[1] else 0.0
+        off_pct = (1.0 - diag / total) * 100.0 if total > 0 else 0.0
+
+        log_H = np.log1p(H)
+        norm = mcolors.Normalize(vmin=0.0, vmax=max(log_H.max(), 1e-6))
+        ax.imshow(log_H, cmap=cmap, norm=norm, origin="lower",
+                  aspect="auto",
+                  extent=(-0.5, len(bin_centers) - 0.5,
+                          -0.5, len(bin_centers) - 0.5))
+
+        for i in range(H.shape[0]):
+            for j in range(H.shape[1]):
+                count = int(H[i, j])
+                if count == 0:
                     continue
-                if kw_field is None:
-                    # Distribution-only panel: x = task index, y = judge score
-                    xs.append(np.random.uniform(0, 1))
-                    ys.append(jd)
-                else:
-                    kw = r.get(kw_field)
-                    if kw is None:
-                        continue
-                    xs.append(kw + np.random.uniform(-0.02, 0.02))
-                    ys.append(jd + np.random.uniform(-0.02, 0.02))
-            ax.scatter(xs, ys, s=20, alpha=0.55, c=color, label=m, edgecolors="none")
-        ax.plot([0, 1], [0, 1], color=SITE_FG_MUTED, lw=1.2, ls="--", alpha=0.5)
-        ax.set_xlim(-0.05, 1.05); ax.set_ylim(-0.05, 1.05)
-        ax.set_title(title, fontsize=18, color=SITE_FG, pad=10)
-        ax.set_xlabel("Keyword rubric" if kw_field else "(no keyword equivalent)",
-                      fontsize=14, color=SITE_FG_MUTED)
-        ax.set_ylabel("LLM judge", fontsize=14, color=SITE_FG_MUTED)
-        ax.tick_params(colors=SITE_FG_MUTED, labelsize=11)
+                ax.text(j, i, str(count), ha="center", va="center",
+                        fontsize=9, color="white", fontweight="700",
+                        path_effects=label_stroke)
+
+        ax.plot([-0.5, len(bin_centers) - 0.5],
+                [-0.5, len(bin_centers) - 0.5],
+                color="white", lw=1.0, ls="--", alpha=0.5)
+
+        ax.text(0.03, 0.97,
+                f"off-diagonal: {off_pct:.1f}%",
+                transform=ax.transAxes, ha="left", va="top",
+                fontsize=9, fontweight="700",
+                color="white", path_effects=label_stroke)
+
+        ax.set_xticks(range(len(bin_centers)))
+        ax.set_yticks(range(len(bin_centers)))
+        ax.set_xticklabels([f"{c:.2f}" for c in bin_centers], fontsize=8)
+        ax.set_yticklabels([f"{c:.2f}" for c in bin_centers], fontsize=8)
+        ax.set_title(title, fontsize=12, color=SITE_FG, pad=8, fontweight="700")
+        ax.set_xlabel("Keyword rubric", fontsize=9, color=SITE_FG_MUTED)
+        ax.set_ylabel("LLM judge", fontsize=9, color=SITE_FG_MUTED)
+        ax.tick_params(colors=SITE_FG_MUTED, labelsize=8)
         dim_remaining_spines(ax)
-        ax.grid(True, alpha=0.06, color="#ffffff")
-    axes[0].legend(loc="upper left", fontsize=11, frameon=False, labelcolor=SITE_FG_MUTED)
-    fig.suptitle("Keyword rubric vs external LLM judge — per-dimension scatter",
-                 fontsize=20, color=SITE_FG, y=1.02)
+
+    fig.suptitle("Keyword rubric vs external LLM judge — agreement heatmaps",
+                 fontsize=14, color=SITE_FG, y=1.02, fontweight="700")
     plt.tight_layout()
-    fig.savefig(path, dpi=300, bbox_inches="tight", facecolor=SITE_BG)
+    fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=SITE_BG)
+    WEB_SCATTER.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(WEB_SCATTER, dpi=150, bbox_inches="tight", facecolor=SITE_BG)
     plt.close(fig)
 
 

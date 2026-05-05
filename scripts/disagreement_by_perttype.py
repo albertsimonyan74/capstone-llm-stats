@@ -102,8 +102,8 @@ def main():
 
     fig.suptitle("Disagreement by perturbation type",
                  fontsize=13, fontweight="700", color=SITE_FG,
-                 x=0.02, ha="left", y=0.985)
-    fig.text(0.02, 0.935,
+                 x=0.02, ha="left", y=0.99)
+    fig.text(0.02, 0.91,
              "Pass-flip rate, keyword vs Llama judge",
              ha="left", fontsize=8.5, style="italic", color=SITE_FG_MUTED)
 

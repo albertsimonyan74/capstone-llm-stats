@@ -342,17 +342,13 @@ def figure_a2():
                  fontsize=13, fontweight="700", color=SITE_FG, pad=22, loc="left")
 
     cbar = fig.colorbar(im, ax=ax, fraction=0.025, pad=0.012)
-    cbar.set_label("Mean final_score", fontsize=9, color=SITE_FG_MUTED,
+    cbar.set_label("Accuracy", fontsize=9, color=SITE_FG_MUTED,
                    rotation=270, labelpad=18)
+    cbar.set_ticks([0.2, 0.4, 0.6, 0.8])
     cbar.ax.tick_params(labelsize=8, colors=SITE_FG_MUTED)
     if cbar.outline is not None:
         cbar.outline.set_edgecolor(SITE_FG_MUTED)
         cbar.outline.set_alpha(0.3)
-    # Cohort-mean tick marker on the colorbar.
-    cbar.ax.axhline(overall_mean, color=SITE_FG, lw=1.2, alpha=0.85)
-    cbar.ax.text(1.6, overall_mean, f"  cohort mean · {overall_mean:.3f}",
-                 transform=cbar.ax.get_yaxis_transform(),
-                 va="center", ha="left", fontsize=8, color=SITE_FG_MUTED)
 
     fig.text(0.5, 0.01,
              f"Color centered on cohort mean ({overall_mean:.3f}). "
@@ -816,13 +812,9 @@ def figure_a6():
             elinewidth=2.0, capsize=5, capthick=1.6,
             markersize=12, markeredgecolor=SITE_BG, markeredgewidth=1.0,
         )
-        ax.text(upper[i] + 0.005, y_pos[i], f"{means[i]:.3f}",
-                va="center", ha="left",
+        ax.text(means[i], y_pos[i] - 0.35, f"{means[i]:.3f}",
+                va="bottom", ha="center",
                 color=SITE_FG, fontsize=10, fontweight="700")
-        ax.text(means[i], y_pos[i] - 0.32, f"#{i+1}",
-                va="top", ha="center",
-                color=SITE_FG_MUTED, fontsize=9, fontweight="700",
-                alpha=0.85)
 
     ax.set_yticks(y_pos)
     ax.set_yticklabels([MODEL_LABEL[m] for m in rank_order],
