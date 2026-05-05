@@ -36,9 +36,7 @@ apply_site_theme()
 ROOT = Path(__file__).resolve().parents[1]
 CANONICAL_JSON = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
 OUT_FIG = ROOT / "report_materials" / "figures" / "robustness_heatmap.png"
-OUT_FIG_FULL = ROOT / "report_materials" / "figures" / "robustness_heatmap_full.png"
 WEB_OUT = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "robustness_heatmap.png"
-WEB_OUT_FULL = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "robustness_heatmap_full.png"
 
 PERT_TT_RE = re.compile(
     r"^(?P<base>.+?)_\d+(?:_(?P<pt>rephrase|numerical|semantic))?(?:_v\d+)?$"
@@ -112,117 +110,28 @@ def main():
 
 
 def plot_heatmap(heatmap, task_types, models):
+    """Vertical 37-row × 5-col heatmap with all-cell annotations.
+
+    Tier 2A.6 swap: the prior 5×N horizontal layout (website card fit) is
+    replaced by a single vertical orientation. Category brackets sit on the
+    LEFT side, model labels along the TOP, every non-NaN cell labelled.
+    """
     # Cluster rows by category, in CATEGORY_ORDER, alphabetical inside.
     grouped: dict[str, list[str]] = {c: [] for c in CATEGORY_ORDER}
     for tt in sorted(task_types):
         grouped.setdefault(category_of(tt), []).append(tt)
     ordered_types: list[str] = []
-    cat_spans: list[tuple[str, int, int]] = []  # (cat, start_col, end_col)
-    col = 0
+    cat_spans: list[tuple[str, int, int]] = []  # (cat, start_row, end_row)
+    row = 0
     for cat in CATEGORY_ORDER:
         items = grouped.get(cat, [])
         if not items:
             continue
-        cat_spans.append((cat, col, col + len(items) - 1))
+        cat_spans.append((cat, row, row + len(items) - 1))
         ordered_types.extend(items)
-        col += len(items)
+        row += len(items)
 
-    # === HORIZONTAL VIEW (5 model rows × N task_type cols) — website card fit ===
-    # Matrix shape: (n_models, n_task_types)
-    M_h = np.full((len(models), len(ordered_types)), np.nan)
-    for j, tt in enumerate(ordered_types):
-        for i, m in enumerate(models):
-            cell = heatmap.get(m, {}).get(tt)
-            if cell is not None:
-                M_h[i, j] = cell["delta"]
-
-    vmax = float(np.nanmax(np.abs(M_h))) if np.isfinite(M_h).any() else 0.5
-    vmax = max(vmax, 0.05)
-    norm = mcolors.TwoSlopeNorm(vmin=-vmax, vcenter=0.0, vmax=vmax)
-    cmap = plt.get_cmap("RdBu_r")
-
-    # 15×8 → 1.875 aspect; after bbox_inches="tight" trim of padding +
-    # colorbar gutter, final PNG lands ~1.6 (matches 16:10 site card).
-    fig, ax = plt.subplots(figsize=(15, 8), dpi=150, facecolor=SITE_BG)
-    ax.set_facecolor(SITE_BG)
-
-    im = ax.imshow(M_h, cmap=cmap, norm=norm, aspect="auto", origin="upper")
-
-    # Y-axis: models, color-coded.
-    ax.set_yticks(range(len(models)))
-    ax.set_yticklabels([m.upper() for m in models], fontsize=11, fontweight="bold")
-    for tick, m in zip(ax.get_yticklabels(), models):
-        tick.set_color(MODEL_COLORS.get(m, SITE_FG))
-    ax.tick_params(axis="y", which="major", pad=4, length=0)
-
-    # X-axis: task types rotated 80°, monospace, smaller.
-    ax.set_xticks(range(len(ordered_types)))
-    ax.set_xticklabels(ordered_types, fontsize=6.5, family="monospace",
-                       color=SITE_FG_MUTED, rotation=80, ha="right")
-    ax.tick_params(axis="x", which="major", length=0)
-
-    # Cell labels — only |Δ| ≥ 0.10 to reduce crowding in horizontal layout.
-    LABEL_THRESHOLD = 0.10
-    for i in range(len(models)):
-        for j in range(len(ordered_types)):
-            v = M_h[i, j]
-            if np.isnan(v):
-                continue
-            if abs(v) < LABEL_THRESHOLD:
-                continue
-            txt_color = "#fff" if abs(v) >= 0.18 else SITE_BG
-            ax.text(j, i, f"{v:+.2f}", ha="center", va="center",
-                    fontsize=6, color=txt_color, fontweight="bold")
-
-    # Vertical dividers between category bands.
-    for _, _, end_col in cat_spans[:-1]:
-        ax.axvline(end_col + 0.5, color=SITE_FG_MUTED, linewidth=0.9, alpha=0.45)
-
-    # Category headers above columns, staggered y-offsets to avoid overlap.
-    y_above = -0.85
-    y_above_alt = -1.45
-    for idx, (cat, s, e) in enumerate(cat_spans):
-        mid = (s + e) / 2
-        # Stagger: alternate near/far above row so narrow neighbors don't collide.
-        y_label = y_above if (idx % 2 == 0) else y_above_alt
-        ax.text(mid, y_label, CATEGORY_LABEL.get(cat, cat),
-                ha="center", va="bottom", rotation=0,
-                fontsize=9.5, fontweight="bold", color=SITE_FG, clip_on=False)
-        # Bracket connecting label to column range.
-        ax.plot([s - 0.4, e + 0.4], [y_label + 0.15, y_label + 0.15],
-                color=SITE_FG_MUTED, linewidth=1.0, alpha=0.5, clip_on=False)
-        for x_cap in (s - 0.4, e + 0.4):
-            ax.plot([x_cap, x_cap], [y_label + 0.15, y_label + 0.05],
-                    color=SITE_FG_MUTED, linewidth=1.0, alpha=0.5, clip_on=False)
-
-    ax.set_ylim(len(models) - 0.5, -1.95)
-
-    ax.set_title(
-        "Robustness Heatmap · Δ (base − perturbation) per task type × model",
-        fontsize=12, fontweight="bold", color=SITE_FG, pad=44, loc="left")
-
-    cbar = fig.colorbar(im, ax=ax, fraction=0.018, pad=0.015)
-    style_colorbar(cbar, label="Δ score (positive = drop under perturbation)")
-
-    ax.set_xticks(np.arange(-.5, len(ordered_types), 1), minor=True)
-    ax.set_yticks(np.arange(-.5, len(models), 1), minor=True)
-    ax.grid(which="minor", color=SITE_FG_MUTED, linewidth=0.3, alpha=0.15)
-    ax.tick_params(which="minor", length=0)
-
-    OUT_FIG.parent.mkdir(parents=True, exist_ok=True)
-    WEB_OUT.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT_FIG, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
-    fig.savefig(WEB_OUT, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
-    plt.close(fig)
-
-    # === FULL VERTICAL VIEW (preserved for §6 gallery + poster) ===
-    _plot_heatmap_vertical(heatmap, models, ordered_types, cat_spans, cmap, norm)
-
-
-def _plot_heatmap_vertical(heatmap, models, ordered_types, cat_spans, cmap, norm):
-    """Full 38-row portrait version for poster + gallery — preserves
-    individual task_type readability when card width isn't a constraint.
-    """
+    # Matrix shape: (n_task_types, n_models) — vertical orientation.
     M = np.full((len(ordered_types), len(models)), np.nan)
     for i, tt in enumerate(ordered_types):
         for j, m in enumerate(models):
@@ -230,7 +139,12 @@ def _plot_heatmap_vertical(heatmap, models, ordered_types, cat_spans, cmap, norm
             if cell is not None:
                 M[i, j] = cell["delta"]
 
-    fig, ax = plt.subplots(figsize=(11, 14), dpi=150, facecolor=SITE_BG)
+    vmax = float(np.nanmax(np.abs(M))) if np.isfinite(M).any() else 0.5
+    vmax = max(vmax, 0.05)
+    norm = mcolors.TwoSlopeNorm(vmin=-vmax, vcenter=0.0, vmax=vmax)
+    cmap = plt.get_cmap("RdBu_r")
+
+    fig, ax = plt.subplots(figsize=(7, 14), dpi=150, facecolor=SITE_BG)
     ax.set_facecolor(SITE_BG)
     im = ax.imshow(M, cmap=cmap, norm=norm, aspect="auto", origin="upper")
 
@@ -246,15 +160,16 @@ def _plot_heatmap_vertical(heatmap, models, ordered_types, cat_spans, cmap, norm
     ax.set_yticklabels(ordered_types, fontsize=8.5, family="monospace",
                        color=SITE_FG_MUTED)
 
+    # Annotate EVERY non-NaN cell. Bright-cell threshold |Δ| > 0.15 →
+    # SITE_BG ink for contrast against saturated colors; dim cells → SITE_FG.
     for i in range(len(ordered_types)):
         for j in range(len(models)):
             v = M[i, j]
             if np.isnan(v):
-                ax.text(j, i, "—", ha="center", va="center", fontsize=6, color=SITE_FG_MUTED)
+                ax.text(j, i, "—", ha="center", va="center",
+                        fontsize=6, color=SITE_FG_MUTED)
                 continue
-            if v == 0:
-                continue
-            txt_color = "#fff" if abs(v) >= 0.18 else SITE_BG
+            txt_color = SITE_BG if abs(v) > 0.15 else SITE_FG
             ax.text(j, i, f"{v:+.2f}", ha="center", va="center",
                     fontsize=7, color=txt_color, fontweight="bold")
 
@@ -283,7 +198,7 @@ def _plot_heatmap_vertical(heatmap, models, ordered_types, cat_spans, cmap, norm
 
     ax.set_xlim(-4.0, len(models) - 0.5)
     ax.set_title(
-        "Robustness Heatmap (full) · Δ (base − perturbation) per task type × model",
+        "Robustness Heatmap · Δ (base − perturbation) per task type × model",
         fontsize=12, fontweight="bold", color=SITE_FG, pad=24)
     cbar = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
     style_colorbar(cbar, label="Δ score (positive = drop under perturbation)")
@@ -294,10 +209,10 @@ def _plot_heatmap_vertical(heatmap, models, ordered_types, cat_spans, cmap, norm
     ax.tick_params(which="minor", length=0)
     ax.tick_params(which="major", length=0)
 
-    OUT_FIG_FULL.parent.mkdir(parents=True, exist_ok=True)
-    WEB_OUT_FULL.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(OUT_FIG_FULL, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
-    fig.savefig(WEB_OUT_FULL, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
+    OUT_FIG.parent.mkdir(parents=True, exist_ok=True)
+    WEB_OUT.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(OUT_FIG, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(WEB_OUT, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
 

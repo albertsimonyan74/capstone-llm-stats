@@ -5,33 +5,26 @@
 import { AgreementMetricsForestPanel, JudgeKeywordConfusionMatrix } from '../components/JudgeValidationPanels'
 
 export const VIZ_CATEGORIES = [
-  { id: 'rankings',      label: 'The Three Rankings', subtitle: 'Hero — accuracy, robustness, calibration', color: '#00FFE0' },
-  { id: 'judge',         label: 'Judge Validation',   subtitle: 'RQ1 PRIMARY · 20.74% combined keyword-judge disagreement · α negative on R, chance-level on M', color: '#00B4D8' },
-  { id: 'robustness',    label: 'Robustness',         subtitle: 'RQ4 · Perturbation analysis',              color: '#4A90D9' },
-  { id: 'errors',        label: 'Error Taxonomy',     subtitle: 'RQ3 · 46.9% assumption violations',        color: '#A78BFA' },
-  { id: 'calibration',   label: 'Calibration',        subtitle: 'RQ5 · Method-dependent · Phase 1C full coverage', color: '#7FFFD4' },
-  { id: 'tasks',         label: 'Task Breakdown',     subtitle: 'RQ2 · REGRESSION cluster ~0.30',           color: '#FFB347' },
+  { id: 'rankings',      label: 'Performance Leaderboards', subtitle: 'Hero — accuracy, robustness, calibration', color: '#00FFE0' },
+  { id: 'judge',         label: 'Judge Validation',         subtitle: 'RQ1 PRIMARY · 20.74% combined keyword-judge disagreement · α negative on R, chance-level on M', color: '#00B4D8' },
+  { id: 'methodology',   label: 'Methodology Detail',       subtitle: 'External-judge vs keyword agreement — per-model & metric-comparison views', color: '#94a3b8' },
+  { id: 'robustness',    label: 'Robustness',               subtitle: 'RQ4 · Perturbation analysis',              color: '#4A90D9' },
+  { id: 'errors',        label: 'Error Taxonomy',           subtitle: 'RQ3 · 46.9% assumption violations',        color: '#A78BFA' },
+  { id: 'calibration',   label: 'Calibration',              subtitle: 'RQ5 · Method-dependent · Phase 1C full coverage', color: '#7FFFD4' },
+  { id: 'tasks',         label: 'Task Breakdown',           subtitle: 'RQ2 · REGRESSION cluster ~0.30',           color: '#FFB347' },
+  { id: 'rigor',         label: 'Statistical Rigor',        subtitle: 'Bootstrap intervals + numerical tolerance sweep', color: '#fbbf24' },
 ]
 
 export const VISUALIZATIONS = [
-  // ── 1. THREE RANKINGS (hero) ──────────────────────────────────
+  // ── 1. PERFORMANCE LEADERBOARDS (hero) ────────────────────────
   {
-    id: 'three_rankings', category: 'rankings', featured: true,
-    title: 'The Three Rankings',
-    subtitle: 'Accuracy ≠ Robustness ≠ Calibration',
-    caption: 'Side-by-side rankings of all 5 models on three orthogonal lenses — single-metric leaderboards mislead. Gemini #1 accuracy; ChatGPT and Mistral statistically tied at top of robustness; Claude and ChatGPT essentially tied on calibration.',
+    id: 'dimension_leaderboard', category: 'rankings', featured: true,
+    title: 'Performance Leaderboard · 3 Dimensions',
+    subtitle: 'Each panel sorted by its own metric — no model wins all three',
+    caption: 'Three horizontal-bar panels share model identity colors. Best in panel highlighted: Gemini leads Accuracy (0.731), ChatGPT leads Robustness (Δ=+0.0003), Claude leads Calibration (ECE=0.033). Replaces the prior boxes-and-lines three_rankings + bump-chart pair.',
     source: 'experiments/results_v2/bootstrap_ci.json + robustness_v2.json + calibration.json',
-    png: '/visualizations/png/v2/three_rankings.png',
-  },
-  {
-    id: 'rank_shift',
-    category: 'rankings',
-    title: 'Rank shift across dimensions',
-    subtitle: 'Bump chart · accuracy → robustness → calibration',
-    caption: 'Each model traces its rank across the three dimensions. Crossings indicate rank inversions; brackets indicate non-separable pairs (95% bootstrap CI, B=10,000).',
-    src: '/visualizations/png/v2/rank_shift.png',
-    width: 1650,
-    height: 975,
+    png: '/visualizations/png/v2/dimension_leaderboard.png',
+    width: 2082, height: 719,
   },
   {
     id: 'a6_aggregate_ranking', category: 'rankings',
@@ -60,14 +53,44 @@ export const VISUALIZATIONS = [
     Component: JudgeKeywordConfusionMatrix,
   },
 
-  // ── 3. ROBUSTNESS (RQ4) ───────────────────────────────────────
+  // ── 3. METHODOLOGY DETAIL (PNG companions) ────────────────────
+  {
+    id: 'judge_validation_by_model', category: 'methodology',
+    title: 'Judge agreement by model',
+    subtitle: 'External Llama-judge vs keyword rubric',
+    caption: 'Per-model breakdown of agreement on assumption_compliance, reasoning_quality, and method_structure dimensions.',
+    source: 'experiments/results_v2/keyword_vs_judge_agreement.json',
+    png: '/visualizations/png/v2/judge_validation_by_model.png',
+    width: 4172, height: 2068,
+  },
+  {
+    id: 'judge_validation_scatter', category: 'methodology',
+    title: 'Judge vs rubric scatter',
+    subtitle: 'Per-task agreement scatter',
+    caption: 'Scatter of per-task keyword score vs external-judge score on the shared dimensions.',
+    source: 'experiments/results_v2/keyword_vs_judge_agreement.json',
+    png: '/visualizations/png/v2/judge_validation_scatter.png',
+    width: 6566, height: 1849,
+  },
+  {
+    id: 'agreement_metrics_comparison', category: 'methodology',
+    title: 'Cross-metric agreement',
+    subtitle: 'Krippendorff α / Cohen κ / Spearman ρ',
+    caption: 'Three inter-rater-reliability statistics side-by-side, dimension by dimension. Krippendorff α is the cohort headline; κ and ρ provided for triangulation.',
+    source: 'experiments/results_v2/krippendorff_agreement.json',
+    png: '/visualizations/png/v2/agreement_metrics_comparison.png',
+    width: 2371, height: 1550,
+  },
+
+  // ── 4. ROBUSTNESS (RQ4) ───────────────────────────────────────
   {
     id: 'robustness_heatmap', category: 'robustness', featured: true,
     title: 'Robustness Heatmap',
-    subtitle: 'Δ (perturbed − base) per model × task type',
-    caption: 'Per-model × per-task-type degradation grid. Three uniformly-robust families: HIERARCHICAL, RJMCMC, VB. Under literature weights, ChatGPT and Mistral are statistically tied at top of robustness — both noise-equivalent.',
+    subtitle: 'Δ (perturbed − base) per model × task type · vertical · all cells annotated',
+    caption: 'Per-model × per-task-type degradation grid (37 task types × 5 models). Three uniformly-robust families: HIERARCHICAL, RJMCMC, VB. Under literature weights, ChatGPT and Mistral are statistically tied at top of robustness — both noise-equivalent.',
     source: 'experiments/results_v2/robustness_v2.json',
     png: '/visualizations/png/v2/robustness_heatmap.png',
+    width: 1072, height: 1716,
   },
   {
     id: 'robustness_perttype', category: 'robustness',
@@ -77,8 +100,26 @@ export const VISUALIZATIONS = [
     source: 'experiments/results_v2/robustness_v2.json',
     png: '/visualizations/png/v2/a4_robustness_by_perttype.png',
   },
+  {
+    id: 'a4b_per_dim_robustness', category: 'robustness',
+    title: 'Robustness by perturbation type',
+    subtitle: 'Rephrase / numerical / semantic breakdown',
+    caption: 'Per-dimension Δ by perturbation type — surfaces which dimensions degrade most under each transformation.',
+    source: 'experiments/results_v2/per_dim_calibration.json',
+    png: '/visualizations/png/v2/a4b_per_dim_robustness.png',
+    width: 2070, height: 1323,
+  },
+  {
+    id: 'tolerance_sensitivity', category: 'robustness',
+    title: 'Numerical tolerance sensitivity',
+    subtitle: 'Score sensitivity to full_credit_tol sweep',
+    caption: 'Sweep of `full_credit_tol` to show how the cohort accuracy curve responds to scoring-tolerance choices. Validates that headline rankings do not depend on a knife-edge tolerance.',
+    source: 'experiments/results_v2/tolerance_sensitivity.json',
+    png: '/visualizations/png/v2/tolerance_sensitivity.png',
+    width: 2519, height: 1349,
+  },
 
-  // ── 4. ERROR TAXONOMY (RQ3) ──────────────────────────────────
+  // ── 5. ERROR TAXONOMY (RQ3) ──────────────────────────────────
   {
     id: 'taxonomy_sunburst', category: 'errors', featured: true,
     title: 'Error Taxonomy — Hierarchical',
@@ -104,16 +145,24 @@ export const VISUALIZATIONS = [
     png: '/visualizations/png/v2/a3_failure_heatmap.png',
   },
 
-  // ── 5. CALIBRATION (RQ5) ─────────────────────────────────────
+  // ── 6. CALIBRATION (RQ5) ─────────────────────────────────────
   {
-    id: 'calibration_reliability', category: 'calibration', featured: true,
-    title: 'Calibration Reliability — Verbalized',
+    id: 'calibration_ece_ranking', category: 'calibration', featured: true,
+    title: 'Calibration · ECE leaderboard',
+    subtitle: 'Verbalized confidence vs empirical accuracy',
+    caption: 'Smaller ECE = better calibrated. Green / yellow / red zones flag well-calibrated (<0.05), mildly miscalibrated (0.05–0.10), severely miscalibrated (>0.10). Claude #1 (0.033), ChatGPT #2 (0.034), DeepSeek tail (0.198).',
+    source: 'experiments/results_v2/calibration.json',
+    png: '/visualizations/png/v2/calibration_ece_ranking.png',
+    width: 1635, height: 585,
+  },
+  {
+    id: 'calibration_reliability', category: 'calibration',
+    title: 'Calibration Reliability — Verbalized (detail)',
     subtitle: '3 active buckets (0.3 / 0.5 / 0.6) · 0.9 bucket empty across all models',
     caption: 'Per-model panels (small-multiples). Each panel shows accuracy at each verbalized confidence bucket against the perfect-calibration diagonal. Points below diagonal = overconfident; above = underconfident. Dot size ∝ bucket sample count. ECE printed in each panel. No high-confidence (0.9) records across any model — hedge-heavy default-to-medium behaviour.',
     source: 'experiments/results_v2/calibration.json',
     png: '/visualizations/png/v2/calibration_reliability_smallmultiples.png',
-    width: 2235,
-    height: 531,
+    width: 2235, height: 531,
   },
   {
     id: 'self_consistency', category: 'calibration',
@@ -123,15 +172,36 @@ export const VISUALIZATIONS = [
     source: 'experiments/results_v2/self_consistency_calibration.json',
     png: '/visualizations/png/v2/self_consistency_calibration.png',
   },
+  {
+    id: 'a5b_per_dim_calibration', category: 'calibration',
+    title: 'Per-dimension calibration',
+    subtitle: 'ECE per assumption / reasoning / method dim',
+    caption: 'Dimension-level ECE breakdown — surfaces which judge dimensions drive cohort calibration error.',
+    source: 'experiments/results_v2/per_dim_calibration.json',
+    png: '/visualizations/png/v2/a5b_per_dim_calibration.png',
+    width: 2069, height: 1322,
+  },
 
-  // ── 6. TASK BREAKDOWN (RQ2) ──────────────────────────────────
+  // ── 7. TASK BREAKDOWN (RQ2) ──────────────────────────────────
   {
     id: 'accuracy_by_category', category: 'tasks', featured: true,
     title: 'Accuracy by Bayesian Category',
     subtitle: 'REGRESSION cluster ~0.30 across all 5 models',
-    caption: 'Hardest categories: REGRESSION, MCMC, ADVANCED. Easiest: closed-form conjugate models.',
+    caption: 'Heatmap: 5 model rows × 6 category cols, color centered on cohort mean. Hardest categories: REGRESSION, MCMC, ADVANCED. Easiest: closed-form conjugate models.',
     source: 'experiments/results_v2/bootstrap_ci.json + tasks_all.json',
     png: '/visualizations/png/v2/a2_accuracy_by_category.png',
+    width: 1629, height: 628,
+  },
+
+  // ── 8. STATISTICAL RIGOR ─────────────────────────────────────
+  {
+    id: 'bootstrap_ci', category: 'rigor',
+    title: 'Bootstrap confidence intervals',
+    subtitle: 'B=10,000 model accuracy CIs',
+    caption: 'Bootstrap-derived 95% CIs on per-model literature-weighted accuracy. Anchors all separability claims in the rankings panel and aggregate composite.',
+    source: 'experiments/results_v2/bootstrap_ci.json',
+    png: '/visualizations/png/v2/bootstrap_ci.png',
+    width: 3558, height: 1321,
   },
 ]
 

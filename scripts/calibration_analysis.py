@@ -37,7 +37,7 @@ from llm_runner.response_parser import extract_confidence
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from site_palette import (
     SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
-    apply_site_theme, color_code_model_ticks, dim_remaining_spines,
+    apply_site_theme, dim_remaining_spines,
 )
 
 apply_site_theme()
@@ -58,6 +58,9 @@ FIG_RELIABILITY_SM_WEB = Path(
     "capstone-website/frontend/public/visualizations/png/v2/calibration_reliability_smallmultiples.png"
 )
 FIG_ECE = Path("report_materials/figures/calibration_ece_ranking.png")
+FIG_ECE_WEB = Path(
+    "capstone-website/frontend/public/visualizations/png/v2/calibration_ece_ranking.png"
+)
 
 # Bucket → numeric confidence claim (per spec)
 BUCKET_CONF = {"high": 0.9, "medium": 0.6, "low": 0.3, "unstated": 0.5}
@@ -315,30 +318,69 @@ def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
     plt.close(fig)
 
 
-def make_ece_figure(per_model: dict, path: Path) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+def make_ece_figure(per_model: dict, paths: list[Path]) -> None:
+    """Horizontal ECE leaderboard with green/yellow/red calibration zones.
+
+    Tier 2A.6 promotion: this becomes the PRIMARY §5 calibration chart on the
+    site (smallmultiples reliability diagram drops to secondary detail view).
+    Sorted ascending by verbalized ECE; bands flag well/mildly/severely
+    miscalibrated regions.
+    """
+    from site_palette import COLOR_GOOD, COLOR_BAD
+
     items = sorted(per_model.items(), key=lambda kv: kv[1]["ece"])
     models = [m for m, _ in items]
     eces = [info["ece"] for _, info in items]
     colors = [MODEL_COLORS.get(m, SITE_FG_MUTED) for m in models]
 
-    fig, ax = plt.subplots(figsize=(12, 6.5), facecolor=SITE_BG)
+    fig, ax = plt.subplots(figsize=(11, 4), dpi=150, facecolor=SITE_BG)
     ax.set_facecolor(SITE_BG)
-    bars = ax.bar(models, eces, color=colors, edgecolor=SITE_BG, linewidth=0.7)
-    for bar, e in zip(bars, eces):
-        ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.005,
-                f"{e:.3f}", ha="center", color=SITE_FG, fontsize=13, fontweight="bold")
-    ax.set_ylabel("Expected Calibration Error (lower is better)",
-                  fontsize=15, color=SITE_FG_MUTED)
-    ax.set_title("Calibration ranking — ECE per model",
-                 fontsize=20, color=SITE_FG, pad=14)
-    ax.tick_params(colors=SITE_FG_MUTED, labelsize=13)
-    color_code_model_ticks(ax)
+
+    x_max = max(max(eces) * 1.18, 0.22)
+
+    # Calibration-quality zones — drawn first, behind bars.
+    zones = [
+        (0.00, 0.05, COLOR_GOOD,    "well-calibrated"),
+        (0.05, 0.10, "#fbbf24",      "mildly miscalibrated"),
+        (0.10, x_max, COLOR_BAD,     "severely miscalibrated"),
+    ]
+    for lo, hi, color, _label in zones:
+        ax.axvspan(lo, min(hi, x_max), color=color, alpha=0.08, zorder=0)
+    # Zone labels along the top of the plot area.
+    for lo, hi, color, label in zones:
+        mid = (lo + min(hi, x_max)) / 2
+        ax.text(mid, len(models) - 0.35, label,
+                ha="center", va="center", fontsize=8.5,
+                color=color, fontweight="700", alpha=0.85)
+
+    y_pos = np.arange(len(models))
+    ax.barh(y_pos, eces, color=colors, edgecolor=SITE_BG, linewidth=0.7,
+            height=0.62, zorder=2)
+    for i, e in enumerate(eces):
+        ax.text(e + x_max * 0.012, y_pos[i], f"{e:.3f}",
+                va="center", ha="left",
+                color=SITE_FG, fontsize=11, fontweight="700")
+
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels([m.title() for m in models], fontsize=11, fontweight="700")
+    for tick, m in zip(ax.get_yticklabels(), models):
+        tick.set_color(MODEL_COLORS.get(m, SITE_FG))
+    ax.invert_yaxis()  # rank #1 at top
+
+    ax.set_xlabel("Expected Calibration Error (verbalized · lower = better)",
+                  fontsize=10, color=SITE_FG_MUTED)
+    ax.set_xlim(0, x_max)
+    ax.set_title("Calibration · ECE leaderboard",
+                 fontsize=13, color=SITE_FG, pad=12, fontweight="700", loc="left")
+    ax.tick_params(colors=SITE_FG_MUTED, labelsize=10)
     dim_remaining_spines(ax)
-    ax.grid(True, axis="y", alpha=0.06, color="#ffffff")
-    ax.set_ylim(0, max(eces) * 1.18)
+    ax.grid(True, axis="x", alpha=0.06, color="#ffffff")
+    ax.set_axisbelow(True)
+
     plt.tight_layout()
-    fig.savefig(path, dpi=300, bbox_inches="tight", facecolor=SITE_BG)
+    for path in paths:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=SITE_BG)
     plt.close(fig)
 
 
@@ -362,9 +404,12 @@ def main() -> int:
 
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(per_model, indent=2))
-    make_reliability_figure(per_model, [FIG_RELIABILITY, FIG_RELIABILITY_WEB])
+    # Tier 2A.6: smallmultiples is the §5 canonical view on the website.
+    # The single-panel `calibration_reliability.png` is poster-only — emit
+    # only to report_materials/, not to public/v2 (orphan was archived).
+    make_reliability_figure(per_model, [FIG_RELIABILITY])
     make_reliability_smallmultiples(per_model, [FIG_RELIABILITY_SM, FIG_RELIABILITY_SM_WEB])
-    make_ece_figure(per_model, FIG_ECE)
+    make_ece_figure(per_model, [FIG_ECE, FIG_ECE_WEB])
 
     # ── Console report ──
     print("\n=== PER-MODEL CALIBRATION ===")

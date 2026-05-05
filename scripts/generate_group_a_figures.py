@@ -261,6 +261,14 @@ def figure_a1():
 # ─────────────────────────────────────────────────────────────────────────────
 
 def figure_a2():
+    """Accuracy by task category — heatmap (Tier 2A.6 swap from grouped bars).
+
+    5 model rows × 6 category cols, diverging RdYlGn centered on cohort mean.
+    Every cell annotated; 'Regression' column header rendered bold + red to
+    match the regression-cluster callout in the caption.
+    """
+    import matplotlib.colors as mcolors
+
     out = FIG_DIR / "a2_accuracy_by_category.png"
 
     base_runs = list(load_base_runs())
@@ -275,89 +283,94 @@ def figure_a2():
             by_model_cat[(m, cat)].append(sc)
             overall.append(sc)
 
-    overall_mean = float(np.mean(overall)) if overall else 0.0
+    overall_mean = float(np.mean(overall)) if overall else 0.665
 
-    fig, ax = plt.subplots(figsize=(10, 6), dpi=300, facecolor=SITE_BG)
-    ax.set_facecolor(SITE_BG)
-
-    n_cat = len(CATEGORY_ORDER)
-    n_mod = len(MODELS)
-    width = 0.85 / n_mod
-    x = np.arange(n_cat)
-
+    # Matrix: (n_models, n_categories), row-i model, col-j category.
+    M = np.full((len(MODELS), len(CATEGORY_ORDER)), np.nan)
     for i, m in enumerate(MODELS):
-        means, los, his = [], [], []
-        for cat in CATEGORY_ORDER:
+        for j, cat in enumerate(CATEGORY_ORDER):
             vals = by_model_cat.get((m, cat), [])
-            mean, lo, hi = bootstrap_ci_mean(vals, B=1000, seed=42)
-            means.append(mean)
-            los.append(mean - lo)
-            his.append(hi - mean)
-        offset = (i - (n_mod - 1) / 2) * width
-        ax.bar(x + offset, means, width=width,
-               color=MODEL_COLORS[m], edgecolor=SITE_BG, linewidth=0.5,
-               label=MODEL_LABEL[m],
-               yerr=[los, his], ecolor=SITE_FG_MUTED, capsize=2)
+            if vals:
+                M[i, j] = float(np.mean(vals))
 
-    # Cohort mean: solid SITE_FG_MUTED line + inline right-edge label.
-    ax.axhline(overall_mean, color=SITE_FG_MUTED, lw=1.2, alpha=0.7)
-    ax.text(n_cat - 0.5, overall_mean,
-            f"Cohort mean · {overall_mean:.3f}",
-            ha="right", va="center", fontsize=9, color=SITE_FG_MUTED,
-            backgroundcolor=SITE_BG)
+    norm = mcolors.TwoSlopeNorm(vmin=0.15, vcenter=overall_mean, vmax=0.78)
+    cmap = plt.get_cmap("RdYlGn")
 
-    ax.set_xticks(x)
+    fig, ax = plt.subplots(figsize=(11, 4.2), dpi=150, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
+    im = ax.imshow(M, cmap=cmap, norm=norm, aspect="auto", origin="upper")
+
+    # X-axis: categories (top). Regression tick → bold + red.
+    ax.set_xticks(range(len(CATEGORY_ORDER)))
     ax.set_xticklabels([CATEGORY_LABEL[c] for c in CATEGORY_ORDER],
-                       fontsize=10, color=SITE_FG_MUTED)
-    # Bold + red the Regression tick to match the callout below.
+                       fontsize=10, color=SITE_FG)
+    ax.xaxis.tick_top()
+    ax.xaxis.set_label_position("top")
+    ax.tick_params(axis="x", which="major", pad=6, length=0)
     if "REGRESSION" in CATEGORY_ORDER:
         reg_idx = CATEGORY_ORDER.index("REGRESSION")
         for i, tick in enumerate(ax.get_xticklabels()):
             if i == reg_idx:
                 tick.set_color(COLOR_BAD)
                 tick.set_fontweight("bold")
-    ax.set_ylabel("Accuracy (final_score)", color=SITE_FG_MUTED)
-    ax.set_xlabel("Task category", color=SITE_FG_MUTED)
-    ax.set_ylim(0, 1.0)
-    dim_remaining_spines(ax)
-    ax.grid(axis="y", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
-    ax.legend(loc="upper right", frameon=False, ncol=2, fontsize=9, labelcolor=SITE_FG_MUTED)
 
-    # Annotations: REGRESSION mistral low + MCMC gemini peak.
-    def _bar_xy(category: str, model: str) -> tuple[float, float]:
-        cat_idx = CATEGORY_ORDER.index(category)
-        mod_idx = MODELS.index(model)
-        offset = (mod_idx - (n_mod - 1) / 2) * width
-        vals = by_model_cat.get((model, category), [])
-        mean_v = float(np.mean(vals)) if vals else 0.0
-        return cat_idx + offset, mean_v
+    # Y-axis: models, color-coded.
+    ax.set_yticks(range(len(MODELS)))
+    ax.set_yticklabels([MODEL_LABEL[m] for m in MODELS],
+                       fontsize=11, fontweight="700")
+    for tick, m in zip(ax.get_yticklabels(), MODELS):
+        tick.set_color(MODEL_COLORS.get(m, SITE_FG))
+    ax.tick_params(axis="y", which="major", length=0)
 
-    if "REGRESSION" in CATEGORY_ORDER and "mistral" in MODELS:
-        rx, ry = _bar_xy("REGRESSION", "mistral")
-        ax.annotate("4 of 5 < 40%",
-                    xy=(rx, ry), xytext=(rx, ry + 0.20),
-                    ha="center", va="bottom", fontsize=10,
-                    color=COLOR_BAD, fontweight="700",
-                    arrowprops=dict(arrowstyle="->", color=COLOR_BAD,
-                                    lw=1.3, alpha=0.85))
-    if "MCMC" in CATEGORY_ORDER and "gemini" in MODELS:
-        gx, gy = _bar_xy("MCMC", "gemini")
-        ax.annotate("MCMC peak",
-                    xy=(gx, gy), xytext=(gx, gy + 0.10),
-                    ha="center", va="bottom", fontsize=9,
-                    color=MODEL_COLORS["gemini"], fontweight="700",
-                    arrowprops=dict(arrowstyle="->",
-                                    color=MODEL_COLORS["gemini"],
-                                    lw=1.2, alpha=0.85))
+    # Annotate every cell — SITE_BG ink so values pop on green/yellow/red.
+    for i in range(len(MODELS)):
+        for j in range(len(CATEGORY_ORDER)):
+            v = M[i, j]
+            if np.isnan(v):
+                ax.text(j, i, "—", ha="center", va="center",
+                        fontsize=9, color=SITE_FG_MUTED)
+                continue
+            ax.text(j, i, f"{v:.3f}", ha="center", va="center",
+                    fontsize=10, color=SITE_BG, fontweight="700")
 
-    fig.tight_layout()
-    fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
+    for spine in ax.spines.values():
+        spine.set_color(SITE_FG_MUTED)
+        spine.set_alpha(0.3)
+        spine.set_linewidth(0.8)
+
+    ax.set_title("Accuracy by task category",
+                 fontsize=13, fontweight="700", color=SITE_FG, pad=22, loc="left")
+
+    cbar = fig.colorbar(im, ax=ax, fraction=0.025, pad=0.012)
+    cbar.set_label("Mean final_score", fontsize=9, color=SITE_FG_MUTED,
+                   rotation=270, labelpad=18)
+    cbar.ax.tick_params(labelsize=8, colors=SITE_FG_MUTED)
+    if cbar.outline is not None:
+        cbar.outline.set_edgecolor(SITE_FG_MUTED)
+        cbar.outline.set_alpha(0.3)
+    # Cohort-mean tick marker on the colorbar.
+    cbar.ax.axhline(overall_mean, color=SITE_FG, lw=1.2, alpha=0.85)
+    cbar.ax.text(1.6, overall_mean, f"  cohort mean · {overall_mean:.3f}",
+                 transform=cbar.ax.get_yaxis_transform(),
+                 va="center", ha="left", fontsize=8, color=SITE_FG_MUTED)
+
+    fig.text(0.5, 0.01,
+             f"Color centered on cohort mean ({overall_mean:.3f}). "
+             "Regression collapses across all models except Gemini.",
+             ha="center", va="bottom", fontsize=9,
+             color=SITE_FG_MUTED, style="italic")
+
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    fig.savefig(out, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     fig.savefig(WEB_DIR / "a2_accuracy_by_category.png",
                 dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
-    cat_means = {cat: np.mean([by_model_cat[(m, cat)] for m in MODELS for _ in [0]
-                               if by_model_cat[(m, cat)]] or [0]) for cat in CATEGORY_ORDER}
+    cat_means = {
+        cat: float(np.nanmean([M[MODELS.index(m), CATEGORY_ORDER.index(cat)]
+                               for m in MODELS]))
+        for cat in CATEGORY_ORDER
+    }
     best = max(cat_means, key=cat_means.get)
     worst = min(cat_means, key=cat_means.get)
     return out, f"easiest category: {CATEGORY_LABEL[best]}; hardest: {CATEGORY_LABEL[worst]}"
@@ -661,6 +674,8 @@ def figure_a4():
 
     fig.tight_layout()
     fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(WEB_DIR / "a4_robustness_by_perttype.png",
+                dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     biggest_drop = max(deltas, key=lambda k: deltas[k])
@@ -720,6 +735,8 @@ def figure_a5():
 
     fig.tight_layout(rect=(0, 0.05, 1, 1))
     fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(WEB_DIR / "a5_calibration_reliability.png",
+                dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     best_model = min(MODELS, key=lambda m: calib[m]["ece"])

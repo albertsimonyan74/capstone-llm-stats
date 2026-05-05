@@ -870,15 +870,6 @@ function KeyFindingsSection() {
         <KeyFindingCard card={cards[4]} index={4} loading={loading}/>
         <KeyFindingCard card={cards[5]} index={5} loading={loading}/>
       </div>
-
-      {/* Viz #2 — rank shift bump chart */}
-      <div className="kf-viz-spacer">
-        <img
-          src="/visualizations/png/v2/rank_shift.png"
-          alt="Rank shift across accuracy, robustness, and calibration"
-          style={{ width: '100%', maxWidth: '1100px', display: 'block', margin: '0 auto' }}
-        />
-      </div>
     </div>
   )
 }
