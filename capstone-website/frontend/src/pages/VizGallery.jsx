@@ -45,7 +45,7 @@ function VizCard({ viz, color, setFullImg }) {
             borderBottom: `1px solid ${color}1A`,
           }}
         >
-          <ExpandablePanel title={viz.title}><Comp /></ExpandablePanel>
+          {viz.noExpand ? <Comp /> : <ExpandablePanel title={viz.title}><Comp /></ExpandablePanel>}
         </div>
       ) : (
         <button

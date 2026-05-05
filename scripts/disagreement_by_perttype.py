@@ -79,9 +79,9 @@ def main():
 
     ax.axvline(combined_pct, color=SITE_FG_MUTED, linestyle="--",
                linewidth=1.2, alpha=0.75, zorder=1)
-    ax.text(combined_pct, -0.78,
+    ax.text(combined_pct + 0.6, -0.78,
             f"combined {combined_pct:.2f}%",
-            va="bottom", ha="center",
+            va="bottom", ha="left",
             color=SITE_FG_MUTED, fontsize=9, fontweight="700",
             family="monospace")
 
