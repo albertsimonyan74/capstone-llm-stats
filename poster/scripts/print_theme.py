@@ -41,6 +41,16 @@ BUCKET_COLORS_PRINT = {
     0.6: ACCENT_GOLD_PRINT,
 }
 
+# NMACR segment colors — print-adapted from website hue sequence,
+# left-to-right matches stacked-bar order (A, R, M, C, N).
+NMACR_SEGMENT_COLORS = {
+    "A": "#10b981",  # emerald-500 — Assumption
+    "R": "#8b5cf6",  # violet-500  — Reasoning
+    "M": "#06b6d4",  # cyan-500    — Method
+    "C": "#3b82f6",  # blue-500    — Calibration
+    "N": "#14b8a6",  # teal-500    — Numerical
+}
+
 
 def apply_print_theme():
     """Set matplotlib rcParams for print-quality SVG + PNG output."""

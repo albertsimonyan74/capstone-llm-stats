@@ -1,8 +1,8 @@
-"""NMACR composite weights — horizontal bar chart for poster.
+"""NMACR composite weights — stacked horizontal bar.
 
-Hardcoded data (see CLAUDE.md and llm-stats-vault for weight derivation).
-Sorted descending. Accent palette (teal/purple/gold/slate/red), not model
-colors — these bars are about score components, not models.
+Matches the website's stacked-bar visualization: single horizontal bar,
+five segments sized by weight (A=30, R=25, M=20, C=15, N=10, sum=100),
+in-segment white bold labels.
 """
 from __future__ import annotations
 
@@ -10,64 +10,75 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from print_theme import (
-    PRINT_BG, PRINT_FG, PRINT_FG_MUTED,
-    ACCENT_TEAL_PRINT, ACCENT_PURPLE_PRINT, ACCENT_GOLD_PRINT,
-    COLOR_NEUTRAL_PRINT, COLOR_BAD_PRINT,
-    apply_print_theme, dim_remaining_spines, dual_save,
+    PRINT_BG, PRINT_FG, PRINT_FG_MUTED, NMACR_SEGMENT_COLORS,
+    apply_print_theme, dual_save,
 )
 
 apply_print_theme()
 
 OUT_DIR = ROOT / "poster" / "figures"
 
-WEIGHTS = [
-    ("Assumption",   30, ACCENT_TEAL_PRINT),
-    ("Reasoning",    25, ACCENT_PURPLE_PRINT),
-    ("Method",       20, ACCENT_GOLD_PRINT),
-    ("Calibration",  15, COLOR_NEUTRAL_PRINT),
-    ("Numerical",    10, COLOR_BAD_PRINT),
+# Segment order, left to right
+SEGMENTS = [
+    ("A", 30),
+    ("R", 25),
+    ("M", 20),
+    ("C", 15),
+    ("N", 10),
 ]
 
 
 def main():
-    items = sorted(WEIGHTS, key=lambda x: -x[1])
-    labels = [x[0] for x in items]
-    weights = [x[1] for x in items]
-    colors = [x[2] for x in items]
-
-    fig, ax = plt.subplots(figsize=(14, 5), dpi=150, facecolor=PRINT_BG)
+    fig, ax = plt.subplots(figsize=(14, 4.0), dpi=150, facecolor=PRINT_BG)
     ax.set_facecolor(PRINT_BG)
 
-    y_pos = np.arange(len(items))
-    ax.barh(y_pos, weights, color=colors, height=0.62)
+    # Subtitle (above bar)
+    fig.text(
+        0.5, 0.78,
+        "Five dimensions, literature-derived weights",
+        ha="center", va="bottom",
+        fontsize=14, fontweight="bold", color=PRINT_FG,
+    )
 
-    for i, w in enumerate(weights):
-        ax.text(w + 0.6, y_pos[i], f"{w}%",
-                va="center", ha="left",
-                color=PRINT_FG, fontsize=12, fontweight="bold")
+    # Stacked bar
+    cursor = 0.0
+    bar_y = 0.42
+    bar_h = 0.30  # ~12% of figure (axes coords used for the bar rectangle area)
+    for letter, weight in SEGMENTS:
+        color = NMACR_SEGMENT_COLORS[letter]
+        ax.barh(
+            y=bar_y, width=weight, left=cursor, height=bar_h,
+            color=color, edgecolor="none", align="center",
+        )
+        ax.text(
+            cursor + weight / 2.0, bar_y,
+            f"{letter} · {weight}%",
+            ha="center", va="center",
+            color="#ffffff", fontsize=15, fontweight="bold",
+        )
+        cursor += weight
 
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(labels, fontsize=12, fontweight="bold")
-    for tick, c in zip(ax.get_yticklabels(), colors):
-        tick.set_color(c)
-    ax.invert_yaxis()
+    # Caption (below bar)
+    fig.text(
+        0.5, 0.10,
+        "Weights sum to 1.00. Dimensions weighted by literature convergence "
+        "(Du 2025, Boye-Moell 2025, Yamauchi 2025).",
+        ha="center", va="top",
+        fontsize=10.5, color=PRINT_FG_MUTED, style="italic",
+    )
 
-    ax.set_xlim(0, 35)
-    ax.set_xlabel("Weight (%)", color=PRINT_FG_MUTED, fontsize=11)
-    ax.set_title("NMACR composite score weights",
-                 fontsize=15, fontweight="bold", color=PRINT_FG,
-                 pad=12, loc="left")
+    # Strip axes
+    ax.set_xlim(0, 100)
+    ax.set_ylim(0, 1)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for spine in ax.spines.values():
+        spine.set_visible(False)
 
-    dim_remaining_spines(ax)
-    ax.grid(False)
-    ax.set_axisbelow(True)
-
-    fig.tight_layout()
     dual_save(fig, "nmacr_weights", out_dir=str(OUT_DIR))
     plt.close(fig)
 
