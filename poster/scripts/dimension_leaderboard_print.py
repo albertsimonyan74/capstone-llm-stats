@@ -71,7 +71,7 @@ def _draw_panel(ax, sorted_models, values, *, xlim, title, xlabel,
     ax.set_title(title, fontsize=12.5, fontweight="bold", color=PRINT_FG,
                  pad=10, loc="left")
     dim_remaining_spines(ax)
-    ax.grid(axis="x", linestyle="-", alpha=0.3, color=PRINT_FG_MUTED)
+    ax.grid(False)
     ax.set_axisbelow(True)
 
 
