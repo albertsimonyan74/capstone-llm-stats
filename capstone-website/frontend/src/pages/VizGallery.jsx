@@ -35,7 +35,6 @@ function VizCard({ viz, color, setFullImg }) {
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
-        ...(viz.fullWidth ? { gridColumn: '1 / -1' } : {}),
       }}
     >
       {Comp ? (
