@@ -816,8 +816,8 @@ def figure_a6():
             elinewidth=2.0, capsize=5, capthick=1.6,
             markersize=12, markeredgecolor=SITE_BG, markeredgewidth=1.0,
         )
-        ax.text(means[i], y_pos[i] + 0.32, f"{means[i]:.3f}",
-                va="bottom", ha="center",
+        ax.text(upper[i] + 0.005, y_pos[i], f"{means[i]:.3f}",
+                va="center", ha="left",
                 color=SITE_FG, fontsize=10, fontweight="700")
         ax.text(means[i], y_pos[i] - 0.32, f"#{i+1}",
                 va="top", ha="center",
@@ -902,11 +902,11 @@ def figure_a6():
     ax2.grid(axis="x", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
     ax2.set_axisbelow(True)
     ax2.set_title("Format failures · % responses unscoreable",
-                  fontsize=12.5, fontweight="700", color=SITE_FG, pad=12, loc="left")
-    ax2.text(0.0, 1.02,
+                  fontsize=11, fontweight="700", color=SITE_FG, pad=22, loc="left")
+    ax2.text(0.5, 1.02,
              "Malformed output — missing answer tag or broken format — "
              "dropped before rubric scoring",
-             transform=ax2.transAxes, ha="left", va="bottom",
+             transform=ax2.transAxes, ha="center", va="bottom",
              fontsize=9, style="italic", color=SITE_FG_MUTED)
 
     fig.text(0.5, 0.012,
