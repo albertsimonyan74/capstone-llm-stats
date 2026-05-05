@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from print_theme import (
-    PRINT_BG, PRINT_FG, PRINT_FG_MUTED, NMACR_SEGMENT_COLORS,
+    PRINT_BG, NMACR_SEGMENT_COLORS,
     apply_print_theme, dual_save,
 )
 
@@ -33,21 +33,14 @@ SEGMENTS = [
 
 
 def main():
-    fig, ax = plt.subplots(figsize=(14, 4.0), dpi=150, facecolor=PRINT_BG)
+    fig, ax = plt.subplots(figsize=(14, 1.4), dpi=150, facecolor=PRINT_BG)
     ax.set_facecolor(PRINT_BG)
+    fig.subplots_adjust(left=0.01, right=0.99, top=0.98, bottom=0.02)
 
-    # Subtitle (above bar)
-    fig.text(
-        0.5, 0.78,
-        "Five dimensions, literature-derived weights",
-        ha="center", va="bottom",
-        fontsize=14, fontweight="bold", color=PRINT_FG,
-    )
-
-    # Stacked bar
+    # Stacked bar — fills axes vertically
     cursor = 0.0
-    bar_y = 0.42
-    bar_h = 0.30  # ~12% of figure (axes coords used for the bar rectangle area)
+    bar_y = 0.5
+    bar_h = 1.0
     for letter, weight in SEGMENTS:
         color = NMACR_SEGMENT_COLORS[letter]
         ax.barh(
@@ -61,15 +54,6 @@ def main():
             color="#ffffff", fontsize=15, fontweight="bold",
         )
         cursor += weight
-
-    # Caption (below bar)
-    fig.text(
-        0.5, 0.10,
-        "Weights sum to 1.00. Dimensions weighted by literature convergence "
-        "(Du 2025, Boye-Moell 2025, Yamauchi 2025).",
-        ha="center", va="top",
-        fontsize=10.5, color=PRINT_FG_MUTED, style="italic",
-    )
 
     # Strip axes
     ax.set_xlim(0, 100)
