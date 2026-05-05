@@ -2,7 +2,7 @@
 
 ## Metadata
 - Authors: Johan Boye, Birger Moell
-- Year: 2025 (arXiv submission February 2025; filename retains legacy `-2026` suffix for stability)
+- Year: 2025
 - Venue: arXiv preprint
 - arXiv ID: 2502.11574
 - URL: https://arxiv.org/abs/2502.11574

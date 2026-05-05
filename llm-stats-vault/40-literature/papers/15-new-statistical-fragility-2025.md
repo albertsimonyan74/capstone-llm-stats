@@ -2,7 +2,7 @@
 
 ## Metadata
 - Authors: Andreas Hochlehnert, Hardik Bhatnagar, Vishaal Udandarao, Samuel Albanie, Ameya Prabhu, Matthias Bethge (Tübingen AI Center / Cambridge)
-- Year: 2025 (April)
+- Year: 2025
 - Venue: arXiv preprint
 - arXiv ID: 2504.07086
 - Canonical title: "A Sober Look at Progress in Language Model Reasoning: Pitfalls and Paths to Reproducibility"

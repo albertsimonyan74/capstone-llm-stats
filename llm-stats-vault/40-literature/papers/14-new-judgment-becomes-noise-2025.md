@@ -2,7 +2,7 @@
 
 ## Metadata
 - Authors: Benjamin Feuer, Chiung-Yi Tseng, Astitwa Sarthak Lathe, Oussama Elachqar, John P. Dickerson
-- Year: 2025 (September)
+- Year: 2025
 - Venue: arXiv preprint
 - arXiv ID: 2509.20293
 - URL: https://arxiv.org/abs/2509.20293

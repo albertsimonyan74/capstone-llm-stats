@@ -2,7 +2,7 @@
 
 ## Metadata
 - Authors: Nearchos Potamitis, Lars Klein, Akhil Arora
-- Year: 2025 (December)
+- Year: 2025
 - Venue: arXiv preprint
 - arXiv ID: 2512.07795
 - URL: https://arxiv.org/abs/2512.07795

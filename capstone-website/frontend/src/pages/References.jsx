@@ -204,6 +204,10 @@ export default function References() {
                 }}>
                   {data.textbooks.map(b => {
                     const desc = TEXTBOOK_DESC[b.filename] || b.summary || ''
+                    let host = ''
+                    if (b.url) {
+                      try { host = new URL(b.url).hostname.replace(/^www\./, '') } catch { host = '' }
+                    }
                     return (
                       <motion.div
                         key={b.filename}
@@ -228,17 +232,32 @@ export default function References() {
                               background: '#7FFFD4', flexShrink: 0, marginTop: 6,
                               boxShadow: '0 0 6px #7FFFD4',
                             }} />
-                            <div>
-                              <div style={{ color: '#fff', fontSize: 12.5, fontWeight: 700, marginBottom: 4, lineHeight: 1.4 }}>
-                                {b.title || b.filename}
+                            <div style={{ flex: 1 }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4, gap: 8 }}>
+                                <div style={{ color: '#fff', fontSize: 12.5, fontWeight: 700, lineHeight: 1.4 }}>
+                                  {b.title || b.filename}
+                                </div>
+                                {b.year && (
+                                  <span style={{
+                                    background: 'rgba(127,255,212,0.10)', color: '#7FFFD4',
+                                    fontSize: 10, fontWeight: 700, padding: '2px 7px', borderRadius: 4, flexShrink: 0,
+                                  }}>
+                                    {String(b.year).match(/\d{4}/)?.[0] || b.year}
+                                  </span>
+                                )}
                               </div>
                               <div style={{ color: 'rgba(232,244,248,0.55)', fontSize: 11, marginBottom: 6 }}>
-                                {b.authors}{b.year ? ` (${b.year})` : ''}
+                                {b.authors}
                               </div>
                               {desc && (
-                                <p style={{ color: 'rgba(232,244,248,0.7)', fontSize: 11, lineHeight: 1.55, margin: 0 }}>
+                                <p style={{ color: 'rgba(232,244,248,0.7)', fontSize: 11, lineHeight: 1.55, margin: '0 0 8px' }}>
                                   {desc}
                                 </p>
+                              )}
+                              {host && (
+                                <div style={{ fontFamily: 'monospace', fontSize: 10, color: '#7FFFD4', opacity: 0.75 }}>
+                                  {host} ↗
+                                </div>
                               )}
                             </div>
                           </div>
