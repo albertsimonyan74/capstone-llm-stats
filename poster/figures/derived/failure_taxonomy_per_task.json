@@ -1,0 +1,186 @@
+{
+  "_methodology": "Per-task-type failure category counts from error_taxonomy_v2.json:records (n=143 audited). L1 categories collapsed to 4 for visualization: assumption / math / hallucination / other (formatting + conceptual).",
+  "_pipeline_source": "error_taxonomy_v2.json:records",
+  "category_mapping_l1_to_category": {
+    "ASSUMPTION_VIOLATION": "assumption",
+    "MATHEMATICAL_ERROR": "math",
+    "HALLUCINATION": "hallucination",
+    "CONCEPTUAL_ERROR": "other",
+    "FORMATTING_FAILURE": "other"
+  },
+  "categories": [
+    "assumption",
+    "math",
+    "hallucination",
+    "other"
+  ],
+  "total": 143,
+  "overall": {
+    "assumption": 67,
+    "math": 48,
+    "hallucination": 0,
+    "other": 28
+  },
+  "overall_pct": {
+    "assumption": 46.85314685314685,
+    "math": 33.56643356643357,
+    "hallucination": 0.0,
+    "other": 19.58041958041958
+  },
+  "per_task": {
+    "REGRESSION": {
+      "assumption": 6,
+      "math": 13,
+      "hallucination": 0,
+      "other": 6
+    },
+    "BAYES_REG": {
+      "assumption": 17,
+      "math": 2,
+      "hallucination": 0,
+      "other": 6
+    },
+    "BOX_MULLER": {
+      "assumption": 2,
+      "math": 16,
+      "hallucination": 0,
+      "other": 1
+    },
+    "FISHER_INFO": {
+      "assumption": 12,
+      "math": 0,
+      "hallucination": 0,
+      "other": 1
+    },
+    "BAYES_FACTOR": {
+      "assumption": 5,
+      "math": 0,
+      "hallucination": 0,
+      "other": 4
+    },
+    "LOG_ML": {
+      "assumption": 7,
+      "math": 1,
+      "hallucination": 0,
+      "other": 1
+    },
+    "STATIONARY": {
+      "assumption": 4,
+      "math": 3,
+      "hallucination": 0,
+      "other": 1
+    },
+    "MSE_COMPARE": {
+      "assumption": 8,
+      "math": 0,
+      "hallucination": 0,
+      "other": 0
+    },
+    "MARKOV": {
+      "assumption": 2,
+      "math": 2,
+      "hallucination": 0,
+      "other": 2
+    },
+    "OPT_SCALED": {
+      "assumption": 0,
+      "math": 5,
+      "hallucination": 0,
+      "other": 1
+    },
+    "ORDER_STAT": {
+      "assumption": 1,
+      "math": 1,
+      "hallucination": 0,
+      "other": 2
+    },
+    "MLE_EFFICIENCY": {
+      "assumption": 1,
+      "math": 1,
+      "hallucination": 0,
+      "other": 1
+    },
+    "MLE_MAP": {
+      "assumption": 1,
+      "math": 1,
+      "hallucination": 0,
+      "other": 0
+    },
+    "GAMBLER": {
+      "assumption": 0,
+      "math": 2,
+      "hallucination": 0,
+      "other": 0
+    },
+    "CONCEPTUAL": {
+      "assumption": 0,
+      "math": 0,
+      "hallucination": 0,
+      "other": 1
+    },
+    "PPC": {
+      "assumption": 0,
+      "math": 1,
+      "hallucination": 0,
+      "other": 0
+    },
+    "CI_CREDIBLE": {
+      "assumption": 0,
+      "math": 0,
+      "hallucination": 0,
+      "other": 1
+    },
+    "RANGE_DIST": {
+      "assumption": 1,
+      "math": 0,
+      "hallucination": 0,
+      "other": 0
+    }
+  },
+  "task_totals": {
+    "REGRESSION": 25,
+    "BAYES_REG": 25,
+    "BOX_MULLER": 19,
+    "FISHER_INFO": 13,
+    "BAYES_FACTOR": 9,
+    "LOG_ML": 9,
+    "STATIONARY": 8,
+    "MSE_COMPARE": 8,
+    "MARKOV": 6,
+    "OPT_SCALED": 6,
+    "ORDER_STAT": 4,
+    "MLE_EFFICIENCY": 3,
+    "MLE_MAP": 2,
+    "GAMBLER": 2,
+    "CONCEPTUAL": 1,
+    "PPC": 1,
+    "CI_CREDIBLE": 1,
+    "RANGE_DIST": 1
+  },
+  "task_order_desc_total": [
+    "REGRESSION",
+    "BAYES_REG",
+    "BOX_MULLER",
+    "FISHER_INFO",
+    "BAYES_FACTOR",
+    "LOG_ML",
+    "STATIONARY",
+    "MSE_COMPARE",
+    "MARKOV",
+    "OPT_SCALED",
+    "ORDER_STAT",
+    "MLE_EFFICIENCY",
+    "MLE_MAP",
+    "GAMBLER",
+    "CONCEPTUAL",
+    "PPC",
+    "CI_CREDIBLE",
+    "RANGE_DIST"
+  ],
+  "assertions_passed": {
+    "total_143": true,
+    "assumption_pct_46.85": true,
+    "math_pct_33.57": true,
+    "hallucination_pct_0": true
+  }
+}

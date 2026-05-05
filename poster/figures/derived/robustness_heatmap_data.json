@@ -1,0 +1,658 @@
+{
+  "_methodology": "Per-base-task-type \u00d7 model robustness \u0394 heatmap. Aggregated from robustness_v2.json:per_task_type_heatmap by mean \u0394 across all perturbation suffixes (_rephrase_v2 / _numerical_v2 / _semantic_v2) for each (base_type, model) pair. Sign convention: positive \u0394 = drop under perturbation (worse); negative \u0394 = improvement (rare).",
+  "_pipeline_source": "robustness_v2.json:per_task_type_heatmap",
+  "models": [
+    "claude",
+    "chatgpt",
+    "gemini",
+    "deepseek",
+    "mistral"
+  ],
+  "task_types": [
+    "ABC",
+    "BAYES_FACTOR",
+    "BAYES_REG",
+    "BAYES_RISK",
+    "BETA_BINOM",
+    "BIAS_VAR",
+    "BINOM_FLAT",
+    "BOX_MULLER",
+    "CI_CREDIBLE",
+    "CONCEPTUAL",
+    "DIRICHLET",
+    "DISC_MEDIAN",
+    "FISHER_INFO",
+    "GAMBLER",
+    "GAMMA_POISSON",
+    "GIBBS",
+    "HIERARCHICAL",
+    "HMC",
+    "HPD",
+    "JEFFREYS",
+    "LOG_ML",
+    "MARKOV",
+    "MH",
+    "MINIMAX",
+    "MLE_EFFICIENCY",
+    "MLE_MAP",
+    "MSE_COMPARE",
+    "NORMAL_GAMMA",
+    "OPT_SCALED",
+    "ORDER_STAT",
+    "PPC",
+    "RANGE_DIST",
+    "RC_BOUND",
+    "REGRESSION",
+    "RJMCMC",
+    "STATIONARY",
+    "UNIFORM_MLE",
+    "VB"
+  ],
+  "family_mapping": {
+    "BETA_BINOM": "Bayesian Core",
+    "GAMMA_POISSON": "Bayesian Core",
+    "NORMAL_GAMMA": "Bayesian Core",
+    "BAYES_FACTOR": "Bayesian Core",
+    "DIRICHLET": "Bayesian Core",
+    "JEFFREYS": "Bayesian Core",
+    "BINOM_FLAT": "Bayesian Core",
+    "DISC_MEDIAN": "Bayesian Core",
+    "HPD": "Bayesian Core",
+    "CI_CREDIBLE": "Bayesian Core",
+    "PPC": "Bayesian Core",
+    "MLE_MAP": "MLE / Freq.",
+    "MLE_EFFICIENCY": "MLE / Freq.",
+    "FISHER_INFO": "MLE / Freq.",
+    "UNIFORM_MLE": "MLE / Freq.",
+    "BIAS_VAR": "MLE / Freq.",
+    "MSE_COMPARE": "MLE / Freq.",
+    "GIBBS": "MCMC",
+    "MH": "MCMC",
+    "HMC": "MCMC",
+    "RJMCMC": "MCMC",
+    "STATIONARY": "MCMC",
+    "REGRESSION": "Regression",
+    "BAYES_REG": "Causal / Pred.",
+    "ABC": "Advanced",
+    "VB": "Advanced",
+    "HIERARCHICAL": "Advanced",
+    "BAYES_RISK": "Advanced",
+    "MINIMAX": "Advanced",
+    "RC_BOUND": "Advanced",
+    "LOG_ML": "Advanced",
+    "GAMBLER": "Advanced",
+    "MARKOV": "Advanced",
+    "ORDER_STAT": "Advanced",
+    "RANGE_DIST": "Advanced",
+    "BOX_MULLER": "Advanced",
+    "OPT_SCALED": "Advanced",
+    "CONCEPTUAL": "Advanced"
+  },
+  "family_order": [
+    "Bayesian Core",
+    "MLE / Freq.",
+    "MCMC",
+    "Regression",
+    "Causal / Pred.",
+    "Advanced"
+  ],
+  "cells": {
+    "ABC": {
+      "claude": -0.039400000000000004,
+      "chatgpt": 0.02925,
+      "gemini": -0.05061,
+      "deepseek": 0.0217,
+      "mistral": -0.00827
+    },
+    "BAYES_FACTOR": {
+      "claude": 0.054799999999999995,
+      "chatgpt": -0.006766666666666665,
+      "gemini": 0.010249999999999999,
+      "deepseek": 0.055799999999999995,
+      "mistral": -0.05594166666666667
+    },
+    "BAYES_REG": {
+      "claude": -0.025233333333333333,
+      "chatgpt": 0.03828666666666666,
+      "gemini": 0.09505333333333332,
+      "deepseek": 0.18868666666666667,
+      "mistral": 0.0138
+    },
+    "BAYES_RISK": {
+      "claude": 0.0026,
+      "chatgpt": 0.0012,
+      "gemini": -0.02386666666666666,
+      "deepseek": 0.006999999999999999,
+      "mistral": -0.0018
+    },
+    "BETA_BINOM": {
+      "claude": null,
+      "chatgpt": null,
+      "gemini": null,
+      "deepseek": null,
+      "mistral": null
+    },
+    "BIAS_VAR": {
+      "claude": 0.19005833333333333,
+      "chatgpt": -0.1231,
+      "gemini": 0.1489,
+      "deepseek": 0.16519999999999999,
+      "mistral": -0.0009583333333333333
+    },
+    "BINOM_FLAT": {
+      "claude": -0.0006666666666666664,
+      "chatgpt": -0.011211111111111111,
+      "gemini": 0.05603333333333333,
+      "deepseek": 0.037033333333333335,
+      "mistral": -0.0043
+    },
+    "BOX_MULLER": {
+      "claude": -0.040383333333333334,
+      "chatgpt": -0.025416666666666667,
+      "gemini": 0.057091666666666666,
+      "deepseek": -0.0020000000000000005,
+      "mistral": -0.019158333333333333
+    },
+    "CI_CREDIBLE": {
+      "claude": 0.06350833333333333,
+      "chatgpt": 0.0009000000000000001,
+      "gemini": -0.0253,
+      "deepseek": 0.029491666666666666,
+      "mistral": 0.06421666666666667
+    },
+    "CONCEPTUAL": {
+      "claude": 0.05852500000000001,
+      "chatgpt": 0.126035,
+      "gemini": 0.036485000000000004,
+      "deepseek": 0.09305000000000001,
+      "mistral": 0.04752
+    },
+    "DIRICHLET": {
+      "claude": -0.013399999999999999,
+      "chatgpt": -0.0118,
+      "gemini": -0.0996,
+      "deepseek": -0.24723333333333333,
+      "mistral": 0.2118
+    },
+    "DISC_MEDIAN": {
+      "claude": 0.0366,
+      "chatgpt": -0.0086,
+      "gemini": 0.021616666666666666,
+      "deepseek": 0.032925,
+      "mistral": 0.03841666666666667
+    },
+    "FISHER_INFO": {
+      "claude": 0.0451,
+      "chatgpt": -0.0012,
+      "gemini": 0.05445,
+      "deepseek": 0.02730833333333333,
+      "mistral": -0.015591666666666667
+    },
+    "GAMBLER": {
+      "claude": -0.0484,
+      "chatgpt": -0.1258,
+      "gemini": 0.07350000000000001,
+      "deepseek": 0.12003333333333334,
+      "mistral": 0.0052
+    },
+    "GAMMA_POISSON": {
+      "claude": 0.20223333333333335,
+      "chatgpt": 0.094,
+      "gemini": -0.0086,
+      "deepseek": 0.027166666666666672,
+      "mistral": 0.004533333333333333
+    },
+    "GIBBS": {
+      "claude": 0.00971,
+      "chatgpt": -0.00881,
+      "gemini": -0.01196,
+      "deepseek": -0.03086,
+      "mistral": 0.0
+    },
+    "HIERARCHICAL": {
+      "claude": 0.024879999999999996,
+      "chatgpt": 0.037059999999999996,
+      "gemini": 0.04323,
+      "deepseek": -0.09114,
+      "mistral": -0.07228
+    },
+    "HMC": {
+      "claude": 0.002880000000000001,
+      "chatgpt": 0.060869999999999994,
+      "gemini": 0.004620000000000002,
+      "deepseek": -0.19569999999999999,
+      "mistral": -0.07497
+    },
+    "HPD": {
+      "claude": 0.048075,
+      "chatgpt": -0.046691666666666666,
+      "gemini": -0.009866666666666666,
+      "deepseek": -0.077925,
+      "mistral": 0.067725
+    },
+    "JEFFREYS": {
+      "claude": 0.07694166666666666,
+      "chatgpt": 0.0349,
+      "gemini": -0.029266666666666663,
+      "deepseek": 0.15300833333333333,
+      "mistral": 0.0317
+    },
+    "LOG_ML": {
+      "claude": -0.004500000000000001,
+      "chatgpt": -0.0014999999999999998,
+      "gemini": -0.008583333333333333,
+      "deepseek": -0.06648333333333334,
+      "mistral": 0.040725
+    },
+    "MARKOV": {
+      "claude": 0.013283333333333331,
+      "chatgpt": -0.034341666666666666,
+      "gemini": -0.02246666666666667,
+      "deepseek": -0.08173333333333332,
+      "mistral": -0.05994166666666667
+    },
+    "MH": {
+      "claude": -0.03287,
+      "chatgpt": -0.0133,
+      "gemini": 0.08374999999999999,
+      "deepseek": 0.02619,
+      "mistral": 0.0018
+    },
+    "MINIMAX": {
+      "claude": -0.04479166666666667,
+      "chatgpt": 0.16826666666666668,
+      "gemini": 0.041425000000000003,
+      "deepseek": 0.2617,
+      "mistral": 0.10204166666666667
+    },
+    "MLE_EFFICIENCY": {
+      "claude": 0.0762,
+      "chatgpt": 0.0798,
+      "gemini": 0.046066666666666665,
+      "deepseek": 0.19653333333333334,
+      "mistral": -0.08161666666666668
+    },
+    "MLE_MAP": {
+      "claude": 0.08586666666666666,
+      "chatgpt": -0.010883333333333332,
+      "gemini": -0.07836666666666667,
+      "deepseek": -0.04324166666666667,
+      "mistral": -0.012525000000000001
+    },
+    "MSE_COMPARE": {
+      "claude": 0.1012,
+      "chatgpt": -0.053524999999999996,
+      "gemini": 0.03358333333333333,
+      "deepseek": 0.021875,
+      "mistral": 0.06221666666666667
+    },
+    "NORMAL_GAMMA": {
+      "claude": 0.0217,
+      "chatgpt": 0.0312,
+      "gemini": 0.20066666666666666,
+      "deepseek": 0.2569666666666667,
+      "mistral": -0.049999999999999996
+    },
+    "OPT_SCALED": {
+      "claude": 0.02275,
+      "chatgpt": 0.00225,
+      "gemini": 0.037325,
+      "deepseek": -0.0029999999999999996,
+      "mistral": 0.0007499999999999999
+    },
+    "ORDER_STAT": {
+      "claude": 0.0531,
+      "chatgpt": -0.0357,
+      "gemini": -0.12705833333333333,
+      "deepseek": 0.31590833333333335,
+      "mistral": -0.054608333333333335
+    },
+    "PPC": {
+      "claude": 0.008986666666666667,
+      "chatgpt": 0.023000000000000003,
+      "gemini": 0.02862666666666667,
+      "deepseek": -0.021580000000000002,
+      "mistral": -0.06339333333333333
+    },
+    "RANGE_DIST": {
+      "claude": 0.029066666666666668,
+      "chatgpt": -0.009066666666666664,
+      "gemini": -0.015955555555555556,
+      "deepseek": 0.2347,
+      "mistral": -0.051588888888888886
+    },
+    "RC_BOUND": {
+      "claude": -0.0004,
+      "chatgpt": 0.0012,
+      "gemini": -0.0033000000000000013,
+      "deepseek": 0.0352,
+      "mistral": 0.041916666666666665
+    },
+    "REGRESSION": {
+      "claude": 0.047308333333333334,
+      "chatgpt": 0.00035833333333333344,
+      "gemini": -0.007333333333333331,
+      "deepseek": 0.0070999999999999995,
+      "mistral": -0.016891666666666666
+    },
+    "RJMCMC": {
+      "claude": 0.06276666666666667,
+      "chatgpt": -0.14372666666666667,
+      "gemini": -0.00046,
+      "deepseek": -0.06253333333333333,
+      "mistral": -0.04275333333333334
+    },
+    "STATIONARY": {
+      "claude": 0.0428,
+      "chatgpt": 0.010416666666666666,
+      "gemini": 0.0020166666666666675,
+      "deepseek": -1.6666666666667145e-05,
+      "mistral": -0.06456666666666667
+    },
+    "UNIFORM_MLE": {
+      "claude": 0.0246,
+      "chatgpt": -0.073,
+      "gemini": -0.03186666666666667,
+      "deepseek": 0.05325833333333333,
+      "mistral": 0.012866666666666667
+    },
+    "VB": {
+      "claude": -0.0005700000000000011,
+      "chatgpt": 0.03763,
+      "gemini": 0.0030200000000000014,
+      "deepseek": -0.04528000000000001,
+      "mistral": 0.062439999999999996
+    }
+  },
+  "n_pert": {
+    "ABC": {
+      "claude": 10,
+      "chatgpt": 10,
+      "gemini": 10,
+      "deepseek": 10,
+      "mistral": 10
+    },
+    "BAYES_FACTOR": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "BAYES_REG": {
+      "claude": 15,
+      "chatgpt": 15,
+      "gemini": 15,
+      "deepseek": 15,
+      "mistral": 15
+    },
+    "BAYES_RISK": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "BETA_BINOM": {
+      "claude": 0,
+      "chatgpt": 0,
+      "gemini": 0,
+      "deepseek": 0,
+      "mistral": 0
+    },
+    "BIAS_VAR": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "BINOM_FLAT": {
+      "claude": 9,
+      "chatgpt": 9,
+      "gemini": 9,
+      "deepseek": 9,
+      "mistral": 9
+    },
+    "BOX_MULLER": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "CI_CREDIBLE": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "CONCEPTUAL": {
+      "claude": 20,
+      "chatgpt": 20,
+      "gemini": 20,
+      "deepseek": 20,
+      "mistral": 20
+    },
+    "DIRICHLET": {
+      "claude": 3,
+      "chatgpt": 3,
+      "gemini": 3,
+      "deepseek": 3,
+      "mistral": 3
+    },
+    "DISC_MEDIAN": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "FISHER_INFO": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "GAMBLER": {
+      "claude": 6,
+      "chatgpt": 6,
+      "gemini": 6,
+      "deepseek": 6,
+      "mistral": 6
+    },
+    "GAMMA_POISSON": {
+      "claude": 3,
+      "chatgpt": 3,
+      "gemini": 3,
+      "deepseek": 3,
+      "mistral": 3
+    },
+    "GIBBS": {
+      "claude": 10,
+      "chatgpt": 10,
+      "gemini": 10,
+      "deepseek": 10,
+      "mistral": 10
+    },
+    "HIERARCHICAL": {
+      "claude": 10,
+      "chatgpt": 10,
+      "gemini": 10,
+      "deepseek": 10,
+      "mistral": 10
+    },
+    "HMC": {
+      "claude": 10,
+      "chatgpt": 10,
+      "gemini": 10,
+      "deepseek": 10,
+      "mistral": 10
+    },
+    "HPD": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "JEFFREYS": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "LOG_ML": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "MARKOV": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "MH": {
+      "claude": 10,
+      "chatgpt": 10,
+      "gemini": 10,
+      "deepseek": 10,
+      "mistral": 10
+    },
+    "MINIMAX": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "MLE_EFFICIENCY": {
+      "claude": 6,
+      "chatgpt": 6,
+      "gemini": 6,
+      "deepseek": 6,
+      "mistral": 6
+    },
+    "MLE_MAP": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "MSE_COMPARE": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "NORMAL_GAMMA": {
+      "claude": 3,
+      "chatgpt": 3,
+      "gemini": 3,
+      "deepseek": 3,
+      "mistral": 3
+    },
+    "OPT_SCALED": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "ORDER_STAT": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "PPC": {
+      "claude": 15,
+      "chatgpt": 15,
+      "gemini": 15,
+      "deepseek": 15,
+      "mistral": 15
+    },
+    "RANGE_DIST": {
+      "claude": 9,
+      "chatgpt": 9,
+      "gemini": 9,
+      "deepseek": 9,
+      "mistral": 9
+    },
+    "RC_BOUND": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "REGRESSION": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "RJMCMC": {
+      "claude": 15,
+      "chatgpt": 15,
+      "gemini": 15,
+      "deepseek": 15,
+      "mistral": 15
+    },
+    "STATIONARY": {
+      "claude": 6,
+      "chatgpt": 6,
+      "gemini": 6,
+      "deepseek": 6,
+      "mistral": 6
+    },
+    "UNIFORM_MLE": {
+      "claude": 12,
+      "chatgpt": 12,
+      "gemini": 12,
+      "deepseek": 12,
+      "mistral": 12
+    },
+    "VB": {
+      "claude": 10,
+      "chatgpt": 10,
+      "gemini": 10,
+      "deepseek": 10,
+      "mistral": 10
+    }
+  },
+  "spot_check_passed": [
+    {
+      "task": "DIRICHLET",
+      "model": "deepseek",
+      "expected": -0.25,
+      "got": -0.24723333333333333
+    },
+    {
+      "task": "ORDER_STAT",
+      "model": "deepseek",
+      "expected": 0.32,
+      "got": 0.31590833333333335
+    },
+    {
+      "task": "BIAS_VAR",
+      "model": "chatgpt",
+      "expected": -0.12,
+      "got": -0.1231
+    }
+  ],
+  "task_types_with_no_perturbation_data": [
+    "BETA_BINOM"
+  ]
+}
