@@ -165,12 +165,11 @@ export const VISUALIZATIONS = [
   },
   {
     id: 'calibration_reliability', category: 'calibration',
-    title: 'Calibration Reliability — Verbalized (detail)',
-    subtitle: '3 active buckets (0.3 / 0.5 / 0.6) · 0.9 bucket empty across all models',
-    caption: 'Per-model panels (small-multiples). Each panel shows accuracy at each verbalized confidence bucket against the perfect-calibration diagonal. Points below diagonal = overconfident; above = underconfident. Dot size ∝ bucket sample count. ECE printed in each panel. No high-confidence (0.9) records across any model — hedge-heavy default-to-medium behaviour.',
+    title: 'Calibration gap detail',
+    subtitle: 'Per-bucket gap between claimed confidence and empirical accuracy',
+    caption: 'Negative cells = overconfident (claimed > observed); positive = underconfident. DeepSeek shows extreme swings (+0.20 at 0.5 → −0.21 at 0.6); Claude near-zero across buckets.',
     source: 'experiments/results_v2/calibration.json',
     png: '/visualizations/png/v2/calibration_reliability_smallmultiples.png',
-    width: 2235, height: 531,
   },
   {
     id: 'self_consistency', category: 'calibration',

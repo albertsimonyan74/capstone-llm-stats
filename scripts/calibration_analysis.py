@@ -251,12 +251,15 @@ def make_reliability_figure(per_model: dict, paths: list[Path]) -> None:
 
 
 def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
-    """1×5 small-multiples fallback: one panel per model with its own diagonal.
-    Avoids overplotting that hurts the single-panel reliability diagram.
-    """
-    from site_palette import COLOR_GOOD, COLOR_BAD
+    """5×3 calibration-gap heatmap: empirical accuracy − claimed confidence.
 
-    bucket_order = ["low", "unstated", "medium", "high"]
+    Replaces the prior 1×5 reliability-diagram small-multiples. Filename
+    preserved so manifest paths stay valid.
+    """
+    import matplotlib.colors as mcolors
+
+    bucket_order = ["low", "unstated", "medium"]
+    bucket_labels = ["0.3", "0.5", "0.6"]
     models = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
     DISPLAY = {
         "claude":   "Claude",
@@ -266,52 +269,75 @@ def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
         "mistral":  "Mistral",
     }
 
-    fig, axes = plt.subplots(1, 5, figsize=(15, 3.4), dpi=150,
-                             facecolor=SITE_BG, sharey=True)
-    for ax, m in zip(axes, models):
+    M = np.full((len(models), len(bucket_order)), np.nan)
+    for i, m in enumerate(models):
         info = per_model.get(m)
-        ax.set_facecolor(SITE_BG)
-        ax.fill_between([0, 1], [0, 0], [0, 1], color=COLOR_BAD, alpha=0.04, zorder=0)
-        ax.fill_between([0, 1], [0, 1], [1, 1], color=COLOR_GOOD, alpha=0.04, zorder=0)
-        ax.plot([0, 1], [0, 1], color=SITE_FG_MUTED, lw=1.0, ls="--",
-                alpha=0.7, zorder=2)
-        if info:
-            color = MODEL_COLORS.get(m, "#94a3b8")
-            pts = []
-            for b in bucket_order:
-                d = info["per_bucket"].get(b, {})
-                if d.get("n", 0) > 0 and d.get("mean_accuracy") is not None:
-                    pts.append((d["claimed_confidence"], d["mean_accuracy"], d["n"]))
-            pts.sort(key=lambda p: p[0])
-            if pts:
-                xs = [p[0] for p in pts]
-                ys = [p[1] for p in pts]
-                sizes = [max(60, p[2] * 1.2) for p in pts]
-                if len(pts) >= 2:
-                    ax.plot(xs, ys, color=color, lw=2.0, alpha=0.95, zorder=3)
-                ax.scatter(xs, ys, s=sizes, c=color, edgecolors=SITE_BG,
-                           linewidths=1.5, alpha=0.95, zorder=4)
-            ece_label = f"ECE = {info['ece']:.3f}"
-        else:
-            ece_label = ""
-        ax.set_xlim(0.25, 0.65)
-        ax.set_ylim(0.2, 0.8)
-        ax.set_xticks([0.3, 0.4, 0.5, 0.6])
-        ax.set_yticks([0.2, 0.4, 0.6, 0.8])
-        ax.set_title(DISPLAY[m], color=MODEL_COLORS.get(m, SITE_FG),
-                     fontsize=11, fontweight="700", pad=8)
-        ax.text(0.27, 0.76, ece_label, fontsize=8.5, color=SITE_FG_MUTED, va="top")
-        ax.tick_params(colors=SITE_FG_MUTED, labelsize=8)
-        dim_remaining_spines(ax)
-        ax.grid(True, alpha=0.06, linestyle="-", linewidth=0.5, color="#ffffff")
-        ax.set_axisbelow(True)
+        if not info:
+            continue
+        for j, b in enumerate(bucket_order):
+            d = info["per_bucket"].get(b, {})
+            if d.get("n", 0) > 0 and d.get("mean_accuracy") is not None:
+                M[i, j] = d["mean_accuracy"] - d["claimed_confidence"]
 
-    axes[0].set_ylabel("Empirical accuracy", fontsize=10, color=SITE_FG_MUTED)
-    fig.text(0.5, 0.02, "Claimed confidence (verbalized bucket)",
-             ha="center", fontsize=10, color=SITE_FG_MUTED)
-    fig.suptitle("Calibration Reliability · per-model panels",
-                 fontsize=12, fontweight="700", color=SITE_FG, y=0.995)
-    plt.tight_layout(rect=(0, 0.05, 1, 0.96))
+    norm = mcolors.TwoSlopeNorm(vcenter=0.0, vmin=-0.25, vmax=0.25)
+    cmap = plt.get_cmap("RdBu_r")
+
+    fig, ax = plt.subplots(figsize=(11, 4), dpi=150, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
+
+    # Mask NaNs so imshow paints them transparent; gray fill drawn separately.
+    im = ax.imshow(np.ma.masked_invalid(M), cmap=cmap, norm=norm,
+                   aspect="auto", origin="upper")
+
+    for i in range(len(models)):
+        for j in range(len(bucket_order)):
+            v = M[i, j]
+            if np.isnan(v):
+                ax.add_patch(plt.Rectangle((j - 0.5, i - 0.5), 1, 1,
+                                           facecolor="#3a3f4b", edgecolor=SITE_BG,
+                                           linewidth=0.5, zorder=2))
+                ax.text(j, i, "n/a", ha="center", va="center",
+                        fontsize=10, color=SITE_FG_MUTED, fontweight="600",
+                        zorder=3)
+                continue
+            sign = "+" if v >= 0 else "−"
+            ax.text(j, i, f"{sign}{abs(v):.2f}", ha="center", va="center",
+                    fontsize=11, color="black", fontweight="700")
+
+    ax.set_xticks(range(len(bucket_order)))
+    ax.set_xticklabels(bucket_labels, fontsize=10, color=SITE_FG)
+    ax.xaxis.tick_top()
+    ax.tick_params(axis="x", which="major", pad=6, length=0)
+    ax.set_xlabel("Claimed confidence bucket", fontsize=9,
+                  color=SITE_FG_MUTED, labelpad=8)
+    ax.xaxis.set_label_position("top")
+
+    ax.set_yticks(range(len(models)))
+    ax.set_yticklabels([DISPLAY[m] for m in models],
+                       fontsize=11, fontweight="700")
+    for tick, m in zip(ax.get_yticklabels(), models):
+        tick.set_color(MODEL_COLORS.get(m, SITE_FG))
+    ax.tick_params(axis="y", which="major", length=0)
+
+    for spine in ax.spines.values():
+        spine.set_color(SITE_FG_MUTED)
+        spine.set_alpha(0.3)
+        spine.set_linewidth(0.8)
+
+    ax.set_title("Calibration gap · empirical accuracy − claimed confidence",
+                 fontsize=13, fontweight="700", color=SITE_FG, pad=28, loc="left")
+    fig.text(0.02, 0.90,
+             "Negative = overconfident · zero = calibrated · positive = underconfident",
+             ha="left", fontsize=9, style="italic", color=SITE_FG_MUTED)
+
+    cbar = fig.colorbar(im, ax=ax, fraction=0.025, pad=0.012)
+    cbar.set_ticks([-0.25, -0.125, 0.0, 0.125, 0.25])
+    cbar.ax.tick_params(labelsize=8, colors=SITE_FG_MUTED)
+    if cbar.outline is not None:
+        cbar.outline.set_edgecolor(SITE_FG_MUTED)
+        cbar.outline.set_alpha(0.3)
+
+    fig.tight_layout(rect=(0, 0.03, 1, 0.92))
     for path in paths:
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=SITE_BG)
