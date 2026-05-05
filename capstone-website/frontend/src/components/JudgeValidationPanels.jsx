@@ -230,64 +230,68 @@ export function DisagreementByPertTypePanel() {
         <span className="agreement-metrics-meta">Base + perturbation scope · n=2,850 · directional pass-flip</span>
       </div>
 
-      <div style={{ position: 'relative', padding: '8px 0 4px' }}>
+      <div style={{ position: 'relative', padding: '20px 8px 12px', minHeight: 240 }}>
         <div style={{
-          position: 'absolute', top: 0, bottom: 18,
-          left: `${combinedLeft}%`, width: 0,
-          borderLeft: '1px dashed rgba(148,163,184,0.55)', zIndex: 1,
+          position: 'absolute', top: 18, bottom: 32,
+          left: `calc(118px + (100% - 222px) * ${combinedPct / SCALE_MAX})`, width: 0,
+          borderLeft: '1px dashed rgba(148,163,184,0.7)', zIndex: 1,
         }} />
         <div style={{
-          position: 'absolute', top: -4, left: `${combinedLeft}%`,
+          position: 'absolute', top: 0,
+          left: `calc(118px + (100% - 222px) * ${combinedPct / SCALE_MAX})`,
           transform: 'translateX(-50%)',
-          fontFamily: 'monospace', fontSize: 9, fontWeight: 700,
-          color: 'rgba(148,163,184,0.85)', whiteSpace: 'nowrap', zIndex: 2,
+          fontFamily: 'monospace', fontSize: 11, fontWeight: 700,
+          color: 'rgba(148,163,184,0.95)', whiteSpace: 'nowrap', zIndex: 2,
         }}>
           combined {combinedPct}%
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 10 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 18, marginTop: 22 }}>
           {PERT_BREAKDOWN.map(r => (
-            <div key={r.label} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div key={r.label} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
               <span style={{
-                width: 78, fontFamily: 'monospace', fontSize: 10,
-                fontWeight: 800, letterSpacing: '0.06em', color: r.color,
+                width: 104, fontFamily: 'monospace', fontSize: 12,
+                fontWeight: 800, letterSpacing: '0.08em', color: r.color,
                 flexShrink: 0,
               }}>{r.label}</span>
-              <div style={{ position: 'relative', flex: 1, height: 14, background: 'rgba(255,255,255,0.04)', borderRadius: 3 }}>
+              <div style={{ position: 'relative', flex: 1, height: 30, background: 'rgba(255,255,255,0.04)', borderRadius: 4 }}>
                 <div style={{
                   height: '100%', width: `${(r.pct / SCALE_MAX) * 100}%`,
-                  background: r.color, borderRadius: 3, opacity: 0.92,
+                  background: r.color, borderRadius: 4, opacity: 0.92,
                 }} />
               </div>
               <span style={{
-                width: 96, fontFamily: 'monospace', fontSize: 10.5,
+                width: 100, fontFamily: 'monospace', fontSize: 13,
                 color: 'rgba(232,244,248,0.92)', fontWeight: 700,
                 textAlign: 'left', flexShrink: 0,
               }}>
-                <span style={{ color: '#fff' }}>{r.pct.toFixed(1)}%</span>
-                <span style={{ color: 'rgba(232,244,248,0.55)' }}> · {r.n}/{r.total}</span>
+                <span style={{ color: '#fff', fontSize: 14, fontWeight: 800 }}>{r.pct.toFixed(1)}%</span>
+                <span style={{ display: 'block', color: 'rgba(232,244,248,0.55)', fontSize: 10.5, marginTop: 2 }}>{r.n}/{r.total}</span>
               </span>
             </div>
           ))}
         </div>
 
         <div style={{
-          fontFamily: 'monospace', fontSize: 9,
+          fontFamily: 'monospace', fontSize: 10,
           color: 'rgba(232,244,248,0.45)', display: 'flex',
-          justifyContent: 'space-between', marginTop: 4, padding: '0 88px 0 88px',
+          justifyContent: 'space-between', marginTop: 14, padding: '0 100px 0 118px',
         }}>
           <span>0%</span><span>{SCALE_MAX}%</span>
         </div>
       </div>
 
-      <div style={{
-        fontSize: 11.5, lineHeight: 1.55,
-        color: 'rgba(232,244,248,0.7)',
-        paddingTop: 4,
-      }}>
-        All three flavors land within ±5pp of the combined cohort rate
-        (<strong>{combinedPct}%</strong>). Disagreement is structural — not a
-        perturbation-flavor artifact. NUMERICAL trends slightly higher;
+      <div className="confusion-summary">
+        <span className="summary-stat">
+          <strong>434</strong> of <strong>2,100</strong> perturbation runs flip pass/fail across REPHRASE / NUMERICAL / SEMANTIC
+          (combined directional pass-flip rate <strong>{combinedPct}%</strong> on n=2,850).
+        </span>
+      </div>
+
+      <div className="confusion-footer">
+        All three flavors land within ±5pp of the combined cohort rate.
+        Disagreement is a structural property of model output, not an artifact
+        of any one perturbation flavor. NUMERICAL trends slightly higher;
         SEMANTIC slightly lower; REPHRASE sits at the cohort mean.
       </div>
     </div>
