@@ -103,44 +103,37 @@ export default function VizGallery({ setFullImg }) {
   return (
     <>
       <FadeIn>
-        <div
-          onClick={() => setOpen(v => !v)}
-          style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            marginBottom: 8, flexWrap: 'wrap', gap: 12, userSelect: 'none', cursor: 'pointer',
-          }}
-        >
-          <div>
-            <div style={{ color: 'rgba(0,255,224,0.55)', fontSize: 10, fontWeight: 700, letterSpacing: '0.2em', marginBottom: 6 }}>
-              // V2 RESULTS · 12 FIGURES · 6 CATEGORIES
-            </div>
-            <h2 style={{ fontSize: 'clamp(28px,3.5vw,42px)', fontWeight: 700, color: '#fff', margin: 0, lineHeight: 1.2 }}>
-              Benchmark{' '}
-              <span style={{ background: 'linear-gradient(135deg,#00FFE0,#00B4D8)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                Visualizations
-              </span>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:16, marginBottom: open ? 40 : 0, flexWrap:'wrap' }}>
+          <div style={{ textAlign:'center' }}>
+            <h2 style={{ fontSize:'clamp(32px,4vw,48px)', fontWeight:700, color:'var(--text-primary)', margin:0, lineHeight:1.2 }}>
+              Benchmark Visualizations
             </h2>
+            <motion.div
+              initial={{ scaleX:0 }}
+              whileInView={{ scaleX:1 }}
+              viewport={{ once:true }}
+              transition={{ duration:0.7, delay:0.25 }}
+              style={{ width:64, height:3, background:'linear-gradient(90deg,var(--aqua),var(--blue))', margin:'12px auto 0', borderRadius:2, transformOrigin:'left' }}
+            />
           </div>
-          <button
-            onClick={(e) => { e.stopPropagation(); setOpen(v => !v) }}
+          <motion.button
+            onClick={() => setOpen(v => !v)}
+            whileHover={{ scale:1.05 }}
+            whileTap={{ scale:0.95 }}
             style={{
-              padding: '10px 24px', borderRadius: 10, cursor: 'pointer',
-              background: open ? 'rgba(0,255,224,0.1)' : 'rgba(0,255,224,0.05)',
-              border: `1px solid ${open ? 'rgba(0,255,224,0.5)' : 'rgba(0,255,224,0.2)'}`,
-              color: '#00FFE0', fontSize: 13, fontWeight: 700,
-              display: 'flex', alignItems: 'center', gap: 8,
+              marginTop:4,
+              padding:'8px 20px', borderRadius:8,
+              border:`1.5px solid rgba(0,255,224,${open?'0.6':'0.35'})`,
+              background: open ? 'rgba(0,255,224,0.10)' : 'rgba(0,255,224,0.05)',
+              color: open ? '#00FFE0' : 'rgba(0,255,224,0.7)',
+              fontSize:12, fontWeight:700, cursor:'pointer',
+              fontFamily:'var(--font-mono)', letterSpacing:'0.05em',
+              transition:'all 0.18s',
             }}
           >
-            <span style={{ fontSize: 10, color: 'rgba(255,255,255,0.5)', fontFamily: 'monospace' }}>
-              {VISUALIZATIONS.length} figures
-            </span>
-            {open ? 'Collapse ▲' : 'Expand ▼'}
-          </button>
+            {open ? '▼ COLLAPSE' : `▶ EXPAND (${VISUALIZATIONS.length} FIGURES)`}
+          </motion.button>
         </div>
-        <div style={{
-          width: 64, height: 3, background: 'linear-gradient(90deg,#00FFE0,#00B4D8)',
-          borderRadius: 2, marginBottom: open ? 32 : 12, transition: 'margin-bottom 0.3s',
-        }} />
       </FadeIn>
 
       <AnimatePresence initial={false}>
