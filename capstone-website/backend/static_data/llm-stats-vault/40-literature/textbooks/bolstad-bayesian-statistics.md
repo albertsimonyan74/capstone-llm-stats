@@ -6,7 +6,7 @@
 - Year: 2007
 - Publisher: Wiley-Interscience
 - ISBN: 978-0-471-27020-5
-- URL: https://www.wiley.com/en-us/Introduction+to+Bayesian+Statistics%2C+2nd+Edition-p-9780471270201
+- URL: https://onlinelibrary.wiley.com/doi/book/10.1002/9780470181188
 - Date added to vault: 2026-05-01
 - Source category: GRADUATE_TEXTBOOK
 
