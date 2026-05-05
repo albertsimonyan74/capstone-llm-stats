@@ -144,13 +144,26 @@ function FadeIn({ children, delay = 0 }) {
   )
 }
 
-function Subhead({ children }) {
+function Subhead({ children, meta }) {
   return (
     <div style={{
-      color: '#00FFE0', fontSize: 11, fontWeight: 700,
-      letterSpacing: '0.18em', marginBottom: 12, textTransform: 'uppercase',
+      display: 'flex', alignItems: 'baseline', justifyContent: 'space-between',
+      gap: 16, marginBottom: 12, flexWrap: 'wrap',
     }}>
-      {children}
+      <div style={{
+        color: '#00FFE0', fontSize: 11, fontWeight: 700,
+        letterSpacing: '0.18em', textTransform: 'uppercase',
+      }}>
+        {children}
+      </div>
+      {meta && (
+        <div style={{
+          color: 'rgba(232,244,248,0.55)', fontSize: 10.5,
+          fontFamily: 'monospace', letterSpacing: '0.04em',
+        }}>
+          {meta}
+        </div>
+      )}
     </div>
   )
 }
@@ -655,7 +668,7 @@ export default function Methodology() {
 
         {/* 6 — Calibration is method-dependent (visualization-first) */}
         <FadeIn delay={240}>
-          <Subhead>6 · Calibration is method-dependent</Subhead>
+          <Subhead meta="verbalized ECE vs self-consistency ECE · per-model rankings flip">6 · Calibration is method-dependent</Subhead>
           <ExpandablePanel title="Calibration method comparison"><CalibrationMethodComparisonPanel /></ExpandablePanel>
           <ExpandablePanel title="Per-dimension calibration ECE"><PerDimCalibrationPanel /></ExpandablePanel>
         </FadeIn>

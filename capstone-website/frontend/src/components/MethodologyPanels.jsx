@@ -1034,11 +1034,6 @@ export function CalibrationMethodComparisonPanel() {
 
   return (
     <div className="validation-panel">
-      <div className="validation-panel-header">
-        <span className="validation-label">CALIBRATION IS METHOD-DEPENDENT</span>
-        <span className="validation-meta">verbalized ECE vs self-consistency ECE · per-model rankings flip</span>
-      </div>
-
       <div className="calibration-headline">SAME MODELS · DIFFERENT METHODS · DIFFERENT LEADERBOARDS</div>
 
       <div className="calibration-dot-comparison">
