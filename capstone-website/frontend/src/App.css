@@ -2890,7 +2890,7 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 
 /* ─── Mobile: hero clears sticky navbar ──────────────────────── */
 @media (max-width: 640px) {
-  .sec-overview { padding-top: 96px !important; }
+  .sec-overview { padding-top: 140px !important; }
   .sec-overview .hero-flex {
     justify-content: flex-start !important;
     min-height: auto !important;
@@ -2912,15 +2912,23 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 /* ─── Mobile: validation-panel header wraps + hint hidden ─────── */
 @media (max-width: 640px) {
   .validation-panel-header { flex-direction: column; align-items: flex-start; gap: 4px; }
-  .validation-label { white-space: normal; word-break: break-word; padding-right: 56px; line-height: 1.4; }
+  .validation-label {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: break-word;
+    padding-right: 56px;
+    line-height: 1.4;
+  }
   .validation-meta { white-space: normal; }
   .expandable-hint { display: none !important; }
   .eligibility-combined { font-size: 11px !important; padding-right: 8px; padding-left: 8px; word-break: break-word; letter-spacing: 0.04em !important; }
+  .validation-panel-footer { padding-right: 64px; }
 }
 
 /* ─── Mobile: SideNav FAB → bottom-right (out of card area) ───── */
 @media (max-width: 1100px) and (max-width: 640px) {
-  .sidenav-fab { top: auto !important; bottom: 24px !important; right: 16px !important; transform: translateX(80px) !important; }
+  .sidenav-fab { top: auto !important; bottom: 80px !important; right: 16px !important; transform: translateX(80px) !important; }
   .sidenav-fab--visible { transform: translateX(0) !important; }
   .sidenav-fab:active { transform: scale(0.92) !important; }
 }

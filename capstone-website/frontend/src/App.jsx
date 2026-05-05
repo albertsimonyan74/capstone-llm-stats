@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useMemo, createContext, useContext } from 'react'
 import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'motion/react'
 import { PieChart, Pie, Cell, Tooltip as RTooltip, Legend, ResponsiveContainer } from 'recharts'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import './App.css'
 import tasksData from './data/tasks.json'
 import statsData from './data/stats.json'
@@ -1056,7 +1057,7 @@ function Overview() {
               transition={{ type: 'spring', stiffness: 400, damping: 28 }}
               onClick={() => document.getElementById('tasks')?.scrollIntoView({behavior:'smooth'})}
             >
-              Explore Tasks →
+              Explore Tasks <ArrowRight size={16} style={{ display:'inline-block', verticalAlign:'-2px', marginLeft:4 }} />
             </motion.button>
             <motion.button
               className="btn-secondary"
@@ -1066,7 +1067,7 @@ function Overview() {
               style={{ borderColor:'rgba(167,139,250,0.4)', color:'#A78BFA' }}
               onClick={() => document.getElementById('user-study')?.scrollIntoView({behavior:'smooth'})}
             >
-              User Study ↗
+              User Study <ArrowUpRight size={16} style={{ display:'inline-block', verticalAlign:'-2px', marginLeft:4 }} />
             </motion.button>
           </motion.div>
         </motion.div>
