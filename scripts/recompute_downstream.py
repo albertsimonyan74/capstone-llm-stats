@@ -372,6 +372,10 @@ def fig_a4b_per_dim_robustness(rob: Dict[str, Any]) -> None:
     cbar = plt.colorbar(im, ax=ax, fraction=0.04, pad=0.04)
     style_colorbar(cbar, label="Δ (negative = robust gain)")
     fig.tight_layout()
+    fig.subplots_adjust(bottom=0.18)
+    fig.text(0.5, 0.02,
+             "* indicates |Δ| > 0.03 (notable shift vs base; not a CI test)",
+             ha="center", fontsize=8.5, style="italic", color=SITE_FG_MUTED)
     out = FIG_DIR / "a4b_per_dim_robustness.png"
     fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)

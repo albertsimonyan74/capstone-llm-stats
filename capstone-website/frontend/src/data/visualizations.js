@@ -165,9 +165,9 @@ export const VISUALIZATIONS = [
   },
   {
     id: 'calibration_reliability', category: 'calibration',
-    title: 'Calibration gap detail',
-    subtitle: 'Per-bucket gap between claimed confidence and empirical accuracy',
-    caption: 'Negative cells = overconfident (claimed > observed); positive = underconfident. DeepSeek shows extreme swings (+0.20 at 0.5 → −0.21 at 0.6); Claude near-zero across buckets.',
+    title: 'Calibration gap by confidence bucket',
+    subtitle: 'Per-bucket signed gap, model × confidence-level',
+    caption: "Distance from zero shows miscalibration magnitude. DeepSeek's 0.6 bucket is severely overconfident (−0.21); Claude near-zero across buckets.",
     source: 'experiments/results_v2/calibration.json',
     png: '/visualizations/png/v2/calibration_reliability_smallmultiples.png',
   },

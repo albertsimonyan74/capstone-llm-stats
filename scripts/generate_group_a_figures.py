@@ -341,14 +341,16 @@ def figure_a2():
     ax.set_title("Accuracy by task category",
                  fontsize=13, fontweight="700", color=SITE_FG, pad=22, loc="left")
 
-    cbar = fig.colorbar(im, ax=ax, fraction=0.025, pad=0.012)
-    cbar.set_label("Accuracy", fontsize=9, color=SITE_FG_MUTED,
+    cbar = fig.colorbar(im, ax=ax, ticks=[0.2, 0.4, 0.6, 0.8])
+    cbar.set_label("Accuracy", color=SITE_FG_MUTED, fontsize=11,
                    rotation=270, labelpad=18)
-    cbar.set_ticks([0.2, 0.4, 0.6, 0.8])
-    cbar.ax.tick_params(labelsize=8, colors=SITE_FG_MUTED)
+    cbar.ax.tick_params(colors=SITE_FG_MUTED, labelsize=10)
+    cbar.ax.yaxis.set_tick_params(color=SITE_FG_MUTED)
+    for tick_label in cbar.ax.get_yticklabels():
+        tick_label.set_color(SITE_FG_MUTED)
     if cbar.outline is not None:
         cbar.outline.set_edgecolor(SITE_FG_MUTED)
-        cbar.outline.set_alpha(0.3)
+        cbar.outline.set_linewidth(0.5)
 
     fig.text(0.5, 0.01,
              f"Color centered on cohort mean ({overall_mean:.3f}). "

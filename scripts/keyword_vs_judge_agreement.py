@@ -16,7 +16,6 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.colors as mcolors
-import matplotlib.patheffects as pe
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy import stats
@@ -28,6 +27,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from site_palette import (
     SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    ACCENT_TEAL, COLOR_GOOD, COLOR_BAD,
     apply_site_theme, color_code_model_ticks, dim_remaining_spines,
 )
 
@@ -203,9 +203,10 @@ def make_scatter_figure(joined: list[dict], path: Path) -> None:
     bin_centers = np.array([0.0, 0.25, 0.5, 0.75, 1.0])
     bin_edges = np.array([-0.125, 0.125, 0.375, 0.625, 0.875, 1.125])
 
-    fig, axes = plt.subplots(1, 4, figsize=(15, 4), dpi=150, facecolor=SITE_BG)
-    cmap = plt.get_cmap("viridis")
-    label_stroke = [pe.withStroke(linewidth=1.4, foreground="black")]
+    fig, axes = plt.subplots(1, 4, figsize=(15, 4.5), dpi=150, facecolor=SITE_BG)
+    cmap = mcolors.LinearSegmentedColormap.from_list(
+        "teal_seq", [SITE_BG, "#2dd4bf", "#5eead4", "#a7f3d0"]
+    )
 
     for ax, (title, kw_field, jd_field) in zip(axes, panels):
         ax.set_facecolor(SITE_BG)
@@ -221,13 +222,12 @@ def make_scatter_figure(joined: list[dict], path: Path) -> None:
         ys = np.array(ys)
 
         H, _, _ = np.histogram2d(ys, xs, bins=[bin_edges, bin_edges])
-        total = H.sum()
-        diag = np.trace(H) if H.shape[0] == H.shape[1] else 0.0
-        off_pct = (1.0 - diag / total) * 100.0 if total > 0 else 0.0
+        total = int(H.sum())
+        diag_total = float(np.trace(H)) if H.shape[0] == H.shape[1] else 0.0
+        off_pct = (1.0 - diag_total / total) * 100.0 if total > 0 else 0.0
 
-        log_H = np.log1p(H)
-        norm = mcolors.Normalize(vmin=0.0, vmax=max(log_H.max(), 1e-6))
-        ax.imshow(log_H, cmap=cmap, norm=norm, origin="lower",
+        norm = mcolors.PowerNorm(gamma=0.5, vmin=0.0, vmax=max(H.max(), 1.0))
+        ax.imshow(H, cmap=cmap, norm=norm, origin="lower",
                   aspect="auto",
                   extent=(-0.5, len(bin_centers) - 0.5,
                           -0.5, len(bin_centers) - 0.5))
@@ -238,18 +238,33 @@ def make_scatter_figure(joined: list[dict], path: Path) -> None:
                 if count == 0:
                     continue
                 ax.text(j, i, str(count), ha="center", va="center",
-                        fontsize=9, color="white", fontweight="700",
-                        path_effects=label_stroke)
+                        fontsize=11, color="black", fontweight="700")
 
-        ax.plot([-0.5, len(bin_centers) - 0.5],
-                [-0.5, len(bin_centers) - 0.5],
-                color="white", lw=1.0, ls="--", alpha=0.5)
+        # Diagonal cells: green border. Off-diag w/ count>50: red border.
+        for i in range(H.shape[0]):
+            for j in range(H.shape[1]):
+                count = int(H[i, j])
+                if i == j:
+                    rect = plt.Rectangle((j - 0.5, i - 0.5), 1, 1,
+                                         fill=False, edgecolor=COLOR_GOOD,
+                                         linewidth=2.0, zorder=4)
+                    ax.add_patch(rect)
+                elif count > 50:
+                    rect = plt.Rectangle((j - 0.5, i - 0.5), 1, 1,
+                                         fill=False, edgecolor=COLOR_BAD,
+                                         linewidth=1.5, zorder=4)
+                    ax.add_patch(rect)
 
-        ax.text(0.03, 0.97,
+        ax.text(0.97, 0.97,
                 f"off-diagonal: {off_pct:.1f}%",
-                transform=ax.transAxes, ha="left", va="top",
-                fontsize=9, fontweight="700",
-                color="white", path_effects=label_stroke)
+                transform=ax.transAxes, ha="right", va="top",
+                fontsize=10, fontweight="700", color=SITE_FG,
+                bbox=dict(boxstyle="round,pad=0.4", facecolor=SITE_BG,
+                          edgecolor=ACCENT_TEAL, lw=1),
+                zorder=5)
+        ax.text(0.97, 0.04, f"n = {total}",
+                transform=ax.transAxes, ha="right", va="bottom",
+                fontsize=8, color=SITE_FG_MUTED, fontweight="600")
 
         ax.set_xticks(range(len(bin_centers)))
         ax.set_yticks(range(len(bin_centers)))
