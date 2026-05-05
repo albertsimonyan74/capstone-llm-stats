@@ -53,7 +53,7 @@ export const VISUALIZATIONS = [
     Component: JudgeKeywordConfusionMatrix,
   },
   {
-    id: 'disagreement_by_perttype', category: 'judge', noExpand: true,
+    id: 'disagreement_by_perttype', category: 'judge',
     title: 'Disagreement by perturbation type',
     subtitle: 'REPHRASE / NUMERICAL / SEMANTIC pass-flip rates',
     caption: 'Per-perturbation-flavor breakdown of keyword/judge disagreement. Stable across types — disagreement is structural.',
