@@ -286,7 +286,7 @@ export default function Methodology() {
         <FadeIn delay={100}>
           <Subhead>2 · N·M·A·C·R Rubric (literature-derived weights)</Subhead>
           <Card>
-            <p style={{ color: 'rgba(232,244,248,0.85)', fontSize: 14, lineHeight: 1.7, margin: '0 0 18px' }}>
+            <p style={{ color: 'rgba(232,244,248,0.85)', fontSize: 16, lineHeight: 1.7, margin: '0 0 18px' }}>
               Five dimensions, literature-derived weights, justified per dimension.
             </p>
             <div style={{

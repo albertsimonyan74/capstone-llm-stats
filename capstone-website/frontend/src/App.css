@@ -2927,6 +2927,7 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
     word-break: break-word;
     padding-right: 56px;
     line-height: 1.4;
+    font-size: 14px !important;
   }
   .validation-meta { white-space: normal; }
   .expandable-hint { display: none !important; }
