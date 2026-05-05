@@ -294,7 +294,7 @@ export default function Methodology() {
               border: '1px solid rgba(255,255,255,0.10)', marginBottom: 8,
             }}>
               {SCORE_DIMS.map(d => (
-                <div key={d.dim} title={`${d.dim}: ${(d.weight*100).toFixed(0)}%`} style={{
+                <div key={d.dim} className="nmacr-segment" title={`${d.dim}: ${(d.weight*100).toFixed(0)}%`} style={{
                   width: `${d.weight*100}%`,
                   background: `linear-gradient(180deg, ${d.color}, ${d.color}cc)`,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -303,12 +303,14 @@ export default function Methodology() {
                   overflow: 'hidden',
                   borderRight: '1px solid rgba(0,0,0,0.18)',
                 }}>
-                  <span style={{
+                  <span className="nmacr-segment-label" style={{
                     fontFamily: 'monospace', fontSize: 13, fontWeight: 800,
                     color: 'rgba(0,0,0,0.82)', whiteSpace: 'nowrap', padding: '0 6px',
                     letterSpacing: '0.04em',
                   }}>
-                    {d.dim} · {(d.weight*100).toFixed(0)}%
+                    <span className="nmacr-dim">{d.dim}</span>
+                    <span className="nmacr-bullet"> · </span>
+                    <span className="nmacr-pct">{(d.weight*100).toFixed(0)}%</span>
                   </span>
                 </div>
               ))}

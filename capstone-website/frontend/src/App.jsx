@@ -989,7 +989,7 @@ function Overview() {
         <HeroNetworkBg opacity={0.55} />
       </div>
 
-      <div style={{ position:'relative', zIndex:1, display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', minHeight:'calc(100vh - 200px)' }}>
+      <div className="hero-flex" style={{ position:'relative', zIndex:1, display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', minHeight:'calc(100vh - 200px)' }}>
         <motion.div
           style={{ textAlign:'center', maxWidth:980 }}
           initial="hidden"
@@ -997,7 +997,7 @@ function Overview() {
           variants={staggerContainer(0.15)}
         >
           {/* Hero title */}
-          <motion.h1 variants={fadeUp} style={{ fontSize:'clamp(32px,5.5vw,66px)', fontWeight:700, lineHeight:1.15, color:'var(--text-primary)', marginBottom:24 }}>
+          <motion.h1 className="hero-title" variants={fadeUp} style={{ fontSize:'clamp(32px,5.5vw,66px)', fontWeight:700, lineHeight:1.15, color:'var(--text-primary)', marginBottom:24 }}>
             Benchmarking LLMs on{' '}
             <span style={{ background:'linear-gradient(135deg,var(--aqua),var(--blue))', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent' }}>
               Bayesian Statistical Reasoning
