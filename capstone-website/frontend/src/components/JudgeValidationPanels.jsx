@@ -210,3 +210,61 @@ export function JudgeKeywordConfusionMatrix() {
     </div>
   )
 }
+
+// ─── Per-perturbation-type breakdown (Panel 3) ──────────────────
+const PERT_BREAKDOWN = [
+  { label: 'REPHRASE',  pct: 21.6, n: 162, total: 750, color: '#5eead4' },
+  { label: 'NUMERICAL', pct: 22.7, n: 136, total: 600, color: '#a78bfa' },
+  { label: 'SEMANTIC',  pct: 18.1, n: 136, total: 750, color: '#fbbf24' },
+]
+
+export function DisagreementByPertTypePanel() {
+  return (
+    <div className="agreement-metrics-panel">
+      <div className="agreement-metrics-header">
+        <span className="agreement-metrics-label">DISAGREEMENT BY PERTURBATION TYPE</span>
+        <span className="agreement-metrics-meta">Base + perturbation scope · n=2,850 · directional pass-flip</span>
+      </div>
+
+      <div style={{ width: '100%', overflow: 'hidden', borderRadius: 6 }}>
+        <img
+          src="/visualizations/png/v2/disagreement_by_perttype.png"
+          alt="Disagreement by perturbation type — REPHRASE 21.6%, NUMERICAL 22.7%, SEMANTIC 18.1% (combined 20.74%)"
+          loading="lazy"
+          style={{ width: '100%', height: 'auto', display: 'block' }}
+        />
+      </div>
+
+      <div style={{
+        display: 'flex', flexWrap: 'wrap', gap: 14,
+        padding: '10px 12px',
+        background: 'rgba(0, 0, 0, 0.25)',
+        borderRadius: 6,
+        fontFamily: 'monospace',
+        fontSize: 11,
+        lineHeight: 1.5,
+      }}>
+        {PERT_BREAKDOWN.map(r => (
+          <div key={r.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ display: 'inline-block', width: 10, height: 10, background: r.color, borderRadius: 2 }} />
+            <span style={{ color: r.color, fontWeight: 700, letterSpacing: '0.04em' }}>{r.label}</span>
+            <span style={{ color: 'rgba(232,244,248,0.92)', fontWeight: 600 }}>{r.pct.toFixed(1)}%</span>
+            <span style={{ color: 'rgba(232,244,248,0.55)' }}>({r.n} / {r.total})</span>
+          </div>
+        ))}
+      </div>
+
+      <div style={{
+        fontSize: 12, lineHeight: 1.6,
+        color: 'rgba(232,244,248,0.7)',
+        paddingTop: 4,
+      }}>
+        All three flavors land within ±5pp of the combined cohort rate
+        (<strong>{COMBINED_FLIP_PCT}%</strong>). Disagreement is a structural
+        property of model output on assumption_compliance — not an artifact of
+        any one perturbation flavor. NUMERICAL trends slightly higher; SEMANTIC
+        slightly lower; REPHRASE sits at the cohort mean.
+      </div>
+    </div>
+  )
+}

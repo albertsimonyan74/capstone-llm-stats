@@ -2,7 +2,7 @@
 // PNG files served from /visualizations/png/v2/
 // Source files referenced relative to repo root (experiments/results_v2/*).
 // Items with a `Component` field render as live React panels (no PNG).
-import { AgreementMetricsForestPanel, JudgeKeywordConfusionMatrix } from '../components/JudgeValidationPanels'
+import { AgreementMetricsForestPanel, JudgeKeywordConfusionMatrix, DisagreementByPertTypePanel } from '../components/JudgeValidationPanels'
 
 export const VIZ_CATEGORIES = [
   { id: 'rankings',      label: 'Performance Leaderboards', subtitle: 'Hero — accuracy, robustness, calibration', color: '#00FFE0' },
@@ -51,6 +51,14 @@ export const VISUALIZATIONS = [
     caption: '2×2 confusion matrix on assumption_compliance (n=750 base eligible). Diagonal = agreement (376 both-pass + 175 both-fail = 73.5%). Off-diagonal = disagreement (157 keyword-only-pass + 42 judge-only-pass = 26.5%). Combined denominator (base + perturbation, n=2,850) holds at 20.74% directional pass-flip.',
     source: 'experiments/results_v2/keyword_vs_judge_agreement.json + combined_pass_flip_analysis.json',
     Component: JudgeKeywordConfusionMatrix,
+  },
+  {
+    id: 'disagreement_by_perttype', category: 'judge', fullWidth: true,
+    title: 'Disagreement by perturbation type',
+    subtitle: 'REPHRASE / NUMERICAL / SEMANTIC pass-flip rates',
+    caption: 'Per-perturbation-flavor breakdown of keyword/judge disagreement. Stable across types — disagreement is structural.',
+    source: 'experiments/results_v2/combined_pass_flip_analysis.json',
+    Component: DisagreementByPertTypePanel,
   },
 
   // ── 3. METHODOLOGY DETAIL (PNG companions) ────────────────────
