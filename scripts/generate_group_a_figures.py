@@ -293,7 +293,7 @@ def figure_a2():
             if vals:
                 M[i, j] = float(np.mean(vals))
 
-    norm = mcolors.TwoSlopeNorm(vmin=0.15, vcenter=overall_mean, vmax=0.78)
+    norm = mcolors.TwoSlopeNorm(vmin=0.0, vcenter=0.665, vmax=1.0)
     cmap = plt.get_cmap("RdYlGn")
 
     fig, ax = plt.subplots(figsize=(11, 4.2), dpi=150, facecolor=SITE_BG)
@@ -341,7 +341,9 @@ def figure_a2():
     ax.set_title("Accuracy by task category",
                  fontsize=13, fontweight="700", color=SITE_FG, pad=22, loc="left")
 
-    cbar = fig.colorbar(im, ax=ax, ticks=[0.2, 0.4, 0.6, 0.8])
+    cbar = fig.colorbar(im, ax=ax)
+    cbar.set_ticks([0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    cbar.set_ticklabels(["0", "0.2", "0.4", "0.6", "0.8", "1.0"])
     cbar.set_label("Accuracy", color=SITE_FG_MUTED, fontsize=11,
                    rotation=270, labelpad=18)
     cbar.ax.tick_params(colors=SITE_FG_MUTED, labelsize=10)

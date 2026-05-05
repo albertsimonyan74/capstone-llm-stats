@@ -27,7 +27,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from site_palette import (
     SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
-    ACCENT_TEAL, COLOR_GOOD, COLOR_BAD,
+    COLOR_GOOD, COLOR_BAD,
     apply_site_theme, color_code_model_ticks, dim_remaining_spines,
 )
 
@@ -255,13 +255,6 @@ def make_scatter_figure(joined: list[dict], path: Path) -> None:
                                          linewidth=1.5, zorder=4)
                     ax.add_patch(rect)
 
-        ax.text(0.97, 0.97,
-                f"off-diagonal: {off_pct:.1f}%",
-                transform=ax.transAxes, ha="right", va="top",
-                fontsize=10, fontweight="700", color=SITE_FG,
-                bbox=dict(boxstyle="round,pad=0.4", facecolor=SITE_BG,
-                          edgecolor=ACCENT_TEAL, lw=1),
-                zorder=5)
         ax.text(0.97, 0.04, f"n = {total}",
                 transform=ax.transAxes, ha="right", va="bottom",
                 fontsize=8, color=SITE_FG_MUTED, fontweight="600")
@@ -270,7 +263,8 @@ def make_scatter_figure(joined: list[dict], path: Path) -> None:
         ax.set_yticks(range(len(bin_centers)))
         ax.set_xticklabels([f"{c:.2f}" for c in bin_centers], fontsize=8)
         ax.set_yticklabels([f"{c:.2f}" for c in bin_centers], fontsize=8)
-        ax.set_title(title, fontsize=12, color=SITE_FG, pad=8, fontweight="700")
+        ax.set_title(f"{title}  ·  off-diagonal: {off_pct:.1f}%",
+                     fontsize=11, color=SITE_FG, pad=8, fontweight="700")
         ax.set_xlabel("Keyword rubric", fontsize=9, color=SITE_FG_MUTED)
         ax.set_ylabel("LLM judge", fontsize=9, color=SITE_FG_MUTED)
         ax.tick_params(colors=SITE_FG_MUTED, labelsize=8)

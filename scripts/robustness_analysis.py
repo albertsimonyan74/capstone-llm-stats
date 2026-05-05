@@ -21,7 +21,6 @@ from collections import defaultdict
 from pathlib import Path
 
 import matplotlib.colors as mcolors
-import matplotlib.patheffects as pe
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -145,7 +144,7 @@ def plot_heatmap(heatmap, task_types, models):
     norm = mcolors.TwoSlopeNorm(vmin=-vmax, vcenter=0.0, vmax=vmax)
     cmap = plt.get_cmap("RdBu_r")
 
-    fig, ax = plt.subplots(figsize=(7, 14), dpi=150, facecolor=SITE_BG)
+    fig, ax = plt.subplots(figsize=(9, 14), dpi=150, facecolor=SITE_BG)
     ax.set_facecolor(SITE_BG)
     im = ax.imshow(M, cmap=cmap, norm=norm, aspect="auto", origin="upper")
 
@@ -161,20 +160,16 @@ def plot_heatmap(heatmap, task_types, models):
     ax.set_yticklabels(ordered_types, fontsize=8.5, family="monospace",
                        color=SITE_FG_MUTED)
 
-    # Annotate EVERY non-NaN cell. Black ink + white stroke for contrast on
-    # any background.
-    label_stroke = [pe.withStroke(linewidth=1.5, foreground="white")]
+    # Annotate EVERY non-NaN cell with plain black text.
     for i in range(len(ordered_types)):
         for j in range(len(models)):
             v = M[i, j]
             if np.isnan(v):
                 ax.text(j, i, "—", ha="center", va="center",
-                        fontsize=6, color="black",
-                        path_effects=label_stroke)
+                        fontsize=6, color="black")
                 continue
             ax.text(j, i, f"{v:+.2f}", ha="center", va="center",
-                    fontsize=7, color="black", fontweight="bold",
-                    path_effects=label_stroke)
+                    fontsize=7, color="black", fontweight="bold")
 
     for _, _, end_row in cat_spans[:-1]:
         ax.axhline(end_row + 0.5, color=SITE_FG_MUTED, linewidth=1.0, alpha=0.5)

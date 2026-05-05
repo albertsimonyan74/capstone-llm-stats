@@ -288,7 +288,7 @@ def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
     ax.axvline(0.0, color="white", lw=1.2, alpha=0.85, zorder=2)
     ax.text(0.003, -0.7, "perfect calibration",
             ha="left", va="center",
-            fontsize=8.5, color=SITE_FG_MUTED, style="italic")
+            fontsize=8.5, color=SITE_FG, style="italic")
 
     for i, m in enumerate(models):
         info = per_model.get(m)
@@ -323,8 +323,13 @@ def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
         tick.set_color(MODEL_COLORS.get(m, SITE_FG))
     ax.tick_params(axis="y", which="major", length=0)
 
-    ax.set_xlabel("overconfident  ·  calibrated  ·  underconfident",
-                  fontsize=10, color=SITE_FG_MUTED, labelpad=8)
+    ax.set_xlabel("")
+    ax.text(0.02, 0.95, "overconfident",
+            transform=ax.transAxes, ha="left", va="top",
+            color=SITE_FG, fontsize=11, weight="bold")
+    ax.text(0.98, 0.95, "underconfident",
+            transform=ax.transAxes, ha="right", va="top",
+            color=SITE_FG, fontsize=11, weight="bold")
     dim_remaining_spines(ax)
     ax.grid(axis="x", linestyle="-", alpha=0.06, color="#ffffff")
     ax.set_axisbelow(True)
