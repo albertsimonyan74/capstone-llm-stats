@@ -845,7 +845,7 @@ def figure_a6():
         ax.plot([x_anchor - arm, x_anchor], [j, j],
                 color=SITE_FG_MUTED, lw=1.0, alpha=0.6)
         ax.text(x_anchor + 0.003, (i + j) / 2,
-                "n.s.", ha="left", va="center", fontsize=9,
+                "tied", ha="left", va="center", fontsize=9,
                 color=SITE_FG_MUTED, fontweight="700")
 
     # X-axis padded enough to fit the rightmost n.s. label.
@@ -853,7 +853,7 @@ def figure_a6():
         if ns_pairs else max(upper) + 0.005
     ax.set_xlim(min(lower) - 0.02, max(bracket_x_max, max(upper) + 0.01))
     ax.set_xlabel(
-        "Aggregate score · literature-weighted final_score (N=M=A=C=R=0.20)",
+        "Aggregate score · literature-weighted (A-30, R-25, M-20, C-15, N-10)",
         color=SITE_FG_MUTED, fontsize=10.5)
     dim_remaining_spines(ax)
     ax.grid(axis="x", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
@@ -869,32 +869,50 @@ def figure_a6():
     ax2.barh(y_pos, rates,
              color=[MODEL_COLORS[m] for m in rank_order],
              edgecolor=SITE_BG, linewidth=0.7)
-    x_max = max(max(rates) * 1.4, 1.0) if rates else 1.0
-    for i, rate in enumerate(rates):
+    x_max = max(max(rates) * 1.6, 1.2) if rates else 1.2
+
+    COLOR_GOOD = "#10b981"
+    ACCENT_GOLD = "#fbbf24"
+    annotations = {
+        "claude":   ("0% · ✓ full compliance", COLOR_GOOD),
+        "gemini":   ("0.58% · ✓ near-perfect", COLOR_GOOD),
+        "mistral":  ("2.92%", SITE_FG),
+        "chatgpt":  ("3.51% · ⚠ noticeable", ACCENT_GOLD),
+        "deepseek": ("3.51% · ⚠ noticeable", ACCENT_GOLD),
+    }
+    for i, m in enumerate(rank_order):
+        rate = rates[i]
+        text, color = annotations[m]
         if rate < 1e-6:
-            # Zero-width bar — left-justify label flush against the y-axis
-            # so it doesn't float in empty right-side space.
-            ax2.text(0.05, y_pos[i], f"{rate:.2f}%",
+            ax2.text(0.05, y_pos[i], text,
                      va="center", ha="left",
-                     color=SITE_FG_MUTED, fontsize=9.5, fontweight="700")
+                     color=color, fontsize=9.5, fontweight="700",
+                     fontfamily="DejaVu Sans")
         else:
-            ax2.text(rate + x_max * 0.05, y_pos[i], f"{rate:.2f}%",
+            ax2.text(rate + x_max * 0.05, y_pos[i], text,
                      va="center", ha="left",
-                     color=SITE_FG, fontsize=9.5, fontweight="700")
+                     color=color, fontsize=9.5, fontweight="700",
+                     fontfamily="DejaVu Sans")
     ax2.set_yticks([])
     ax2.invert_yaxis()
     ax2.set_xlim(0, x_max)
-    ax2.set_xlabel("formatting_failure_rate (%)",
+    ax2.set_xlabel("% rejected (lower = better)",
                    color=SITE_FG_MUTED, fontsize=10)
     dim_remaining_spines(ax2)
     ax2.grid(axis="x", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
     ax2.set_axisbelow(True)
-    ax2.set_title("Pre-rubric exclusions",
+    ax2.set_title("Format failures · % responses unscoreable",
                   fontsize=12.5, fontweight="700", color=SITE_FG, pad=12, loc="left")
+    ax2.text(0.0, 1.02,
+             "Malformed output — missing answer tag or broken format — "
+             "dropped before rubric scoring",
+             transform=ax2.transAxes, ha="left", va="bottom",
+             fontsize=9, style="italic", color=SITE_FG_MUTED)
 
     fig.text(0.5, 0.012,
-             "Adjacent-rank brackets (n.s.) = pairs not statistically separable "
-             "(95% bootstrap CI, B=10,000).",
+             "Brackets connect adjacent ranks whose 95% bootstrap CIs overlap "
+             "(B=10,000) — ordering between these models is not statistically "
+             "reliable.",
              ha="center", fontsize=8.5, style="italic", color=SITE_FG_MUTED)
 
     fig.tight_layout(rect=(0, 0.04, 1, 1))
