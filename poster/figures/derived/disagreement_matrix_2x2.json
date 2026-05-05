@@ -1,0 +1,43 @@
+{
+  "_methodology": "2\u00d72 keyword \u00d7 judge crosstab on combined eligible set (assumption_compliance dimension). Reproduces combined_pass_flip_analysis.json headline values.",
+  "_pipeline_source": "scripts/combined_pass_flip_analysis.py",
+  "scope_notes": {
+    "eligibility": "Tasks with non-empty required_assumption_checks (loaded from tasks_all.json + perturbations_all.json).",
+    "v1_pert_filter": "Base runs/judges with task_id in data/synthetic/perturbations.json (v1-pert seed records) are dropped before join.",
+    "join": "Inner-join on run_id. Base lookup uses task_id; perturbation lookup uses base_task_id. Judge errors and rows missing kw assumption_score or judge assumption_compliance.score are dropped.",
+    "dedup": "Run-id deduplicated set union of base + perturbation rows.",
+    "binarization": "Threshold = 0.5 on both kw and judge (\u22650.5 = PASS, <0.5 = FAIL)."
+  },
+  "threshold": 0.5,
+  "n_total": 2850,
+  "cells": {
+    "kw_pass_judge_pass": 1345,
+    "kw_pass_judge_fail": 591,
+    "kw_fail_judge_pass": 131,
+    "kw_fail_judge_fail": 783
+  },
+  "row_totals": {
+    "kw_pass": 1936,
+    "kw_fail": 914
+  },
+  "col_totals": {
+    "judge_pass": 1476,
+    "judge_fail": 1374
+  },
+  "row_pct": {
+    "kw_pass_judge_pass": 69.47314049586777,
+    "kw_pass_judge_fail": 30.526859504132233,
+    "kw_fail_judge_pass": 14.332603938730854,
+    "kw_fail_judge_fail": 85.66739606126914
+  },
+  "summary": {
+    "n_disagree": 722,
+    "total_disagreement_pct": 25.333333333333332,
+    "directional_pass_flip_pct": 20.736842105263158
+  },
+  "assertions_passed": {
+    "n_total_2850": true,
+    "pass_flip_591": true,
+    "inverse_flip_131": true
+  }
+}

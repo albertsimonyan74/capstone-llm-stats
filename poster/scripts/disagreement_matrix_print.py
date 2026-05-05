@@ -1,32 +1,20 @@
-"""4-panel keyword × judge agreement heatmaps — print theme.
+"""2×2 large-cell keyword × judge disagreement matrix — print theme.
 
-Pure JSON read from poster/figures/derived/keyword_judge_heatmap_4panel.json
-(produced by derive_keyword_judge_heatmap_4panel.py — run that first).
+Pure JSON read from poster/figures/derived/disagreement_matrix_2x2.json
+(produced by derive_disagreement_matrix_2x2.py — run that first).
 
-Layout:
-  1×4 row, shared y-axis. Each panel: 5×5 grid, x = keyword score, y = judge
-  score, both ∈ {0, 0.25, 0.5, 0.75, 1}.
+Layout matches the website screenshot:
+  - Header band (title + subtitle + thin rule)
+  - Column headers above the matrix
+  - Row headers left of the matrix
+  - 2 × 2 large rounded cells (~40% × ~29% of figure each)
+      · agreement cells: teal-100 bg + teal-600 border
+      · flip cells:      red-100 bg  + red-600 border
+  - Footer band, light slate bg, single line summary with bold-coloured
+    counts/percentages
 
-Color mapping:
-  LogNorm(vmin=1, vmax=global_max across all 4 panels). Linear normalization
-  hides anything below ~50 because counts span 1–871. Log fixes that and
-  keeps panels comparable.
-  Cmap: teal-100 (#ccfbf1) → teal-700 (#0f766e), tight 2-stop range so even
-  count=1 cells have a perceptible tint.
-  Zero cells: masked → render as figure background. No fill, no border.
-
-Borders:
-  Diagonal (agreement) cells: 2pt teal-600 (#0d9488), one rectangle per cell
-  (not a connected stair-step).
-  Off-diagonal cells: 1.5pt amber-700 (#b45309) — slightly muted vs gold so
-  the borders don't dominate the cell shading.
-
-Text:
-  Count, bold. White if log-normalized cell intensity > 0.55, else
-  slate-900 (#0f172a). Omitted on zero cells.
-
-Panel order: ascending off-diagonal % (per derived JSON
-`panel_order_ascending_off_diag` field).
+n=2,850 combined eligible. Disagreement rates computed from the derived
+JSON, no constants hard-coded here.
 """
 from __future__ import annotations
 
@@ -35,147 +23,201 @@ import sys
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap, LogNorm
-from matplotlib.patches import Rectangle
-import numpy as np
-import numpy.ma as ma
+from matplotlib.patches import FancyBboxPatch, Rectangle
+from matplotlib.lines import Line2D
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from print_theme import (
-    PRINT_BG, PRINT_FG, PRINT_FG_MUTED,
+    PRINT_BG,
     apply_print_theme, dual_save,
 )
 
 apply_print_theme()
 
-DERIVED = ROOT / "poster" / "figures" / "derived" / "keyword_judge_heatmap_4panel.json"
+DERIVED = ROOT / "poster" / "figures" / "derived" / "disagreement_matrix_2x2.json"
 OUT_DIR = ROOT / "poster" / "figures"
 
-# Tight 2-stop teal cmap (teal-100 → teal-700).
-TEAL_CMAP = LinearSegmentedColormap.from_list(
-    "teal_log", ["#ccfbf1", "#0f766e"], N=256,
-)
-TEAL_CMAP.set_bad(color=PRINT_BG)
+# ── Palette ────────────────────────────────────────────────────────────────
+TEAL_600   = "#0d9488"
+TEAL_100   = "#ccfbf1"
+RED_600    = "#dc2626"
+RED_100    = "#fee2e2"
+SLATE_900  = "#0f172a"
+SLATE_600  = "#475569"
+SLATE_500  = "#64748b"
+SLATE_300  = "#cbd5e1"
+SLATE_100  = "#f1f5f9"
 
-LEVELS = [0.0, 0.25, 0.5, 0.75, 1.0]
-LEVEL_LABELS = ["0", "0.25", "0.5", "0.75", "1"]
+# ── Cell layout (axes coords, ax limits 0..1) ─────────────────────────────
+CELLS = {
+    # (left, bottom, width, height, kind)
+    "kw_pass_judge_pass": (0.20, 0.46, 0.39, 0.28, "agreement"),
+    "kw_pass_judge_fail": (0.59, 0.46, 0.39, 0.28, "flip"),
+    "kw_fail_judge_pass": (0.20, 0.18, 0.39, 0.28, "flip"),
+    "kw_fail_judge_fail": (0.59, 0.18, 0.39, 0.28, "agreement"),
+}
 
-DIAG_BORDER     = "#0d9488"  # teal-600, 2pt
-OFFDIAG_BORDER  = "#b45309"  # amber-700, 1.5pt
-DARK_TEXT_COLOR = "#0f172a"  # slate-900
-DARK_TEXT_THRESHOLD = 0.55   # log-normed intensity above → white text
+CELL_LABELS = {
+    "kw_pass_judge_pass": "agreement — both pass",
+    "kw_pass_judge_fail": "flip — keyword over-credits",
+    "kw_fail_judge_pass": "flip — keyword under-credits",
+    "kw_fail_judge_fail": "agreement — both fail",
+}
+
+ROUNDING = 0.018  # axes-units, ~8pt corner radius
+
+
+def _draw_cell(ax, key, count, row_pct):
+    left, bottom, w, h, kind = CELLS[key]
+    if kind == "agreement":
+        face, edge = TEAL_100, TEAL_600
+    else:
+        face, edge = RED_100, RED_600
+
+    box = FancyBboxPatch(
+        (left, bottom), w, h,
+        boxstyle=f"round,pad=0,rounding_size={ROUNDING}",
+        facecolor=face, edgecolor=edge, linewidth=1.5, zorder=2,
+    )
+    ax.add_patch(box)
+
+    cx, cy = left + w / 2, bottom + h / 2
+    ax.text(cx, cy + 0.06, f"{count:,}",
+            ha="center", va="center",
+            fontsize=44, fontweight="bold", color=SLATE_900, zorder=3)
+    ax.text(cx, cy - 0.025, f"{row_pct:.1f}% of row",
+            ha="center", va="center",
+            fontsize=15, fontweight="bold", color=SLATE_900, zorder=3)
+    ax.text(cx, cy - 0.085, CELL_LABELS[key],
+            ha="center", va="center",
+            fontsize=10, color=SLATE_500, style="italic", zorder=3,
+            family="monospace")
+
+
+def _row_pct_for(data, key):
+    cells = data["cells"]
+    row_totals = data["row_totals"]
+    if key.startswith("kw_pass"):
+        denom = row_totals["kw_pass"]
+    else:
+        denom = row_totals["kw_fail"]
+    return 100.0 * cells[key] / denom if denom else 0.0
 
 
 def main():
     data = json.loads(DERIVED.read_text())
-
     if not all(data.get("assertions_passed", {}).values()):
         sys.exit(f"derived file failed assertions: {data['assertions_passed']}")
 
-    panel_order = data["panel_order_ascending_off_diag"]
+    cells = data["cells"]
     n_total = data["n_total"]
-    dims = data["dimensions"]
+    summary = data["summary"]
 
-    # Build matrices, find global max for shared LogNorm
-    global_max = 0
-    matrices: dict[str, np.ndarray] = {}
-    for key in panel_order:
-        grid = dims[key]["grid"]
-        m = np.zeros((5, 5), dtype=int)
-        for i_kw, kl in enumerate(LEVELS):
-            kl_key = f"{kl:.2f}"
-            for j_jd, jl in enumerate(LEVELS):
-                jl_key = f"{jl:.2f}"
-                m[j_jd, i_kw] = grid[kl_key][jl_key]
-        matrices[key] = m
-        if m.max() > global_max:
-            global_max = int(m.max())
+    fig, ax = plt.subplots(figsize=(13.5, 11), dpi=150, facecolor=PRINT_BG)
+    ax.set_facecolor(PRINT_BG)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    for spine in ax.spines.values():
+        spine.set_visible(False)
 
-    norm = LogNorm(vmin=1, vmax=global_max)
+    # ── Header ─────────────────────────────────────────────────────────────
+    ax.text(
+        0.04, 0.95,
+        "J U D G E   vs   K E Y W O R D   —   D I S A G R E E M E N T   M A T R I X",
+        ha="left", va="bottom",
+        fontsize=13, fontweight="bold", color=TEAL_600,
+        family="monospace",
+    )
+    ax.text(
+        0.04, 0.915,
+        "Combined scope · n=2,850 eligible · assumption_compliance dimension",
+        ha="left", va="bottom",
+        fontsize=10, color=SLATE_600,
+        family="monospace",
+    )
+    ax.add_line(Line2D([0.04, 0.96], [0.895, 0.895],
+                       color=SLATE_300, linewidth=0.8, zorder=1))
 
-    fig, axes = plt.subplots(1, 4, figsize=(18, 5.4), dpi=150,
-                             facecolor=PRINT_BG, sharey=True)
+    # ── Column headers ─────────────────────────────────────────────────────
+    for key, x_center, label in [
+        ("kw_pass_judge_pass", 0.395, "J U D G E :   P A S S"),
+        ("kw_pass_judge_fail", 0.785, "J U D G E :   F A I L"),
+    ]:
+        ax.text(x_center, 0.785, label,
+                ha="center", va="bottom",
+                fontsize=11, fontweight="bold", color=SLATE_600,
+                family="monospace")
 
-    for panel_idx, key in enumerate(panel_order):
-        ax = axes[panel_idx]
-        ax.set_facecolor(PRINT_BG)
-        m = matrices[key]
-        masked = ma.masked_where(m == 0, m)
+    # ── Row headers (vertical) ─────────────────────────────────────────────
+    for y_center, label in [
+        (0.60, "K E Y W O R D :   P A S S"),
+        (0.32, "K E Y W O R D :   F A I L"),
+    ]:
+        ax.text(0.13, y_center, label,
+                ha="center", va="center", rotation=90,
+                fontsize=11, fontweight="bold", color=SLATE_600,
+                family="monospace")
 
-        ax.imshow(masked, cmap=TEAL_CMAP, norm=norm,
-                  aspect="equal", origin="lower")
+    # ── Cells ──────────────────────────────────────────────────────────────
+    for key in ("kw_pass_judge_pass", "kw_pass_judge_fail",
+                "kw_fail_judge_pass", "kw_fail_judge_fail"):
+        _draw_cell(ax, key, cells[key], _row_pct_for(data, key))
 
-        for i_jd in range(5):
-            for i_kw in range(5):
-                count = int(m[i_jd, i_kw])
-                if count == 0:
-                    continue  # no fill, no border, no text
+    # ── Footer band ────────────────────────────────────────────────────────
+    footer_band = Rectangle(
+        (0.04, 0.05), 0.92, 0.08,
+        facecolor=SLATE_100, edgecolor="none", zorder=1,
+    )
+    ax.add_patch(footer_band)
 
-                is_diag = (i_jd == i_kw)
-                if is_diag:
-                    border_color = DIAG_BORDER
-                    border_lw = 2.0
-                else:
-                    border_color = OFFDIAG_BORDER
-                    border_lw = 1.5
+    n_disagree = summary["n_disagree"]
+    total_disagreement_pct = summary["total_disagreement_pct"]
+    directional_pct = summary["directional_pass_flip_pct"]
 
-                rect = Rectangle(
-                    (i_kw - 0.5, i_jd - 0.5), 1, 1,
-                    fill=False, edgecolor=border_color,
-                    linewidth=border_lw, zorder=3,
-                )
-                ax.add_patch(rect)
+    tokens = [
+        (f"{n_disagree:,}", "bold", SLATE_900),
+        (" of ",            "normal", SLATE_600),
+        (f"{n_total:,}",    "bold", SLATE_900),
+        (" runs flip pass/fail (", "normal", SLATE_600),
+        (f"{total_disagreement_pct:.1f}%", "bold", TEAL_600),
+        (" total disagreement; ", "normal", SLATE_600),
+        (f"{directional_pct:.2f}%", "bold", TEAL_600),
+        (" directional pass-flip)", "normal", SLATE_600),
+    ]
 
-                norm_val = float(norm(count))
-                text_color = (
-                    "#ffffff" if norm_val > DARK_TEXT_THRESHOLD
-                    else DARK_TEXT_COLOR
-                )
-                ax.text(
-                    i_kw, i_jd, f"{count}",
-                    ha="center", va="center",
-                    fontsize=11, fontweight="bold", color=text_color,
-                    zorder=4,
-                )
+    fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    inv = ax.transData.inverted()
 
-        ax.set_xticks(range(5))
-        ax.set_yticks(range(5))
-        ax.set_xticklabels(LEVEL_LABELS, fontsize=10)
-        ax.set_yticklabels(LEVEL_LABELS, fontsize=10)
-        ax.tick_params(top=False, bottom=True, left=True, right=False,
-                       length=0)
-
-        ax.set_xlabel("Keyword rubric", color=PRINT_FG_MUTED, fontsize=11)
-        if panel_idx == 0:
-            ax.set_ylabel("LLM judge", color=PRINT_FG_MUTED, fontsize=11)
-
-        for spine in ax.spines.values():
-            spine.set_visible(False)
-
-        ax.set_xlim(-0.5, 4.5)
-        ax.set_ylim(-0.5, 4.5)
-
-        rec = dims[key]
-        ax.set_title(
-            f"{rec['panel_label']}  ·  off-diagonal: {rec['off_diag_pct']:.1f}%",
-            fontsize=12, fontweight="bold", color=PRINT_FG, pad=10, loc="center",
+    # Pre-render off-screen to measure widths, then re-place starting at
+    # the centred origin.
+    measured = []
+    for txt, weight, color in tokens:
+        t = ax.text(
+            0, -1, txt,  # off-axis
+            ha="left", va="center",
+            fontsize=11, fontweight=weight, color=color,
+            family="monospace",
         )
+        bbox = t.get_window_extent(renderer=renderer)
+        x0_d, _ = inv.transform((bbox.x0, bbox.y0))
+        x1_d, _ = inv.transform((bbox.x1, bbox.y0))
+        measured.append((txt, weight, color, x1_d - x0_d))
+        t.remove()
 
-    fig.suptitle(
-        "Keyword rubric vs external LLM judge — agreement heatmaps",
-        fontsize=16, fontweight="bold", color=PRINT_FG, y=1.02,
-    )
-
-    fig.tight_layout(rect=(0, 0.02, 1, 0.96))
-
-    last_ax = axes[-1]
-    last_ax.text(
-        4.5, -1.25, f"n = {n_total:,}",
-        ha="right", va="top",
-        fontsize=11, color=PRINT_FG_MUTED, style="italic",
-        transform=last_ax.transData,
-    )
+    total_w = sum(w for _, _, _, w in measured)
+    cursor = 0.5 - total_w / 2
+    for txt, weight, color, w in measured:
+        ax.text(
+            cursor, 0.09, txt,
+            ha="left", va="center",
+            fontsize=11, fontweight=weight, color=color,
+            family="monospace", zorder=3,
+        )
+        cursor += w
 
     dual_save(fig, "disagreement_matrix", out_dir=str(OUT_DIR))
     plt.close(fig)
