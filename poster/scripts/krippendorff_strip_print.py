@@ -31,19 +31,27 @@ apply_print_theme()
 KRIPP   = ROOT / "experiments" / "results_v2" / "krippendorff_agreement.json"
 OUT_DIR = ROOT / "poster" / "figures"
 
-# Gradient anchor colors (light-red → neutral grey → light-teal)
-GRAD_LEFT  = "#fecaca"
-GRAD_MID   = "#e5e7eb"
-GRAD_RIGHT = "#99f6e4"
+# Gradient anchor colors (saturated red → slate-300 → saturated teal)
+GRAD_LEFT  = "#dc2626"  # red-600
+GRAD_MID   = "#cbd5e1"  # slate-300
+GRAD_RIGHT = "#0d9488"  # teal-600
 
-# Dot fills
+# Header / accent colors
 TEAL_600 = "#0d9488"
 RED_600  = "#dc2626"
 
-# Footer zone backgrounds
-ZONE_BG_NEG = "#fef2f2"
-ZONE_BG_MID = "#f8fafc"
-ZONE_BG_POS = "#f0fdfa"
+# Dot fill — dark anchor on saturated gradient
+DOT_FILL = "#0f172a"  # slate-900
+
+# Footer zone backgrounds + borders
+ZONE_BG_NEG    = "#fee2e2"  # red-100
+ZONE_BG_MID    = "#f1f5f9"  # slate-100
+ZONE_BG_POS    = "#ccfbf1"  # teal-100
+ZONE_BORDER    = "#cbd5e1"  # slate-300
+ZONE_HDR_MID   = "#475569"  # slate-600
+
+# Label box border
+BOX_BORDER = "#94a3b8"  # slate-400
 
 
 def fmt_alpha(value: float) -> str:
@@ -108,15 +116,15 @@ def main():
     # ------------------------------------------------------------------
     # dots + label boxes
     # ------------------------------------------------------------------
-    # (letter, alpha, dot_color, tag, side, box_y)
+    # (letter, alpha, tag, side, box_y) — all dots share DOT_FILL
     dot_specs = [
-        ("A", a_alpha, TEAL_600, "above chance",     "above", 0.82),
-        ("R", r_alpha, RED_600,  "CI excludes zero", "below", 0.32),
-        ("M", m_alpha, RED_600,  "CI contains zero", "above", 0.82),
+        ("A", a_alpha, "above chance",     "above", 0.82),
+        ("R", r_alpha, "CI excludes zero", "below", 0.32),
+        ("M", m_alpha, "CI contains zero", "above", 0.82),
     ]
     box_w, box_h = 0.28, 0.11
 
-    for letter, alpha, color, tag, side, box_y in dot_specs:
+    for letter, alpha, tag, side, box_y in dot_specs:
         # clamp box center so the box stays inside the axes
         bx = max(-1.0 + box_w / 2, min(1.0 - box_w / 2, alpha))
 
@@ -129,15 +137,15 @@ def main():
 
         # leader line (under box, over strip border)
         ax.plot([alpha, bx], [dot_edge_y, box_edge_y],
-                color="#94a3b8", lw=0.8, zorder=3)
+                color=BOX_BORDER, lw=0.8, zorder=3)
 
         # box
         ax.add_patch(FancyBboxPatch(
             (bx - box_w / 2, box_y - box_h / 2),
             box_w, box_h,
             boxstyle="round,pad=0.0,rounding_size=0.012",
-            linewidth=0.8, edgecolor="#cbd5e1",
-            facecolor="white", zorder=4,
+            linewidth=1.5, edgecolor=BOX_BORDER,
+            facecolor="#ffffff", zorder=4,
         ))
         ax.text(bx, box_y + 0.022,
                 f"{letter} · α={fmt_alpha(alpha)}",
@@ -151,8 +159,8 @@ def main():
 
         # dot on top of everything
         ax.scatter([alpha], [strip_mid], s=320,
-                   color=color, edgecolor="white",
-                   linewidth=1.5, zorder=6)
+                   color=DOT_FILL, edgecolor="white",
+                   linewidth=2.0, zorder=6)
 
     # ------------------------------------------------------------------
     # footer zone bar
@@ -165,7 +173,7 @@ def main():
          RED_600,
          "Raters pull in opposite directions, beyond chance"),
         (-1.0/3, 1.0/3, ZONE_BG_MID, "CHANCE BASELINE",
-         PRINT_FG_MUTED,
+         ZONE_HDR_MID,
          "Agreement equal to random"),
         ( 1.0/3, 1.0,   ZONE_BG_POS, "AGREEMENT BEYOND CHANCE",
          TEAL_600,
@@ -174,7 +182,8 @@ def main():
     for x0, x1, bg, header, hcolor, sub in zones:
         ax.add_patch(Rectangle(
             (x0, footer_y0), x1 - x0, fh,
-            facecolor=bg, edgecolor="none", zorder=1,
+            facecolor=bg, edgecolor=ZONE_BORDER,
+            linewidth=1.0, zorder=1,
         ))
         cx = (x0 + x1) / 2
         # mild visual letter-spacing via thin spaces
