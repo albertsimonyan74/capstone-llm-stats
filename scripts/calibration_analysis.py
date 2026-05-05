@@ -257,14 +257,19 @@ def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
     marker size encodes bucket, marker color encodes gap direction/magnitude
     via RdBu_r. Filename preserved so manifest paths stay valid.
     """
-    import matplotlib.colors as mcolors
     from site_palette import COLOR_GOOD, COLOR_BAD
 
+    BUCKET_COLOR = {
+        "low":      "#5eead4",  # ACCENT_TEAL
+        "unstated": "#a78bfa",  # ACCENT_PURPLE
+        "medium":   "#fbbf24",  # ACCENT_GOLD
+    }
     buckets = [
-        ("low",      0.3, 80),
-        ("unstated", 0.5, 140),
-        ("medium",   0.6, 220),
+        ("low",      0.3),
+        ("unstated", 0.5),
+        ("medium",   0.6),
     ]
+    BUCKET_LABEL = {"low": "0.3", "unstated": "0.5", "medium": "0.6"}
     models = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
     DISPLAY = {
         "claude":   "Claude",
@@ -274,10 +279,7 @@ def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
         "mistral":  "Mistral",
     }
 
-    norm = mcolors.TwoSlopeNorm(vcenter=0.0, vmin=-0.25, vmax=0.25)
-    cmap = plt.get_cmap("RdBu_r")
-
-    fig, ax = plt.subplots(figsize=(11, 4.5), dpi=150, facecolor=SITE_BG)
+    fig, ax = plt.subplots(figsize=(13, 4.5), dpi=150, facecolor=SITE_BG)
     ax.set_facecolor(SITE_BG)
 
     # Background tinting: x<0 faint red, x>0 faint blue.
@@ -294,13 +296,27 @@ def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
         info = per_model.get(m)
         if not info:
             continue
-        for bucket_key, claimed, size in buckets:
+        row_gaps = []
+        for bucket_key, claimed in buckets:
             d = info["per_bucket"].get(bucket_key, {})
             if d.get("n", 0) == 0 or d.get("mean_accuracy") is None:
                 continue
             gap = d["mean_accuracy"] - claimed
-            ax.scatter([gap], [i], s=size, c=[cmap(norm(gap))],
-                       edgecolors=SITE_BG, linewidths=1.5, zorder=4)
+            row_gaps.append(gap)
+        if row_gaps:
+            x_left = min(min(row_gaps), 0.0)
+            x_right = max(max(row_gaps), 0.0)
+            ax.plot([x_left, x_right], [i, i],
+                    linewidth=0.8, alpha=0.35, color=SITE_FG_MUTED,
+                    linestyle="--", zorder=1)
+
+        for bucket_key, claimed in buckets:
+            d = info["per_bucket"].get(bucket_key, {})
+            if d.get("n", 0) == 0 or d.get("mean_accuracy") is None:
+                continue
+            gap = d["mean_accuracy"] - claimed
+            ax.scatter([gap], [i], s=200, c=[BUCKET_COLOR[bucket_key]],
+                       edgecolor=SITE_BG, linewidths=1.5, zorder=3)
             sign = "+" if gap >= 0 else "−"
             ax.annotate(f"{sign}{abs(gap):.2f}",
                         xy=(gap, i),
@@ -336,11 +352,19 @@ def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
 
     ax.set_title("Calibration gap by confidence bucket",
                  fontsize=13, fontweight="700", color=SITE_FG, pad=22, loc="left")
-    ax.text(0.0, 1.02,
-            "Marker size = bucket (small=0.3, medium=0.5, large=0.6) · "
-            "color = gap direction",
-            transform=ax.transAxes, ha="left", va="bottom",
-            fontsize=9, style="italic", color=SITE_FG_MUTED)
+
+    from matplotlib.lines import Line2D
+    legend_handles = [
+        Line2D([0], [0], marker="o", linestyle="",
+               markerfacecolor=BUCKET_COLOR[k], markeredgecolor=SITE_BG,
+               markersize=10, label=BUCKET_LABEL[k])
+        for k, _ in buckets
+    ]
+    leg = ax.legend(handles=legend_handles, title="Confidence bucket",
+                    bbox_to_anchor=(1.02, 1.0), loc="upper left",
+                    frameon=False, fontsize=10, labelcolor=SITE_FG_MUTED,
+                    title_fontsize=10)
+    leg.get_title().set_color(SITE_FG_MUTED)
 
     fig.tight_layout(rect=(0, 0.02, 1, 0.96))
     for path in paths:
