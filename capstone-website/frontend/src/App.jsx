@@ -12,7 +12,6 @@ import NeuralNetwork   from './components/NeuralNetwork'
 import HeroNetworkBg   from './components/HeroNetworkBg'
 import KeyFindings, { useKeyFindings, KeyFindingCard } from './components/KeyFindings'
 import { PerModelPassFlipPanel } from './components/MethodologyPanels'
-import ThreeRankingsComparison from './components/ThreeRankingsComparison'
 import VizGallery      from './pages/VizGallery'
 import UserStudy       from './pages/UserStudy'
 import Methodology     from './pages/Methodology'
@@ -872,9 +871,13 @@ function KeyFindingsSection() {
         <KeyFindingCard card={cards[5]} index={5} loading={loading}/>
       </div>
 
-      {/* Viz #2 — three rankings comparison */}
+      {/* Viz #2 — rank shift bump chart */}
       <div className="kf-viz-spacer">
-        <ThreeRankingsComparison/>
+        <img
+          src="/visualizations/png/v2/rank_shift.png"
+          alt="Rank shift across accuracy, robustness, and calibration"
+          style={{ width: '100%', maxWidth: '1100px', display: 'block', margin: '0 auto' }}
+        />
       </div>
     </div>
   )

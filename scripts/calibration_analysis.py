@@ -51,6 +51,12 @@ FIG_RELIABILITY = Path("report_materials/figures/calibration_reliability.png")
 FIG_RELIABILITY_WEB = Path(
     "capstone-website/frontend/public/visualizations/png/v2/calibration_reliability.png"
 )
+FIG_RELIABILITY_SM = Path(
+    "report_materials/figures/calibration_reliability_smallmultiples.png"
+)
+FIG_RELIABILITY_SM_WEB = Path(
+    "capstone-website/frontend/public/visualizations/png/v2/calibration_reliability_smallmultiples.png"
+)
 FIG_ECE = Path("report_materials/figures/calibration_ece_ranking.png")
 
 # Bucket → numeric confidence claim (per spec)
@@ -166,12 +172,11 @@ def make_reliability_figure(per_model: dict, paths: list[Path]) -> None:
     # over/underconfidence shaded regions (subtle, site-coordinated)
     ax.fill_between([0, 1], [0, 0], [0, 1], color=COLOR_BAD, alpha=0.04, zorder=0)
     ax.fill_between([0, 1], [0, 1], [1, 1], color=COLOR_GOOD, alpha=0.04, zorder=0)
-    ax.text(0.88, 0.45, "Overconfident",
-            fontsize=10, color=COLOR_BAD, alpha=0.75,
-            ha="center", va="center", style="italic", zorder=1, rotation=-44)
-    ax.text(0.18, 0.55, "Underconfident",
-            fontsize=10, color=COLOR_GOOD, alpha=0.75,
-            ha="center", va="center", style="italic", zorder=1, rotation=-44)
+
+    # corner annotation replaces the rotated diagonal labels (less clutter)
+    ax.text(0.265, 0.78,
+            "Above diagonal: under-confident\nBelow diagonal: over-confident",
+            fontsize=8, color=SITE_FG_MUTED, alpha=0.85, va="top", ha="left")
 
     # perfect-calibration diagonal
     ax.plot([0, 1], [0, 1],
@@ -179,8 +184,10 @@ def make_reliability_figure(per_model: dict, paths: list[Path]) -> None:
             label="Perfect calibration", zorder=2)
 
     # per-model line + scatter; size ∝ bucket sample count.
-    # Site BG used as marker edge for "popping" effect against dark canvas.
+    # Claude line highlighted (zorder=5, lw=2.4, full alpha); others muted to
+    # focus the eye on the best-calibrated model.
     bucket_order = ["low", "unstated", "medium", "high"]
+    endpoint_records = []
     for m in ["claude", "chatgpt", "gemini", "deepseek", "mistral"]:
         info = per_model.get(m)
         if not info:
@@ -197,16 +204,29 @@ def make_reliability_figure(per_model: dict, paths: list[Path]) -> None:
         xs = [p[0] for p in pts]
         ys = [p[1] for p in pts]
         sizes = [max(80, p[2] * 1.6) for p in pts]
+        is_claude = (m == "claude")
+        line_lw = 2.4 if is_claude else 1.3
+        line_alpha = 1.0 if is_claude else 0.55
+        line_zorder = 5 if is_claude else 3
         if len(pts) >= 2:
-            ax.plot(xs, ys, color=color, lw=2.0, alpha=0.75, zorder=3)
+            ax.plot(xs, ys, color=color, lw=line_lw, alpha=line_alpha,
+                    zorder=line_zorder)
         ax.scatter(xs, ys, s=sizes, c=color, edgecolors=SITE_BG,
-                   linewidths=2.0, alpha=0.95, zorder=4,
+                   linewidths=2.0, alpha=0.95, zorder=line_zorder + 1,
                    label=f"{m.upper()}  (ECE={info['ece']:.3f})")
+        # rightmost data point → endpoint label (drawn after loop so labels
+        # overlay all lines)
+        endpoint_records.append((m, color, xs[-1], ys[-1], info["ece"]))
 
-    ax.set_xlim(0, 1.0)
-    ax.set_ylim(0, 1.0)
-    ax.set_xticks([0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0])
-    ax.set_yticks([0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0])
+    for m, color, xr, yr, ece in endpoint_records:
+        ax.text(xr + 0.005, yr,
+                f"{m.title()} · {ece:.3f}",
+                fontsize=8, color=color, va="center", ha="left", zorder=6)
+
+    ax.set_xlim(0.25, 0.65)
+    ax.set_ylim(0.2, 0.8)
+    ax.set_xticks([0.3, 0.4, 0.5, 0.6])
+    ax.set_yticks([0.2, 0.4, 0.5, 0.6, 0.8])
     ax.set_xlabel("Claimed confidence (verbalized bucket)",
                   fontsize=11, color=SITE_FG_MUTED)
     ax.set_ylabel("Empirical accuracy", fontsize=11, color=SITE_FG_MUTED)
@@ -221,6 +241,74 @@ def make_reliability_figure(per_model: dict, paths: list[Path]) -> None:
               frameon=False, fontsize=9.5, labelcolor=SITE_FG_MUTED)
 
     plt.tight_layout()
+    for path in paths:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=SITE_BG)
+    plt.close(fig)
+
+
+def make_reliability_smallmultiples(per_model: dict, paths: list[Path]) -> None:
+    """1×5 small-multiples fallback: one panel per model with its own diagonal.
+    Avoids overplotting that hurts the single-panel reliability diagram.
+    """
+    from site_palette import COLOR_GOOD, COLOR_BAD
+
+    bucket_order = ["low", "unstated", "medium", "high"]
+    models = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
+    DISPLAY = {
+        "claude":   "Claude",
+        "chatgpt":  "ChatGPT",
+        "gemini":   "Gemini",
+        "deepseek": "DeepSeek",
+        "mistral":  "Mistral",
+    }
+
+    fig, axes = plt.subplots(1, 5, figsize=(15, 3.4), dpi=150,
+                             facecolor=SITE_BG, sharey=True)
+    for ax, m in zip(axes, models):
+        info = per_model.get(m)
+        ax.set_facecolor(SITE_BG)
+        ax.fill_between([0, 1], [0, 0], [0, 1], color=COLOR_BAD, alpha=0.04, zorder=0)
+        ax.fill_between([0, 1], [0, 1], [1, 1], color=COLOR_GOOD, alpha=0.04, zorder=0)
+        ax.plot([0, 1], [0, 1], color=SITE_FG_MUTED, lw=1.0, ls="--",
+                alpha=0.7, zorder=2)
+        if info:
+            color = MODEL_COLORS.get(m, "#94a3b8")
+            pts = []
+            for b in bucket_order:
+                d = info["per_bucket"].get(b, {})
+                if d.get("n", 0) > 0 and d.get("mean_accuracy") is not None:
+                    pts.append((d["claimed_confidence"], d["mean_accuracy"], d["n"]))
+            pts.sort(key=lambda p: p[0])
+            if pts:
+                xs = [p[0] for p in pts]
+                ys = [p[1] for p in pts]
+                sizes = [max(60, p[2] * 1.2) for p in pts]
+                if len(pts) >= 2:
+                    ax.plot(xs, ys, color=color, lw=2.0, alpha=0.95, zorder=3)
+                ax.scatter(xs, ys, s=sizes, c=color, edgecolors=SITE_BG,
+                           linewidths=1.5, alpha=0.95, zorder=4)
+            ece_label = f"ECE = {info['ece']:.3f}"
+        else:
+            ece_label = ""
+        ax.set_xlim(0.25, 0.65)
+        ax.set_ylim(0.2, 0.8)
+        ax.set_xticks([0.3, 0.4, 0.5, 0.6])
+        ax.set_yticks([0.2, 0.4, 0.6, 0.8])
+        ax.set_title(DISPLAY[m], color=MODEL_COLORS.get(m, SITE_FG),
+                     fontsize=11, fontweight="700", pad=8)
+        ax.text(0.27, 0.76, ece_label, fontsize=8.5, color=SITE_FG_MUTED, va="top")
+        ax.tick_params(colors=SITE_FG_MUTED, labelsize=8)
+        dim_remaining_spines(ax)
+        ax.grid(True, alpha=0.06, linestyle="-", linewidth=0.5, color="#ffffff")
+        ax.set_axisbelow(True)
+
+    axes[0].set_ylabel("Empirical accuracy", fontsize=10, color=SITE_FG_MUTED)
+    fig.text(0.5, 0.02, "Claimed confidence (verbalized bucket)",
+             ha="center", fontsize=10, color=SITE_FG_MUTED)
+    fig.suptitle("Calibration Reliability · per-model panels",
+                 fontsize=12, fontweight="700", color=SITE_FG, y=0.995)
+    plt.tight_layout(rect=(0, 0.05, 1, 0.96))
     for path in paths:
         path.parent.mkdir(parents=True, exist_ok=True)
         fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=SITE_BG)
@@ -275,6 +363,7 @@ def main() -> int:
     OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(json.dumps(per_model, indent=2))
     make_reliability_figure(per_model, [FIG_RELIABILITY, FIG_RELIABILITY_WEB])
+    make_reliability_smallmultiples(per_model, [FIG_RELIABILITY_SM, FIG_RELIABILITY_SM_WEB])
     make_ece_figure(per_model, FIG_ECE)
 
     # ── Console report ──
@@ -305,6 +394,15 @@ def main() -> int:
     print(f"Saved: {FIG_RELIABILITY}")
     print(f"Saved: {FIG_RELIABILITY_WEB}")
     print(f"Saved: {FIG_ECE}")
+
+    # Auto-heal: this script overwrites calibration.json with per-bucket
+    # ECE/accuracy only — recompute_downstream.py adds the derived fields
+    # (accuracy_calibration_correlation, formatting_failure_rate_per_model)
+    # that the website + backend depend on. Always re-run after the canonical
+    # write so the deployed copy never goes stale.
+    print("[INFO] calibration.json overwritten — chaining recompute_downstream.py to restore derived fields")
+    import subprocess
+    subprocess.run(["python", "scripts/recompute_downstream.py"], check=True)
     return 0
 
 

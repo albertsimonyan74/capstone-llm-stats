@@ -26,7 +26,7 @@ from baseline.utils_task_id import task_type_from_id  # noqa: E402
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from site_palette import (  # noqa: E402
-    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS,
+    SITE_BG, SITE_FG, SITE_FG_MUTED, MODEL_COLORS, COLOR_BAD,
     apply_site_theme, color_code_model_ticks, dim_remaining_spines,
     style_colorbar,
 )
@@ -299,12 +299,23 @@ def figure_a2():
                label=MODEL_LABEL[m],
                yerr=[los, his], ecolor=SITE_FG_MUTED, capsize=2)
 
-    ax.axhline(overall_mean, color=SITE_FG_MUTED, lw=1.2, ls="--", alpha=0.7,
-               label=f"Overall mean = {overall_mean:.3f}")
+    # Cohort mean: solid SITE_FG_MUTED line + inline right-edge label.
+    ax.axhline(overall_mean, color=SITE_FG_MUTED, lw=1.2, alpha=0.7)
+    ax.text(n_cat - 0.5, overall_mean,
+            f"Cohort mean · {overall_mean:.3f}",
+            ha="right", va="center", fontsize=9, color=SITE_FG_MUTED,
+            backgroundcolor=SITE_BG)
 
     ax.set_xticks(x)
     ax.set_xticklabels([CATEGORY_LABEL[c] for c in CATEGORY_ORDER],
                        fontsize=10, color=SITE_FG_MUTED)
+    # Bold + red the Regression tick to match the callout below.
+    if "REGRESSION" in CATEGORY_ORDER:
+        reg_idx = CATEGORY_ORDER.index("REGRESSION")
+        for i, tick in enumerate(ax.get_xticklabels()):
+            if i == reg_idx:
+                tick.set_color(COLOR_BAD)
+                tick.set_fontweight("bold")
     ax.set_ylabel("Accuracy (final_score)", color=SITE_FG_MUTED)
     ax.set_xlabel("Task category", color=SITE_FG_MUTED)
     ax.set_ylim(0, 1.0)
@@ -312,8 +323,37 @@ def figure_a2():
     ax.grid(axis="y", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
     ax.legend(loc="upper right", frameon=False, ncol=2, fontsize=9, labelcolor=SITE_FG_MUTED)
 
+    # Annotations: REGRESSION mistral low + MCMC gemini peak.
+    def _bar_xy(category: str, model: str) -> tuple[float, float]:
+        cat_idx = CATEGORY_ORDER.index(category)
+        mod_idx = MODELS.index(model)
+        offset = (mod_idx - (n_mod - 1) / 2) * width
+        vals = by_model_cat.get((model, category), [])
+        mean_v = float(np.mean(vals)) if vals else 0.0
+        return cat_idx + offset, mean_v
+
+    if "REGRESSION" in CATEGORY_ORDER and "mistral" in MODELS:
+        rx, ry = _bar_xy("REGRESSION", "mistral")
+        ax.annotate("4 of 5 < 40%",
+                    xy=(rx, ry), xytext=(rx, ry + 0.20),
+                    ha="center", va="bottom", fontsize=10,
+                    color=COLOR_BAD, fontweight="700",
+                    arrowprops=dict(arrowstyle="->", color=COLOR_BAD,
+                                    lw=1.3, alpha=0.85))
+    if "MCMC" in CATEGORY_ORDER and "gemini" in MODELS:
+        gx, gy = _bar_xy("MCMC", "gemini")
+        ax.annotate("MCMC peak",
+                    xy=(gx, gy), xytext=(gx, gy + 0.10),
+                    ha="center", va="bottom", fontsize=9,
+                    color=MODEL_COLORS["gemini"], fontweight="700",
+                    arrowprops=dict(arrowstyle="->",
+                                    color=MODEL_COLORS["gemini"],
+                                    lw=1.2, alpha=0.85))
+
     fig.tight_layout()
     fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(WEB_DIR / "a2_accuracy_by_category.png",
+                dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     cat_means = {cat: np.mean([by_model_cat[(m, cat)] for m in MODELS for _ in [0]
@@ -711,18 +751,24 @@ def _draw_bracket_horizontal(ax, x0, x1, y, color="#666"):
 
 
 def figure_a6():
-    """Single horizontal-bar leaderboard: composite literature-weighted accuracy
-    with 95% bootstrap CI error bars + adjacent-rank n.s. brackets.
-
-    Replaces the prior 4-panel sub-grid (which clipped inside the 16:10 website
-    card). Per Tier 2A scope: ONE chart, card-fit aspect (~1.6).
+    """Two-panel aggregate leaderboard: lollipop accuracy ranking (left) +
+    formatting_failure_rate column (right). 95% bootstrap CI error bars +
+    adjacent-rank n.s. brackets in the left panel.
     """
     out = FIG_DIR / "a6_aggregate_ranking.png"
 
     bootstrap = load_bootstrap()
 
-    # Sort descending by composite accuracy mean (under literature-derived
-    # NMACR weighting — final_score is already the per-task NMACR).
+    # Load formatting_failure_rate (populated by recompute_downstream.py into
+    # canonical calibration.json). Fall back to zeros if missing.
+    calib_path = ROOT / "experiments" / "results_v2" / "calibration.json"
+    try:
+        cal = json.loads(calib_path.read_text())
+        fmt_rates = cal.get("formatting_failure_rate_per_model", {})
+    except FileNotFoundError:
+        fmt_rates = {}
+
+    # Sort descending by composite accuracy mean (literature-weighted NMACR).
     rank_order = sorted(MODELS, key=lambda m: -bootstrap["accuracy"][m]["mean"])
 
     means, los_minus, his_plus, lower, upper = [], [], [], [], []
@@ -735,35 +781,32 @@ def figure_a6():
         upper.append(d["ci_upper"])
 
     # 11×6.875 → 1.6 aspect, matches site card after objectFit:cover.
-    fig, ax = plt.subplots(figsize=(11, 6.875), dpi=300, facecolor=SITE_BG)
+    fig, axes = plt.subplots(
+        1, 2, figsize=(11, 6.875), dpi=300, facecolor=SITE_BG,
+        gridspec_kw={"width_ratios": [3, 1]},
+    )
+
+    # ── LEFT panel: lollipop accuracy ranking ─────────────────────
+    ax = axes[0]
     ax.set_facecolor(SITE_BG)
-
     y_pos = np.arange(len(rank_order))
-    bar_colors = [MODEL_COLORS[m] for m in rank_order]
 
-    ax.barh(y_pos, means, color=bar_colors,
-            edgecolor=SITE_BG, linewidth=1.5,
-            xerr=[los_minus, his_plus],
-            error_kw={"ecolor": SITE_FG_MUTED, "capsize": 5,
-                      "elinewidth": 1.4, "alpha": 0.85})
+    for i, m in enumerate(rank_order):
+        ax.errorbar(
+            means[i], y_pos[i],
+            xerr=[[los_minus[i]], [his_plus[i]]],
+            fmt="o", color=MODEL_COLORS[m],
+            elinewidth=2.0, capsize=5, capthick=1.6,
+            markersize=12, markeredgecolor=SITE_BG, markeredgewidth=1.0,
+        )
+        ax.text(means[i], y_pos[i] + 0.32, f"{means[i]:.3f}",
+                va="bottom", ha="center",
+                color=SITE_FG, fontsize=10, fontweight="700")
+        ax.text(means[i], y_pos[i] - 0.32, f"#{i+1}",
+                va="top", ha="center",
+                color=SITE_FG_MUTED, fontsize=9, fontweight="700",
+                alpha=0.85)
 
-    # Value labels at end of each bar (mean + CI bracket).
-    for i, (m, mu, lo, hi) in enumerate(zip(rank_order, means, lower, upper)):
-        ax.text(upper[i] + 0.005, i,
-                f"{mu:.3f}  [{lo:.3f}, {hi:.3f}]",
-                va="center", ha="left",
-                color=SITE_FG, fontsize=10.5, fontweight="600")
-
-    xmin = min(lower) - 0.05
-    # Rank #N markers inside the bar's left edge, so they don't collide with
-    # y-tick model names rendered just outside the axes.
-    for i in range(len(rank_order)):
-        ax.text(xmin + 0.012, i, f"#{i+1}",
-                va="center", ha="left",
-                color=SITE_BG, fontsize=11, fontweight="800",
-                alpha=0.65)
-
-    # Y-axis: model names color-coded.
     ax.set_yticks(y_pos)
     ax.set_yticklabels([MODEL_LABEL[m] for m in rank_order],
                        fontsize=12, fontweight="700")
@@ -771,32 +814,66 @@ def figure_a6():
         tick.set_color(MODEL_COLORS[m])
     ax.invert_yaxis()  # rank #1 at top
 
-    # Adjacent-rank non-separability brackets (right margin).
+    # Adjacent-rank n.s. brackets, anchored at the right edge of each CI's
+    # upper bound so brackets travel with data (lw=1, alpha=0.6).
     sep = bootstrap["separability"]["accuracy"]
     ns_pairs = _bracket_pairs(sep, rank_order)
-    if ns_pairs:
-        x_anchor = max(upper) + 0.13
-        for (i, j) in ns_pairs:
-            ax.annotate("",
-                        xy=(x_anchor, j), xytext=(x_anchor, i),
-                        arrowprops=dict(arrowstyle="-",
-                                        color=SITE_FG_MUTED, lw=1.4),
-                        annotation_clip=False)
-            ax.text(x_anchor + 0.008, (i + j) / 2,
-                    "n.s.", ha="left", va="center", fontsize=9,
-                    color=SITE_FG_MUTED, fontweight="700")
+    arm = 0.005
+    for (i, j) in ns_pairs:
+        x_anchor = max(upper[i], upper[j]) + 0.004
+        ax.plot([x_anchor, x_anchor], [i, j],
+                color=SITE_FG_MUTED, lw=1.0, alpha=0.6)
+        ax.plot([x_anchor - arm, x_anchor], [i, i],
+                color=SITE_FG_MUTED, lw=1.0, alpha=0.6)
+        ax.plot([x_anchor - arm, x_anchor], [j, j],
+                color=SITE_FG_MUTED, lw=1.0, alpha=0.6)
+        ax.text(x_anchor + 0.003, (i + j) / 2,
+                "n.s.", ha="left", va="center", fontsize=9,
+                color=SITE_FG_MUTED, fontweight="700")
 
+    # X-axis padded enough to fit the rightmost n.s. label.
+    bracket_x_max = max((max(upper[i], upper[j]) + 0.025) for (i, j) in ns_pairs) \
+        if ns_pairs else max(upper) + 0.005
+    ax.set_xlim(min(lower) - 0.02, max(bracket_x_max, max(upper) + 0.01))
     ax.set_xlabel(
         "Aggregate score · literature-weighted final_score (N=M=A=C=R=0.20)",
         color=SITE_FG_MUTED, fontsize=10.5)
-    ax.set_xlim(xmin, max(upper) + 0.18)
     dim_remaining_spines(ax)
     ax.grid(axis="x", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
     ax.set_axisbelow(True)
-
     ax.set_title(
-        "Aggregate Ranking · 95% bootstrap CI",
-        fontsize=13, fontweight="700", color=SITE_FG, pad=14, loc="left")
+        "Aggregate ranking · 95% bootstrap CI",
+        fontsize=12.5, fontweight="700", color=SITE_FG, pad=12, loc="left")
+
+    # ── RIGHT panel: formatting_failure_rate ──────────────────────
+    ax2 = axes[1]
+    ax2.set_facecolor(SITE_BG)
+    rates = [fmt_rates.get(m, 0.0) for m in rank_order]
+    ax2.barh(y_pos, rates,
+             color=[MODEL_COLORS[m] for m in rank_order],
+             edgecolor=SITE_BG, linewidth=0.7)
+    x_max = max(max(rates) * 1.4, 1.0) if rates else 1.0
+    for i, rate in enumerate(rates):
+        if rate < 1e-6:
+            # Zero-width bar — left-justify label flush against the y-axis
+            # so it doesn't float in empty right-side space.
+            ax2.text(0.05, y_pos[i], f"{rate:.2f}%",
+                     va="center", ha="left",
+                     color=SITE_FG_MUTED, fontsize=9.5, fontweight="700")
+        else:
+            ax2.text(rate + x_max * 0.05, y_pos[i], f"{rate:.2f}%",
+                     va="center", ha="left",
+                     color=SITE_FG, fontsize=9.5, fontweight="700")
+    ax2.set_yticks([])
+    ax2.invert_yaxis()
+    ax2.set_xlim(0, x_max)
+    ax2.set_xlabel("formatting_failure_rate (%)",
+                   color=SITE_FG_MUTED, fontsize=10)
+    dim_remaining_spines(ax2)
+    ax2.grid(axis="x", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
+    ax2.set_axisbelow(True)
+    ax2.set_title("Pre-rubric exclusions",
+                  fontsize=12.5, fontweight="700", color=SITE_FG, pad=12, loc="left")
 
     fig.text(0.5, 0.012,
              "Adjacent-rank brackets (n.s.) = pairs not statistically separable "
@@ -809,7 +886,7 @@ def figure_a6():
                 dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
-    return out, f"top by accuracy: {MODEL_LABEL[rank_order[0]]}; horizontal-bar leaderboard with bootstrap CIs"
+    return out, f"top by accuracy: {MODEL_LABEL[rank_order[0]]}; lollipop + formatting_failure_rate"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
