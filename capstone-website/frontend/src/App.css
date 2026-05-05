@@ -2862,3 +2862,41 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
     font-size: 9px;
   }
 }
+
+/* ─── Mobile polish (≤480px iPhone-class) ──────────────────────── */
+@media (max-width: 480px) {
+  /* Tighter section padding so 375px viewport has more usable width */
+  section { padding: 80px 16px 48px !important; }
+
+  /* Hero quote box: drop horizontal padding so quote fits 343px content area */
+  .quote-box,
+  [class*="quote"] { padding: 22px 18px !important; }
+
+  /* Make every inline image scale to its container */
+  img { max-width: 100%; height: auto; }
+
+  /* References: long DOI/arXiv URLs should break at any character */
+  a[href^="http"] { overflow-wrap: anywhere; word-break: break-word; }
+
+  /* Touch targets: ensure interactive elements meet 44px minimum */
+  button, .nav-btn, [role="button"] { min-height: 40px; }
+
+}
+
+/* ─── Tasks filter sidebar: collapse to single column on small viewports */
+@media (max-width: 700px) {
+  .tasks-filter-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+}
+
+/* ─── VizGallery card grid: never overflow at narrow widths ───── */
+.viz-grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr));
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+/* Prevent any wide PNG inside a card from exceeding container width */
+.viz-grid-responsive img,
+.confusion-matrix-panel img,
+.agreement-metrics-panel img { max-width: 100%; height: auto; }

@@ -545,7 +545,7 @@ function AnimatedScoringBars() {
         Literature-derived weights · Pass threshold: final_score ≥ 0.5
       </div>
       {/* Horizontal grid of 5 scoring components */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:10 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(min(120px, 100%), 1fr))', gap:10 }}>
         {bars.map(b => (
           <div key={b.key} style={{ background:'rgba(0,0,0,0.2)', border:`1px solid ${b.color}33`, borderRadius:10, padding:'14px 10px', textAlign:'center' }}>
             <div style={{ width:34, height:34, borderRadius:8, background:`${b.color}18`, border:`1.5px solid ${b.color}`, display:'flex', alignItems:'center', justifyContent:'center', color:b.color, fontWeight:800, fontSize:15, margin:'0 auto 8px' }}>{b.key}</div>
@@ -698,7 +698,7 @@ function TierLadder() {
       </div>
 
       {/* 4 horizontal tier cards */}
-      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:8, marginBottom:16 }}>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(min(140px, 100%), 1fr))', gap:8, marginBottom:16 }}>
         {[1,2,3,4].map(tier => {
           const info = TIER_INFO[tier]
           const pct  = Math.round((info.tasks / total) * 100)
@@ -1013,7 +1013,7 @@ function Overview() {
           </motion.p>
 
           {/* Quote */}
-          <motion.div variants={scaleIn} style={{
+          <motion.div variants={scaleIn} className="quote-box" style={{
             maxWidth:800, margin:'0 auto',
             background:'var(--bg-card)',
             border:'1px solid var(--border-default)',
@@ -1074,13 +1074,6 @@ function Overview() {
     </Section>
   )
 }
-
-// ─── RQ Integration callout content (rendered inside Research) ──
-const RQ_INTEGRATION_LINES = [
-  'RQ1 PRIMARY: external-judge validation — 20.74% combined keyword-judge disagreement, α = 0.57 on assumption (negative on reasoning, chance-level on method)',
-  'RQ2–5 SUPPORTING: hardest categories, failure mode, robustness, calibration',
-  'RQ4: 2,365 perturbation runs across 3 types (rephrase / numerical / semantic)',
-]
 
 // ═══════════════════════════════════════════════════════════════
 //  2. PIPELINE
@@ -1741,7 +1734,7 @@ function Tasks({ onOpenModal, isOpen, onToggle }) {
         transition={{ duration:0.35, ease:[0.22,1,0.36,1] }}
         style={{ overflow:'hidden' }}
       >
-      <div style={{ display:'grid', gridTemplateColumns:'250px 1fr', gap:24, alignItems:'start' }}>
+      <div className="tasks-filter-grid" style={{ display:'grid', gridTemplateColumns:'250px 1fr', gap:24, alignItems:'start' }}>
 
         {/* Filter sidebar */}
         <div style={{ alignSelf:'start', marginTop:0 }}>
@@ -2265,26 +2258,6 @@ function Research() {
   return (
     <Section id="research" minHeight="auto">
       <SectionTitle>Research</SectionTitle>
-
-      {/* § 0 — Research Question Integration callout (moved from Pipeline) */}
-      <FadeIn>
-        <div style={{ maxWidth:1100, margin:'0 auto 28px' }}>
-          <Card style={{ padding:'18px 24px', borderColor:'rgba(0,255,224,0.28)' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:12 }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00FFE0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-              <div style={{ color:'#00FFE0', fontWeight:700, fontSize:13, letterSpacing:'0.08em' }}>RESEARCH QUESTION INTEGRATION</div>
-            </div>
-            <ul style={{ margin:0, padding:0, listStyle:'none' }}>
-              {RQ_INTEGRATION_LINES.map((l, j) => (
-                <li key={j} style={{ display:'flex', alignItems:'flex-start', gap:8, marginBottom: j < RQ_INTEGRATION_LINES.length - 1 ? 8 : 0 }}>
-                  <span style={{ color:'#00FFE0', fontSize:8, marginTop:5, flexShrink:0 }}>◆</span>
-                  <span style={{ color:'var(--text-secondary)', fontSize:13, lineHeight:1.6 }}>{l}</span>
-                </li>
-              ))}
-            </ul>
-          </Card>
-        </div>
-      </FadeIn>
 
       {/* § 1 — Research Questions (5 cards, equal size, 3+2 grid) */}
       <FadeIn>

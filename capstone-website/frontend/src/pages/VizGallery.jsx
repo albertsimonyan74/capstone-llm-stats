@@ -159,11 +159,7 @@ export default function VizGallery({ setFullImg }) {
                     <span style={{ color: '#fff', fontSize: 18, fontWeight: 700 }}>{cat.label}</span>
                     <span style={{ color: cat.color, fontSize: 11, fontWeight: 600, opacity: 0.8 }}>{cat.subtitle}</span>
                   </div>
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))',
-                    gap: 18, marginBottom: 32,
-                  }}>
+                  <div className="viz-grid-responsive">
                     {items.map(v => (
                       <VizCard key={v.id} viz={v} color={cat.color} setFullImg={setFullImg} />
                     ))}
