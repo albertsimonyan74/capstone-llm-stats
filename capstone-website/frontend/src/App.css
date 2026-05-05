@@ -2890,13 +2890,21 @@ input::placeholder { color: rgba(0, 206, 209, 0.30); }
 
 /* ─── Mobile: hero clears sticky navbar ──────────────────────── */
 @media (max-width: 640px) {
-  .sec-overview { padding-top: 140px !important; }
+  .sec-overview {
+    padding-top: 200px !important;
+    min-height: auto !important;
+  }
   .sec-overview .hero-flex {
     justify-content: flex-start !important;
     min-height: auto !important;
-    padding-top: 8px;
+    padding-top: 0 !important;
+    margin-top: 0 !important;
   }
-  .hero-title { font-size: clamp(26px, 7vw, 38px) !important; line-height: 1.2 !important; }
+  .hero-title {
+    margin-top: 24px !important;
+    font-size: clamp(26px, 7vw, 38px) !important;
+    line-height: 1.2 !important;
+  }
 }
 
 /* ─── Mobile: NMACR weight bar fits 5 segments ────────────────── */
