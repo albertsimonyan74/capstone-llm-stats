@@ -151,32 +151,36 @@ def compute_per_model(joined: list[dict]) -> dict:
 def make_reliability_figure(per_model: dict, paths: list[Path]) -> None:
     """Reliability diagram: per-model accuracy vs claimed-confidence buckets.
 
-    Active buckets across canonical: low (0.3), unstated (0.5), medium (0.6).
-    `high` (0.9) is empty for every model — omitted automatically.
-    Points below y=x diagonal = overconfident; above = underconfident.
+    Dark site theme (Tier 2A): SITE_BG figure background, site palette per
+    model, subtle over/underconfidence shading. Active buckets across
+    canonical: low (0.3), unstated (0.5), medium (0.6). `high` (0.9) is
+    empty for every model — omitted automatically. Points below y=x
+    diagonal = overconfident; above = underconfident.
     """
-    fig, ax = plt.subplots(figsize=(8.5, 7.5), dpi=150, facecolor="white")
-    ax.set_facecolor("white")
+    from site_palette import COLOR_GOOD, COLOR_BAD
 
-    # over/underconfidence shaded regions
-    ax.fill_between([0, 1], [0, 0], [0, 1],
-                    color="#ef4444", alpha=0.05, zorder=0)
-    ax.fill_between([0, 1], [0, 1], [1, 1],
-                    color="#10b981", alpha=0.05, zorder=0)
-    ax.text(0.80, 0.10, "Overconfident\n(claimed > actual)",
-            fontsize=9.5, color="#b91c1c", alpha=0.9,
-            ha="center", va="center", style="italic", zorder=1)
-    ax.text(0.18, 0.88, "Underconfident\n(claimed < actual)",
-            fontsize=9.5, color="#047857", alpha=0.9,
-            ha="center", va="center", style="italic", zorder=1)
+    # 11×6.875 → 1.6 aspect, fits 16:10 website card without crop.
+    fig, ax = plt.subplots(figsize=(11, 6.875), dpi=150, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
+
+    # over/underconfidence shaded regions (subtle, site-coordinated)
+    ax.fill_between([0, 1], [0, 0], [0, 1], color=COLOR_BAD, alpha=0.04, zorder=0)
+    ax.fill_between([0, 1], [0, 1], [1, 1], color=COLOR_GOOD, alpha=0.04, zorder=0)
+    ax.text(0.88, 0.45, "Overconfident",
+            fontsize=10, color=COLOR_BAD, alpha=0.75,
+            ha="center", va="center", style="italic", zorder=1, rotation=-44)
+    ax.text(0.18, 0.55, "Underconfident",
+            fontsize=10, color=COLOR_GOOD, alpha=0.75,
+            ha="center", va="center", style="italic", zorder=1, rotation=-44)
 
     # perfect-calibration diagonal
     ax.plot([0, 1], [0, 1],
-            color="#475569", lw=1.4, ls="--", alpha=0.7,
+            color=SITE_FG_MUTED, lw=1.4, ls="--", alpha=0.7,
             label="Perfect calibration", zorder=2)
 
-    # per-model line + scatter; size ∝ bucket sample count
-    bucket_order = ["low", "unstated", "medium", "high"]  # ascending claimed conf if all present
+    # per-model line + scatter; size ∝ bucket sample count.
+    # Site BG used as marker edge for "popping" effect against dark canvas.
+    bucket_order = ["low", "unstated", "medium", "high"]
     for m in ["claude", "chatgpt", "gemini", "deepseek", "mistral"]:
         info = per_model.get(m)
         if not info:
@@ -187,42 +191,39 @@ def make_reliability_figure(per_model: dict, paths: list[Path]) -> None:
             d = info["per_bucket"].get(b, {})
             if d.get("n", 0) > 0 and d.get("mean_accuracy") is not None:
                 pts.append((d["claimed_confidence"], d["mean_accuracy"], d["n"]))
-        # sort by claimed confidence to draw monotone polyline
         pts.sort(key=lambda p: p[0])
         if not pts:
             continue
         xs = [p[0] for p in pts]
         ys = [p[1] for p in pts]
-        sizes = [max(60, p[2] * 1.6) for p in pts]
+        sizes = [max(80, p[2] * 1.6) for p in pts]
         if len(pts) >= 2:
-            ax.plot(xs, ys, color=color, lw=2.2, alpha=0.85, zorder=3)
-        ax.scatter(xs, ys, s=sizes, c=color, edgecolors="white",
-                   linewidths=1.6, alpha=0.95, zorder=4,
+            ax.plot(xs, ys, color=color, lw=2.0, alpha=0.75, zorder=3)
+        ax.scatter(xs, ys, s=sizes, c=color, edgecolors=SITE_BG,
+                   linewidths=2.0, alpha=0.95, zorder=4,
                    label=f"{m.upper()}  (ECE={info['ece']:.3f})")
 
     ax.set_xlim(0, 1.0)
     ax.set_ylim(0, 1.0)
     ax.set_xticks([0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0])
     ax.set_yticks([0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0])
-    ax.set_xlabel("Claimed confidence (verbalized bucket)", fontsize=12, color="#0f172a")
-    ax.set_ylabel("Empirical accuracy", fontsize=12, color="#0f172a")
-    ax.set_title("Calibration Reliability · Verbalized\n"
-                 "Per-model accuracy vs claimed confidence bucket",
-                 fontsize=13, fontweight="bold", color="#0f172a", pad=14)
-    ax.tick_params(colors="#334155", labelsize=10)
-    for spine in ax.spines.values():
-        spine.set_color("#cbd5e1")
-    ax.grid(True, alpha=0.25, linestyle="-", linewidth=0.5, color="#94a3b8")
+    ax.set_xlabel("Claimed confidence (verbalized bucket)",
+                  fontsize=11, color=SITE_FG_MUTED)
+    ax.set_ylabel("Empirical accuracy", fontsize=11, color=SITE_FG_MUTED)
+    ax.set_title(
+        "Calibration Reliability · Verbalized",
+        fontsize=13, fontweight="700", color=SITE_FG, pad=14, loc="left")
+    ax.tick_params(colors=SITE_FG_MUTED, labelsize=10)
+    dim_remaining_spines(ax)
+    ax.grid(True, alpha=0.06, linestyle="-", linewidth=0.5, color="#ffffff")
     ax.set_axisbelow(True)
-    ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0),
-              fontsize=9.5, frameon=True, framealpha=0.95,
-              edgecolor="#e2e8f0", title="Model", title_fontsize=10,
-              labelcolor="#0f172a")
+    ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1.0),
+              frameon=False, fontsize=9.5, labelcolor=SITE_FG_MUTED)
 
     plt.tight_layout()
     for path in paths:
         path.parent.mkdir(parents=True, exist_ok=True)
-        fig.savefig(path, dpi=150, bbox_inches="tight", facecolor="white")
+        fig.savefig(path, dpi=150, bbox_inches="tight", facecolor=SITE_BG)
     plt.close(fig)
 
 

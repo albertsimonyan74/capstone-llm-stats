@@ -36,6 +36,8 @@ plt.rcParams["font.size"] = 11
 
 FIG_DIR = ROOT / "report_materials" / "figures"
 FIG_DIR.mkdir(parents=True, exist_ok=True)
+WEB_DIR = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2"
+WEB_DIR.mkdir(parents=True, exist_ok=True)
 
 # Data paths
 RUNS_V1 = ROOT / "experiments" / "results_v1" / "runs.jsonl"
@@ -186,7 +188,9 @@ def figure_a1():
     task_types = sorted(counts.keys(), key=lambda tt: -sum(counts[tt].values()))
     totals = [sum(counts[tt].values()) for tt in task_types]
 
-    fig, ax = plt.subplots(figsize=(14, 7), dpi=300, facecolor=SITE_BG)
+    # 13×7.5 → 1.73 aspect; tight crop + bottom legend padding lands final
+    # near 1.6 (matches 16:10 card after objectFit:cover).
+    fig, ax = plt.subplots(figsize=(13, 7.5), dpi=300, facecolor=SITE_BG)
     ax.set_facecolor(SITE_BG)
 
     x = np.arange(len(task_types))
@@ -205,45 +209,47 @@ def figure_a1():
         ax.text(x[i], totals[i] + 0.4,
                 f"{rate*100:.0f}%",
                 ha="center", va="bottom",
-                fontsize=8.5, color=SITE_FG, fontweight="bold")
+                fontsize=7.5, color=SITE_FG, fontweight="bold")
 
-    # X-axis: task types in muted monospace.
+    # X-axis: task types in muted monospace, 60° for tighter horizontal pack.
     ax.set_xticks(x)
-    ax.set_xticklabels(task_types, rotation=45, ha="right",
-                       fontsize=8.5, color=SITE_FG_MUTED, family="monospace")
+    ax.set_xticklabels(task_types, rotation=60, ha="right",
+                       fontsize=7.5, color=SITE_FG_MUTED, family="monospace")
 
-    # Y-axis muted.
-    ax.set_ylabel("Failure count (stacked)", fontsize=11, color=SITE_FG_MUTED)
+    ax.set_ylabel("Failure count (stacked)", fontsize=10.5, color=SITE_FG_MUTED)
     ax.set_xlabel("Task type (sorted by total failures)",
-                  fontsize=10, color=SITE_FG_MUTED)
+                  fontsize=9.5, color=SITE_FG_MUTED)
     ax.tick_params(axis="y", colors=SITE_FG_MUTED, labelsize=9)
 
-    # Clean spines.
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
     for side in ("left", "bottom"):
         ax.spines[side].set_color(SITE_FG_MUTED)
         ax.spines[side].set_alpha(0.3)
 
-    ax.grid(axis="y", alpha=SITE_GRID_ALPHA, linestyle="-", linewidth=0.5,
-            color=SITE_FG)
+    ax.grid(axis="y", alpha=SITE_GRID_ALPHA, linestyle="-", linewidth=0.5, color=SITE_FG)
     ax.set_axisbelow(True)
     ax.set_ylim(0, max(totals) * 1.20)
 
     ax.set_title("Failure rate by task type · sorted by total failures",
-                 fontsize=13, fontweight="bold", color=SITE_FG,
-                 pad=18, loc="left")
+                 fontsize=12, fontweight="bold", color=SITE_FG,
+                 pad=14, loc="left")
 
-    legend = ax.legend(loc="upper right", title="L1 failure bucket",
-                       frameon=False, fontsize=10, labelcolor=SITE_FG_MUTED)
+    # Legend BELOW chart — horizontal, 4 columns — fixes 3-up card clipping.
+    legend = ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.32),
+                       ncol=4, frameon=False, fontsize=9,
+                       labelcolor=SITE_FG_MUTED,
+                       title="L1 failure bucket")
     legend.get_title().set_color(SITE_FG_MUTED)
 
     ax.text(0.005, 0.96,
             "% labels show failure RATE per task_type (failures / runs).",
-            transform=ax.transAxes, fontsize=9, color=SITE_FG_MUTED, style="italic")
+            transform=ax.transAxes, fontsize=8.5, color=SITE_FG_MUTED, style="italic")
 
-    fig.tight_layout()
+    fig.subplots_adjust(bottom=0.30)
     fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(WEB_DIR / "a1_failure_by_tasktype.png",
+                dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
     top3 = task_types[:3]
@@ -322,17 +328,17 @@ def figure_a2():
 # ─────────────────────────────────────────────────────────────────────────────
 
 def figure_a3():
-    """Failure heatmap — portrait (task_types as rows, models as columns).
+    """Failure heatmap — category-aggregated for website card fit (6 cats × 5 models).
 
-    Site-palette dark theme: figure background SITE_BG (#0f1118), custom
-    site-harmonized colormap (dark→coral gradient), cell labels in decimal
-    format (0.30, 0.66 — not raw integers). Category bands on left with
-    bracket connectors, model labels at top color-coded, significance-
-    thresholded labels (cells with failure rate ≥0.15 labeled).
+    The full 38-row task_type version is preserved as a3_failure_heatmap_full.png
+    for the §6 gallery / poster export where horizontal real estate exists.
     """
     import matplotlib.colors as mcolors
 
     out = FIG_DIR / "a3_failure_heatmap.png"
+    out_full = FIG_DIR / "a3_failure_heatmap_full.png"
+    web_out = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "a3_failure_heatmap.png"
+    web_out_full = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "a3_failure_heatmap_full.png"
 
     # Site-harmonized colormap: dark (blends with bg) → coral-red
     custom_cmap = mcolors.LinearSegmentedColormap.from_list(
@@ -380,12 +386,104 @@ def figure_a3():
             if scores:
                 M[i, j] = 1.0 - float(np.mean(scores))
 
+    # === FULL VERTICAL — preserved for §6 gallery + poster ===
+    _plot_failure_heatmap_full(M, ordered_types, cat_spans, custom_cmap,
+                                out_full, web_out_full)
+
+    # === CATEGORY-AGGREGATED — website card fit (6 cats × 5 models) ===
+    cat_present = [(cat, s, e) for cat, s, e in cat_spans]
+    n_cats = len(cat_present)
+    M_cat = np.full((n_cats, len(MODELS)), np.nan)
+    cell_n = np.zeros((n_cats, len(MODELS)), dtype=int)
+    for ci, (_cat, s, e) in enumerate(cat_present):
+        for j, m in enumerate(MODELS):
+            vals: list[float] = []
+            for tt in ordered_types[s:e + 1]:
+                vals.extend(cell_scores.get((m, tt), []))
+            if vals:
+                M_cat[ci, j] = 1.0 - float(np.mean(vals))
+                cell_n[ci, j] = len(vals)
+
+    # 11×6.875 → 1.6 aspect.
+    fig, ax = plt.subplots(figsize=(11, 6.875), dpi=150, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
+    im = ax.imshow(M_cat, cmap=custom_cmap, vmin=0.0, vmax=1.0,
+                   aspect="auto", origin="upper")
+
+    ax.set_xticks(range(len(MODELS)))
+    ax.set_xticklabels([MODEL_LABEL[m] for m in MODELS],
+                       fontsize=12, fontweight="bold")
+    ax.xaxis.tick_top()
+    ax.xaxis.set_label_position("top")
+    ax.tick_params(axis="x", which="major", pad=6, length=0)
+    for tick, m in zip(ax.get_xticklabels(), MODELS):
+        tick.set_color(MODEL_COLORS.get(m, SITE_FG))
+
+    ax.set_yticks(range(n_cats))
+    ax.set_yticklabels([CATEGORY_LABEL.get(c, c) for c, _, _ in cat_present],
+                       fontsize=11, color=SITE_FG, fontweight="600")
+    ax.tick_params(axis="y", colors=SITE_FG_MUTED, length=0)
+
+    SIG_THRESHOLD = 0.15
+    for i in range(n_cats):
+        for j in range(len(MODELS)):
+            v = M_cat[i, j]
+            if np.isnan(v):
+                ax.text(j, i, "—", ha="center", va="center",
+                        fontsize=10, color=SITE_FG_MUTED)
+            elif v >= SIG_THRESHOLD:
+                txt_color = "#fff" if v >= 0.45 else SITE_FG
+                ax.text(j, i, f"{v:.2f}", ha="center", va="center",
+                        fontsize=12, color=txt_color, fontweight="700")
+
+    for spine in ax.spines.values():
+        spine.set_color(SITE_FG_MUTED)
+        spine.set_alpha(0.3)
+        spine.set_linewidth(0.8)
+
+    ax.set_title(
+        "Failure Heatmap · per-model failure rate by task category",
+        fontsize=12, fontweight="bold", pad=22, color=SITE_FG, loc="left")
+
+    cbar = fig.colorbar(im, ax=ax, fraction=0.025, pad=0.015)
+    cbar.set_label("Failure rate (1 − mean(final_score))",
+                   fontsize=9, color=SITE_FG_MUTED, rotation=270, labelpad=18)
+    cbar.set_ticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
+    cbar.ax.tick_params(labelsize=8, colors=SITE_FG_MUTED)
+    cbar.outline.set_edgecolor(SITE_FG_MUTED)
+    cbar.outline.set_alpha(0.3)
+
+    fig.text(0.5, 0.01,
+             f"Labels shown for cells ≥{SIG_THRESHOLD:.2f}. "
+             "Full 38-row task-type version: a3_failure_heatmap_full.png.",
+             ha="center", va="bottom", fontsize=8.5, color=SITE_FG_MUTED,
+             style="italic")
+
+    ax.set_xticks(np.arange(-.5, len(MODELS), 1), minor=True)
+    ax.set_yticks(np.arange(-.5, n_cats, 1), minor=True)
+    ax.grid(which="minor", color=SITE_FG_MUTED, linewidth=0.4, alpha=0.2)
+    ax.tick_params(which="minor", length=0)
+
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    fig.savefig(out, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(web_out, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
+    plt.close(fig)
+
+    fail_rate_by_cat = {
+        cat_present[i][0]: float(np.nanmean(M_cat[i]))
+        for i in range(n_cats)
+    }
+    hardest_cat = max(fail_rate_by_cat, key=fail_rate_by_cat.get)
+    return out, f"hardest category: {CATEGORY_LABEL.get(hardest_cat, hardest_cat)} (mean failure {fail_rate_by_cat[hardest_cat]:.2f})"
+
+
+def _plot_failure_heatmap_full(M, ordered_types, cat_spans, custom_cmap,
+                                out_path, web_path):
+    """Full 38-row portrait failure heatmap — preserved for §6 gallery + poster."""
     fig, ax = plt.subplots(figsize=(8, 14), dpi=150, facecolor=SITE_BG)
     ax.set_facecolor(SITE_BG)
-
     im = ax.imshow(M, cmap=custom_cmap, vmin=0.0, vmax=1.0, aspect="auto", origin="upper")
 
-    # Models on TOP x-axis, color-coded
     ax.set_xticks(range(len(MODELS)))
     ax.set_xticklabels([MODEL_LABEL[m] for m in MODELS], fontsize=11, fontweight="bold")
     ax.xaxis.tick_top()
@@ -394,30 +492,25 @@ def figure_a3():
     for tick, m in zip(ax.get_xticklabels(), MODELS):
         tick.set_color(MODEL_COLORS.get(m, SITE_FG))
 
-    # Task types on Y-axis, monospace
     ax.set_yticks(range(len(ordered_types)))
     ax.set_yticklabels(ordered_types, fontsize=8.5, family="monospace",
                        color=SITE_FG_MUTED)
     ax.tick_params(axis="y", colors=SITE_FG_MUTED)
 
-    # Significance-thresholded labels — DECIMAL format (0.30, 0.66, etc.)
     SIG_THRESHOLD = 0.15
     for i in range(len(ordered_types)):
         for j in range(len(MODELS)):
             v = M[i, j]
             if np.isnan(v):
-                ax.text(j, i, "—", ha="center", va="center", fontsize=7,
-                        color=SITE_FG_MUTED)
+                ax.text(j, i, "—", ha="center", va="center", fontsize=7, color=SITE_FG_MUTED)
             elif v >= SIG_THRESHOLD:
                 txt_color = "#fff" if v >= 0.45 else SITE_FG
                 ax.text(j, i, f"{v:.2f}", ha="center", va="center",
                         fontsize=7.5, color=txt_color, fontweight="600")
 
-    # Horizontal dividers between category bands
     for _, _, end_row in cat_spans[:-1]:
         ax.axhline(end_row + 0.5, color=SITE_FG_MUTED, linewidth=0.8, alpha=0.3)
 
-    # Category labels in left margin: bracket + label (mirrors robustness_heatmap)
     n_models = len(MODELS)
     bracket_x = -1.95
     label_horiz_x = -3.55
@@ -428,13 +521,11 @@ def figure_a3():
         if span <= 2:
             ax.text(label_horiz_x, mid, CATEGORY_LABEL.get(cat, cat),
                     ha="left", va="center", rotation=0,
-                    fontsize=10, fontweight="bold", color=SITE_FG,
-                    clip_on=False)
+                    fontsize=10, fontweight="bold", color=SITE_FG, clip_on=False)
         else:
             ax.text(label_vert_x, mid, CATEGORY_LABEL.get(cat, cat),
                     ha="center", va="center", rotation=90,
-                    fontsize=11, fontweight="bold", color=SITE_FG,
-                    clip_on=False)
+                    fontsize=11, fontweight="bold", color=SITE_FG, clip_on=False)
         ax.plot([bracket_x, bracket_x], [s - 0.4, e + 0.4],
                 color=SITE_FG_MUTED, linewidth=1.0, alpha=0.5, clip_on=False)
         for y_cap in (s - 0.4, e + 0.4):
@@ -442,17 +533,13 @@ def figure_a3():
                     color=SITE_FG_MUTED, linewidth=1.0, alpha=0.5, clip_on=False)
 
     ax.set_xlim(-4.0, n_models - 0.5)
-
-    # Spines site-coordinated
     for spine in ax.spines.values():
         spine.set_color(SITE_FG_MUTED)
         spine.set_alpha(0.3)
         spine.set_linewidth(0.8)
 
-    ax.set_title(
-        "Failure Heatmap · per-model failure rate by task type",
-        fontsize=12, fontweight="bold", pad=24, color=SITE_FG,
-    )
+    ax.set_title("Failure Heatmap (full) · per-model failure rate by task type",
+                 fontsize=12, fontweight="bold", pad=24, color=SITE_FG)
     cbar = fig.colorbar(im, ax=ax, fraction=0.035, pad=0.02)
     cbar.set_label("Failure rate (1 − mean(final_score))",
                    fontsize=9, color=SITE_FG_MUTED, rotation=270, labelpad=22)
@@ -461,10 +548,8 @@ def figure_a3():
     cbar.outline.set_edgecolor(SITE_FG_MUTED)
     cbar.outline.set_alpha(0.3)
 
-    # Footnote: significance threshold annotation
     fig.text(0.5, 0.01, f"Labels shown for cells ≥{SIG_THRESHOLD:.2f}",
-             ha="center", va="bottom", fontsize=8, color=SITE_FG_MUTED,
-             style="italic")
+             ha="center", va="bottom", fontsize=8, color=SITE_FG_MUTED, style="italic")
 
     ax.set_xticks(np.arange(-.5, len(MODELS), 1), minor=True)
     ax.set_yticks(np.arange(-.5, len(ordered_types), 1), minor=True)
@@ -472,15 +557,11 @@ def figure_a3():
     ax.tick_params(which="minor", length=0)
     ax.tick_params(which="major", length=0)
 
-    fig.savefig(out, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    web_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(out_path, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(web_path, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
-
-    fail_rate_by_tt = {
-        tt: float(np.nanmean(M[i])) for i, tt in enumerate(ordered_types)
-    }
-    sorted_hard = sorted(fail_rate_by_tt, key=lambda tt: -fail_rate_by_tt[tt])
-    hardest = sorted_hard[0]
-    return out, f"hardest task_type: {hardest} (mean failure {fail_rate_by_tt[hardest]:.2f}); top-3 hardest: {', '.join(sorted_hard[:3])}"
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -630,91 +711,105 @@ def _draw_bracket_horizontal(ax, x0, x1, y, color="#666"):
 
 
 def figure_a6():
+    """Single horizontal-bar leaderboard: composite literature-weighted accuracy
+    with 95% bootstrap CI error bars + adjacent-rank n.s. brackets.
+
+    Replaces the prior 4-panel sub-grid (which clipped inside the 16:10 website
+    card). Per Tier 2A scope: ONE chart, card-fit aspect (~1.6).
+    """
     out = FIG_DIR / "a6_aggregate_ranking.png"
 
     bootstrap = load_bootstrap()
-    calib = load_calibration()
-    judge_means = load_judge_dim_means()
 
+    # Sort descending by composite accuracy mean (under literature-derived
+    # NMACR weighting — final_score is already the per-task NMACR).
     rank_order = sorted(MODELS, key=lambda m: -bootstrap["accuracy"][m]["mean"])
-    label_map = [MODEL_LABEL[m] for m in rank_order]
 
-    fig, axes = plt.subplots(4, 1, figsize=(8, 7), dpi=300, sharey=False, facecolor=SITE_BG)
+    means, los_minus, his_plus, lower, upper = [], [], [], [], []
+    for m in rank_order:
+        d = bootstrap["accuracy"][m]
+        means.append(d["mean"])
+        los_minus.append(d["mean"] - d["ci_lower"])
+        his_plus.append(d["ci_upper"] - d["mean"])
+        lower.append(d["ci_lower"])
+        upper.append(d["ci_upper"])
 
-    panels = [
-        ("Accuracy (mean)", "accuracy_mean"),
-        ("Robustness Δ (base − pert)", "robustness_delta"),
-        ("Calibration (ECE)", "ece"),
-        ("Reasoning Quality (judge mean)", "reasoning_quality"),
-    ]
+    # 11×6.875 → 1.6 aspect, matches site card after objectFit:cover.
+    fig, ax = plt.subplots(figsize=(11, 6.875), dpi=300, facecolor=SITE_BG)
+    ax.set_facecolor(SITE_BG)
 
-    for ax, (title, key) in zip(axes, panels):
-        ax.set_facecolor(SITE_BG)
-        ys = list(range(len(rank_order)))
-        xs, los_minus, his_plus = [], [], []
-        for m in rank_order:
-            if key == "accuracy_mean":
-                d = bootstrap["accuracy"][m]
-                xs.append(d["mean"])
-                los_minus.append(d["mean"] - d["ci_lower"])
-                his_plus.append(d["ci_upper"] - d["mean"])
-            elif key == "robustness_delta":
-                d = bootstrap["robustness"][m]
-                xs.append(d["mean_delta"])
-                los_minus.append(d["mean_delta"] - d["ci_lower"])
-                his_plus.append(d["ci_upper"] - d["mean_delta"])
-            elif key == "ece":
-                xs.append(calib[m]["ece"])
-                los_minus.append(0); his_plus.append(0)
-            elif key == "reasoning_quality":
-                xs.append(judge_means["base"][m]["reasoning_quality"]["mean"])
-                los_minus.append(0); his_plus.append(0)
+    y_pos = np.arange(len(rank_order))
+    bar_colors = [MODEL_COLORS[m] for m in rank_order]
 
-        for y, x, lo, hi, m in zip(ys, xs, los_minus, his_plus, rank_order):
-            ax.errorbar(x, y, xerr=[[lo], [hi]] if (lo or hi) else None,
-                        fmt="o", markersize=10, color=MODEL_COLORS[m],
-                        markeredgecolor=SITE_BG, markeredgewidth=1.0,
-                        ecolor=SITE_FG_MUTED, elinewidth=1.0, capsize=3)
+    ax.barh(y_pos, means, color=bar_colors,
+            edgecolor=SITE_BG, linewidth=1.5,
+            xerr=[los_minus, his_plus],
+            error_kw={"ecolor": SITE_FG_MUTED, "capsize": 5,
+                      "elinewidth": 1.4, "alpha": 0.85})
 
-        ax.set_yticks(ys)
-        ax.set_yticklabels(label_map, fontsize=10)
-        for tick, m in zip(ax.get_yticklabels(), rank_order):
-            tick.set_color(MODEL_COLORS[m])
-            tick.set_fontweight("bold")
-        ax.invert_yaxis()
-        ax.set_xlabel(title, color=SITE_FG_MUTED)
-        dim_remaining_spines(ax)
-        ax.grid(axis="x", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
+    # Value labels at end of each bar (mean + CI bracket).
+    for i, (m, mu, lo, hi) in enumerate(zip(rank_order, means, lower, upper)):
+        ax.text(upper[i] + 0.005, i,
+                f"{mu:.3f}  [{lo:.3f}, {hi:.3f}]",
+                va="center", ha="left",
+                color=SITE_FG, fontsize=10.5, fontweight="600")
 
-        if key == "robustness_delta":
-            ax.axvline(0.0, color=SITE_FG_MUTED, lw=0.8, ls="--", alpha=0.6)
+    xmin = min(lower) - 0.05
+    # Rank #N markers inside the bar's left edge, so they don't collide with
+    # y-tick model names rendered just outside the axes.
+    for i in range(len(rank_order)):
+        ax.text(xmin + 0.012, i, f"#{i+1}",
+                va="center", ha="left",
+                color=SITE_BG, fontsize=11, fontweight="800",
+                alpha=0.65)
 
-        if key in ("accuracy_mean", "robustness_delta"):
-            sep_key = "accuracy" if key == "accuracy_mean" else "robustness"
-            sep = bootstrap["separability"][sep_key]
-            ns_pairs = _bracket_pairs(sep, rank_order)
-            xmin, xmax = ax.get_xlim()
-            x_anchor = xmin - (xmax - xmin) * 0.06
-            for (i, j) in ns_pairs:
-                ax.annotate(
-                    "",
-                    xy=(x_anchor, j), xytext=(x_anchor, i),
-                    arrowprops=dict(arrowstyle="-", color=SITE_FG_MUTED, lw=1.4),
-                    annotation_clip=False,
-                )
-                ax.text(x_anchor - (xmax - xmin) * 0.02, (i + j) / 2,
-                        "n.s.", ha="right", va="center", fontsize=8.5,
-                        color=SITE_FG_MUTED, fontweight="bold")
+    # Y-axis: model names color-coded.
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels([MODEL_LABEL[m] for m in rank_order],
+                       fontsize=12, fontweight="700")
+    for tick, m in zip(ax.get_yticklabels(), rank_order):
+        tick.set_color(MODEL_COLORS[m])
+    ax.invert_yaxis()  # rank #1 at top
 
-    fig.text(0.5, 0.005,
-             "Models sorted by Accuracy. n.s. = adjacent ranks not statistically separable (95% bootstrap CI, B=10,000).",
+    # Adjacent-rank non-separability brackets (right margin).
+    sep = bootstrap["separability"]["accuracy"]
+    ns_pairs = _bracket_pairs(sep, rank_order)
+    if ns_pairs:
+        x_anchor = max(upper) + 0.13
+        for (i, j) in ns_pairs:
+            ax.annotate("",
+                        xy=(x_anchor, j), xytext=(x_anchor, i),
+                        arrowprops=dict(arrowstyle="-",
+                                        color=SITE_FG_MUTED, lw=1.4),
+                        annotation_clip=False)
+            ax.text(x_anchor + 0.008, (i + j) / 2,
+                    "n.s.", ha="left", va="center", fontsize=9,
+                    color=SITE_FG_MUTED, fontweight="700")
+
+    ax.set_xlabel(
+        "Aggregate score · literature-weighted final_score (N=M=A=C=R=0.20)",
+        color=SITE_FG_MUTED, fontsize=10.5)
+    ax.set_xlim(xmin, max(upper) + 0.18)
+    dim_remaining_spines(ax)
+    ax.grid(axis="x", linestyle="-", alpha=SITE_GRID_ALPHA, color="#ffffff")
+    ax.set_axisbelow(True)
+
+    ax.set_title(
+        "Aggregate Ranking · 95% bootstrap CI",
+        fontsize=13, fontweight="700", color=SITE_FG, pad=14, loc="left")
+
+    fig.text(0.5, 0.012,
+             "Adjacent-rank brackets (n.s.) = pairs not statistically separable "
+             "(95% bootstrap CI, B=10,000).",
              ha="center", fontsize=8.5, style="italic", color=SITE_FG_MUTED)
 
-    fig.tight_layout(rect=(0, 0.025, 1, 1))
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
     fig.savefig(out, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(WEB_DIR / "a6_aggregate_ranking.png",
+                dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
 
-    return out, f"top by accuracy: {MODEL_LABEL[rank_order[0]]}; rankings disagree across panels — see arrows on three_rankings figure for visualization"
+    return out, f"top by accuracy: {MODEL_LABEL[rank_order[0]]}; horizontal-bar leaderboard with bootstrap CIs"
 
 
 # ─────────────────────────────────────────────────────────────────────────────

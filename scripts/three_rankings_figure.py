@@ -26,6 +26,7 @@ CALIB_PATH = ROOT / "experiments" / "results_v2" / "calibration.json"
 ROBUST_PATH = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
 BOOTSTRAP_PATH = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
 OUT_PATH = ROOT / "report_materials" / "figures" / "three_rankings.png"
+WEB_OUT = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "three_rankings.png"
 MODEL_LABEL = {
     "claude": "Claude",
     "chatgpt": "ChatGPT",
@@ -208,7 +209,10 @@ def draw_arrow(ax, start_xy, end_xy, color, *, lw=1.6, alpha=0.85, highlight=Fal
 
 
 def main():
-    fig, ax = plt.subplots(figsize=(10, 8), dpi=300, facecolor=SITE_BG)
+    # 13:8 figsize gives ~1.625 aspect — matches website card 16:10 (1.6) so
+    # objectFit:'cover' doesn't crop title/footer. Wider canvas also lets the
+    # 3 columns breathe (fewer label collisions on bracket annotations).
+    fig, ax = plt.subplots(figsize=(13, 8), dpi=300, facecolor=SITE_BG)
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.set_axis_off()
@@ -312,9 +316,12 @@ def main():
     )
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    WEB_OUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUT_PATH, dpi=300, facecolor=SITE_BG, bbox_inches="tight")
+    fig.savefig(WEB_OUT, dpi=150, facecolor=SITE_BG, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {OUT_PATH}")
+    print(f"Wrote {WEB_OUT}")
 
 
 if __name__ == "__main__":

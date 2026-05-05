@@ -41,7 +41,8 @@ def main() -> None:
     cons = [sc_cmp[m]["consistency_ece_full"] for m in MODEL_ORDER]
     colors = [MODEL_COLORS[m] for m in MODEL_ORDER]
 
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 5.5), facecolor=SITE_BG)
+    # 11×6.875 → 1.6 aspect, fits 16:10 website card without crop.
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 6.875), facecolor=SITE_BG)
     x = np.arange(len(MODEL_ORDER))
 
     # === LEFT: Verbalized ECE ===
@@ -90,15 +91,8 @@ def main() -> None:
                  f"{val:.3f}", ha="center", va="bottom",
                  fontsize=9, fontweight="600", color=SITE_FG)
 
-    footer = (
-        "Verbalized: keyword extraction across 855 truly-base runs (171 tasks × 5 models, post-Phase-1.8 scope).  "
-        "Self-consistency: 3-rerun agreement at T=0.7 across 161 numeric-target tasks "
-        "(Phase 1C full coverage; 10 CONCEPTUAL tasks excluded — self-consistency requires numerical answers).\n"
-        "Method dichotomy follows Multi-Answer Confidence (2026)."
-    )
-    fig.text(0.5, -0.02, footer, ha="center", va="top", fontsize=8,
-             style="italic", color=SITE_FG_MUTED, wrap=True)
-
+    # Footer caption removed — site manifest caption carries the explanation.
+    # Keeps mistral bar visible inside the 16:10 card after objectFit:cover.
     fig.tight_layout()
     OUT.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(OUT, dpi=300, bbox_inches="tight", facecolor=SITE_BG)
