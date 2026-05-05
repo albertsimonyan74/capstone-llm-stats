@@ -1,0 +1,216 @@
+{
+  "_methodology": "4-panel 5\u00d75 keyword\u00d7judge crosstab for poster Phase 2. Population: base runs.jsonl \u00d7 llm_judge_scores_full.jsonl, inner-joined on run_id, judge errors dropped. NO v1-pert filter. NO eligibility filter on required_assumption_checks. Quantization: both scores \u2208 {0.0, 0.25, 0.5, 0.75, 1.0}.",
+  "_pipeline_source": "derive_keyword_judge_heatmap_4panel.py",
+  "pairing_notes": {
+    "reasoning_completeness_vs_reasoning_score": "reasoning_completeness is a judge-only dimension (no direct keyword counterpart in the rubric). It is paired against reasoning_score \u2014 the same keyword field used for reasoning_quality \u2014 to visualize how much keyword reasoning signal aligns with the completeness facet the judge evaluates separately. Both judge dimensions therefore share the x-axis (keyword reasoning_score) but read different y-axes (judge reasoning_quality vs. reasoning_completeness).",
+    "scope_no_v1_pert_filter": "n=1230 includes 75 v1-pert task_ids \u00d7 5 models = 375 base runs that the canonical Phase-1.8 pipelines exclude. Kept here because the website's published 28.9 / 43.3 / 70.5 / 77.9 percentages reproduce only at this scope.",
+    "no_eligibility_filter": "required_assumption_checks filter not applied \u2014 all 1230 joined rows kept regardless of whether the task spec declares assumption checks. Matches the website figure."
+  },
+  "n_total": 1230,
+  "levels": [
+    0.0,
+    0.25,
+    0.5,
+    0.75,
+    1.0
+  ],
+  "panel_order_ascending_off_diag": [
+    "method_structure",
+    "assumption_compliance",
+    "reasoning_quality",
+    "reasoning_completeness"
+  ],
+  "dimensions": {
+    "method_structure": {
+      "panel_label": "Method Structure",
+      "judge_field": "method_structure",
+      "keyword_field": "structure_score",
+      "n": 1230,
+      "on_diag": 874,
+      "off_diag": 356,
+      "off_diag_pct": 28.943089430894307,
+      "grid": {
+        "0.00": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 0,
+          "0.75": 0,
+          "1.00": 11
+        },
+        "0.25": {
+          "0.00": 1,
+          "0.25": 0,
+          "0.50": 8,
+          "0.75": 0,
+          "1.00": 22
+        },
+        "0.50": {
+          "0.00": 1,
+          "0.25": 0,
+          "0.50": 3,
+          "0.75": 0,
+          "1.00": 149
+        },
+        "0.75": {
+          "0.00": 1,
+          "0.25": 0,
+          "0.50": 13,
+          "0.75": 0,
+          "1.00": 66
+        },
+        "1.00": {
+          "0.00": 18,
+          "0.25": 0,
+          "0.50": 66,
+          "0.75": 0,
+          "1.00": 871
+        }
+      }
+    },
+    "assumption_compliance": {
+      "panel_label": "Assumption Compliance",
+      "judge_field": "assumption_compliance",
+      "keyword_field": "assumption_score",
+      "n": 1230,
+      "on_diag": 697,
+      "off_diag": 533,
+      "off_diag_pct": 43.333333333333336,
+      "grid": {
+        "0.00": {
+          "0.00": 287,
+          "0.25": 0,
+          "0.50": 19,
+          "0.75": 0,
+          "1.00": 35
+        },
+        "0.25": {
+          "0.00": 2,
+          "0.25": 0,
+          "0.50": 0,
+          "0.75": 0,
+          "1.00": 0
+        },
+        "0.50": {
+          "0.00": 189,
+          "0.25": 0,
+          "0.50": 11,
+          "0.75": 0,
+          "1.00": 67
+        },
+        "0.75": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 0,
+          "0.75": 0,
+          "1.00": 0
+        },
+        "1.00": {
+          "0.00": 155,
+          "0.25": 0,
+          "0.50": 66,
+          "0.75": 0,
+          "1.00": 399
+        }
+      }
+    },
+    "reasoning_quality": {
+      "panel_label": "Reasoning Quality",
+      "judge_field": "reasoning_quality",
+      "keyword_field": "reasoning_score",
+      "n": 1230,
+      "on_diag": 363,
+      "off_diag": 867,
+      "off_diag_pct": 70.48780487804878,
+      "grid": {
+        "0.00": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 0,
+          "0.75": 0,
+          "1.00": 0
+        },
+        "0.25": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 21,
+          "0.75": 90,
+          "1.00": 115
+        },
+        "0.50": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 17,
+          "0.75": 84,
+          "1.00": 158
+        },
+        "0.75": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 23,
+          "0.75": 132,
+          "1.00": 329
+        },
+        "1.00": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 4,
+          "0.75": 43,
+          "1.00": 214
+        }
+      }
+    },
+    "reasoning_completeness": {
+      "panel_label": "Reasoning Completeness",
+      "judge_field": "reasoning_completeness",
+      "keyword_field": "reasoning_score",
+      "n": 1230,
+      "on_diag": 272,
+      "off_diag": 958,
+      "off_diag_pct": 77.88617886178862,
+      "grid": {
+        "0.00": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 0,
+          "0.75": 0,
+          "1.00": 0
+        },
+        "0.25": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 15,
+          "0.75": 0,
+          "1.00": 211
+        },
+        "0.50": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 17,
+          "0.75": 0,
+          "1.00": 242
+        },
+        "0.75": {
+          "0.00": 4,
+          "0.25": 0,
+          "0.50": 48,
+          "0.75": 0,
+          "1.00": 432
+        },
+        "1.00": {
+          "0.00": 0,
+          "0.25": 0,
+          "0.50": 6,
+          "0.75": 0,
+          "1.00": 255
+        }
+      }
+    }
+  },
+  "assertions_passed": {
+    "n_total_1230": true,
+    "off_diag_method_356": true,
+    "off_diag_assumption_533": true,
+    "off_diag_reasoning_quality_867": true,
+    "off_diag_reasoning_completeness_958": true
+  }
+}

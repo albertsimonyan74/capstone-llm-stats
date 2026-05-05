@@ -9,7 +9,7 @@
 | # | Figure                              | Source data                                              | Status                             |
 |---|-------------------------------------|----------------------------------------------------------|------------------------------------|
 | 1 | NMACR weight bar                    | hardcoded weights (A=30, R=25, M=20, C=15, N=10)         | NEW — JSX only on site             |
-| 2 | Forest plot of Krippendorff α       | experiments/results_v2/krippendorff_agreement.json       | NEW — JSX only on site             |
+| 2 | Krippendorff α gradient strip       | experiments/results_v2/krippendorff_agreement.json       | NEW — JSX only on site             |
 | 3 | Disagreement matrix 2×2             | experiments/results_v2/keyword_vs_judge_agreement.json   | NEW — JSX only on site             |
 | 4 | 3-panel dimension leaderboard       | scripts/dimension_leaderboard.py                         | EXISTS — needs print-theme version |
 | 5 | Verbalized vs self-consistency ECE  | experiments/results_v2/calibration.json                  | NEW — JSX only on site             |
