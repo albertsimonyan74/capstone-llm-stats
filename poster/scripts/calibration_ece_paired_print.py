@@ -73,8 +73,8 @@ def main():
         ax.barh(y_v, verb_ece[m], height=bar_h,
                 color=color, edgecolor="none", zorder=2)
         ax.barh(y_s, sc_ece[m], height=bar_h,
-                color=color, alpha=0.45, hatch="///",
-                edgecolor=color, linewidth=0.6, zorder=2)
+                facecolor=color, hatch="///",
+                edgecolor="white", linewidth=0.8, zorder=2)
 
         ax.text(verb_ece[m] + 0.012, y_v, f"{verb_ece[m]:.3f}",
                 va="center", ha="left",
@@ -110,18 +110,23 @@ def main():
     ax.set_xlabel("ECE (smaller = better)",
                   fontsize=11, color=PRINT_FG_MUTED)
 
-    # Legend
+    ax.set_title("Calibration ranks flip across measurement methods",
+                 fontsize=15, fontweight="bold", color=PRINT_FG,
+                 pad=18, loc="left")
+
+    # Legend — placed above the chart, right-aligned, outside plot bars
     from matplotlib.patches import Patch
     legend_handles = [
         Patch(facecolor=PRINT_FG_MUTED, edgecolor="none",
               label="Verbalized ECE"),
-        Patch(facecolor=PRINT_FG_MUTED, edgecolor=PRINT_FG_MUTED,
-              hatch="///", alpha=0.45, linewidth=0.6,
+        Patch(facecolor=PRINT_FG_MUTED, edgecolor="white",
+              hatch="///", linewidth=0.8,
               label="Self-consistency ECE"),
     ]
     leg = ax.legend(
         handles=legend_handles,
-        loc="lower right", frameon=False, fontsize=10,
+        loc="lower left", bbox_to_anchor=(1.0, 0.0),
+        frameon=False, fontsize=10, borderaxespad=0.0,
     )
     for txt in leg.get_texts():
         txt.set_color(PRINT_FG)
