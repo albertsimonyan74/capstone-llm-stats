@@ -1,0 +1,47 @@
+% poster/assets/latex_palette.tex
+% Print-saturated palette for the DS 299 capstone poster.
+% Source: poster/scripts/print_theme.py (canonical) + DESIGN_AUDIT.md §1, §5.
+% Usage: \input{poster/assets/latex_palette.tex} then \textcolor{teal600}{...}.
+% Requires: \usepackage{xcolor}.
+
+% ---- Neutral / structural ----
+\definecolor{slate900}{HTML}{0F172A}    % primary body text
+\definecolor{slate600}{HTML}{475569}    % muted / secondary text   (note: -500 alias below)
+\definecolor{slate500}{HTML}{475569}    % alias for muted (DESIGN_AUDIT calls this slate-500)
+\definecolor{slate400}{HTML}{94A3B8}    % label-box border (Krippendorff strip)
+\definecolor{slate300}{HTML}{CBD5E1}    % gradient mid-anchor
+\definecolor{slate200}{HTML}{E2E8F0}    % gridlines
+\definecolor{white}{HTML}{FFFFFF}       % page background
+
+% ---- Accent / semantic ----
+\definecolor{teal600}{HTML}{0D9488}     % accent, eyebrow color
+\definecolor{purple600}{HTML}{7C3AED}   % accent purple
+\definecolor{gold600}{HTML}{D97706}     % amber-600 — chance / threshold / cohort-avg refs
+\definecolor{red600}{HTML}{DC2626}      % bad / disagreement
+\definecolor{emerald600}{HTML}{059669}  % good / agreement
+\definecolor{slateNeutral}{HTML}{64748B}% neutral
+
+% ---- Model brand colors (tailwind -600, print-saturated) ----
+\definecolor{modelClaude}{HTML}{0D9488}    % teal-600
+\definecolor{modelChatGPT}{HTML}{16A34A}   % green-600
+\definecolor{modelGemini}{HTML}{E11D48}    % rose-600
+\definecolor{modelDeepSeek}{HTML}{2563EB}  % blue-600
+\definecolor{modelMistral}{HTML}{7C3AED}   % violet-600
+
+% ---- NMACR dimension colors (stacked-bar order: A, R, M, C, N) ----
+\definecolor{nmacrA}{HTML}{10B981}   % Assumption    — emerald-500
+\definecolor{nmacrR}{HTML}{8B5CF6}   % Reasoning     — violet-500
+\definecolor{nmacrM}{HTML}{06B6D4}   % Method        — cyan-500
+\definecolor{nmacrC}{HTML}{3B82F6}   % Calibration   — blue-500
+\definecolor{nmacrN}{HTML}{14B8A6}   % Numerical     — teal-500
+
+% ---- L1 failure-bucket palette (4-way) ----
+\definecolor{bucketAssumption}{HTML}{D97706}   % amber-600
+\definecolor{bucketMath}{HTML}{DC2626}         % red-600
+\definecolor{bucketFormat}{HTML}{475569}       % slate-600
+\definecolor{bucketConcept}{HTML}{7C3AED}      % violet-600
+
+% ---- Calibration confidence-bucket palette (3-way: 0.3 / 0.5 / 0.6) ----
+\definecolor{calibConf03}{HTML}{0D9488}  % teal-600
+\definecolor{calibConf05}{HTML}{7C3AED}  % violet-600
+\definecolor{calibConf06}{HTML}{D97706}  % amber-600
