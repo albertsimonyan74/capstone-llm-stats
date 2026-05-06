@@ -54,13 +54,18 @@ def main():
     fam_order   = data["family_order"]
 
     # Group task types by family, preserving family order then alphabetical
-    # within each family.
+    # within each family. Skip task types with all-null cells (e.g.
+    # BETA_BINOM) — empty heatmap rows read as a rendering bug.
+    def _has_data(tt: str) -> bool:
+        row = cells.get(tt, {})
+        return any(row.get(m) is not None for m in models)
+
     task_types: list[str] = []
     family_blocks: list[tuple[str, int, int]] = []  # (family, row_start, row_end_exclusive)
     cursor = 0
     for fam in fam_order:
         types_in_fam = sorted(
-            [t for t, f in fam_of.items() if f == fam]
+            [t for t, f in fam_of.items() if f == fam and _has_data(t)]
         )
         if not types_in_fam:
             continue
@@ -79,7 +84,7 @@ def main():
             if v is not None:
                 matrix[i, j] = float(v)
 
-    fig, ax = plt.subplots(figsize=(7.4, 14.5), dpi=150,
+    fig, ax = plt.subplots(figsize=(9.0, 14.5), dpi=150,
                            facecolor=PRINT_BG)
     ax.set_facecolor(PRINT_BG)
 
@@ -108,9 +113,9 @@ def main():
     # X axis (top): model names in their print colors
     ax.set_xticks(range(n_cols))
     ax.set_xticklabels([MODEL_LABEL[m] for m in models], fontsize=10,
-                       fontweight="bold")
+                       fontweight="bold", ha="center")
     ax.tick_params(top=True, bottom=False, labeltop=True, labelbottom=False,
-                   left=False, right=False, length=0)
+                   left=False, right=False, length=0, pad=6)
     for tick, m in zip(ax.get_xticklabels(), models):
         tick.set_color(MODEL_COLORS_PRINT[m])
 
@@ -128,10 +133,16 @@ def main():
     for spine in ax.spines.values():
         spine.set_visible(False)
 
-    # Family brackets + rotated labels on the left
+    # Family brackets + rotated labels on the left. Skip groups with fewer
+    # than 3 rows — single-row families (Regression, Causal/Pred.) don't
+    # have room for a rotated label without colliding into neighbors. Task
+    # name itself stands in for the family in those cases.
+    MIN_ROWS_FOR_BRACKET = 3
     bracket_x = -1.7
     label_x   = -2.4
     for fam, r0, r1 in family_blocks:
+        if (r1 - r0) < MIN_ROWS_FOR_BRACKET:
+            continue
         y_top = r0 - 0.4
         y_bot = r1 - 0.6
         # Vertical bracket line
