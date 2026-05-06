@@ -20,8 +20,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from print_theme import (
-    PRINT_BG, PRINT_FG, PRINT_FG_MUTED, MODEL_COLORS_PRINT,
-    ACCENT_GOLD_PRINT,
+    PRINT_BG, PRINT_FG, PRINT_FG_MUTED,
     apply_print_theme, dim_remaining_spines, dual_save,
 )
 
@@ -73,52 +72,57 @@ def main():
     ax.set_facecolor(PRINT_BG)
 
     n = len(order)
-    bar_h = 0.36
     y_centers = np.arange(n)
+
+    # Dumbbell chart: one row per model; two markers (verbalized vs
+    # self-consistency) connected by a model-color bar. Filled square
+    # marker = verbalized; ringed circle = self-consistency. Bar between
+    # them encodes the gap visually — the wider the spread, the worse
+    # the rank flip.
+    MARKER_SIZE_V = 240   # filled square
+    MARKER_SIZE_S = 320   # hollow ring
+    BAR_HEIGHT    = 0.18
 
     for i, m in enumerate(order):
         color = MODEL_COLORS_VIVID[m]
-        y_v = y_centers[i] - bar_h / 2 - 0.02
-        y_s = y_centers[i] + bar_h / 2 + 0.02
+        y = y_centers[i]
 
-        # Verbalized: solid fill. Self-consistency: hollow outline (white
-        # fill + thick colored border). Crisp pairing without hatch noise.
-        ax.barh(y_v, verb_ece[m], height=bar_h,
-                facecolor=color, edgecolor="none", zorder=2)
-        ax.barh(y_s, sc_ece[m], height=bar_h,
-                facecolor="white", edgecolor=color, linewidth=2.4, zorder=2)
+        # Connecting horizontal bar (gradient feel via tinted fill)
+        x_lo, x_hi = sorted([verb_ece[m], sc_ece[m]])
+        ax.barh(y, x_hi - x_lo, left=x_lo, height=BAR_HEIGHT,
+                facecolor=color, alpha=0.30, edgecolor="none", zorder=1)
 
-        ax.text(verb_ece[m] + 0.012, y_v, f"{verb_ece[m]:.3f}",
-                va="center", ha="left",
-                fontsize=10, fontweight="bold", color=PRINT_FG, zorder=3)
-        ax.text(sc_ece[m] + 0.012, y_s, f"{sc_ece[m]:.3f}",
-                va="center", ha="left",
-                fontsize=10, fontweight="bold", color=PRINT_FG, zorder=3)
+        # Verbalized marker — filled square
+        ax.scatter(verb_ece[m], y, s=MARKER_SIZE_V, marker="s",
+                   facecolor=color, edgecolor="white", linewidth=1.6,
+                   zorder=3)
 
-    # Rank callouts on Claude (top of order, since it has highest avg rank
-    # asymmetry: #1 verb / #5 sc)
-    if order[0] == "claude":
-        i = 0
-        y_v = y_centers[i] - bar_h / 2 - 0.02
-        y_s = y_centers[i] + bar_h / 2 + 0.02
-        ax.text(0.001, y_v, f"#{verb_rank['claude']}",
+        # Self-consistency marker — solid filled circle (smaller white
+        # interior dot for double-ring effect)
+        ax.scatter(sc_ece[m], y, s=MARKER_SIZE_S, marker="o",
+                   facecolor=color, edgecolor=PRINT_FG, linewidth=1.4,
+                   zorder=3)
+        ax.scatter(sc_ece[m], y, s=MARKER_SIZE_S * 0.32, marker="o",
+                   facecolor="white", edgecolor="none", zorder=4)
+
+        # Numeric labels — verbalized (left of marker), SC (right of marker)
+        ax.text(verb_ece[m] - 0.012, y, f"{verb_ece[m]:.3f}",
+                va="center", ha="right",
+                fontsize=10, fontweight="bold", color=PRINT_FG, zorder=5)
+        ax.text(sc_ece[m] + 0.014, y, f"{sc_ece[m]:.3f}",
                 va="center", ha="left",
-                fontsize=11, fontweight="bold",
-                color=ACCENT_GOLD_PRINT, zorder=4)
-        ax.text(0.001, y_s, f"#{sc_rank['claude']}",
-                va="center", ha="left",
-                fontsize=11, fontweight="bold",
-                color=ACCENT_GOLD_PRINT, zorder=4)
+                fontsize=10, fontweight="bold", color=PRINT_FG, zorder=5)
 
     ax.set_yticks(y_centers)
     ax.set_yticklabels([MODEL_LABEL[m] for m in order],
                        fontsize=11, fontweight="bold")
     for tick, m in zip(ax.get_yticklabels(), order):
-        tick.set_color(MODEL_COLORS_PRINT[m])
+        tick.set_color(MODEL_COLORS_VIVID[m])
     ax.invert_yaxis()
 
+    xmin = -0.04
     xmax = max(max(verb_ece.values()), max(sc_ece.values())) * 1.1
-    ax.set_xlim(0, xmax)
+    ax.set_xlim(xmin, xmax)
     ax.set_xlabel("ECE (smaller = better)",
                   fontsize=11, color=PRINT_FG_MUTED)
 
@@ -126,23 +130,28 @@ def main():
                  fontsize=15, fontweight="bold", color=PRINT_FG,
                  pad=18, loc="left")
 
-    # Legend — placed above the chart, right-aligned, outside plot bars
-    from matplotlib.patches import Patch
+    # Legend — small marker swatches matching plot encoding
+    from matplotlib.lines import Line2D
     legend_handles = [
-        Patch(facecolor=PRINT_FG_MUTED, edgecolor="none",
-              label="Verbalized ECE"),
-        Patch(facecolor="white", edgecolor=PRINT_FG_MUTED, linewidth=2.4,
-              label="Self-consistency ECE"),
+        Line2D([0], [0], marker="s", linestyle="none",
+               markerfacecolor=PRINT_FG_MUTED, markeredgecolor="white",
+               markeredgewidth=1.6, markersize=11,
+               label="Verbalized ECE"),
+        Line2D([0], [0], marker="o", linestyle="none",
+               markerfacecolor=PRINT_FG_MUTED, markeredgecolor=PRINT_FG,
+               markeredgewidth=1.4, markersize=12,
+               label="Self-consistency ECE"),
     ]
     leg = ax.legend(
         handles=legend_handles,
         loc="lower left", bbox_to_anchor=(1.0, 0.0),
         frameon=False, fontsize=10, borderaxespad=0.0,
+        handletextpad=0.6,
     )
     for txt in leg.get_texts():
         txt.set_color(PRINT_FG)
 
-    ax.grid(False)
+    ax.grid(axis="x", color="#e2e8f0", linewidth=0.8, alpha=0.7, zorder=0)
     dim_remaining_spines(ax)
     ax.set_axisbelow(True)
 
