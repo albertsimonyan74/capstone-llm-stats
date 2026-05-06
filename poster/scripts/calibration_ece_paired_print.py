@@ -1,14 +1,14 @@
 """Paired ECE (verbalized vs self-consistency) — print theme.
 
+Mirrors scripts/plot_self_consistency_calibration.py exactly, swapping
+the dark site theme for the white print theme + vivid -400 model colors.
+
 Sources:
   experiments/results_v2/calibration.json:[model].ece
-    → verbalized ECE (claimed-confidence buckets)
-  experiments/results_v2/self_consistency_calibration.json:per_model.[model].ece_consistency
-    → self-consistency ECE (3-run agreement-based)
-
-Two-panel layout mirrors the website calibration figure: vertical bars,
-fixed model order, vivid -400 colors, white background. Right panel
-includes a 0.6 reference line and a "severe overconfidence" callout.
+    → verbalized ECE
+  experiments/results_v2/self_consistency_calibration.json
+    :ece_comparison_full[model].consistency_ece_full
+    → self-consistency ECE (Phase 1C full coverage)
 """
 from __future__ import annotations
 
@@ -32,18 +32,9 @@ VERB_FILE = ROOT / "experiments" / "results_v2" / "calibration.json"
 SC_FILE   = ROOT / "experiments" / "results_v2" / "self_consistency_calibration.json"
 OUT_DIR   = ROOT / "poster" / "figures"
 
-# Fixed model order matching the website panel
-MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
-MODEL_LABEL = {
-    "claude":   "claude",
-    "chatgpt":  "chatgpt",
-    "gemini":   "gemini",
-    "deepseek": "deepseek",
-    "mistral":  "mistral",
-}
+MODEL_ORDER = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
 
-# Vivid model colors (tailwind -400) — readable on white, mirror the
-# website's panel hue family at higher saturation than -300 pastels.
+# Vivid -400 model colors (readable on white)
 MODEL_COLORS_VIVID = {
     "claude":   "#2dd4bf",  # teal-400
     "chatgpt":  "#4ade80",  # green-400
@@ -53,93 +44,66 @@ MODEL_COLORS_VIVID = {
 }
 
 
-def _bar_panel(ax, values, ymax, ylabel, title_main, title_sub):
-    n = len(MODELS)
-    x = np.arange(n)
-    colors = [MODEL_COLORS_VIVID[m] for m in MODELS]
+def main() -> None:
+    verb_data = json.loads(VERB_FILE.read_text())
+    sc_data   = json.loads(SC_FILE.read_text())
+    sc_cmp    = sc_data["ece_comparison_full"]
 
-    ax.bar(x, [values[m] for m in MODELS], width=0.74,
-           color=colors, edgecolor="none", zorder=2)
+    verb   = [verb_data[m]["ece"] for m in MODEL_ORDER]
+    cons   = [sc_cmp[m]["consistency_ece_full"] for m in MODEL_ORDER]
+    colors = [MODEL_COLORS_VIVID[m] for m in MODEL_ORDER]
 
-    # Numeric labels above each bar
-    for i, m in enumerate(MODELS):
-        v = values[m]
-        ax.text(i, v + ymax * 0.018, f"{v:.3f}",
-                ha="center", va="bottom",
-                fontsize=11, fontweight="bold", color=PRINT_FG, zorder=3)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11, 6.875),
+                                   facecolor=PRINT_BG)
+    x = np.arange(len(MODEL_ORDER))
 
-    ax.set_xticks(x)
-    ax.set_xticklabels([MODEL_LABEL[m] for m in MODELS],
-                       fontsize=11, fontweight="bold")
-    for tick, m in zip(ax.get_xticklabels(), MODELS):
+    # === LEFT: Verbalized ECE ===
+    ax1.set_facecolor(PRINT_BG)
+    bars1 = ax1.bar(x, verb, color=colors, edgecolor=PRINT_BG, linewidth=1.5)
+    ax1.set_xticks(x)
+    ax1.set_xticklabels(MODEL_ORDER, fontsize=10)
+    for tick, m in zip(ax1.get_xticklabels(), MODEL_ORDER):
         tick.set_color(MODEL_COLORS_VIVID[m])
+    ax1.set_ylabel("ECE (verbalized)", fontsize=11, color=PRINT_FG_MUTED)
+    ax1.set_ylim(0, max(verb) * 1.30)
+    ax1.set_title("Verbalized extraction\n(keyword, n=855 truly-base runs)",
+                  fontsize=11, fontweight="bold", color=PRINT_FG, pad=10)
+    ax1.grid(axis="y", linestyle="-", alpha=0.7, color="#e2e8f0")
+    ax1.set_axisbelow(True)
+    dim_remaining_spines(ax1)
+    for bar, val in zip(bars1, verb):
+        ax1.text(bar.get_x() + bar.get_width() / 2, val + max(verb) * 0.025,
+                 f"{val:.3f}", ha="center", va="bottom",
+                 fontsize=9, fontweight="semibold", color=PRINT_FG)
 
-    ax.set_ylim(0, ymax)
-    ax.set_ylabel(ylabel, fontsize=11, color=PRINT_FG_MUTED)
-
-    # Two-line panel title
-    ax.set_title(f"{title_main}\n{title_sub}",
-                 fontsize=13, fontweight="bold", color=PRINT_FG, pad=16)
-
-    ax.grid(axis="y", color="#e2e8f0", linewidth=0.8, alpha=0.7, zorder=0)
-    ax.tick_params(axis="y", labelsize=10, color=PRINT_FG_MUTED)
-    ax.tick_params(axis="x", length=0)
-    dim_remaining_spines(ax)
-    ax.set_axisbelow(True)
-
-
-def main():
-    verb = json.loads(VERB_FILE.read_text())
-    sc   = json.loads(SC_FILE.read_text())
-
-    verb_ece = {m: float(verb[m]["ece"]) for m in MODELS}
-    sc_ece   = {m: float(sc["per_model"][m]["ece_consistency"]) for m in MODELS}
-
-    fig, (ax_l, ax_r) = plt.subplots(
-        1, 2, figsize=(14, 6.4), dpi=150, facecolor=PRINT_BG,
-        gridspec_kw={"wspace": 0.18},
-    )
-    for ax in (ax_l, ax_r):
-        ax.set_facecolor(PRINT_BG)
-
-    # ── Left panel: verbalized ───────────────────────────────────────
-    _bar_panel(
-        ax_l, verb_ece,
-        ymax=0.27,
-        ylabel="ECE (verbalized)",
-        title_main="Verbalized extraction",
-        title_sub="(keyword, n=855 truly-base runs)",
-    )
-
-    # ── Right panel: self-consistency ────────────────────────────────
-    _bar_panel(
-        ax_r, sc_ece,
-        ymax=1.0,
-        ylabel="ECE (consistency)",
-        title_main="Self-consistency extraction",
-        title_sub="(3-rerun, T=0.7, n=2,415 reruns)",
-    )
-
-    # 0.6 dashed reference line + label
-    ax_r.axhline(0.6, color=PRINT_FG_MUTED, linestyle=(0, (1, 3)),
-                 linewidth=1.2, zorder=1)
-    ax_r.text(-0.45, 0.6, "0.6",
-              ha="left", va="center",
-              fontsize=10, color=PRINT_FG_MUTED, zorder=2)
-
-    # Callout box: "all models > 0.6 — severe overconfidence"
-    callout_text = "all models > 0.6 — severe overconfidence"
-    ax_r.text(
-        0.5, 0.92, callout_text,
-        transform=ax_r.transAxes,
-        ha="center", va="center",
-        fontsize=11, color=PRINT_FG, fontweight="bold",
-        bbox=dict(
-            boxstyle="round,pad=0.5,rounding_size=0.35",
-            facecolor="white", edgecolor=PRINT_FG_MUTED, linewidth=1.0,
-        ),
-        zorder=5,
-    )
+    # === RIGHT: Consistency ECE ===
+    ax2.set_facecolor(PRINT_BG)
+    bars2 = ax2.bar(x, cons, color=colors, edgecolor=PRINT_BG, linewidth=1.5)
+    ax2.axhline(0.6, color=PRINT_FG_MUTED, linestyle=":", linewidth=1.2,
+                alpha=0.9, zorder=0)
+    ax2.text(-0.45, 0.605, "0.6", fontsize=8, color=PRINT_FG_MUTED,
+             ha="left", va="bottom", style="italic")
+    ax2.text(2, 0.93,
+             "all models > 0.6 — severe overconfidence",
+             fontsize=9, color=PRINT_FG, style="italic",
+             ha="center", va="center",
+             bbox=dict(facecolor=PRINT_BG, edgecolor=PRINT_FG_MUTED,
+                       boxstyle="round,pad=0.4", alpha=0.95))
+    ax2.set_xticks(x)
+    ax2.set_xticklabels(MODEL_ORDER, fontsize=10)
+    for tick, m in zip(ax2.get_xticklabels(), MODEL_ORDER):
+        tick.set_color(MODEL_COLORS_VIVID[m])
+    ax2.set_ylabel("ECE (consistency)", fontsize=11, color=PRINT_FG_MUTED)
+    ax2.set_ylim(0, 1.0)
+    ax2.set_title("Self-consistency extraction\n(3-rerun, T=0.7, n=2,415 reruns)",
+                  fontsize=11, fontweight="bold", color=PRINT_FG, pad=10)
+    ax2.grid(axis="y", linestyle="-", alpha=0.7, color="#e2e8f0")
+    ax2.set_axisbelow(True)
+    dim_remaining_spines(ax2)
+    for bar, val in zip(bars2, cons):
+        ax2.text(bar.get_x() + bar.get_width() / 2, val + 0.015,
+                 f"{val:.3f}", ha="center", va="bottom",
+                 fontsize=9, fontweight="semibold", color=PRINT_FG)
 
     fig.tight_layout()
     dual_save(fig, "calibration_ece_paired", out_dir=str(OUT_DIR))
