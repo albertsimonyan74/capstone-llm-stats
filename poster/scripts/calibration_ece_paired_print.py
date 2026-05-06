@@ -110,14 +110,6 @@ def main():
     ax.set_xlabel("ECE (smaller = better)",
                   fontsize=11, color=PRINT_FG_MUTED)
 
-    ax.set_title("Calibration ranks flip across measurement methods",
-                 fontsize=15, fontweight="bold", color=PRINT_FG,
-                 pad=22, loc="left")
-    fig.text(0.06, 0.91,
-             "Same models, different calibration metrics, different leaders",
-             ha="left", va="center",
-             fontsize=9, color=PRINT_FG_MUTED, style="italic")
-
     # Legend
     from matplotlib.patches import Patch
     legend_handles = [
@@ -138,7 +130,7 @@ def main():
     dim_remaining_spines(ax)
     ax.set_axisbelow(True)
 
-    fig.tight_layout(rect=(0, 0, 1, 0.93))
+    fig.tight_layout()
     dual_save(fig, "calibration_ece_paired", out_dir=str(OUT_DIR))
     plt.close(fig)
 
