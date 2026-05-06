@@ -67,7 +67,7 @@ def main():
     order   = data["task_order_desc_total"]
     per_task = data["per_task"]
 
-    fig, ax = plt.subplots(figsize=(13, 7.5), dpi=150, facecolor=PRINT_BG)
+    fig, ax = plt.subplots(figsize=(13, 9), dpi=150, facecolor=PRINT_BG)
     ax.set_facecolor(PRINT_BG)
 
     n = len(order)
@@ -121,7 +121,7 @@ def main():
     dim_remaining_spines(ax)
     ax.set_axisbelow(True)
 
-    fig.tight_layout(rect=(0, 0.34, 1, 0.93))
+    fig.subplots_adjust(left=0.07, right=0.98, top=0.88, bottom=0.32)
     dual_save(fig, "failure_taxonomy_stacked", out_dir=str(OUT_DIR))
     plt.close(fig)
 
