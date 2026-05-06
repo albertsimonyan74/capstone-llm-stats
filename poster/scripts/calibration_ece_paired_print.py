@@ -40,15 +40,15 @@ MODEL_LABEL = {
     "mistral":  "Mistral",
 }
 
-# Website pastel model colors (sitePalette.js MODEL_COLORS) — used here in
-# place of the canonical MODEL_COLORS_PRINT to mirror the website's
-# calibration panel aesthetic per design request.
-MODEL_COLORS_PASTEL = {
-    "claude":   "#5eead4",  # teal-300
-    "chatgpt":  "#86efac",  # green-300
-    "gemini":   "#fda4af",  # rose-300
-    "deepseek": "#93c5fd",  # blue-300
-    "mistral":  "#c4b5fd",  # violet-300
+# Vivid model colors (tailwind -400) — punchier than the website's -300
+# pastels but readable on white. Used here in place of MODEL_COLORS_PRINT
+# to mirror the website panel hue family while keeping print contrast.
+MODEL_COLORS_VIVID = {
+    "claude":   "#2dd4bf",  # teal-400
+    "chatgpt":  "#4ade80",  # green-400
+    "gemini":   "#fb7185",  # rose-400
+    "deepseek": "#60a5fa",  # blue-400
+    "mistral":  "#a78bfa",  # violet-400
 }
 
 
@@ -77,15 +77,16 @@ def main():
     y_centers = np.arange(n)
 
     for i, m in enumerate(order):
-        color = MODEL_COLORS_PASTEL[m]
+        color = MODEL_COLORS_VIVID[m]
         y_v = y_centers[i] - bar_h / 2 - 0.02
         y_s = y_centers[i] + bar_h / 2 + 0.02
 
+        # Verbalized: solid fill. Self-consistency: hollow outline (white
+        # fill + thick colored border). Crisp pairing without hatch noise.
         ax.barh(y_v, verb_ece[m], height=bar_h,
-                color=color, edgecolor="none", zorder=2)
+                facecolor=color, edgecolor="none", zorder=2)
         ax.barh(y_s, sc_ece[m], height=bar_h,
-                facecolor=color, hatch="///",
-                edgecolor="white", linewidth=0.8, zorder=2)
+                facecolor="white", edgecolor=color, linewidth=2.4, zorder=2)
 
         ax.text(verb_ece[m] + 0.012, y_v, f"{verb_ece[m]:.3f}",
                 va="center", ha="left",
@@ -130,8 +131,7 @@ def main():
     legend_handles = [
         Patch(facecolor=PRINT_FG_MUTED, edgecolor="none",
               label="Verbalized ECE"),
-        Patch(facecolor=PRINT_FG_MUTED, edgecolor="white",
-              hatch="///", linewidth=0.8,
+        Patch(facecolor="white", edgecolor=PRINT_FG_MUTED, linewidth=2.4,
               label="Self-consistency ECE"),
     ]
     leg = ax.legend(
