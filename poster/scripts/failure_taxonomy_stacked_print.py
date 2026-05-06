@@ -110,7 +110,7 @@ def main():
     ]
     leg = ax.legend(
         handles=legend_handles,
-        loc="upper center", bbox_to_anchor=(0.5, -0.60),
+        loc="upper center", bbox_to_anchor=(0.5, -0.45),
         ncol=4, frameon=False, fontsize=10, columnspacing=2.0,
         handlelength=1.4, handleheight=1.0, handletextpad=0.6,
     )
@@ -121,7 +121,7 @@ def main():
     dim_remaining_spines(ax)
     ax.set_axisbelow(True)
 
-    fig.subplots_adjust(left=0.07, right=0.98, top=0.88, bottom=0.32)
+    fig.subplots_adjust(left=0.07, right=0.98, top=0.88, bottom=0.24)
     dual_save(fig, "failure_taxonomy_stacked", out_dir=str(OUT_DIR))
     plt.close(fig)
 
