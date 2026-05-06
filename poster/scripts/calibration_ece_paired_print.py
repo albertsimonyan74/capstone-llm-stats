@@ -40,6 +40,17 @@ MODEL_LABEL = {
     "mistral":  "Mistral",
 }
 
+# Website pastel model colors (sitePalette.js MODEL_COLORS) — used here in
+# place of the canonical MODEL_COLORS_PRINT to mirror the website's
+# calibration panel aesthetic per design request.
+MODEL_COLORS_PASTEL = {
+    "claude":   "#5eead4",  # teal-300
+    "chatgpt":  "#86efac",  # green-300
+    "gemini":   "#fda4af",  # rose-300
+    "deepseek": "#93c5fd",  # blue-300
+    "mistral":  "#c4b5fd",  # violet-300
+}
+
 
 def main():
     verb = json.loads(VERB_FILE.read_text())
@@ -66,7 +77,7 @@ def main():
     y_centers = np.arange(n)
 
     for i, m in enumerate(order):
-        color = MODEL_COLORS_PRINT[m]
+        color = MODEL_COLORS_PASTEL[m]
         y_v = y_centers[i] - bar_h / 2 - 0.02
         y_s = y_centers[i] + bar_h / 2 + 0.02
 
