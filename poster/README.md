@@ -2,7 +2,7 @@
 
 **Title:** Reason or pattern-match? Dimensional evaluation of LLM Bayesian reasoning
 **Format:** A0 vertical (841 × 1189 mm), light theme, HTML/CSS poster
-**Output:** SVG primary + PNG@600dpi fallback per figure
+**Output:** SVG primary + PNG@600dpi fallback per figure. **No PDF** — by policy, `dual_save()` emits only `.svg` and `.png`. SVG covers vector / selectable-text use cases; PNG covers raster fallback.
 
 ## Figure inventory
 
@@ -21,7 +21,7 @@
 
 - All figures use `apply_print_theme()` from `print_theme.py`
 - Model colors via `MODEL_COLORS_PRINT` (darker -600 tailwind shades)
-- Dual-save via `dual_save(fig, basename)` to `poster/figures/`
+- Save via `dual_save(fig, basename)` to `poster/figures/` — emits SVG + PNG only, no PDF
 - Fonts kept as text in SVG (`svg.fonttype: none`) — selectable, lossless
 - Figsize chosen for poster column width: ~14 inches for full-width rows
 

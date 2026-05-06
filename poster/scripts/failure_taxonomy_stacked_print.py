@@ -97,16 +97,10 @@ def main():
     ax.set_ylim(0, max(cumulative) * 1.15)
     ax.set_ylabel("Failure count (stacked)",
                   fontsize=10, color=SLATE_700)
-    ax.set_xlabel("Task type (sorted by total failures)",
-                  fontsize=10, color=SLATE_700)
 
     ax.set_title("Failure rate by task type · sorted by total failures",
                  fontsize=14, fontweight="bold", color=SLATE_900,
                  pad=24, loc="left")
-    fig.text(0.062, 0.93,
-             "% labels show failure RATE per task_type (failures / runs).",
-             ha="left", va="center",
-             fontsize=9, color=SLATE_500, style="italic")
 
     # Legend
     legend_handles = [
@@ -116,21 +110,12 @@ def main():
     ]
     leg = ax.legend(
         handles=legend_handles,
-        loc="upper center", bbox_to_anchor=(0.5, -0.30),
+        loc="upper center", bbox_to_anchor=(0.5, -0.22),
         ncol=4, frameon=False, fontsize=10, columnspacing=2.0,
         handlelength=1.4, handleheight=1.0, handletextpad=0.6,
     )
     for txt in leg.get_texts():
         txt.set_color(PRINT_FG)
-
-    # Mono small-caps legend header (per DESIGN_AUDIT §6.1)
-    fig.text(
-        0.5, 0.06,
-        "L 1   F A I L U R E   B U C K E T",
-        ha="center", va="bottom",
-        fontsize=9, fontweight="bold", color=SLATE_600,
-        family="monospace",
-    )
 
     ax.grid(False)
     dim_remaining_spines(ax)

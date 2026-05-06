@@ -85,7 +85,6 @@ def apply_print_theme():
         "grid.alpha":        0.6,
         "savefig.dpi":       600,
         "svg.fonttype":      "none",  # text stays as text in SVG
-        "pdf.fonttype":      42,       # embed fonts in PDF
         "font.family":       "sans-serif",
         "font.sans-serif":   ["Helvetica", "Arial", "DejaVu Sans"],
         "font.size":         12,
@@ -104,7 +103,12 @@ def dim_remaining_spines(ax, alpha: float = 0.3):
 
 
 def dual_save(fig, basename, out_dir="poster/figures"):
-    """Save figure as both SVG (primary) and PNG@600dpi (fallback)."""
+    """Save figure as SVG (primary) + PNG@600dpi (raster fallback).
+
+    No PDF output by policy — SVG covers vector use cases (selectable text,
+    infinite zoom) and PNG covers raster fallback for tools that can't
+    render SVG. PDF would duplicate SVG and add font-embedding pitfalls.
+    """
     import os
     os.makedirs(out_dir, exist_ok=True)
     fig.savefig(f"{out_dir}/{basename}.svg", format="svg", bbox_inches="tight")
