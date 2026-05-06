@@ -1,186 +1,214 @@
 {
-  "_methodology": "Per-task-type failure category counts from error_taxonomy_v2.json:records (n=143 audited). L1 categories collapsed to 4 for visualization: assumption / math / hallucination / other (formatting + conceptual).",
-  "_pipeline_source": "error_taxonomy_v2.json:records",
-  "category_mapping_l1_to_category": {
-    "ASSUMPTION_VIOLATION": "assumption",
-    "MATHEMATICAL_ERROR": "math",
-    "HALLUCINATION": "hallucination",
-    "CONCEPTUAL_ERROR": "other",
-    "FORMATTING_FAILURE": "other"
-  },
-  "categories": [
-    "assumption",
-    "math",
-    "hallucination",
-    "other"
+  "_methodology": "Per-task-type failure category counts + failure rate. Numerator: error_taxonomy_v2.json:records L1-bucketed counts. Denominator: total runs in runs.jsonl for that task_type (matches R script report_materials/r_analysis/05_failure_analysis.R Panel A).",
+  "_pipeline_source": "error_taxonomy_v2.json:records (counts) \u00d7 runs.jsonl (denom)",
+  "buckets": [
+    "assumption_violation",
+    "mathematical_error",
+    "formatting_failure",
+    "conceptual_error"
   ],
+  "l1_to_bucket": {
+    "ASSUMPTION_VIOLATION": "assumption_violation",
+    "MATHEMATICAL_ERROR": "mathematical_error",
+    "FORMATTING_FAILURE": "formatting_failure",
+    "CONCEPTUAL_ERROR": "conceptual_error"
+  },
   "total": 143,
   "overall": {
-    "assumption": 67,
-    "math": 48,
-    "hallucination": 0,
-    "other": 28
-  },
-  "overall_pct": {
-    "assumption": 46.85314685314685,
-    "math": 33.56643356643357,
-    "hallucination": 0.0,
-    "other": 19.58041958041958
+    "assumption_violation": 67,
+    "mathematical_error": 48,
+    "formatting_failure": 18,
+    "conceptual_error": 10
   },
   "per_task": {
-    "REGRESSION": {
-      "assumption": 6,
-      "math": 13,
-      "hallucination": 0,
-      "other": 6
-    },
     "BAYES_REG": {
-      "assumption": 17,
-      "math": 2,
-      "hallucination": 0,
-      "other": 6
+      "assumption_violation": 17,
+      "mathematical_error": 2,
+      "formatting_failure": 4,
+      "conceptual_error": 2,
+      "total_failures": 25,
+      "total_runs": 25,
+      "failure_rate_pct": 100.0
+    },
+    "REGRESSION": {
+      "assumption_violation": 6,
+      "mathematical_error": 13,
+      "formatting_failure": 5,
+      "conceptual_error": 1,
+      "total_failures": 25,
+      "total_runs": 25,
+      "failure_rate_pct": 100.0
     },
     "BOX_MULLER": {
-      "assumption": 2,
-      "math": 16,
-      "hallucination": 0,
-      "other": 1
+      "assumption_violation": 2,
+      "mathematical_error": 16,
+      "formatting_failure": 0,
+      "conceptual_error": 1,
+      "total_failures": 19,
+      "total_runs": 25,
+      "failure_rate_pct": 76.0
     },
     "FISHER_INFO": {
-      "assumption": 12,
-      "math": 0,
-      "hallucination": 0,
-      "other": 1
+      "assumption_violation": 12,
+      "mathematical_error": 0,
+      "formatting_failure": 0,
+      "conceptual_error": 1,
+      "total_failures": 13,
+      "total_runs": 25,
+      "failure_rate_pct": 52.0
     },
     "BAYES_FACTOR": {
-      "assumption": 5,
-      "math": 0,
-      "hallucination": 0,
-      "other": 4
+      "assumption_violation": 5,
+      "mathematical_error": 0,
+      "formatting_failure": 4,
+      "conceptual_error": 0,
+      "total_failures": 9,
+      "total_runs": 25,
+      "failure_rate_pct": 36.0
     },
     "LOG_ML": {
-      "assumption": 7,
-      "math": 1,
-      "hallucination": 0,
-      "other": 1
-    },
-    "STATIONARY": {
-      "assumption": 4,
-      "math": 3,
-      "hallucination": 0,
-      "other": 1
+      "assumption_violation": 7,
+      "mathematical_error": 1,
+      "formatting_failure": 1,
+      "conceptual_error": 0,
+      "total_failures": 9,
+      "total_runs": 25,
+      "failure_rate_pct": 36.0
     },
     "MSE_COMPARE": {
-      "assumption": 8,
-      "math": 0,
-      "hallucination": 0,
-      "other": 0
+      "assumption_violation": 8,
+      "mathematical_error": 0,
+      "formatting_failure": 0,
+      "conceptual_error": 0,
+      "total_failures": 8,
+      "total_runs": 25,
+      "failure_rate_pct": 32.0
+    },
+    "STATIONARY": {
+      "assumption_violation": 4,
+      "mathematical_error": 3,
+      "formatting_failure": 1,
+      "conceptual_error": 0,
+      "total_failures": 8,
+      "total_runs": 15,
+      "failure_rate_pct": 53.333333333333336
     },
     "MARKOV": {
-      "assumption": 2,
-      "math": 2,
-      "hallucination": 0,
-      "other": 2
+      "assumption_violation": 2,
+      "mathematical_error": 2,
+      "formatting_failure": 2,
+      "conceptual_error": 0,
+      "total_failures": 6,
+      "total_runs": 25,
+      "failure_rate_pct": 24.0
     },
     "OPT_SCALED": {
-      "assumption": 0,
-      "math": 5,
-      "hallucination": 0,
-      "other": 1
+      "assumption_violation": 0,
+      "mathematical_error": 5,
+      "formatting_failure": 0,
+      "conceptual_error": 1,
+      "total_failures": 6,
+      "total_runs": 25,
+      "failure_rate_pct": 24.0
     },
     "ORDER_STAT": {
-      "assumption": 1,
-      "math": 1,
-      "hallucination": 0,
-      "other": 2
+      "assumption_violation": 1,
+      "mathematical_error": 1,
+      "formatting_failure": 0,
+      "conceptual_error": 2,
+      "total_failures": 4,
+      "total_runs": 25,
+      "failure_rate_pct": 16.0
     },
     "MLE_EFFICIENCY": {
-      "assumption": 1,
-      "math": 1,
-      "hallucination": 0,
-      "other": 1
-    },
-    "MLE_MAP": {
-      "assumption": 1,
-      "math": 1,
-      "hallucination": 0,
-      "other": 0
+      "assumption_violation": 1,
+      "mathematical_error": 1,
+      "formatting_failure": 0,
+      "conceptual_error": 1,
+      "total_failures": 3,
+      "total_runs": 15,
+      "failure_rate_pct": 20.0
     },
     "GAMBLER": {
-      "assumption": 0,
-      "math": 2,
-      "hallucination": 0,
-      "other": 0
+      "assumption_violation": 0,
+      "mathematical_error": 2,
+      "formatting_failure": 0,
+      "conceptual_error": 0,
+      "total_failures": 2,
+      "total_runs": 15,
+      "failure_rate_pct": 13.333333333333334
     },
-    "CONCEPTUAL": {
-      "assumption": 0,
-      "math": 0,
-      "hallucination": 0,
-      "other": 1
-    },
-    "PPC": {
-      "assumption": 0,
-      "math": 1,
-      "hallucination": 0,
-      "other": 0
+    "MLE_MAP": {
+      "assumption_violation": 1,
+      "mathematical_error": 1,
+      "formatting_failure": 0,
+      "conceptual_error": 0,
+      "total_failures": 2,
+      "total_runs": 25,
+      "failure_rate_pct": 8.0
     },
     "CI_CREDIBLE": {
-      "assumption": 0,
-      "math": 0,
-      "hallucination": 0,
-      "other": 1
+      "assumption_violation": 0,
+      "mathematical_error": 0,
+      "formatting_failure": 1,
+      "conceptual_error": 0,
+      "total_failures": 1,
+      "total_runs": 25,
+      "failure_rate_pct": 4.0
+    },
+    "CONCEPTUAL": {
+      "assumption_violation": 0,
+      "mathematical_error": 0,
+      "formatting_failure": 0,
+      "conceptual_error": 1,
+      "total_failures": 1,
+      "total_runs": 50,
+      "failure_rate_pct": 2.0
+    },
+    "PPC": {
+      "assumption_violation": 0,
+      "mathematical_error": 1,
+      "formatting_failure": 0,
+      "conceptual_error": 0,
+      "total_failures": 1,
+      "total_runs": 25,
+      "failure_rate_pct": 4.0
     },
     "RANGE_DIST": {
-      "assumption": 1,
-      "math": 0,
-      "hallucination": 0,
-      "other": 0
+      "assumption_violation": 1,
+      "mathematical_error": 0,
+      "formatting_failure": 0,
+      "conceptual_error": 0,
+      "total_failures": 1,
+      "total_runs": 15,
+      "failure_rate_pct": 6.666666666666667
     }
   },
-  "task_totals": {
-    "REGRESSION": 25,
-    "BAYES_REG": 25,
-    "BOX_MULLER": 19,
-    "FISHER_INFO": 13,
-    "BAYES_FACTOR": 9,
-    "LOG_ML": 9,
-    "STATIONARY": 8,
-    "MSE_COMPARE": 8,
-    "MARKOV": 6,
-    "OPT_SCALED": 6,
-    "ORDER_STAT": 4,
-    "MLE_EFFICIENCY": 3,
-    "MLE_MAP": 2,
-    "GAMBLER": 2,
-    "CONCEPTUAL": 1,
-    "PPC": 1,
-    "CI_CREDIBLE": 1,
-    "RANGE_DIST": 1
-  },
   "task_order_desc_total": [
-    "REGRESSION",
     "BAYES_REG",
+    "REGRESSION",
     "BOX_MULLER",
     "FISHER_INFO",
     "BAYES_FACTOR",
     "LOG_ML",
-    "STATIONARY",
     "MSE_COMPARE",
+    "STATIONARY",
     "MARKOV",
     "OPT_SCALED",
     "ORDER_STAT",
     "MLE_EFFICIENCY",
-    "MLE_MAP",
     "GAMBLER",
+    "MLE_MAP",
+    "CI_CREDIBLE",
     "CONCEPTUAL",
     "PPC",
-    "CI_CREDIBLE",
     "RANGE_DIST"
   ],
   "assertions_passed": {
     "total_143": true,
-    "assumption_pct_46.85": true,
-    "math_pct_33.57": true,
-    "hallucination_pct_0": true
+    "REGRESSION_rate_100": true,
+    "BAYES_REG_rate_100": true,
+    "BOX_MULLER_rate_76": true,
+    "four_buckets_only": true
   }
 }

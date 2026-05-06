@@ -1,124 +1,168 @@
-"""Derive per-task-type failure category counts for poster.
+"""Derive per-task-type failure category counts + failure rate for poster.
 
-Source: experiments/results_v2/error_taxonomy_v2.json:records
-  Each record has task_type and l1 (one of ASSUMPTION_VIOLATION,
-  MATHEMATICAL_ERROR, FORMATTING_FAILURE, CONCEPTUAL_ERROR).
-  L1 HALLUCINATION is defined in mapping but never assigned.
+Mirrors the website's failure-rate-by-task-type figure
+(visualizations.js:failure_by_tasktype, R-generated PNG via
+report_materials/r_analysis/05_failure_analysis.R).
 
-Output category mapping (collapsed to 4 for the figure):
-  ASSUMPTION_VIOLATION → "assumption"
-  MATHEMATICAL_ERROR   → "math"
-  HALLUCINATION        → "hallucination"  (always 0; included for
-                                            visual consistency)
-  CONCEPTUAL_ERROR + FORMATTING_FAILURE → "other"
+Numerator (per task_type): count of records in
+experiments/results_v2/error_taxonomy_v2.json:records, broken down by L1
+bucket. The four real L1 buckets (no HALLUCINATION, no "other"
+collapse):
 
-Headline assertions (must hold to publish):
-  total              == 143
-  assumption pct     ≈ 46.85% (67/143)
-  math pct           ≈ 33.57% (48/143)
-  hallucination pct  == 0.00%
+  ASSUMPTION_VIOLATION   → assumption_violation
+  MATHEMATICAL_ERROR     → mathematical_error
+  FORMATTING_FAILURE     → formatting_failure
+  CONCEPTUAL_ERROR       → conceptual_error
+
+Denominator (per task_type): total runs in experiments/results_v1/runs.jsonl
+for that task_type (matches R script `05_failure_analysis.R` Panel A,
+which uses df_complete with no v1-pert filter).
+
+failure_rate_pct = 100 * total_failures / total_runs
+
+Hard assertions (must hold to publish):
+  - 4 buckets only (assumption_violation, mathematical_error,
+    formatting_failure, conceptual_error)
+  - sum across all task_types == 143
+  - REGRESSION  failure_rate_pct == 100.0
+  - BAYES_REG   failure_rate_pct == 100.0
+  - BOX_MULLER  failure_rate_pct == 76.0
 
 Output: poster/figures/derived/failure_taxonomy_per_task.json
 """
 from __future__ import annotations
 
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SRC  = ROOT / "experiments" / "results_v2" / "error_taxonomy_v2.json"
-OUT  = ROOT / "poster" / "figures" / "derived" / "failure_taxonomy_per_task.json"
+sys.path.insert(0, str(ROOT / "baseline"))
+from utils_task_id import task_type_from_id  # noqa: E402
 
-L1_TO_CATEGORY = {
-    "ASSUMPTION_VIOLATION": "assumption",
-    "MATHEMATICAL_ERROR":   "math",
-    "HALLUCINATION":        "hallucination",
-    "CONCEPTUAL_ERROR":     "other",
-    "FORMATTING_FAILURE":   "other",
+TAX_FILE  = ROOT / "experiments" / "results_v2" / "error_taxonomy_v2.json"
+RUNS_FILE = ROOT / "experiments" / "results_v1" / "runs.jsonl"
+OUT       = ROOT / "poster" / "figures" / "derived" / "failure_taxonomy_per_task.json"
+
+L1_TO_BUCKET = {
+    "ASSUMPTION_VIOLATION": "assumption_violation",
+    "MATHEMATICAL_ERROR":   "mathematical_error",
+    "FORMATTING_FAILURE":   "formatting_failure",
+    "CONCEPTUAL_ERROR":     "conceptual_error",
 }
 
-CATEGORIES = ["assumption", "math", "hallucination", "other"]
+BUCKETS = [
+    "assumption_violation",
+    "mathematical_error",
+    "formatting_failure",
+    "conceptual_error",
+]
 
 EXPECTED_TOTAL = 143
-TOL = 0.001  # absolute tol on percentages
+EXPECTED_RATES_PCT = {
+    "REGRESSION":  100.0,
+    "BAYES_REG":   100.0,
+    "BOX_MULLER":   76.0,
+}
 
 
 def main() -> int:
-    data = json.loads(SRC.read_text())
-    records = data["records"]
-    total = len(records)
+    tax = json.loads(TAX_FILE.read_text())
+    records = tax["records"]
 
+    # Numerator: per-task-type bucket counts
     per_task: dict[str, dict[str, int]] = defaultdict(
-        lambda: {c: 0 for c in CATEGORIES}
+        lambda: {b: 0 for b in BUCKETS}
     )
-    overall: dict[str, int] = {c: 0 for c in CATEGORIES}
-
+    overall: dict[str, int] = {b: 0 for b in BUCKETS}
     for r in records:
-        l1 = r["l1"]
-        task = r["task_type"]
-        cat = L1_TO_CATEGORY.get(l1, "other")
-        per_task[task][cat] += 1
-        overall[cat] += 1
+        bucket = L1_TO_BUCKET.get(r["l1"])
+        if bucket is None:
+            sys.exit(f"unexpected L1 in record: {r['l1']}")
+        tt = r["task_type"]
+        per_task[tt][bucket] += 1
+        overall[bucket]      += 1
 
-    # Hard assertions
-    assert total == EXPECTED_TOTAL, (
-        f"total drift: got {total}, expected {EXPECTED_TOTAL}"
-    )
-    assumption_pct = overall["assumption"] / total
-    math_pct       = overall["math"]       / total
-    hallucination_pct = overall["hallucination"] / total
-    assert abs(assumption_pct - 67/143) < TOL, (
-        f"assumption pct drift: got {assumption_pct:.4f}, expected {67/143:.4f}"
-    )
-    assert abs(math_pct - 48/143) < TOL, (
-        f"math pct drift: got {math_pct:.4f}, expected {48/143:.4f}"
-    )
-    assert hallucination_pct == 0.0, (
-        f"hallucination pct drift: got {hallucination_pct}, expected 0"
-    )
+    # Denominator: total runs per task_type from runs.jsonl
+    total_runs: dict[str, int] = defaultdict(int)
+    for line in RUNS_FILE.read_text().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        rec = json.loads(line)
+        if not rec.get("model_family"):
+            continue
+        tt = rec.get("task_type") or task_type_from_id(rec["task_id"])
+        total_runs[tt] += 1
 
-    # Sort task types descending by total failures
-    task_totals = {t: sum(c.values()) for t, c in per_task.items()}
-    sorted_tasks = sorted(task_totals, key=lambda t: -task_totals[t])
+    # Assemble per-task structure
+    per_task_full: dict[str, dict[str, float | int]] = {}
+    for tt, counts in per_task.items():
+        total_failures = sum(counts.values())
+        denom = total_runs.get(tt, 0)
+        rate_pct = 100.0 * total_failures / denom if denom else 0.0
+        per_task_full[tt] = {
+            **counts,
+            "total_failures":   total_failures,
+            "total_runs":       denom,
+            "failure_rate_pct": rate_pct,
+        }
+
+    grand_total = sum(overall.values())
+
+    # ── Hard assertions ─────────────────────────────────────────────
+    assert grand_total == EXPECTED_TOTAL, (
+        f"total drift: got {grand_total}, expected {EXPECTED_TOTAL}"
+    )
+    for tt, expected_pct in EXPECTED_RATES_PCT.items():
+        got = per_task_full.get(tt, {}).get("failure_rate_pct")
+        assert got is not None, f"{tt} missing from per_task_full"
+        assert abs(got - expected_pct) < 0.01, (
+            f"{tt} rate drift: got {got:.2f}%, expected {expected_pct:.2f}%"
+        )
+
+    # Sort task types desc by total_failures (matches website panel A
+    # ordering: REGRESSION, BAYES_REG, BOX_MULLER, FISHER_INFO, ...)
+    ordered = sorted(
+        per_task_full,
+        key=lambda t: (-per_task_full[t]["total_failures"], t),
+    )
 
     out = {
         "_methodology": (
-            "Per-task-type failure category counts from "
-            "error_taxonomy_v2.json:records (n=143 audited). L1 categories "
-            "collapsed to 4 for visualization: assumption / math / "
-            "hallucination / other (formatting + conceptual)."
+            "Per-task-type failure category counts + failure rate. "
+            "Numerator: error_taxonomy_v2.json:records L1-bucketed counts. "
+            "Denominator: total runs in runs.jsonl for that task_type "
+            "(matches R script report_materials/r_analysis/"
+            "05_failure_analysis.R Panel A)."
         ),
-        "_pipeline_source": "error_taxonomy_v2.json:records",
-        "category_mapping_l1_to_category": L1_TO_CATEGORY,
-        "categories":   CATEGORIES,
-        "total":        total,
+        "_pipeline_source": (
+            "error_taxonomy_v2.json:records (counts) × runs.jsonl (denom)"
+        ),
+        "buckets":      BUCKETS,
+        "l1_to_bucket": L1_TO_BUCKET,
+        "total":        grand_total,
         "overall":      overall,
-        "overall_pct": {
-            c: 100.0 * overall[c] / total for c in CATEGORIES
-        },
-        "per_task":     {t: per_task[t] for t in sorted_tasks},
-        "task_totals":  {t: task_totals[t] for t in sorted_tasks},
-        "task_order_desc_total": sorted_tasks,
+        "per_task":     {t: per_task_full[t] for t in ordered},
+        "task_order_desc_total": ordered,
         "assertions_passed": {
-            "total_143":             total == EXPECTED_TOTAL,
-            "assumption_pct_46.85":  abs(assumption_pct - 67/143) < TOL,
-            "math_pct_33.57":        abs(math_pct - 48/143) < TOL,
-            "hallucination_pct_0":   hallucination_pct == 0.0,
+            "total_143":            grand_total == EXPECTED_TOTAL,
+            "REGRESSION_rate_100":  abs(per_task_full["REGRESSION"]["failure_rate_pct"] - 100.0) < 0.01,
+            "BAYES_REG_rate_100":   abs(per_task_full["BAYES_REG"]["failure_rate_pct"] - 100.0) < 0.01,
+            "BOX_MULLER_rate_76":   abs(per_task_full["BOX_MULLER"]["failure_rate_pct"] - 76.0) < 0.01,
+            "four_buckets_only":    set(BUCKETS) == set(L1_TO_BUCKET.values()),
         },
     }
-
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(out, indent=2))
     print(f"\nWrote {OUT}")
-    print(f"total: {total}")
+    print(f"total: {grand_total}")
     print(f"overall: {overall}")
-    print(
-        f"pcts: assumption={100*assumption_pct:.2f}% "
-        f"math={100*math_pct:.2f}% "
-        f"hallucination={100*hallucination_pct:.2f}%"
-    )
-    print("All 4 assertions passed.")
+    print(f"REGRESSION: {per_task_full['REGRESSION']}")
+    print(f"BAYES_REG:  {per_task_full['BAYES_REG']}")
+    print(f"BOX_MULLER: {per_task_full['BOX_MULLER']}")
+    print("All 5 assertions passed.")
     return 0
 
 

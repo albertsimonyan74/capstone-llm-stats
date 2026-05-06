@@ -14,8 +14,11 @@ PRINT_FG       = "#0f172a"  # slate-900 dark navy text
 PRINT_FG_MUTED = "#475569"  # slate-500 secondary text
 PRINT_GRID     = "#e2e8f0"  # slate-200 gridlines
 
-# Print-safe model colors — darker tailwind -600 shades. The website pastels
-# (#5eead4, #86efac, etc.) wash out on light bg and lose contrast in CMYK.
+# Print-safe model colors — tailwind -600 shades substituted for the
+# website's -300 pastels. The web palette (#5eead4 etc.) was tuned for
+# dark bg + glow; on white print bg those tints wash out and lose CMYK
+# contrast. Substitution rationale: poster/DESIGN_AUDIT.md §5.1 (Direct
+# equivalents — every model -300 web token has a -600 print equivalent).
 MODEL_COLORS_PRINT = {
     "claude":   "#0d9488",  # teal-600    (was #5eead4 on web)
     "chatgpt":  "#16a34a",  # green-600   (was #86efac)
@@ -34,11 +37,25 @@ COLOR_GOOD_PRINT    = "#059669"  # emerald-600
 COLOR_BAD_PRINT     = "#dc2626"  # red-600
 COLOR_NEUTRAL_PRINT = "#64748b"  # slate-500
 
-# Bucket colors (calibration small-multiples)
-BUCKET_COLORS_PRINT = {
+# Calibration confidence-bucket colors (small-multiples by claimed-conf
+# bucket: 0.3 / 0.5 / 0.6). Distinct from the failure-bucket palette
+# below.
+CALIB_CONF_BUCKET_COLORS_PRINT = {
     0.3: ACCENT_TEAL_PRINT,
     0.5: ACCENT_PURPLE_PRINT,
     0.6: ACCENT_GOLD_PRINT,
+}
+
+# L1 failure-bucket colors — print-saturated from website pastels per
+# poster/DESIGN_AUDIT.md §5.3 (4-bucket palette gap; web sitePalette.js
+# `BUCKET_COLORS` uses lighter -300/-400 tints for dark bg, print uses
+# -600 saturations on white). Used by the poster failure-taxonomy
+# stacked-bar figure.
+BUCKET_COLORS_PRINT = {
+    "assumption_violation": "#d97706",  # amber-600  (was web #fbbf24)
+    "mathematical_error":   "#dc2626",  # red-600    (was web #f87171)
+    "formatting_failure":   "#475569",  # slate-600  (was web #94a3b8)
+    "conceptual_error":     "#7c3aed",  # violet-600 (was web #a78bfa)
 }
 
 # NMACR segment colors — print-adapted from website hue sequence,
