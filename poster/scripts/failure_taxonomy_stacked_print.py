@@ -86,13 +86,9 @@ def main():
     ax.set_xlabel("Failure count", fontsize=11, color=PRINT_FG_MUTED)
     ax.set_xlim(0, max(data["task_totals"].values()) * 1.05)
 
-    ax.set_title(f"Failure modes by task type (n={total} audited)",
+    ax.set_title(f"Failure modes by task type (Total — {total})",
                  fontsize=15, fontweight="bold", color=PRINT_FG,
                  pad=22, loc="left")
-    fig.text(0.06, 0.93,
-             "Assumption violations dominate; hallucination effectively absent",
-             ha="left", va="center",
-             fontsize=9, color=PRINT_FG_MUTED, style="italic")
 
     legend_handles = [
         Patch(facecolor=CATEGORY_COLORS[c], edgecolor="none",
