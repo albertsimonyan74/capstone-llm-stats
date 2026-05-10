@@ -39,7 +39,7 @@ capstone-llm-stats/
 ├── data/                         ← UNCHANGED INTERNALLY. Path-stable for ~12 hard-coded callers.
 │   ├── benchmark_v1/             (171 tasks)
 │   ├── synthetic/                (perturbations: kept where it is)
-│   ├── error_taxonomy_results.json   ← scheduled to MOVE → archive/data_legacy/
+│   ├── error_taxonomy_results.json   ← scheduled to MOVE → llm-stats-vault/90-archive/data_legacy/
 │   └── README.md
 │
 ├── experiments/                  ← UNCHANGED INTERNALLY. results_v1/ + results_v2/ stay path-stable.
@@ -75,7 +75,7 @@ capstone-llm-stats/
 
 **Why minimal**: 100+ hard-coded `experiments/results_v2/` paths, 17+ `report_materials/figures/` paths, R pipeline cwd-dependent, backend Docker bundles `static_data/{experiments,data,llm-stats-vault}/`. Wholesale `results/accuracy/`, `results/calibration/`, `results/robustness/` reorg is **deferred to a refactor phase** — it would require touching every script + the website backend + the R pipeline + the Docker build. Not Phase 3.
 
-The new directories that DO appear: `paper/` (entirely new, no path collisions); `archive/{data_legacy,results_legacy,scripts_legacy}/` (new sub-dirs receiving moved items). All other top-levels stay untouched.
+The new directories that DO appear: `paper/` (entirely new, no path collisions); `llm-stats-vault/90-archive/{data_legacy,results_legacy,scripts_legacy,poster_prep_assets}/` (new sub-dirs receiving moved items). All other top-levels stay untouched.
 
 ---
 
@@ -389,7 +389,7 @@ pytest baseline/frequentist/test_frequentist.py capstone_mcp/test_server.py -v  
 # After every Phase 3b commit
 git status                                                                       # confirm clean
 git log --oneline -5                                                             # confirm new commit present
-ls archive/{data_legacy,results_legacy,scripts_legacy}/                          # confirm files moved
+ls llm-stats-vault/90-archive/{data_legacy,results_legacy,scripts_legacy,poster_prep_assets}/   # confirm files moved
 
 # After all of Phase 3
 ruff check .                                                                     # lint stays green
@@ -404,7 +404,7 @@ bash scripts/refresh_pipeline.sh                                                
 
 ## §F — What this plan does NOT do (deferred)
 
-- Does not touch `audit/`, `archive/visualizations-pre-*`, or `llm-stats-vault/` (separate prompts).
+- Does not touch `audit/` (separate prompt). Top-level `archive/` was removed 2026-05-10 (existing `archive/visualizations-pre-*/` moved to vault prior); see archival convention note above.
 - Does not move `experiments/results_v2/` or `report_materials/` contents (would require a 100+-line path refactor across scripts, R pipeline, and backend).
 - Does not consolidate `data/synthetic/perturbations*.json` filenames (per CLAUDE.md, hard-coded callers exist).
 - Does not refactor `evaluation/llm_judge_rubric.py` Groq → Together docstring lag (cosmetic).
