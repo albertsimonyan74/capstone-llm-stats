@@ -25,8 +25,9 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 | 708K  | `baseline/`                | [KEEP-CORE]        | Bayesian/frequentist task generators + ground-truth solvers. |
 | 2.1M  | `data/`                    | [KEEP-CORE] mostly | Tasks (171), perturbations. Some [STALE] v1 perturbation artifacts. |
 | 2.5M  | `llm-stats-vault/`         | [KEEP-REFERENCE]   | Obsidian session/notes vault. Self-contained, mostly markdown. |
-| 5.0M  | `archive/`                 | [KEEP-REFERENCE]   | Already-archived viz snapshots (pre-modernization). |
 | 6.7M  | `audit/`                   | [KEEP-REFERENCE]   | Audit reports + baseline JSONL snapshots. |
+
+> `archive/` removed 2026-05-10; snapshot at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`.
 | 28M   | `poster/`                  | [KEEP-CORE]        | Poster LaTeX + figures + scripts. Headline narrative source for paper. |
 | 34M   | `experiments/`             | [KEEP-CORE] mostly | `results_v1/` + `results_v2/` JSONLs (raw + scored). Two `runs.jsonl` backups [STALE]. |
 | 76M   | `literature/`              | [KEEP-REFERENCE]   | Lecture PDFs + 4 textbooks. Big but small footprint via `.gitignore`. |
@@ -99,10 +100,6 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - 20 markdown audit reports (cleanup, comprehensive, discovery, gemini forensic, group A completion, RQ formulations, etc.) + `recompute_log.md`. **[KEEP-REFERENCE]**.
 - `tier1_baseline_20260503_195141/` (4.6M, contains `runs.jsonl` snapshot). **[KEEP-REFERENCE]** as historical baseline.
 - `v1_deprecation_baseline_20260504_001522/` (1.7M). **[KEEP-REFERENCE]**.
-
-### `archive/`
-- `visualizations-pre-modernization-2026-05-05/` (3.9M). **[KEEP-REFERENCE]**.
-- `visualizations-pre-tier2a6/` (1.2M). **[KEEP-REFERENCE]**.
 
 ### `llm-stats-vault/`  (Obsidian)
 - `00-home/` (3 md), `40-literature/` (bibtex, citation-map, papers/, textbooks/), `90-archive/` (originals, audit, audit_history, experiments, intermediate_analyses, legacy_flask_website, phase_1c_superseded, proposal_provenance, sprint-history-aggregated, superseded_scripts), `atlas/` (4 md), `inbox/`, `knowledge/` (5 sub: business/debugging/decisions/integrations/patterns), `sessions/` (3 md). **[KEEP-REFERENCE]** — meta-notes, source for paper introduction motivations.

@@ -404,7 +404,7 @@ bash scripts/refresh_pipeline.sh                                                
 
 ## §F — What this plan does NOT do (deferred)
 
-- Does not touch `audit/` (separate prompt). Top-level `archive/` was removed 2026-05-10 (existing `archive/visualizations-pre-*/` moved to vault prior); see archival convention note above.
+- Does not touch `audit/` (separate prompt). Top-level `archive/` was removed 2026-05-10. Pre-modernization viz snapshots (`archive/visualizations-pre-*`) were superseded by the v2 results pipeline and not retained in vault; provenance preserved at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`. See archival convention note above.
 - Does not move `experiments/results_v2/` or `report_materials/` contents (would require a 100+-line path refactor across scripts, R pipeline, and backend).
 - Does not consolidate `data/synthetic/perturbations*.json` filenames (per CLAUDE.md, hard-coded callers exist).
 - Does not refactor `evaluation/llm_judge_rubric.py` Groq → Together docstring lag (cosmetic).

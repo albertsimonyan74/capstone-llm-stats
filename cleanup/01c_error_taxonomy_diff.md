@@ -1,5 +1,7 @@
 # Investigation 3 — error taxonomy diff
 
+> Convention: all archival destinations live under `llm-stats-vault/90-archive/`. The top-level `archive/` directory was removed 2026-05-10.
+
 **Verdict: v2 supersedes v1.** Archive `data/error_taxonomy_results.json`.
 
 ## File comparison
@@ -36,6 +38,6 @@ A's per-error counts are inflated because tags overlap (one failure can be tagge
 
 ## Recommendation
 
-- **Archive v1 file**: move `data/error_taxonomy_results.json` → `archive/data_legacy/error_taxonomy_results_v1.json` in Phase 3. No deletion.
+- **Archive v1 file**: move `data/error_taxonomy_results.json` → `llm-stats-vault/90-archive/data_legacy/error_taxonomy_results_v1.json` in Phase 3. No deletion.
 - **Keep `scripts/analyze_errors.py` for now**: it is the script CLAUDE.md documents, and is callable. Mark as superseded in a doc comment in a follow-up; do not delete.
 - **No code refactor needed**: `scripts/error_taxonomy.py` (the v2 generator) is what the paper depends on; A/B never share a code path.
