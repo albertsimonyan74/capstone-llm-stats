@@ -6,8 +6,13 @@ __pycache__/
 venv/
 *.egg-info/
 
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+
 # macOS
 .DS_Store
+**/.DS_Store
 
 # Runs & results data (large/sensitive)
 runs.jsonl
@@ -31,6 +36,7 @@ secrets.*
 # Node
 node_modules/
 .next/
+capstone-website/frontend/dist/
 
 # Large binary files
 literature/*.pdf
