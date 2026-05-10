@@ -589,7 +589,7 @@ def main() -> int:
     print("\n=== Did consistency populate the high-confidence bucket? ===")
     total_high = sum(per_model[m]["n_high"] for m in MODELS)
     print(f"  total n_high across all 5 models: {total_high}")
-    print(f"  (keyword baseline: 0 across all 5 — see audit/limitations_disclosures.md)")
+    print(f"  (keyword baseline: 0 across all 5 — see llm-stats-vault/90-archive/audit/limitations_disclosures.md)")
 
     print("\n=== FermiEval contrast under consistency proxy ===")
     overconfident_models = []

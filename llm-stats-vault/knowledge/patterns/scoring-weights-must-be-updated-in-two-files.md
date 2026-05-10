@@ -43,7 +43,7 @@ If weights diverge:
 - Approach A (2026-05-03) migrated runtime weights to the literature-derived
   scheme that Phase 1B (2026-05-01) had been applying post-hoc; verified
   byte-identical regeneration of canonical surfaces. See
-  [audit/recompute_log.md §"Phase 1.6 — Approach A"](../../../audit/recompute_log.md)
+  [../../90-archive/audit/recompute_log.md §"Phase 1.6 — Approach A"](../../90-archive/audit/recompute_log.md)
 - All existing runs were backfilled via `scripts/recompute_scores.py`
 
 ## How to Apply

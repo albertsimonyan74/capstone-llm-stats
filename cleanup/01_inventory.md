@@ -24,10 +24,10 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 | 660K  | `scripts/`                 | [KEEP-CORE] mostly | Analysis pipeline (3 rankings, calibration, krippendorff, perturbations, robustness). A few [STALE] one-offs. |
 | 708K  | `baseline/`                | [KEEP-CORE]        | Bayesian/frequentist task generators + ground-truth solvers. |
 | 2.1M  | `data/`                    | [KEEP-CORE] mostly | Tasks (171), perturbations. Some [STALE] v1 perturbation artifacts. |
-| 2.5M  | `llm-stats-vault/`         | [KEEP-REFERENCE]   | Obsidian session/notes vault. Self-contained, mostly markdown. |
-| 6.7M  | `audit/`                   | [KEEP-REFERENCE]   | Audit reports + baseline JSONL snapshots. |
+| 2.5M  | `llm-stats-vault/`         | [KEEP-REFERENCE]   | Obsidian session/notes vault. Self-contained, mostly markdown. (Now includes the moved `audit/` under `90-archive/audit/` — see note below.) |
 
 > `archive/` removed 2026-05-10; snapshot at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`.
+> `audit/` moved 2026-05-10 → `llm-stats-vault/90-archive/audit/`; pre-move snapshot at `cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.
 | 28M   | `poster/`                  | [KEEP-CORE]        | Poster LaTeX + figures + scripts. Headline narrative source for paper. |
 | 34M   | `experiments/`             | [KEEP-CORE] mostly | `results_v1/` + `results_v2/` JSONLs (raw + scored). Two `runs.jsonl` backups [STALE]. |
 | 76M   | `literature/`              | [KEEP-REFERENCE]   | Lecture PDFs + 4 textbooks. Big but small footprint via `.gitignore`. |
@@ -96,11 +96,6 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - `figures/` — PNG outputs (a1–a6, agreement, calibration, dimension leaderboard, robustness, etc.). **[KEEP-CORE]**.
 - `poster_qr.png`, `poster_qr_labeled.png` — **[KEEP-REFERENCE]**.
 
-### `audit/`
-- 20 markdown audit reports (cleanup, comprehensive, discovery, gemini forensic, group A completion, RQ formulations, etc.) + `recompute_log.md`. **[KEEP-REFERENCE]**.
-- `tier1_baseline_20260503_195141/` (4.6M, contains `runs.jsonl` snapshot). **[KEEP-REFERENCE]** as historical baseline.
-- `v1_deprecation_baseline_20260504_001522/` (1.7M). **[KEEP-REFERENCE]**.
-
 ### `llm-stats-vault/`  (Obsidian)
 - `00-home/` (3 md), `40-literature/` (bibtex, citation-map, papers/, textbooks/), `90-archive/` (originals, audit, audit_history, experiments, intermediate_analyses, legacy_flask_website, phase_1c_superseded, proposal_provenance, sprint-history-aggregated, superseded_scripts), `atlas/` (4 md), `inbox/`, `knowledge/` (5 sub: business/debugging/decisions/integrations/patterns), `sessions/` (3 md). **[KEEP-REFERENCE]** — meta-notes, source for paper introduction motivations.
 
@@ -138,7 +133,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 | Files | Notes |
 |-------|-------|
 | `experiments/results_v1/runs.jsonl`, `runs.jsonl.bak_20260426_211605`, `runs.jsonl.pre_tier1_20260503_195517` | 3 versions; only canonical needed. Backups [STALE]. |
-| `experiments/results_v1/runs.jsonl` ↔ `audit/tier1_baseline_20260503_195141/runs.jsonl` | Audit baseline snapshot. [KEEP-REFERENCE]. |
+| `experiments/results_v1/runs.jsonl` ↔ `llm-stats-vault/90-archive/audit/tier1_baseline_20260503_195141/runs.jsonl` | Audit baseline snapshot. [KEEP-REFERENCE]. |
 | `experiments/results_v1/runs.jsonl` ↔ `capstone-website/backend/static_data/experiments/results_v1/runs.jsonl` | Deliberate Render Docker bundle (per `.gitignore` un-ignore rule). [KEEP-CORE for site]. |
 | `data/synthetic/perturbations.json` (75) + `perturbations_v2.json` (398) ↔ `perturbations_all.json` (473) | `_all` is canonical superset. v1 retained for filtering (per CLAUDE.md). v2 file's necessity unclear. |
 | `data/synthetic/perturbations_v2_sample.jsonl` | Sample/preview only. [STALE]. |
@@ -177,6 +172,6 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - **Code**: ~1.8M total in `baseline/`, `evaluation/`, `llm_runner/`, `scripts/`, `capstone_mcp/`.
 - **Data**: 171 tasks, 473 perturbations, ~24M v2 results JSONL, ~4.4M v1 `runs.jsonl`.
 - **Figures**: ~14 poster figures (PNG+SVG), ~25 R-pipeline figures (PNG+HTML), `dist/` 68M built site assets.
-- **Notes**: ~50 markdown files in `audit/`, vault, `.planning/`, `cleanup/`.
+- **Notes**: ~50 markdown files in `llm-stats-vault/90-archive/audit/`, vault, `.planning/`, `cleanup/`.
 
 End of inventory. Awaiting confirmation before Phase 2.

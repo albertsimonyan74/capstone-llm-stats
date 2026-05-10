@@ -35,7 +35,7 @@ fragility2025
 - scripts/bootstrap_ci.py
 - experiments/results_v2/bootstrap_ci.json
 - report_materials/figures/bootstrap_ci.png
-- audit/day2_audit_report.md (P-2 finding)
+- ../../90-archive/audit/day2_audit_report.md (P-2 finding)
 - Three-rankings panel
 
 ## Tags

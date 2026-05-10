@@ -67,11 +67,11 @@ Reverse index: project artifact → sources that cite it.
 
 ## By document
 
-- `audit/rq_restructuring.md` (Phase 1B; renamed from rq_reweighting.md):
+- `../90-archive/audit/rq_restructuring.md` (Phase 1B; renamed from rq_reweighting.md):
   Papers 01, 02, 03, 09, 10, 11, 12, 13, 14
-- `audit/methodology_continuity.md`: Papers 01, 03, 04, 05, 07, 08, 10, 11, 12, 14, 15
-- `audit/literature_comparison.md`: All 15 papers
-- `audit/recompute_log.md` (Phase 1B): literature-derived weight citations —
+- `../90-archive/audit/methodology_continuity.md`: Papers 01, 03, 04, 05, 07, 08, 10, 11, 12, 14, 15
+- `../90-archive/audit/literature_comparison.md`: All 15 papers
+- `../90-archive/audit/recompute_log.md` (Phase 1B): literature-derived weight citations —
   Papers 02, 03, 04, 05, 07, 09, 10, 11, 12, 13; Textbook 02 (Bishop)
 - `llm-stats-vault/00-home/research-narrative.md` (Phase 1B): all 22 sources
 
@@ -146,7 +146,7 @@ Per-dimension citations grounding the locked weights
 - CONCEPTUAL exclusion disclosure (new): inherent to consistency methodology
 
 ### By document
-- `audit/limitations_disclosures.md`: Papers 11, 12, 13 (gemini verification)
+- `../90-archive/audit/limitations_disclosures.md`: Papers 11, 12, 13 (gemini verification)
 - `llm-stats-vault/00-home/research-narrative.md` RQ5 section:
   Papers 02, 11, 12
 

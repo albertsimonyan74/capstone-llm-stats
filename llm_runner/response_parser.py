@@ -16,8 +16,8 @@ Combined final score (numeric tasks):
 Conceptual tasks: 1.0 * rubric_score
 Pass threshold: final_score >= 0.5
 
-See audit/aggregation_locus.md (single-path rationale) and
-audit/methodology_continuity.md §"NMACR weighting" (literature defense).
+See llm-stats-vault/90-archive/audit/aggregation_locus.md (single-path rationale) and
+llm-stats-vault/90-archive/audit/methodology_continuity.md §"NMACR weighting" (literature defense).
 """
 from __future__ import annotations
 

@@ -30,7 +30,7 @@ that no longer have active consumers but retain provenance value.
 
 - Canonical research data → experiments/results_v2/
 - Canonical research scripts → scripts/
-- Active audit deliverables → audit/
+- Active audit deliverables → ./audit/ (sibling subdir; moved 2026-05-10 from repo root)
 - Active vault knowledge → llm-stats-vault/knowledge/
 - Live website code → capstone-website/
 - Active poster files → poster/

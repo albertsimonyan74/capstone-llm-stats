@@ -5,7 +5,7 @@ read in order: `main.tex`, `DESIGN_AUDIT.md`, `assets/latex_palette.tex`,
 `scripts/print_theme.py`, `figures/`, `README.md`,
 `capstone-website/frontend/src/{App.css,index.css,data/sitePalette.js}`,
 `components/{MethodologyPanels,ThreeRankingsComparison,KeyFindings,MobiusStrip}.jsx`,
-`CLAUDE.md`, `experiments/results_v2/*`, `audit/recompute_log.md`.
+`CLAUDE.md`, `experiments/results_v2/*`, `llm-stats-vault/90-archive/audit/recompute_log.md`.
 
 Three findings need a decision before Phase 2 — flagged with **DECIDE** below.
 
@@ -109,7 +109,7 @@ won't read .webp without extra packages).
 
 Cross-checked against `data/synthetic/perturbations_all.json` (live count),
 `experiments/results_v2/*` (live JSON), `CLAUDE.md`, and
-`audit/recompute_log.md` Phase 1.8.
+`llm-stats-vault/90-archive/audit/recompute_log.md` Phase 1.8.
 
 | Field | current main.tex | canonical (verified) | source |
 |---|---|---|---|

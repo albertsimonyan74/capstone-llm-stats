@@ -43,7 +43,7 @@ Called as part of `refresh_pipeline.sh`, the documented refresh entry point. **K
 | File:line | Reference |
 |---|---|
 | [scripts/robustness_analysis.py:10, 47](scripts/robustness_analysis.py) | doc-comment + "Same 6-group taxonomy as `scripts/generate_group_a_figures.py`" — copies taxonomy from this file |
-| [audit/personal_todo_status.md:167](audit/personal_todo_status.md#L167), [audit/tier2a6_dual_write_fix.md](audit/tier2a6_dual_write_fix.md), [audit/cleanup_audit_2026-05-02.md:181](audit/cleanup_audit_2026-05-02.md#L181) | documented as the canonical figure generator for `a1`–`a6` PNGs in `report_materials/figures/` |
+| [llm-stats-vault/90-archive/audit/personal_todo_status.md:167](llm-stats-vault/90-archive/audit/personal_todo_status.md#L167), [llm-stats-vault/90-archive/audit/tier2a6_dual_write_fix.md](llm-stats-vault/90-archive/audit/tier2a6_dual_write_fix.md), [llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md:181](llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md#L181) | documented as the canonical figure generator for `a1`–`a6` PNGs in `report_materials/figures/` |
 | [llm-stats-vault/sessions/2026-05-05-day5-tier2a5.md:31, 46](llm-stats-vault/sessions/2026-05-05-day5-tier2a5.md) | session notes describe `figure_a6`, `figure_a2` as canonical |
 
 Outputs `a1_failure_by_tasktype.png`, `a2_accuracy_by_category.png`, `a3_failure_heatmap.png`, `a4_robustness_by_perttype.png`, `a5_calibration_reliability.png`, `a6_aggregate_ranking.png` — all paper-relevant figures. **Keep.**
@@ -83,9 +83,9 @@ Mirror of frontend `capstone-website/frontend/src/data/sitePalette.js` (kept in 
 | File:line | Reference |
 |---|---|
 | [scripts/inspect_judge_strictness.py:9](scripts/inspect_judge_strictness.py#L9) | self-docstring |
-| [audit/cleanup_audit_2026-05-02.md:162, 202, 207, 500, 731](audit/cleanup_audit_2026-05-02.md) | catalogued as "[CL-B6] keep until poster delivered" |
-| [audit/discovery_audit_2026-05-02.md:323](audit/discovery_audit_2026-05-02.md#L323) | mentioned alongside `Methodology.jsx` Groq spot-check |
-| [audit/recompute_log.md:583](audit/recompute_log.md#L583) | listed among 11 scripts re-pointed during a refactor |
+| [llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md:162, 202, 207, 500, 731](llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md) | catalogued as "[CL-B6] keep until poster delivered" |
+| [llm-stats-vault/90-archive/audit/discovery_audit_2026-05-02.md:323](llm-stats-vault/90-archive/audit/discovery_audit_2026-05-02.md#L323) | mentioned alongside `Methodology.jsx` Groq spot-check |
+| [llm-stats-vault/90-archive/audit/recompute_log.md:583](llm-stats-vault/90-archive/audit/recompute_log.md#L583) | listed among 11 scripts re-pointed during a refactor |
 
 Standalone diagnostic, never imported. **Archive candidate** — poster has been delivered (per session 2026-05-07-poster-defense-prep.md). Per audit note CL-B6, archive is now safe.
 

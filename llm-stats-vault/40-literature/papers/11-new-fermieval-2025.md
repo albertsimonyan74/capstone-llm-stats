@@ -19,7 +19,7 @@ Calibration benchmark for LLM confidence intervals on Fermi-style estimation tas
 - 90% claimed CIs cover ~50% of ground truth.
 
 ## How it grounds this project
-Contrast finding. FermiEval reports overconfidence on estimation; we observe the opposite — zero high-confidence records on Bayesian tasks (hedge-heavy, default-to-medium behavior). The contrast itself is the citation: domain shifts confidence behavior. Maps to experiments/results_v2/calibration.json and audit/limitations_disclosures.md (empty high-confidence bucket).
+Contrast finding. FermiEval reports overconfidence on estimation; we observe the opposite — zero high-confidence records on Bayesian tasks (hedge-heavy, default-to-medium behavior). The contrast itself is the citation: domain shifts confidence behavior. Maps to experiments/results_v2/calibration.json and ../../90-archive/audit/limitations_disclosures.md (empty high-confidence bucket).
 
 ## Citation in poster
 (FermiEval, 2025)
@@ -33,7 +33,7 @@ fermieval2025
 ## Project artifacts that cite this
 - scripts/calibration_analysis.py
 - experiments/results_v2/calibration.json
-- audit/limitations_disclosures.md
+- ../../90-archive/audit/limitations_disclosures.md
 - RQ5 calibration panel
 - Discussion (contrast finding)
 

@@ -15,7 +15,7 @@ poster, paper, and future analysis can cite consistently. 22 sources total.
 Day 3 of the May 8 poster sprint. Builds on:
 - Day 1 ([[2026-04-30-day1-poster-sprint]]) — judge rubric + perturbation
   generator + calibration analysis groundwork.
-- Day 2 audit — see `audit/day2_audit_report.md` for P-2/P-7 findings.
+- Day 2 audit — see `../audit/day2_audit_report.md` for P-2/P-7 findings.
 - Group B research — newly-discovered papers from Day 3 web searches feed RQ
   reweighting + literature comparison work.
 
@@ -138,9 +138,9 @@ component.
   → Done in Day 3 housekeeping pass below.
 - ~~Locate original arXiv link for Paper 15 (Statistical Fragility).~~
   → Done in Day 3 housekeeping pass below (canonical: arXiv 2504.07086).
-- When `audit/literature_comparison.md` is written by Group B, add inline
+- When `../audit/literature_comparison.md` is written by Group B, add inline
   links from each paper note to the comparison row.
-- When `audit/rq_reweighting.md` is written, update RQ→source mappings in
+- When `../audit/rq_reweighting.md` is written, update RQ→source mappings in
   citation-map.md if the reweighting changes which RQ load-bears each finding.
 - Follow-up review needed: Papers 09 (Ice Cream) and 10 (LLM-as-Judge) have
   bibtex keys `wang2025icecream` and `park2025judge` that don't match their

@@ -23,6 +23,6 @@ date: 2026-05-02
 
 ## Reference docs
 - Research narrative: 00-home/research-narrative.md
-- Latest comprehensive audit: ../audit/comprehensive_audit_2026-05-01.md
-- Latest discovery audit: ../audit/discovery_audit_2026-05-02.md
+- Latest comprehensive audit: ../90-archive/audit/comprehensive_audit_2026-05-01.md
+- Latest discovery audit: ../90-archive/audit/discovery_audit_2026-05-02.md
 - Sprint history: 90-archive/sprint-history-aggregated.md

@@ -250,7 +250,7 @@ Two qualifications must be disclosed:
 
 Do not adjust weights or re-prompt the judge. Move to Phase 1C as planned.
 Add the two qualifications below to the limitations disclosure (already
-in `audit/limitations_disclosures.md` — extend with a (f) entry).
+in `../audit/limitations_disclosures.md` — extend with a (f) entry).
 
 ### Specific concerns to disclose
 

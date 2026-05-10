@@ -34,7 +34,7 @@ lu2025stateval
 ## Project artifacts that cite this
 - Abstract / poster header
 - RQ1 (methodology panel)
-- audit/literature_comparison.md (when written)
+- ../../90-archive/audit/literature_comparison.md (when written)
 - evaluation/llm_judge_rubric.py (rubric design rationale)
 
 ## Tags

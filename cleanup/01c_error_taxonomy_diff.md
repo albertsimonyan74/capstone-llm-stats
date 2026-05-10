@@ -28,8 +28,8 @@ A's per-error counts are inflated because tags overlap (one failure can be tagge
 ## Downstream usage
 
 **B (v2) is canonical.** Every consumer references v2:
-- [audit/comprehensive_audit_2026-05-01.md](audit/comprehensive_audit_2026-05-01.md) lines 105, 174, 326, 381, 540, 563, 746, 749, 1099 — all v2.
-- [audit/rq_ieee_formulations.md:286, 353](audit/rq_ieee_formulations.md) — v2.
+- [llm-stats-vault/90-archive/audit/comprehensive_audit_2026-05-01.md](llm-stats-vault/90-archive/audit/comprehensive_audit_2026-05-01.md) lines 105, 174, 326, 381, 540, 563, 746, 749, 1099 — all v2.
+- [llm-stats-vault/90-archive/audit/rq_ieee_formulations.md:286, 353](llm-stats-vault/90-archive/audit/rq_ieee_formulations.md) — v2.
 - [llm-stats-vault/sessions/2026-05-07-poster-defense-prep.md](llm-stats-vault/sessions/2026-05-07-poster-defense-prep.md) lines 15, 164, 389, 402, 418 — v2 cited as canonical, defends `n_failures_classified=143` and `judge_model`.
 - [llm-stats-vault/40-literature/citation-map.md:106](llm-stats-vault/40-literature/citation-map.md) — v2 mapped to Papers 09, 13.
 - Poster figures (`error_taxonomy_hierarchical.png`, `failure_taxonomy_stacked.png`) — derived from v2 (4-bucket L1 visible in PNGs).

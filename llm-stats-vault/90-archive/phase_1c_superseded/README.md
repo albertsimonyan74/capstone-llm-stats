@@ -19,6 +19,6 @@ Preserved here for provenance only.
 The full-coverage equivalent is now the canonical
 `experiments/results_v2/self_consistency_calibration.json` and
 `experiments/results_v2/self_consistency_runs.jsonl`. See
-[`audit/recompute_log.md`](../../../audit/recompute_log.md) §Phase 1C and
+[`audit/recompute_log.md`](../audit/recompute_log.md) §Phase 1C and
 [`llm-stats-vault/00-home/research-narrative.md`](../../00-home/research-narrative.md)
 RQ5 section for the methodology rationale and findings.

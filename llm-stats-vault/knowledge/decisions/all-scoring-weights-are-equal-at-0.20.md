@@ -59,9 +59,9 @@ confirmed byte-identical regeneration of all canonical surfaces
 The post-hoc script is preserved at
 `llm-stats-vault/90-archive/superseded_scripts/recompute_nmacr.py` as a
 regression-test reference. See:
-- [`audit/aggregation_locus.md`](../../../audit/aggregation_locus.md) — single canonical path
-- [`audit/recompute_log.md`](../../../audit/recompute_log.md) §"Phase 1.6 — Approach A"
-- [`audit/methodology_continuity.md`](../../../audit/methodology_continuity.md) §"NMACR weighting"
+- [`../../90-archive/audit/aggregation_locus.md`](../../90-archive/audit/aggregation_locus.md) — single canonical path
+- [`../../90-archive/audit/recompute_log.md`](../../90-archive/audit/recompute_log.md) §"Phase 1.6 — Approach A"
+- [`../../90-archive/audit/methodology_continuity.md`](../../90-archive/audit/methodology_continuity.md) §"NMACR weighting"
 
 This note is preserved in place (rather than archived) so future readers
 see the historical decision and its resolution in one location.

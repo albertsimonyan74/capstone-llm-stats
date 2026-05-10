@@ -29,6 +29,6 @@ the runtime-produced `nmacr_scores_v2.jsonl` modulo the
 `_header.generated_at` timestamp.
 
 **See:**
-- `audit/recompute_log.md` §"Phase 1.6 — Approach A"
-- `audit/aggregation_locus.md`
-- `audit/methodology_continuity.md` §"NMACR weighting"
+- `../audit/recompute_log.md` §"Phase 1.6 — Approach A"
+- `../audit/aggregation_locus.md`
+- `../audit/methodology_continuity.md` §"NMACR weighting"

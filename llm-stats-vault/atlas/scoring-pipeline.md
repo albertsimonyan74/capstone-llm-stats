@@ -23,7 +23,7 @@ Pre-Approach-A history: from 2026-04-26 to 2026-05-03 the runtime paths
 used equal weights (0.20 each) and the literature-weighted aggregate
 was produced post-hoc by `scripts/recompute_nmacr.py`. Approach A
 consolidated to one scheme. See
-[audit/aggregation_locus.md](../../audit/aggregation_locus.md).
+[audit/aggregation_locus.md](../90-archive/audit/aggregation_locus.md).
 
 ### Live runner
 - File: `llm_runner/response_parser.py`

@@ -29,7 +29,7 @@ N dimension is dropped and the remaining 4 weights are renormalized to 1.0.
 
 Outputs:
 - experiments/results_v2/nmacr_scores_v2.jsonl (one record per run, base + perturbation)
-- audit/recompute_log.md initial section
+- llm-stats-vault/90-archive/audit/recompute_log.md initial section
 
 Usage:
     python scripts/recompute_nmacr.py

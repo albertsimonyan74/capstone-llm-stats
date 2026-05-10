@@ -197,7 +197,7 @@ method-dependent across the cohort, not a per-model anomaly.
 [Tier 1 update 2026-05-03: pre-fix versions of this section described
 "Gemini calibration inversion: 0 verbalized signals → BEST consistency
 ECE." That subclaim was an artifact of the runner schema gap + stale
-recompute path (`audit/gemini_forensic_2026-05-03.md`). Post-fix Gemini
+recompute path (`../90-archive/audit/gemini_forensic_2026-05-03.md`). Post-fix Gemini
 has extractable verbalized signals; ECE in-band with the cohort;
 accuracy_calibration correlation r = 0.337. The cohort-wide
 method-dependence finding stands; the Gemini-specific inversion
@@ -340,12 +340,12 @@ checkable. See §2 for full per-dimension rationale.
 
 ## 7. Pointers
 
-- Aggregation locus: [audit/aggregation_locus.md](../../audit/aggregation_locus.md)
-- Recompute log: [audit/recompute_log.md](../../audit/recompute_log.md)
-- RQ structuring: [audit/rq_restructuring.md](../../audit/rq_restructuring.md)
-- Methodology continuity: [audit/methodology_continuity.md](../../audit/methodology_continuity.md)
-- Limitations: [audit/limitations_disclosures.md](../../audit/limitations_disclosures.md)
-- Literature comparison: [audit/literature_comparison.md](../../audit/literature_comparison.md)
+- Aggregation locus: [audit/aggregation_locus.md](../90-archive/audit/aggregation_locus.md)
+- Recompute log: [audit/recompute_log.md](../90-archive/audit/recompute_log.md)
+- RQ structuring: [audit/rq_restructuring.md](../90-archive/audit/rq_restructuring.md)
+- Methodology continuity: [audit/methodology_continuity.md](../90-archive/audit/methodology_continuity.md)
+- Limitations: [audit/limitations_disclosures.md](../90-archive/audit/limitations_disclosures.md)
+- Literature comparison: [audit/literature_comparison.md](../90-archive/audit/literature_comparison.md)
 - Literature library: [40-literature/README.md](../40-literature/README.md)
 - Citation map: [40-literature/citation-map.md](../40-literature/citation-map.md)
 - Sprint archive: [90-archive/](../90-archive/)

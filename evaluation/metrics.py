@@ -14,8 +14,8 @@ NMACR weights — literature-derived (sole canonical scheme since Approach A,
 2026-05-03). Sum to 1.0.
   A 0.30, R 0.25, M 0.20, C 0.15, N 0.10
 
-See audit/aggregation_locus.md for the single-path rationale and
-audit/methodology_continuity.md §"NMACR weighting" for the literature defense
+See llm-stats-vault/90-archive/audit/aggregation_locus.md for the single-path rationale and
+llm-stats-vault/90-archive/audit/methodology_continuity.md §"NMACR weighting" for the literature defense
 (Du 2025, Boye & Moell 2025, Yamauchi 2025, ReasonBench 2025, Wei 2022,
 Chen 2022, Bishop 2006, Nagarkar 2026, FermiEval 2025, Liu 2025).
 

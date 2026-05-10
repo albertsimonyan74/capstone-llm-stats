@@ -49,7 +49,7 @@ capstone-llm-stats/
 ├── capstone-website/             ← UNCHANGED INTERNALLY. Frontend + backend self-contained.
 ├── llm-stats-vault/              ← UNCHANGED. Obsidian vault.
 ├── literature/                   ← UNCHANGED. Lecture PDFs + textbooks (already gitignored).
-├── audit/                        ← UNCHANGED in this phase. (Separate prompt to archive/keep.)
+├── llm-stats-vault/90-archive/audit/   ← Moved 2026-05-10 from repo root (was top-level audit/).
 ├── llm-stats-vault/90-archive/   ← Canonical archive root. Receives newly archived items in Phase 3a/3b.
 │   ├── audit/                    (existing)
 │   ├── experiments/              (existing)
@@ -110,7 +110,7 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `experiments/` | KEEP-IN-PLACE | — | 100+ hard-coded callers. |
 | `experiments/__pycache__/` | DELETE | — | Phase 3a. |
 | `data/` | KEEP-IN-PLACE | — | Path-stable. |
-| `audit/` | KEEP-IN-PLACE | — | (Separate prompt handles fate.) |
+| `llm-stats-vault/90-archive/audit/` | KEEP-IN-PLACE | — | Moved 2026-05-10 from repo root. |
 | `llm-stats-vault/90-archive/` | KEEP-IN-PLACE | — | Canonical archive root. Receives newly archived items via new sub-dirs `data_legacy/`, `results_legacy/`, `scripts_legacy/`, `poster_prep_assets/`. |
 | `cleanup/` | KEEP-IN-PLACE | — | Active planning dir. |
 | `poster/` | KEEP-IN-PLACE | — | Historical artifact, do not merge with `paper/`. |
@@ -130,7 +130,7 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `data/error_taxonomy_results.json` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/error_taxonomy_results_v1.json` | Per `01c`: superseded by `experiments/results_v2/error_taxonomy_v2.json`. No code reader except the script that writes it. |
 | `data/synthetic/perturbations.json` | KEEP-IN-PLACE | — | Per CLAUDE.md Phase 1.8: still required as v1-ID filter source by 5 scripts + website + R pipeline. |
 | `data/synthetic/perturbations_v2.json` | KEEP-IN-PLACE | — | Per `01e`: zero readers, but it IS the natural output of `scripts/generate_perturbations_full.py` (`DEFAULT_OUTPUT`). Leaving it lets the generator be re-run idempotently. Do not archive. |
-| `data/synthetic/perturbations_v2_sample.jsonl` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/perturbations_v2_sample.jsonl` | Sample/preview, no live consumer (per `audit/cleanup_audit_2026-05-02.md:202` — "Only consumer is inspect_judge_strictness.py"). |
+| `data/synthetic/perturbations_v2_sample.jsonl` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/perturbations_v2_sample.jsonl` | Sample/preview, no live consumer (per `llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md:202` — "Only consumer is inspect_judge_strictness.py"). |
 | `data/synthetic/perturbations_all.json` | KEEP-IN-PLACE | — | Per `01d`: canonical 473, complete. |
 | `data/synthetic/build_perturbations.py` | KEEP-IN-PLACE | — | Deprecated per CLAUDE.md but listed there as historical v1 generator; leave for traceability. |
 | `experiments/results_v1/runs.jsonl` | KEEP-IN-PLACE | — | Append-only canonical (CLAUDE.md). |
@@ -143,8 +143,8 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `scripts/generate_group_a_figures.py` | KEEP-IN-PLACE | — | Per `01e`: canonical generator for `a1`–`a6` figures. |
 | `scripts/site_palette.py` | KEEP-IN-PLACE | — | Per `01e`: imported by 14 scripts. |
 | `scripts/inspect_judge_strictness.py` | ARCHIVE | `llm-stats-vault/90-archive/scripts_legacy/inspect_judge_strictness.py` | Per `01e` + audit `[CL-B6]`: post-poster, no callers, safe to archive. |
-| `audit/tier1_baseline_20260503_195141/` (4.6M) | KEEP-IN-PLACE | — | Audit baseline, separate prompt. |
-| `audit/v1_deprecation_baseline_20260504_001522/` (1.7M) | KEEP-IN-PLACE | — | Same. |
+| `llm-stats-vault/90-archive/audit/tier1_baseline_20260503_195141/` (4.6M) | KEEP-IN-PLACE | — | Audit baseline (moved 2026-05-10). |
+| `llm-stats-vault/90-archive/audit/v1_deprecation_baseline_20260504_001522/` (1.7M) | KEEP-IN-PLACE | — | Same. |
 | `poster/IMG_9619.heic` | ARCHIVE | `llm-stats-vault/90-archive/poster_prep_assets/IMG_9619.heic` | Poster prep collateral (phone reference photo). Not paper material. |
 | `poster/AUA_ML_RGB_ENG.webp` | ARCHIVE | `llm-stats-vault/90-archive/poster_prep_assets/AUA_ML_RGB_ENG.webp` | University logo asset, poster-prep only. |
 | `poster/b7f387de8c767a6fd688a825217c69fc.webp` | ARCHIVE | `llm-stats-vault/90-archive/poster_prep_assets/b7f387de8c767a6fd688a825217c69fc.webp` | Random-named poster prep image. Not paper material. |
@@ -295,7 +295,7 @@ git mv scripts/inspect_judge_strictness.py \
 
 git commit -m "chore(archive): retire inspect_judge_strictness.py post-poster delivery
 
-No code callers. Per audit/cleanup_audit_2026-05-02.md [CL-B6]: keep until poster
+No code callers. Per llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md [CL-B6]: keep until poster
 delivered; poster shipped 2026-05-07. Destination: vault/90-archive/scripts_legacy/.
 See cleanup/01e_script_callers.md."
 ```
@@ -351,7 +351,7 @@ git commit -m "feat(paper): scaffold IEEEtran conference paper (stubs only, comp
 - **Verification**: Before Phase 3 ship, `cd capstone-website/backend && docker build -t capstone-backend . && docker run --rm capstone-backend ls /app/static_data/experiments/results_v1/` should show `runs.jsonl + results.json + rq4_analysis.json` (no backups now, since they moved out — but the bundle script copies whatever's in `static_data/experiments/results_v1/` so the prior baked-in copy stays valid). Resync `static_data/` only if backend redeploys.
 
 ### R3. Hard-coded `experiments/results_v2/` paths (100+)
-- **Risk**: Any move of `experiments/results_v2/` would break: 14+ analysis scripts, `evaluation/llm_judge_rubric.py`, `capstone-website/backend/v2_routes.py`, R pipeline, audit/recompute_log.md cross-refs.
+- **Risk**: Any move of `experiments/results_v2/` would break: 14+ analysis scripts, `evaluation/llm_judge_rubric.py`, `capstone-website/backend/v2_routes.py`, R pipeline, llm-stats-vault/90-archive/audit/recompute_log.md cross-refs.
 - **Mitigation**: Plan does NOT move these. Future refactor only.
 - **Verification**: After Phase 3, dry-run `bash scripts/refresh_pipeline.sh --help` (if it has --help) or read its top to ensure no path it touches has moved. `scripts/refresh_pipeline.sh` calls `dedup_runs.py` (unmoved), and downstream pipelines all read `experiments/results_v{1,2}/` (unmoved).
 
@@ -377,7 +377,7 @@ git commit -m "feat(paper): scaffold IEEEtran conference paper (stubs only, comp
 - **Verification**: `ls paper/ 2>&1` returns no such file/directory.
 
 ### R9. Audit cross-references to moved files
-- **Risk**: `audit/recompute_log.md`, `audit/cleanup_audit_2026-05-02.md`, etc., reference moved file paths.
+- **Risk**: `llm-stats-vault/90-archive/audit/recompute_log.md`, `llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md`, etc., reference moved file paths.
 - **Mitigation**: Audit docs are historical narratives; broken links inside them are acceptable since they describe past state. NOT updating audit docs in this phase.
 
 ### Pre-Phase-3 verification checklist
@@ -404,7 +404,7 @@ bash scripts/refresh_pipeline.sh                                                
 
 ## §F — What this plan does NOT do (deferred)
 
-- Does not touch `audit/` (separate prompt). Top-level `archive/` was removed 2026-05-10. Pre-modernization viz snapshots (`archive/visualizations-pre-*`) were superseded by the v2 results pipeline and not retained in vault; provenance preserved at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`. See archival convention note above.
+- Top-level `archive/` was removed 2026-05-10. Pre-modernization viz snapshots (`archive/visualizations-pre-*`) were superseded by the v2 results pipeline and not retained in vault; provenance preserved at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`. See archival convention note above. (`audit/` moved to `llm-stats-vault/90-archive/audit/` 2026-05-10; pre-move snapshot at `cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.)
 - Does not move `experiments/results_v2/` or `report_materials/` contents (would require a 100+-line path refactor across scripts, R pipeline, and backend).
 - Does not consolidate `data/synthetic/perturbations*.json` filenames (per CLAUDE.md, hard-coded callers exist).
 - Does not refactor `evaluation/llm_judge_rubric.py` Groq → Together docstring lag (cosmetic).

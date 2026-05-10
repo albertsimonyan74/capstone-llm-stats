@@ -1,6 +1,6 @@
 # Mobile Fixes Changelog — Day 3 (2026-05-01)
 
-QA pass for the bayes-benchmark frontend on mobile viewports. Existing `index.css` already had `900px` + `480px` breakpoints and `App.css` had `1100/900/640px` rules. Two real risks (pipeline circle, fixed-width radar) plus a hardcoded model-version drift flagged in `audit/website_discovery.md`. This pass closes those gaps.
+QA pass for the bayes-benchmark frontend on mobile viewports. Existing `index.css` already had `900px` + `480px` breakpoints and `App.css` had `1100/900/640px` rules. Two real risks (pipeline circle, fixed-width radar) plus a hardcoded model-version drift flagged in `llm-stats-vault/90-archive/audit/website_discovery.md`. This pass closes those gaps.
 
 ---
 

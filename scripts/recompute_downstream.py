@@ -19,7 +19,7 @@ Figures (regenerated from the recomputed data):
 3i. formatting_failure_rate_per_model embedded in /api/v2/headline_numbers source
     (added as a key inside calibration.json — the headline_numbers endpoint
      reads multiple files, so we surface this metric on the literature_v1 side
-     in nmacr_scores_v2.jsonl header AND in audit/recompute_log.md.
+     in nmacr_scores_v2.jsonl header AND in llm-stats-vault/90-archive/audit/recompute_log.md.
      Backend exposure happens in the v2_routes update, not in this script.)
 """
 from __future__ import annotations
