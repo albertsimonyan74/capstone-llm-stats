@@ -40,6 +40,7 @@ capstone-website/frontend/dist/
 
 # Large binary files
 literature/*.pdf
+literature/**/*.pdf
 figures/*.gif
 interactive/
 **/*.gif
