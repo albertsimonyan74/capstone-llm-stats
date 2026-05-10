@@ -1,0 +1,29 @@
+% --- Section: Discussion ---
+% Outline:
+%   - Central argument: a single accuracy number conflates correctness,
+%     calibration, and robustness; these axes are statistically and
+%     conceptually distinct, and our top-2 swap is the empirical proof.
+%   - What each ranking actually measures:
+%     - Accuracy (final-score pass rate): given the prompt as worded, did
+%       the model land near the right number?
+%     - Robustness (perturbation pass-flip): does the same model still
+%       pass when the prompt is rephrased / re-numericalized / re-framed
+%       (rephrase, numerical, semantic axes)?
+%     - Calibration (ECE): is the model's stated confidence aligned with
+%       its empirical accuracy?
+%   - Why the rankings diverge: discuss decoupling of pass-rate and
+%     uncertainty quantification; cite reasonbench2025, brittlebench2026
+%     for parallel findings outside Bayesian-stats.
+%   - Implications for benchmark consumers: do not optimize on a single
+%     metric; report tri-axis. For deployment, calibration matters when
+%     LLM output gates a downstream decision; robustness matters when
+%     prompt phrasing is user-controlled.
+%   - Reflection on the assumption-compliance gap: 51.5\% missing-stated-
+%     assumption rate suggests rubrics that score ``answer correctness''
+%     alone miss a key reasoning failure mode. Cite du2025icecream
+%     (causal-confounding parallel finding).
+% TODO: prose draft
+
+\section{Discussion}
+\label{sec:discussion}
+% placeholder

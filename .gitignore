@@ -56,3 +56,14 @@ interactive/
 benchmark_report.html
 report_materials/r_analysis/benchmark_report.html
 .vercel
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.log
+paper/*.bbl
+paper/*.blg
+paper/*.out
+paper/*.toc
+paper/*.pdf
+paper/sections/*.aux
+paper/main.synctex.gz

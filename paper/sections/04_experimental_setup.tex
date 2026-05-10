@@ -1,0 +1,40 @@
+% --- Section: Experimental Setup ---
+% Outline:
+%   - Benchmarked models (5 frontier LLMs, all via direct httpx, no SDKs):
+%     | family   | model string             | provider                   |
+%     | claude   | claude-sonnet-4-5        | api.anthropic.com          |
+%     | gemini   | gemini-2.5-flash         | generativelanguage.gapis...|
+%     | chatgpt  | gpt-4.1                  | api.openai.com             |
+%     | deepseek | deepseek-chat            | api.deepseek.com           |
+%     | mistral  | mistral-large-latest     | api.mistral.ai             |
+%     Source: llm_runner/model_clients.py (max_tokens 1024, T=60s,
+%     retry 3x with provider-specific backoff).
+%   - System prompt: ``You are an expert in Bayesian statistics and
+%     probability theory. Solve problems step by step, showing all working.
+%     Always end your response with your final answer on its own line in
+%     the format: ANSWER: <value1>, <value2>, ...''
+%   - Scoring (two paths must remain weight-aligned):
+%     - Path A: live runner (llm_runner/response_parser.py:full_score),
+%       weights N=M=A=C=R=0.20. CONCEPTUAL = 1.0 * rubric_score; tasks
+%       with numeric+rubric = 0.6 numeric + 0.4 rubric.
+%     - Path B: post-hoc (evaluation/metrics.py:score_all_models) on
+%       TaskRun dataclasses, identical weights.
+%     - Pass threshold: final_score >= 0.5.
+%   - Calibration / ECE computation:
+%     - Source: scripts/calibration_analysis.py and
+%       experiments/results_v2/calibration.json (per-model bins,
+%       reliability diagrams).
+%     - extract_confidence() from raw text; overconfident-on-wrong
+%       penalized 1.5x, underconfident-on-right 0.8x (Path A).
+%   - Sample-size accounting:
+%     - 171 base * 5 models = 855 base runs.
+%     - 473 perturbations * 5 models = 2365 perturbation runs.
+%     - All 855 + 2365 = 3220 LLM responses scored by keyword rubric;
+%       judge-scored subset n=143 failure pool for taxonomy. Source:
+%       experiments/results_v2/{robustness_v2,calibration,
+%       error_taxonomy_v2,perturbation_runs}.json[l].
+% TODO: prose draft
+
+\section{Experimental Setup}
+\label{sec:setup}
+% placeholder

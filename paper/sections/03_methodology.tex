@@ -1,0 +1,35 @@
+% --- Section: Methodology ---
+% Outline:
+%   - Task suite construction (171 base tasks):
+%     - 136 Phase 1 tasks across 31 types (conjugate models, posterior
+%       predictive, decision theory, intervals, Bayes factors, regression,
+%       Markov chains, etc.). Source generators:
+%       baseline/bayesian/build_tasks_bayesian.py;
+%       baseline/bayesian/ground_truth.py.
+%     - 35 Phase 2 advanced tasks: GIBBS, MH, HMC, RJMCMC, HIERARCHICAL
+%       (5 each, tol 0.05); VB, ABC (5 each, tol 0.10). Seeded MC ground
+%       truths via np.random.seed(42). Source:
+%       baseline/bayesian/build_tasks_advanced.py.
+%   - Task spec schema (numeric_targets, structure_checks,
+%     assumption_checks); CONCEPTUAL vs numeric+rubric task families.
+%     Source: data/benchmark_v1/tasks_all.json.
+%   - Perturbation taxonomy (473 records, mean 2.77/base):
+%     - rephrase (171), numerical (131), semantic (171). All 171 baselines
+%       covered (40 with 2 perturbations, 131 with 3). Source:
+%       data/synthetic/perturbations_all.json. Generator:
+%       scripts/generate_perturbations_full.py (398 v2 records via Llama
+%       3.3 70B Turbo) + 75 hand-authored v1 seeds.
+%   - External-judge protocol:
+%     - Model: Llama 3.3 70B Turbo via Together AI (out-of-family —
+%       not one of the benchmarked 5). Source: evaluation/llm_judge_rubric.py.
+%     - 4-dimension rubric: METHOD_STRUCTURE, ASSUMPTION_COMPLIANCE,
+%       REASONING_QUALITY, REASONING_COMPLETENESS. Temperature 0.0,
+%       max_tokens 1024.
+%     - Aggregation: see llm-stats-vault/90-archive/audit/aggregation_locus.md
+%       and methodology_continuity.md for the locus-of-aggregation rule
+%       and run-vs-task averaging conventions.
+% TODO: prose draft
+
+\section{Methodology}
+\label{sec:methodology}
+% placeholder
