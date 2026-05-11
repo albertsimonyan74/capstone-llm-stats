@@ -1,88 +1,66 @@
 % --- Section: Introduction ---
-% Drafted Phase 5 — values pulled from cleanup/04_phase5_data_pulled.md
-% Target: ~600–800 words.
 
 \section{Introduction}
 \label{sec:intro}
 
-Many users of large language models pick a model by reading the top
-of a leaderboard. For statistical reasoning that habit is risky.
-Benchmarks such as StatEval~\cite{lu2025stateval},
-MathEval~\cite{liu2025matheval}, the human-comparison study of
-Nagarkar et al.~\cite{nagarkar2026canllm}, and ad-hoc evaluations on
-Bayesian tasks~\cite{longjohn2025bayesian} report accuracy alone.
-But accuracy fuses three properties that a downstream user actually
-cares about separately: whether the model lands on the right number,
-whether it does so when the prompt is reworded or the numbers are
-swapped, and whether its stated confidence tracks its empirical
-correctness. When those three disagree, a single accuracy column is
-misleading.
+Pick a model by reading the top of an accuracy leaderboard and you
+miss most of what matters for statistical reasoning. Accuracy fuses
+three things a downstream user cares about separately: did the model
+land on the right number, did it still land on the right number when
+the prompt was reworded or the numbers swapped, and does its stated
+confidence track its empirical correctness. StatEval~\cite{lu2025stateval},
+MathEval~\cite{liu2025matheval}, Nagarkar et al.~\cite{nagarkar2026canllm},
+and ad-hoc Bayesian evaluations~\cite{longjohn2025bayesian} all
+report accuracy alone. When the three properties disagree, that
+column is misleading.
 
 We make the disagreement concrete on 171 Bayesian and inferential
 tasks. Five frontier LLMs are scored on accuracy, robustness, and
-calibration; the rank orders differ. Two patterns are doing most of
-the work. GPT-4.1, last on accuracy (0.621), is first on robustness
-(0.9996); its base and perturbation pass rates are within 0.0003 of
+calibration; the rank orders differ. Two patterns carry the
+headline. GPT-4.1 is last on accuracy (0.621) but first on robustness
+(0.9996); its base and perturbation pass rates fall within 0.0003 of
 each other. Claude leads accuracy (0.683) and binary-pass calibration
-(ECE 0.0334) but drops to fourth on robustness (0.9565), losing three
-percentage points between base and perturbed prompts. A consumer who
-reads only the accuracy column never sees either pattern, and the
-deployment advice each one implies is different. Separately, 44.3\%
-of responses fail to state the statistical assumptions the derivation
-requires, even when the final number is correct, and assumption
-violation is the dominant failure mode at 47\% of judge-classified
-failures. Du et al.~\cite{du2025icecream} report the same blindness
-in causal reasoning.
+(ECE 0.0334) yet drops to fourth on robustness (0.9565), losing three
+points between base and perturbed prompts. A reader who only sees
+the accuracy column gets neither pattern. 44.3\% of responses fail
+to state the assumptions the derivation requires, even when the
+final number is correct; assumption violation accounts for 47\% of
+judge-classified failures. Du et al.~\cite{du2025icecream} report
+the same blindness in causal reasoning.
 
-The methodological gap behind the headline also bears naming. Most
+The methodological gap behind the headline is worth naming. Most
 LLM-statistics evaluations rely on a keyword rubric, a single judge,
-or both, and both have known biases. Keyword rubrics confuse surface
-form with substance: the word ``assume'' in a response is not the
-same thing as actually stating an assumption. Single-judge protocols
-suffer self-preference bias and design-choice sensitivity, as
-documented by Yamauchi et al.~\cite{park2025judge} and Feuer et
-al.~\cite{judgment2025noise}. We score each response twice, once with
-a deterministic keyword rubric in the live runner and once with an
-external, out-of-family judge: Llama 3.3 70B Turbo via Together AI,
-not one of the five benchmarked models. The two views disagree where
-it matters. They agree only moderately on assumption-compliance
-(Spearman 0.602) and barely at all on method structure and reasoning
-quality. The keyword rubric also passes assumptions more leniently
-than the judge (71.1\% vs 55.7\%), which is why keyword-only
-protocols read Bayesian competence higher than it is.
+or both. Both have known biases. Keyword rubrics confuse surface
+form with substance: the word ``assume'' is not the same as actually
+stating an assumption. Single-judge protocols suffer self-preference
+bias and design-choice sensitivity~\cite{park2025judge,judgment2025noise}.
+We score each response twice: once with a deterministic keyword
+rubric, once with an external out-of-family judge (Llama 3.3 70B
+Turbo via Together AI, not one of the five benchmarked models). The
+two views disagree where it matters. They agree only moderately on
+assumption-compliance (Spearman 0.602) and barely at all on method
+structure and reasoning quality. The rubric also passes assumptions
+more leniently than the judge (71.1\% vs 55.7\%), which is why
+keyword-only protocols read Bayesian competence higher than it is.
 
-Our contributions are:
+Contributions:
 \begin{enumerate}
   \item A benchmark of 171 Bayesian and inferential tasks (136
-        closed-form conjugate models and 35 computational Bayesian
-        methods covering Gibbs, Metropolis-Hastings, HMC, RJMCMC,
-        hierarchical, VB, and ABC) with 473 perturbations along
-        three axes (rephrase, semantic, numerical) that touch all
+        closed-form conjugate models; 35 computational methods
+        covering Gibbs, Metropolis-Hastings, HMC, RJMCMC, hierarchical,
+        VB, ABC) with 473 perturbations on three axes covering all
         38 task types.
   \item An external-judge protocol using an out-of-family open-weights
-        model (Llama 3.3 70B Turbo) for assumption-compliance and
-        reasoning quality. Keyword-rubric vs judge agreement is
-        reported per dimension (Spearman 0.602 on
-        assumption-compliance, much lower elsewhere). The split
-        between what a rubric can see and what a judge can see is
-        itself a finding.
+        model. Keyword-vs-judge agreement is reported per dimension
+        (Spearman 0.602 on assumption-compliance, much lower
+        elsewhere). The gap between what a rubric sees and what a
+        judge sees is itself a finding.
   \item Empirical evidence that accuracy, robustness, and calibration
-        rankings of the same five LLMs disagree non-trivially. The
-        two flagship divergences are a 5-to-1 inversion between
-        accuracy and robustness (GPT-4.1) and a 1, 1, 4 pattern for
-        the accuracy-and-calibration leader (Claude). Neither shows
-        up on a single-metric leaderboard.
-  \item An open audit trail. NMACR scoring weights (A=0.30, R=0.25,
-        M=0.20, C=0.15, N=0.10), aggregation choices, and tolerance
-        thresholds are all documented and tied to the papers that
+        rankings of the same five LLMs disagree non-trivially: a
+        5-to-1 inversion for GPT-4.1 and a 1, 1, 4 pattern for
+        Claude. Neither shows up on a single-metric leaderboard.
+  \item An open audit trail. NMACR weights (A=0.30, R=0.25, M=0.20,
+        C=0.15, N=0.10), aggregation choices, and tolerance
+        thresholds are documented and tied to the papers that
         motivated them.
 \end{enumerate}
-
-Section~\ref{sec:related} reviews statistical-reasoning benchmarks,
-the calibration literature~\cite{guo2017calibration}, and
-LLM-as-judge work~\cite{zheng2023judge,park2025judge,judgment2025noise}.
-Section~\ref{sec:methodology} covers the task suite, perturbations,
-judge protocol, and experimental setup. Section~\ref{sec:results}
-presents the three rankings. Section~\ref{sec:discussion} argues
-the divergence is not noise. Section~\ref{sec:conclusion} closes
-with threats to validity and future work.
