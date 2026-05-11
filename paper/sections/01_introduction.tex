@@ -1,28 +1,98 @@
 % --- Section: Introduction ---
-% Outline (~1 page):
-%   - Hook: deployment of LLMs in statistical / scientific workflows; users
-%     read a leaderboard number and assume it generalizes. Cite recent
-%     statistical-reasoning benchmarks: lu2025stateval, nagarkar2026canllm,
-%     liu2025matheval (in llm-stats-vault/40-literature/bibtex.bib).
-%   - Problem statement: a single accuracy number fuses three orthogonal
-%     properties (correctness, calibration, robustness). When these
-%     dimensions diverge, the leaderboard is misleading.
-%   - Thesis: rankings of the same 5 frontier LLMs change depending on the
-%     metric; the top-2 swap (Claude leads accuracy, ChatGPT leads
-%     calibration) is the central evidence. Pointer:
-%     report_materials/figures/three_rankings.png and
-%     experiments/results_v2/calibration.json,
-%     experiments/results_v2/robustness_v2.json.
-%   - Contributions:
-%     (1) 171 Bayesian / inferential tasks + 473 perturbations spanning
-%         rephrase / numerical / semantic axes;
-%     (2) external out-of-family judge (Llama 3.3 70B Turbo) for
-%         assumption-compliance and reasoning;
-%     (3) the tri-axis ranking framework and its implications for
-%         single-number reporting; cite park2025judge,
-%         judgment2025noise for judge-design context.
-%   - Roadmap: section pointers.
-% TODO: prose draft (Phase 5)
+% Drafted Phase 5 — values pulled from cleanup/04_phase5_data_pulled.md
+% Target: ~600–800 words.
 
 \section{Introduction}
-% placeholder
+\label{sec:intro}
+
+Large language models are now routine collaborators in scientific and
+quantitative work, including settings where the user reads a leaderboard
+number, picks the top model, and trusts its output. This habit is
+becoming consequential. Statistical-reasoning benchmarks such as
+StatEval~\cite{lu2025stateval}, MathEval~\cite{liu2025matheval}, and
+the human-comparison study of Nagarkar et al.~\cite{nagarkar2026canllm}
+report accuracy in a single dimension, and ad-hoc evaluations on
+Bayesian and inferential tasks~\cite{longjohn2025bayesian} continue this
+pattern. A single accuracy score, however, fuses three properties that
+matter independently to a downstream user: how often the model lands on
+the right number; how stably it does so when the prompt is reworded or
+the numerical setup shifts; and how well its stated confidence tracks
+its empirical correctness. When these properties disagree, the
+leaderboard is misleading.
+
+This paper makes that disagreement concrete on a benchmark of 171
+Bayesian and inferential tasks. We score five frontier LLMs on three
+axes--accuracy, robustness, and calibration--and observe non-trivial
+reordering across axes. Two patterns drive the headline. First, the
+model with the lowest base accuracy in our benchmark (ChatGPT, 0.621)
+is the best on robustness (0.9996), with essentially no degradation
+between base prompts and perturbed prompts. Second, the model that
+leads both accuracy (Claude, 0.683) and binary-pass calibration
+(Claude, ECE 0.0334) ranks fourth of five on robustness (0.9565), a
+three-percentage-point drop under perturbation. Both patterns are
+invisible on a single-metric leaderboard, and each implies different
+deployment advice. Beyond the rank shifts, 44.3 percent of responses
+fail to explicitly state the statistical assumptions their derivations
+require--despite often using those assumptions implicitly--and
+assumption violation is the dominant failure mode at 47 percent of
+judge-classified failures. This echoes the assumption-blindness pattern
+identified outside Bayesian inference by Du et al.~\cite{du2025icecream}
+in causal reasoning.
+
+The methodological gap that produced these findings is also worth
+naming. Most LLM-statistics evaluations score on a keyword rubric or a
+single-judge protocol; both have known biases. Keyword rubrics conflate
+surface form with substance: writing the word ``assume'' is not the
+same as actually stating an assumption. Single-judge protocols carry
+self-preference bias and design-choice sensitivity, as catalogued by
+Yamauchi et al.~\cite{park2025judge} and Feuer et al.~\cite{judgment2025noise}.
+We address both: each response is independently scored by a
+deterministic keyword rubric (the live runner) and an external,
+out-of-family judge--Llama 3.3 70B Turbo, served via Together AI, which
+is not one of the five benchmarked models. The two scoring paths
+disagree where it matters: keyword and judge agreement on
+assumption-compliance is moderate (Spearman 0.602), while on method
+structure and reasoning quality the two views diverge almost entirely.
+The keyword rubric is systematically more lenient on assumptions (71.1
+percent pass vs 55.7 percent from the judge), which explains why
+keyword-only protocols overestimate model competence on Bayesian
+problems specifically.
+
+Our contributions are:
+\begin{enumerate}
+  \item A benchmark of 171 Bayesian and inferential tasks (136 closed-form
+        conjugate models and 35 computational Bayesian methods spanning
+        Gibbs, Metropolis-Hastings, HMC, RJMCMC, hierarchical, VB, and
+        ABC) augmented with 473 principled perturbations across three
+        axes--rephrase, semantic, and numerical--covering all 38 task
+        types in the suite.
+  \item An external-judge protocol that uses an out-of-family open-weights
+        model (Llama 3.3 70B Turbo) to score assumption-compliance and
+        reasoning quality, with the keyword-rubric vs judge agreement
+        characterised per dimension (Spearman 0.602 on
+        assumption-compliance, far lower elsewhere). This separates
+        rubric-detectable form from judge-detectable substance.
+  \item Empirical evidence that accuracy, robustness, and calibration
+        rankings of the same five frontier LLMs disagree non-trivially.
+        The two flagship divergences are a 5-to-1 inversion between
+        accuracy and robustness (ChatGPT) and a 1, 1, 4 pattern for the
+        accuracy-and-calibration leader (Claude), neither of which is
+        legible from a single-metric leaderboard.
+  \item An open methodology and audit trail: NMACR scoring weights
+        (literature-derived, A=0.30, R=0.25, M=0.20, C=0.15, N=0.10),
+        aggregation choices, and tolerance thresholds are all
+        documented, reproducible, and traceable to the source papers
+        that motivated them.
+\end{enumerate}
+
+The remainder of the paper is organised as follows.
+Section~\ref{sec:related} reviews statistical-reasoning benchmarks, the
+calibration literature~\cite{guo2017calibration}, and LLM-as-judge
+methodology~\cite{zheng2023judge,park2025judge,judgment2025noise}.
+Section~\ref{sec:methodology} describes the task suite, perturbation
+taxonomy, and judge protocol. Section~\ref{sec:setup} details the five
+benchmarked models, scoring paths, and ECE computation.
+Section~\ref{sec:results} presents the three rankings and supporting
+analyses. Section~\ref{sec:discussion} argues that the divergence is
+principled, not noise. Section~\ref{sec:threats} catalogs threats to
+validity, and Section~\ref{sec:conclusion} closes.

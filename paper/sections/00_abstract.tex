@@ -1,27 +1,33 @@
 % --- Section: Abstract ---
-% Outline (target ~250 words):
-%   - Frame: LLMs are scored on Bayesian / inferential statistics, but
-%     single-number leaderboards conflate accuracy with calibration and
-%     robustness (poster headline: ``Beyond Right Answers'').
-%   - Setup: 171 base tasks + 473 perturbations across rephrase / numerical
-%     / semantic axes, evaluated on 5 frontier LLMs (Claude Sonnet 4.6,
-%     GPT-4.1, Gemini 2.5 Flash, DeepSeek, Mistral Large).
-%   - External judge: Llama 3.3 70B Turbo (Together AI), out-of-family,
-%     scoring assumption-compliance + reasoning quality. Source:
-%     evaluation/llm_judge_rubric.py.
-%   - Headline finding: top-2 ranks SWAP between Claude (accuracy lead)
-%     and ChatGPT (calibration lead) when the metric changes. 51.5% of
-%     responses fail to state required assumptions; keyword vs judge
-%     Spearman rho = 0.59. Source: experiments/results_v2/.
-%   - Contribution: tri-axis evaluation methodology + open benchmark + the
-%     ranking-divergence argument. Implications for benchmark consumers.
-% TODO: prose draft (Phase 5)
+% Drafted Phase 5 — values pulled from cleanup/04_phase5_data_pulled.md
+% Target: 200–250 words; no math markup, no symbols, no footnotes.
 
 \begin{abstract}
-% placeholder
+Large language models are increasingly applied to quantitative and
+statistical reasoning, yet accuracy-only leaderboards obscure failure
+modes that matter in practice. We benchmark five frontier LLMs (Claude
+Sonnet 4.5, GPT-4.1, Gemini 2.5 Flash, DeepSeek-Chat, and Mistral Large)
+on 171 Bayesian and inferential tasks spanning 38 task types, plus 473
+principled perturbations across three axes (rephrase, semantic, and
+numerical). Each response is scored by both a deterministic keyword
+rubric and an external out-of-family judge, Llama 3.3 70B Turbo via
+Together AI, which independently rates assumption-compliance and
+reasoning quality. Rankings of the same five models reorder substantially
+when the evaluation axis changes. The model worst on accuracy (ChatGPT,
+0.621) is best on robustness (0.9996), an essentially perfect score
+under perturbation. The model leading on accuracy and on binary-pass
+calibration (Claude, accuracy 0.683, ECE 0.0334) ranks fourth of five on
+robustness (0.9565). Independent of ranking, 44.3 percent of responses
+fail to explicitly state the statistical assumptions their derivations
+require, and assumption violation is the dominant failure mode (47
+percent of judge-classified failures). Keyword and external-judge
+agreement on assumption-compliance is moderate (Spearman 0.602) and far
+weaker on the other two judged dimensions. We argue that single-number
+leaderboards are insufficient for statistical-reasoning evaluation and
+that the right ranking depends on the property being measured.
 \end{abstract}
 
 \begin{IEEEkeywords}
-% placeholder: large language models, Bayesian inference, benchmark,
-% calibration, robustness, LLM-as-judge
+large language models, Bayesian reasoning, calibration, perturbation
+robustness, expected calibration error, LLM-as-judge, benchmark
 \end{IEEEkeywords}

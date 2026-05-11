@@ -1,7 +1,10 @@
 ---
-tags: [decision, scoring, weights, evaluation]
+tags: [decision, scoring, weights, evaluation, superseded]
 date: 2026-04-26
+superseded: 2026-05-10
 ---
+
+> **SUPERSEDED 2026-05-10.** The equal-weight 0.20 decision recorded here was revised during methodology development to literature-derived weights (A=0.30, R=0.25, M=0.20, C=0.15, N=0.10). Current canonical weights and defense live in `evaluation/metrics.py` (docstring) and the methodology discussion in `llm-stats-vault/90-archive/audit/methodology_continuity.md`. This file is retained for provenance.
 
 # All Scoring Weights Are Equal at 0.20
 

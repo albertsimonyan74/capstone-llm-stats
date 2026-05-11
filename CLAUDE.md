@@ -10,7 +10,7 @@ DS 299 Capstone — benchmarking LLMs on Bayesian/inferential statistical reason
 
 - **171 tasks**: 136 Phase 1 (31 types) + 35 Phase 2 (7 computational Bayes types)
 - **5 models**: claude, gemini, chatgpt, deepseek, mistral
-- **Scoring**: N=M=A=C=R=0.20 (equal weights, two paths — keep in sync)
+- **Scoring**: NMACR literature-derived weights `A=0.30, R=0.25, M=0.20, C=0.15, N=0.10` (two paths — keep in sync). Defense: `evaluation/metrics.py` docstring (10-paper trail).
 - **Stack**: Python 3.11 + FastMCP | React + Vite | FastAPI | httpx (no vendor SDKs)
 - MCMC out of scope for benchmark tasks; used as ground-truth solvers only
 
@@ -103,7 +103,7 @@ Copy `.env.example` → `.env`. Missing key → error record (no exception).
 
 Two paths — **weights must match both files** (`evaluation/metrics.py` and `llm_runner/response_parser.py`):
 
-`WEIGHTS = N=0.20, M=0.20, A=0.20, C=0.20, R=0.20`
+`NMACR_WEIGHTS = A=0.30, R=0.25, M=0.20, C=0.15, N=0.10` (literature-derived; sole canonical scheme since Approach A, 2026-05-03). Defense in `evaluation/metrics.py` docstring cites Du 2025, Boye & Moell 2025, Yamauchi 2025, ReasonBench 2025, Wei 2022, Chen 2022, Bishop 2006, Nagarkar 2026, FermiEval 2025, Liu 2025. Full literature trail in `llm-stats-vault/90-archive/audit/methodology_continuity.md` §"NMACR weighting".
 
 **Path A** (`response_parser.py`) — live runner:
 - `full_score(raw_response: str, task: dict) -> Dict`
