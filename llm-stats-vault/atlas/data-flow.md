@@ -55,9 +55,9 @@ date: 2026-04-26
 | Run log | `data/processed_data/results_v1/runs.jsonl` | ⚠️ ~620+ (Gemini incomplete) |
 | Results | `data/processed_data/results_v1/results.json` | ❌ EMPTY |
 | Website data | `capstone-website/frontend/src/data/` | ⚠️ 4 models only |
-| R PNGs | `report_materials/r_analysis/figures/` | ✅ 15 PNGs + 1 GIF |
-| R HTML | `report_materials/r_analysis/interactive/` | ✅ 14 Plotly HTMLs |
-| Master report | `report_materials/r_analysis/benchmark_report.html` | ✅ 9.3 MB (4 models) |
+| R PNGs | `code/visualization/figures/` | ✅ 15 PNGs + 1 GIF |
+| R HTML | `code/visualization/interactive/` | ✅ 14 Plotly HTMLs |
+| Master report | `code/visualization/benchmark_report.html` | ✅ 9.3 MB (4 models) |
 
 ## Run Record Schema (runs.jsonl)
 

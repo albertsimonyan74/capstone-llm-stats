@@ -19,7 +19,7 @@ Treats reproducibility and reasoning variance as first-class evaluation dimensio
 - Benchmarks reporting only mean accuracy mask substantial instability.
 
 ## How it grounds this project
-Validates our three-rankings framework (accuracy / robustness / calibration). ReasonBench's framing of variance as first-class is the same lens our RQ4 robustness analysis applies. Maps to scripts/three_rankings_figure.py and the bias-variance framing in the poster's RQ4 panel.
+Validates our three-rankings framework (accuracy / robustness / calibration). ReasonBench's framing of variance as first-class is the same lens our RQ4 robustness analysis applies. Maps to code/scripts/three_rankings_figure.py and the bias-variance framing in the poster's RQ4 panel.
 
 ## Citation in poster
 (ReasonBench, 2025)
@@ -31,7 +31,7 @@ ReasonBench (2025) frames reasoning instability as a first-class evaluation dime
 reasonbench2025
 
 ## Project artifacts that cite this
-- scripts/three_rankings_figure.py
+- code/scripts/three_rankings_figure.py
 - report_materials/figures/three_rankings.png
 - RQ4 robustness panel
 - Abstract / methodology framing

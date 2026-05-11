@@ -19,7 +19,7 @@ Specialized graduate reference on Bayes linear methodology — partial-belief sp
 - BAYES_REG (linear-approximation interpretation)
 
 ## How it grounds this project
-Theoretical background for linear-approximation methods used in baseline/bayesian/. Cited where second-moment-only Bayesian updates appear (e.g. linear-approximation MSE derivations). Foundations footer reference.
+Theoretical background for linear-approximation methods used in code/data_preprocessing/bayesian/. Cited where second-moment-only Bayesian updates appear (e.g. linear-approximation MSE derivations). Foundations footer reference.
 
 ## Citation in poster
 Goldstein & Wooff (2007)
@@ -31,7 +31,7 @@ Goldstein, M., & Wooff, D. (2007). *Bayes Linear Statistics: Theory and Methods*
 goldstein2007bayeslinear
 
 ## Project artifacts that cite this
-- baseline/bayesian/ (linear-approximation helpers, where applicable)
+- code/data_preprocessing/bayesian/ (linear-approximation helpers, where applicable)
 - Task ground-truth: any BAYES_LINEAR_* or LINEAR_APPROX_* tasks
 - References / Foundations footer
 

@@ -45,16 +45,16 @@ For inline-code references like `` `audit/X` `` (not bracket-linked), the conven
 
 | File | Line | Current | Replacement | sed command |
 |---|---|---|---|---|
-| `evaluation/metrics.py` | 17 | `See audit/aggregation_locus.md for the single-path rationale and` | `See llm-stats-vault/90-archive/audit/aggregation_locus.md for the single-path rationale and` | `sed -i '' 's|audit/aggregation_locus.md|llm-stats-vault/90-archive/audit/aggregation_locus.md|g' evaluation/metrics.py` |
-| `evaluation/metrics.py` | 18 | `audit/methodology_continuity.md §"NMACR weighting" for the literature defense` | `llm-stats-vault/90-archive/audit/methodology_continuity.md §"NMACR weighting" for the literature defense` | `sed -i '' 's|audit/methodology_continuity.md|llm-stats-vault/90-archive/audit/methodology_continuity.md|g' evaluation/metrics.py` |
-| `llm_runner/response_parser.py` | 19 | `See audit/aggregation_locus.md (single-path rationale) and` | `See llm-stats-vault/90-archive/audit/aggregation_locus.md (single-path rationale) and` | `sed -i '' 's|audit/aggregation_locus.md|llm-stats-vault/90-archive/audit/aggregation_locus.md|g' llm_runner/response_parser.py` |
-| `llm_runner/response_parser.py` | 20 | `audit/methodology_continuity.md §"NMACR weighting" (literature defense).` | `llm-stats-vault/90-archive/audit/methodology_continuity.md §"NMACR weighting" (literature defense).` | `sed -i '' 's|audit/methodology_continuity.md|llm-stats-vault/90-archive/audit/methodology_continuity.md|g' llm_runner/response_parser.py` |
-| `scripts/recompute_downstream.py` | 22 | `in nmacr_scores_v2.jsonl header AND in audit/recompute_log.md.` | `in nmacr_scores_v2.jsonl header AND in llm-stats-vault/90-archive/audit/recompute_log.md.` | `sed -i '' 's|audit/recompute_log.md|llm-stats-vault/90-archive/audit/recompute_log.md|g' scripts/recompute_downstream.py` |
+| `code/analysis/metrics.py` | 17 | `See audit/aggregation_locus.md for the single-path rationale and` | `See llm-stats-vault/90-archive/audit/aggregation_locus.md for the single-path rationale and` | `sed -i '' 's|audit/aggregation_locus.md|llm-stats-vault/90-archive/audit/aggregation_locus.md|g' code/analysis/metrics.py` |
+| `code/analysis/metrics.py` | 18 | `audit/methodology_continuity.md §"NMACR weighting" for the literature defense` | `llm-stats-vault/90-archive/audit/methodology_continuity.md §"NMACR weighting" for the literature defense` | `sed -i '' 's|audit/methodology_continuity.md|llm-stats-vault/90-archive/audit/methodology_continuity.md|g' code/analysis/metrics.py` |
+| `code/models/response_parser.py` | 19 | `See audit/aggregation_locus.md (single-path rationale) and` | `See llm-stats-vault/90-archive/audit/aggregation_locus.md (single-path rationale) and` | `sed -i '' 's|audit/aggregation_locus.md|llm-stats-vault/90-archive/audit/aggregation_locus.md|g' code/models/response_parser.py` |
+| `code/models/response_parser.py` | 20 | `audit/methodology_continuity.md §"NMACR weighting" (literature defense).` | `llm-stats-vault/90-archive/audit/methodology_continuity.md §"NMACR weighting" (literature defense).` | `sed -i '' 's|audit/methodology_continuity.md|llm-stats-vault/90-archive/audit/methodology_continuity.md|g' code/models/response_parser.py` |
+| `code/scripts/recompute_downstream.py` | 22 | `in nmacr_scores_v2.jsonl header AND in audit/recompute_log.md.` | `in nmacr_scores_v2.jsonl header AND in llm-stats-vault/90-archive/audit/recompute_log.md.` | `sed -i '' 's|audit/recompute_log.md|llm-stats-vault/90-archive/audit/recompute_log.md|g' code/scripts/recompute_downstream.py` |
 
 **Combined per-file sed:**
 ```bash
 sed -i '' -E 's#(^| |[\(`])audit/([a-zA-Z0-9_-]+\.md)#\1llm-stats-vault/90-archive/audit/\2#g' \
-  evaluation/metrics.py llm_runner/response_parser.py scripts/recompute_downstream.py
+  code/analysis/metrics.py code/models/response_parser.py code/scripts/recompute_downstream.py
 ```
 
 (The character-class anchor avoids matching the substring `audit/` if it ever appears mid-identifier; vetted against the current grep.)
@@ -277,7 +277,7 @@ git mv audit/ llm-stats-vault/90-archive/audit/
 
 Run the per-file sed commands from Section A. Diff each:
 ```bash
-git diff --stat evaluation/metrics.py llm_runner/response_parser.py scripts/recompute_downstream.py
+git diff --stat code/analysis/metrics.py code/models/response_parser.py code/scripts/recompute_downstream.py
 ```
 Expect 5 line changes total. Show diff before staging.
 
@@ -329,7 +329,7 @@ Expected output: empty (or only `cleanup/03a_audit_staging_investigation.md` and
 
 ```bash
 source .venv/bin/activate
-pytest baseline/frequentist/test_frequentist.py capstone_mcp/test_server.py -v
+pytest code/data_preprocessing/frequentist/test_frequentist.py code/capstone_mcp/test_server.py -v
 ```
 Expected: 53 passing (24 + 29). No new failures from this migration since the changes are docstring/comment text only, no import paths changed.
 
@@ -348,7 +348,7 @@ snapshot at cleanup/pre_audit_migration_snapshot_<date>.tar.gz. No
 content changes in this commit; ref rewrites land in the next."
 
 # Chunk 2: rewrite all refs
-git add evaluation/metrics.py llm_runner/response_parser.py scripts/recompute_downstream.py \
+git add code/analysis/metrics.py code/models/response_parser.py code/scripts/recompute_downstream.py \
         CLAUDE.md poster/SCRAPE_PLAN.md capstone-website/mobile-fixes-changelog.md \
         cleanup/01_inventory.md cleanup/01c_error_taxonomy_diff.md cleanup/01e_script_callers.md cleanup/02_reorg_plan.md \
         llm-stats-vault/00-home/research-narrative.md llm-stats-vault/00-home/current-priorities.md \

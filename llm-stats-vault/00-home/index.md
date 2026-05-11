@@ -99,18 +99,18 @@ than defaulted. See three-rankings figure.
 source .venv/bin/activate
 
 # Full pipeline refresh (post-benchmark)
-bash scripts/refresh_pipeline.sh
+bash code/scripts/refresh_pipeline.sh
 
 # Start website
 cd capstone-website && uvicorn backend.main:app --reload
 cd capstone-website/frontend && npm run dev
 
 # Re-render R report
-cd report_materials/r_analysis && Rscript run_all.R
+cd code/visualization && Rscript run_all.R
 
 # Run tests
-pytest baseline/frequentist/test_frequentist.py capstone_mcp/test_server.py -v
+pytest code/data_preprocessing/frequentist/test_frequentist.py code/capstone_mcp/test_server.py -v
 
 # Error taxonomy (future — needs analysis script)
-python scripts/analyze_errors.py  # NOT YET WRITTEN
+python code/scripts/analyze_errors.py  # NOT YET WRITTEN
 ```

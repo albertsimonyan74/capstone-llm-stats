@@ -32,9 +32,9 @@ liu2025matheval
 
 ## Project artifacts that cite this
 - Methodology section
-- evaluation/metrics.py (rubric weights rationale)
-- evaluation/llm_judge_rubric.py
-- llm_runner/response_parser.py
+- code/analysis/metrics.py (rubric weights rationale)
+- code/analysis/llm_judge_rubric.py
+- code/models/response_parser.py
 
 ## Tags
 #math-reasoning #rubric-design #baseline #methodology

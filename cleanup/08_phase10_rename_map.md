@@ -10,16 +10,16 @@
 
 | Source | Destination |
 |---|---|
-| `baseline/` | `code/data_preprocessing/` |
-| `evaluation/` | `code/analysis/` |
-| `llm_runner/` | `code/models/` |
-| `capstone_mcp/` | `code/capstone_mcp/` |
-| `scripts/` | `code/scripts/` |
-| `report_materials/r_analysis/` | `code/visualization/` |
+| `code/data_preprocessing/` | `code/data_preprocessing/` |
+| `code/analysis/` | `code/analysis/` |
+| `code/models/` | `code/models/` |
+| `code/capstone_mcp/` | `code/code/capstone_mcp/` |
+| `code/scripts/` | `code/scripts/` |
+| `code/visualization/` | `code/visualization/` |
 | `data/processed_data/results_v1/` | `data/processed_data/results_v1/` |
 | `data/processed_data/results_v2/` | `data/processed_data/results_v2/` |
-| `experiments/run_benchmark.py` | `code/scripts/run_benchmark.py` |
-| `experiments/runs_jsonl_adapter.py` | `code/scripts/runs_jsonl_adapter.py` |
+| `code/scripts/run_benchmark.py` | `code/scripts/run_benchmark.py` |
+| `code/scripts/runs_jsonl_adapter.py` | `code/scripts/runs_jsonl_adapter.py` |
 | `experiments/__init__.py` | (delete) |
 | `data/raw_data/benchmark_v1/` | `data/raw_data/benchmark_v1/` |
 | `data/raw_data/synthetic/` | `data/raw_data/synthetic/` |
@@ -37,7 +37,7 @@ Plus in `paper/main.tex`: `\bibliography{bib/refs}` → `\bibliography{reference
 `poster/`, `literature/`, `llm-stats-vault/`, `cleanup/`, `logs/`,
 `capstone-website/`, `paper/`, `bayesian_scope.md`, `CLAUDE.md`,
 `README.md`, `requirements.txt`, `environment.yml`, `reproduce.sh`.
-`renv.lock` currently lives at `report_materials/r_analysis/renv.lock` —
+`renv.lock` currently lives at `code/visualization/renv.lock` —
 will travel with `git mv` into `code/visualization/renv.lock`.
 
 ---
@@ -52,7 +52,7 @@ will travel with `git mv` into `code/visualization/renv.lock`.
 | `capstone_mcp` | 67 |
 | `scripts` | 785 |
 | `experiments` | 316 |
-| `report_materials/r_analysis` | 35 |
+| `code/visualization` | 35 |
 | `data/processed_data/results_v1` | 65 |
 | `data/processed_data/results_v2` | 163 |
 | `data/raw_data/benchmark_v1` | 72 |
@@ -62,7 +62,7 @@ will travel with `git mv` into `code/visualization/renv.lock`.
 > **False-positive caveat:** raw counts use bare token match. Tokens
 > like `baseline`, `evaluation`, `scripts`, `experiments` appear as
 > English words in LaTeX prose, BST styles, and log files. Slash-suffixed
-> match (e.g. `baseline/`) is the real-path count — see breakdown below.
+> match (e.g. `code/data_preprocessing/`) is the real-path count — see breakdown below.
 
 ## Python imports — package-level
 
@@ -86,7 +86,7 @@ These all get rewritten by the sed pass in 10.D.3.
 | `capstone_mcp` | 28 | 0 | 1 | 28 | 0 | 0 | 0 | 8 | 0 |
 | `scripts` | 27 | 12 | 9 | 69 | 1 | 1 | 422 | 70 | 19 |
 | `experiments` | 130 | 2 | 5 | 70 | 0 | 0 | 43 | 61 | 3 |
-| `report_materials/r_analysis` | 3 | 3 | 5 | 13 | 0 | 0 | 0 | 5 | 0 |
+| `code/visualization` | 3 | 3 | 5 | 13 | 0 | 0 | 0 | 5 | 0 |
 | `data/processed_data/results_v1` | 23 | 1 | 2 | 27 | 0 | 0 | 0 | 10 | 0 |
 | `data/processed_data/results_v2` | 52 | 0 | 2 | 22 | 0 | 0 | 38 | 46 | 1 |
 | `data/raw_data/benchmark_v1` | 18 | 0 | 1 | 35 | 0 | 0 | 0 | 17 | 0 |
@@ -100,11 +100,11 @@ Python refs are much smaller — see "Website coupling" below.
 
 | Source path | Live website refs |
 |---|---:|
-| `baseline/` | 0 |
-| `evaluation/` | 1 |
-| `llm_runner/` | 1 |
-| `capstone_mcp/` | 0 |
-| `scripts/` | 2 |
+| `code/data_preprocessing/` | 0 |
+| `code/analysis/` | 1 |
+| `code/models/` | 1 |
+| `code/capstone_mcp/` | 0 |
+| `code/scripts/` | 2 |
 | `data/processed_data/results_v2/` | 24 |
 | `data/raw_data/synthetic/` | 1 |
 | **Total** | **29** |
@@ -145,14 +145,14 @@ overlapping rewrites, false positives in comment/prose contexts).
 1. **`paper/` 222 hits for "baseline"** — almost all false positives
    from the `IEEEtran` bibliography style commenting and LaTeX
    `baselineskip` typesetting parameter. Slash-suffix check shows only
-   **1 real path reference** in paper/ to `baseline/`. Same pattern for
-   `evaluation/` (only 1 real ref in paper). The TEX risk is small;
+   **1 real path reference** in paper/ to `code/data_preprocessing/`. Same pattern for
+   `code/analysis/` (only 1 real ref in paper). The TEX risk is small;
    most rewriting needed is in prose comments inside `.tex` source
    files referring to canonical code locations.
 
 2. **`scripts` 785 total hits** dominated by 422 in `capstone-website/`
    (most inside `static_data/` informational copies of the vault) and
-   422 from word-token false positives. Real live `scripts/` refs are
+   422 from word-token false positives. Real live `code/scripts/` refs are
    manageable (~30 in code, ~12 in R, ~9 in shell, plus paper/2 + few
    in CLAUDE.md / README.md / bayesian_scope.md).
 
@@ -221,14 +221,14 @@ data/raw_data/  →   data/raw_data/
 
 # capstone_mcp keeps its name — only location changes, no import rewrite needed.
 
-baseline/                →   code/data_preprocessing/
-evaluation/              →   code/analysis/
-llm_runner/              →   code/models/
-capstone_mcp/            →   code/capstone_mcp/
-scripts/                 →   code/scripts/
-report_materials/r_analysis →  code/visualization
-experiments/run_benchmark      →  code/scripts/run_benchmark
-experiments/runs_jsonl_adapter →  code/scripts/runs_jsonl_adapter
+code/data_preprocessing/                →   code/data_preprocessing/
+code/analysis/              →   code/analysis/
+code/models/              →   code/models/
+code/capstone_mcp/            →   code/code/capstone_mcp/
+code/scripts/                 →   code/scripts/
+code/visualization →  code/visualization
+code/scripts/run_benchmark      →  code/scripts/run_benchmark
+code/scripts/runs_jsonl_adapter →  code/scripts/runs_jsonl_adapter
 ```
 
 Excludes for sed pass: `.venv`, `.git`, `node_modules`,

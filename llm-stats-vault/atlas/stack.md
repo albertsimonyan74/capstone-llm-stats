@@ -9,10 +9,10 @@ date: 2026-04-26
 - **Python 3.11** — runtime via `.venv/`
 - **FastAPI** — REST API for website backend (port 8000)
 - **httpx** — all 5 LLM API clients (no vendor SDKs — see [[httpx-used-directly-no-vendor-sdks]])
-- **anthropic** — used only by `evaluation/llm_judge.py` + `evaluation/task_validator.py`
+- **anthropic** — used only by `code/analysis/llm_judge.py` + `code/analysis/task_validator.py`
   - Not in venv by default — `pip install anthropic` if missing (see [[anthropic-module-not-in-venv]])
 - **numpy / scipy** — Bayesian baseline ground-truth computations
-- **FastMCP** — MCP server framework (`capstone_mcp/server.py`)
+- **FastMCP** — MCP server framework (`code/capstone_mcp/server.py`)
 - **ruff** — linting (`ruff check .`)
 - **pytest** — testing (53 tests: 24 frequentist + 29 MCP)
 
@@ -31,7 +31,7 @@ date: 2026-04-26
 - **gganimate** — bar race GIF animation (script 15)
 - **rmarkdown** — master report (`benchmark_report.html`, 9.3 MB)
 - **gt** — publication-quality table (script 06)
-- Run: `cd report_materials/r_analysis && Rscript run_all.R`
+- Run: `cd code/visualization && Rscript run_all.R`
 
 ## Model Endpoints
 

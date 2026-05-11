@@ -1,6 +1,6 @@
 {
   "_methodology": "2\u00d72 keyword \u00d7 judge crosstab on combined eligible set (assumption_compliance dimension). Reproduces combined_pass_flip_analysis.json headline values.",
-  "_pipeline_source": "scripts/combined_pass_flip_analysis.py",
+  "_pipeline_source": "code/scripts/combined_pass_flip_analysis.py",
   "scope_notes": {
     "eligibility": "Tasks with non-empty required_assumption_checks (loaded from tasks_all.json + perturbations_all.json).",
     "v1_pert_filter": "Base runs/judges with task_id in data/raw_data/synthetic/perturbations.json (v1-pert seed records) are dropped before join.",

@@ -1,6 +1,6 @@
 """Print theme for poster figures.
 
-Mirrors scripts/site_palette.py but targets light-background, dark-text
+Mirrors code/scripts/site_palette.py but targets light-background, dark-text
 print output for the A0 capstone poster. SVG primary (vector, infinitely
 scalable, selectable text) + PNG@600dpi fallback.
 """

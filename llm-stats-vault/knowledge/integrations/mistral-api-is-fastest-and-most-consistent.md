@@ -6,7 +6,7 @@ date: 2026-04-26
 # Mistral API Is Fastest and Most Consistent
 
 ## Connection Details
-- **Class**: `MistralClient` in `llm_runner/model_clients.py`
+- **Class**: `MistralClient` in `code/models/model_clients.py`
 - **Model**: `mistral-large-latest`
 - **Endpoint**: `api.mistral.ai/v1/chat/completions`
 - **Auth**: `Authorization: Bearer <MISTRAL_API_KEY>`

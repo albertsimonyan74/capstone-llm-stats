@@ -19,20 +19,20 @@ Reverse index: project artifact → sources that cite it.
 
 ## By script
 
-- `scripts/bootstrap_ci.py`: Papers 06, 15
-- `scripts/three_rankings_figure.py`: Paper 07
-- `scripts/generate_perturbations_full.py`: Paper 08
-- `scripts/score_perturbations.py`: Paper 08
-- `scripts/robustness_analysis.py`: Papers 07, 08
-- `scripts/error_taxonomy.py`: Papers 09, 13
-- `scripts/keyword_vs_judge_agreement.py`: Paper 10
-- `scripts/combined_pass_flip_analysis.py` (Phase 1.5): Paper 10 (Yamauchi)
-- `scripts/krippendorff_agreement.py` (Group B1): Papers 10, 14
-- `scripts/calibration_analysis.py`: Papers 02, 11, 12
-- `scripts/self_consistency_proxy.py` (Group B3): Papers 11, 12 — ARCHIVED 2026-05-02 → `llm-stats-vault/90-archive/intermediate_analyses/scripts/`
-- `evaluation/llm_judge_rubric.py`: Papers 10, 13, 14
-- `llm_runner/run_all_tasks.py`: Papers 04, 05 (CoT and PoT prompting)
-- `llm_runner/prompt_builder.py`: Papers 04, 05
+- `code/scripts/bootstrap_ci.py`: Papers 06, 15
+- `code/scripts/three_rankings_figure.py`: Paper 07
+- `code/scripts/generate_perturbations_full.py`: Paper 08
+- `code/scripts/score_perturbations.py`: Paper 08
+- `code/scripts/robustness_analysis.py`: Papers 07, 08
+- `code/scripts/error_taxonomy.py`: Papers 09, 13
+- `code/scripts/keyword_vs_judge_agreement.py`: Paper 10
+- `code/scripts/combined_pass_flip_analysis.py` (Phase 1.5): Paper 10 (Yamauchi)
+- `code/scripts/krippendorff_agreement.py` (Group B1): Papers 10, 14
+- `code/scripts/calibration_analysis.py`: Papers 02, 11, 12
+- `code/scripts/self_consistency_proxy.py` (Group B3): Papers 11, 12 — ARCHIVED 2026-05-02 → `llm-stats-vault/90-archive/intermediate_analyses/scripts/`
+- `code/analysis/llm_judge_rubric.py`: Papers 10, 13, 14
+- `code/models/run_all_tasks.py`: Papers 04, 05 (CoT and PoT prompting)
+- `code/models/prompt_builder.py`: Papers 04, 05
 
 ## By task type family
 
@@ -93,10 +93,10 @@ Per-dimension citations grounding the locked weights
 
 ## Phase 1B — new scripts
 
-- `scripts/recompute_nmacr.py`: All 15 papers (full literature defense for the
+- `code/scripts/recompute_nmacr.py`: All 15 papers (full literature defense for the
   weight scheme). Primary anchors: Papers 09, 13, 10 (A); 10, 13, 07 (R);
   04, 05 + Textbook 02 (M); 02, 11, 12 (C); 03, 13 (N).
-- `scripts/recompute_downstream.py`: Papers 06, 07, 08, 11, 13, 15
+- `code/scripts/recompute_downstream.py`: Papers 06, 07, 08, 11, 13, 15
   (per-dim robustness + per-dim calibration + correlation).
 
 ## By experimental output
@@ -134,9 +134,9 @@ Per-dimension citations grounding the locked weights
 ## Phase 1C — Self-consistency full expansion
 
 ### By script
-- `scripts/self_consistency_full.py`: Papers 11 (FermiEval), 12 (Multi-Answer Confidence)
-- `scripts/plot_self_consistency_calibration.py`: Papers 11, 12
-- (B3 entry `scripts/self_consistency_proxy.py`: ARCHIVED 2026-05-02 — see
+- `code/scripts/self_consistency_full.py`: Papers 11 (FermiEval), 12 (Multi-Answer Confidence)
+- `code/scripts/plot_self_consistency_calibration.py`: Papers 11, 12
+- (B3 entry `code/scripts/self_consistency_proxy.py`: ARCHIVED 2026-05-02 — see
   `llm-stats-vault/90-archive/intermediate_analyses/scripts/`. Phase 1C
   superseded data outputs live in `llm-stats-vault/90-archive/phase_1c_superseded/`.)
 

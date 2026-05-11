@@ -21,7 +21,7 @@ Advanced graduate Bayesian computation. Covers MCMC (Gibbs, Metropolis-Hastings,
 - BAYES_FACTOR: marginal-likelihood estimation
 
 ## How it grounds this project
-Core Phase-2 task reference. baseline/bayesian/advanced_methods.py implementations of Gibbs, MH, HMC, and RJMCMC trace to Carlin & Louis algorithms. The MCMC-as-ground-truth-solver-only convention (out of scope for benchmark prompts) follows their distinction between teaching MCMC vs using it.
+Core Phase-2 task reference. code/data_preprocessing/bayesian/advanced_methods.py implementations of Gibbs, MH, HMC, and RJMCMC trace to Carlin & Louis algorithms. The MCMC-as-ground-truth-solver-only convention (out of scope for benchmark prompts) follows their distinction between teaching MCMC vs using it.
 
 ## Citation in poster
 Carlin & Louis (2008)
@@ -33,7 +33,7 @@ Carlin, B. P., & Louis, T. A. (2008). *Bayesian Methods for Data Analysis* (3rd 
 carlin2008bayesian
 
 ## Project artifacts that cite this
-- baseline/bayesian/advanced_methods.py (full module)
+- code/data_preprocessing/bayesian/advanced_methods.py (full module)
 - Task ground-truth: GIBBS_*, MH_*, HMC_*, HIERARCHICAL_*, REGRESSION_*, RJMCMC_*
 - Phase-2 build script (build_tasks_advanced.py)
 - References / Foundations footer

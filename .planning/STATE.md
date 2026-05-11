@@ -44,7 +44,7 @@ Phase 1 — Gemini Completion + Results Pipeline
 - runs: data/processed_data/results_v1/runs.jsonl (~620+ records)
 - results: data/processed_data/results_v1/results.json (EMPTY)
 - website: capstone-website/ (FastAPI + React)
-- R report: report_materials/r_analysis/benchmark_report.html
+- R report: code/visualization/benchmark_report.html
 
 ## Next Action
 

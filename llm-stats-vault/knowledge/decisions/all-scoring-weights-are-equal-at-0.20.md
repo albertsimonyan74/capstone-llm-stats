@@ -4,7 +4,7 @@ date: 2026-04-26
 superseded: 2026-05-10
 ---
 
-> **SUPERSEDED 2026-05-10.** The equal-weight 0.20 decision recorded here was revised during methodology development to literature-derived weights (A=0.30, R=0.25, M=0.20, C=0.15, N=0.10). Current canonical weights and defense live in `evaluation/metrics.py` (docstring) and the methodology discussion in `llm-stats-vault/90-archive/audit/methodology_continuity.md`. This file is retained for provenance.
+> **SUPERSEDED 2026-05-10.** The equal-weight 0.20 decision recorded here was revised during methodology development to literature-derived weights (A=0.30, R=0.25, M=0.20, C=0.15, N=0.10). Current canonical weights and defense live in `code/analysis/metrics.py` (docstring) and the methodology discussion in `llm-stats-vault/90-archive/audit/methodology_continuity.md`. This file is retained for provenance.
 
 # All Scoring Weights Are Equal at 0.20
 
@@ -21,7 +21,7 @@ Each of the five components (Numerical, Method, Assumption, Confidence, Reasonin
 
 ## How to Apply
 - When changing weights: update **both** files — see [[scoring-weights-must-be-updated-in-two-files]]
-- Current state: reconciled and identical in both `llm_runner/response_parser.py` and `evaluation/metrics.py`
+- Current state: reconciled and identical in both `code/models/response_parser.py` and `code/analysis/metrics.py`
 - Cross-reference comment in both files: `# Scoring weights must match [other file] — see CLAUDE.md §7`
 
 ## Current Weight History
@@ -33,14 +33,14 @@ Each of the five components (Numerical, Method, Assumption, Confidence, Reasonin
 | C (Confidence) | 0.00 | 0.20 | ↑ activated |
 | R (Reasoning) | 0.00 | 0.20 | ↑ activated |
 
-Old scores in `runs.jsonl` were backfilled via `scripts/recompute_scores.py`.
+Old scores in `runs.jsonl` were backfilled via `code/scripts/recompute_scores.py`.
 
 ---
 
 ## Update — 2026-05-02
 
 Phase 1B introduced an additional **post-hoc literature-derived weighting**
-in `scripts/recompute_nmacr.py` that produced a different aggregate score
+in `code/scripts/recompute_nmacr.py` that produced a different aggregate score
 for analysis purposes. At that point the two paths coexisted by design.
 
 ---
@@ -51,11 +51,11 @@ This decision is **superseded**. Equal weighting is no longer canonical.
 
 The literature-derived NMACR scheme (A=0.30, R=0.25, M=0.20, C=0.15, N=0.10)
 is now the **sole canonical scheme** and is applied at runtime in both
-`evaluation/metrics.py` and `llm_runner/response_parser.py`.
+`code/analysis/metrics.py` and `code/models/response_parser.py`.
 
 Approach A (2026-05-03) consolidated the dual-path design: runtime
 aggregation now uses the same literature-derived weights that
-`scripts/recompute_nmacr.py` had been producing post-hoc. Verification
+`code/scripts/recompute_nmacr.py` had been producing post-hoc. Verification
 confirmed byte-identical regeneration of all canonical surfaces
 (`bootstrap_ci.json`, `robustness_v2.json`, `nmacr_scores_v2.jsonl`).
 

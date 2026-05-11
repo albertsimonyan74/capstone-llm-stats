@@ -1,5 +1,5 @@
 {
-  "_methodology": "Per-task-type failure category counts + failure rate. Numerator: error_taxonomy_v2.json:records L1-bucketed counts. Denominator: total runs in runs.jsonl for that task_type (matches R script report_materials/r_analysis/05_failure_analysis.R Panel A).",
+  "_methodology": "Per-task-type failure category counts + failure rate. Numerator: error_taxonomy_v2.json:records L1-bucketed counts. Denominator: total runs in runs.jsonl for that task_type (matches R script code/visualization/05_failure_analysis.R Panel A).",
   "_pipeline_source": "error_taxonomy_v2.json:records (counts) \u00d7 runs.jsonl (denom)",
   "buckets": [
     "assumption_violation",

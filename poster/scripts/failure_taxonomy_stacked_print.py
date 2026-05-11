@@ -2,7 +2,7 @@
 
 Mirrors the website's failure-rate-by-task-type figure
 (visualizations.js:failure_by_tasktype, R-generated PNG via
-report_materials/r_analysis/05_failure_analysis.R).
+code/visualization/05_failure_analysis.R).
 
 Pure JSON read from poster/figures/derived/failure_taxonomy_per_task.json
 (produced by derive_failure_taxonomy_per_task.py — run that first).

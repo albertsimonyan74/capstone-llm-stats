@@ -13,7 +13,7 @@ Error taxonomy is one of three named deliverables alongside benchmark dataset an
 
 ## Current State
 
-`evaluation/error_taxonomy.py` — dataclass stub only:
+`code/analysis/error_taxonomy.py` — dataclass stub only:
 - 12 top-level tag constants: `CONCEPTUAL`, `METHOD_SELECTION`, `MATHEMATICAL`, `COMPUTATIONAL`, `ASSUMPTION`, `INTERPRETATION`, `BAYES_PRIOR`, `BAYES_POSTERIOR`, `DECISION_THEORY`, `SIMULATION`, `ROBUSTNESS`, `HALLUCINATION`
 - `ErrorAnnotation(task_id, model_name, run_id, tags, notes)` dataclass with `validate()`
 
@@ -21,7 +21,7 @@ Error taxonomy is one of three named deliverables alongside benchmark dataset an
 
 ## What Would Need to Be Built
 
-`scripts/analyze_errors.py` — auto-tag failed runs:
+`code/scripts/analyze_errors.py` — auto-tag failed runs:
 
 ```python
 # Heuristic tag assignment from runs.jsonl fields:
@@ -50,6 +50,6 @@ Then: add taxonomy section to R master report + website.
 
 ## Related
 
-- `evaluation/error_taxonomy.py` — stub to build on
+- `code/analysis/error_taxonomy.py` — stub to build on
 - `data/processed_data/results_v1/runs.jsonl` — source data (1230 records, 375 synthetic flagged by suffix)
-- `scripts/analyze_perturbations.py` — reference for how to process runs.jsonl
+- `code/scripts/analyze_perturbations.py` — reference for how to process runs.jsonl

@@ -6,10 +6,10 @@ date: 2026-04-26
 # MCP Server Exposes 8 Benchmark Tools
 
 ## Connection Details
-- **File**: `capstone_mcp/server.py`
+- **File**: `code/capstone_mcp/server.py`
 - **Framework**: FastMCP
 - **Start**: `python -m capstone_mcp.server`
-- **Tests**: `capstone_mcp/test_server.py` — 29 tests, all passing
+- **Tests**: `code/capstone_mcp/test_server.py` — 29 tests, all passing
 
 ## Available Tools
 
@@ -34,4 +34,4 @@ These tools are available in this session via `mcp__capstone__*` prefix:
 ## Notes
 - `run_single_task` makes live API calls — requires env vars set
 - `get_results` + `compare_models` read `results.json` which is currently empty
-- Tests cover all 8 tools; run with `pytest capstone_mcp/test_server.py -v`
+- Tests cover all 8 tools; run with `pytest code/capstone_mcp/test_server.py -v`

@@ -21,20 +21,20 @@ since Approach A 2026-05-03):
 
 Pre-Approach-A history: from 2026-04-26 to 2026-05-03 the runtime paths
 used equal weights (0.20 each) and the literature-weighted aggregate
-was produced post-hoc by `scripts/recompute_nmacr.py`. Approach A
+was produced post-hoc by `code/scripts/recompute_nmacr.py`. Approach A
 consolidated to one scheme. See
 [audit/aggregation_locus.md](../90-archive/audit/aggregation_locus.md).
 
 ### Live runner
-- File: `llm_runner/response_parser.py`
+- File: `code/models/response_parser.py`
 - Entry: `full_score(raw_response: str, task: dict) -> Dict`
 - Called by `run_all_tasks.py` during API runs
 - Scores written to each record in `runs.jsonl`
 
 ### Formal evaluator (post-hoc on TaskRun objects)
-- File: `evaluation/metrics.py`
+- File: `code/analysis/metrics.py`
 - Entry: `score_all_models(tasks: Dict[str, TaskSpec], runs: List[TaskRun])`
-- Called by `experiments/run_benchmark.py`
+- Called by `code/scripts/run_benchmark.py`
 - Operates on `TaskRun` dataclass objects (not raw strings)
 - Output: `data/processed_data/results_v1/results.json`
 
@@ -97,7 +97,7 @@ Triggers in `run_benchmark.py` when:
 - `parsed_values = []` (extraction failed → N=0)
 - `structure_score < 0.3` (weak structure)
 
-Judge: `evaluation/llm_judge.py` → calls `claude-sonnet-4-6`  
+Judge: `code/analysis/llm_judge.py` → calls `claude-sonnet-4-6`  
 Flag: `--no-judge` disables (faster, less accurate)  
 Results tagged: `judge_assisted = True` in run record  
 See [[llm-as-judge-fallback-for-failed-extraction]].

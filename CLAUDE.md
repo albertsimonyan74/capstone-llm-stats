@@ -10,7 +10,7 @@ DS 299 Capstone — benchmarking LLMs on Bayesian/inferential statistical reason
 
 - **171 tasks**: 136 Phase 1 (31 types) + 35 Phase 2 (7 computational Bayes types)
 - **5 models**: claude, gemini, chatgpt, deepseek, mistral
-- **Scoring**: NMACR literature-derived weights `A=0.30, R=0.25, M=0.20, C=0.15, N=0.10` (two paths — keep in sync). Defense: `evaluation/metrics.py` docstring (10-paper trail).
+- **Scoring**: NMACR literature-derived weights `A=0.30, R=0.25, M=0.20, C=0.15, N=0.10` (two paths — keep in sync). Defense: `code/analysis/metrics.py` docstring (10-paper trail).
 - **Stack**: Python 3.11 + FastMCP | React + Vite | FastAPI | httpx (no vendor SDKs)
 - MCMC out of scope for benchmark tasks; used as ground-truth solvers only
 
@@ -41,26 +41,26 @@ python -m llm_runner.run_all_tasks --models claude --dry-run --limit 3
 python -m llm_runner.run_all_tasks --models claude --task-types DISC_MEDIAN MARKOV
 python -m llm_runner.run_all_tasks --models claude gemini --synthetic
 python -m llm_runner.run_all_tasks --models claude --synthetic --pert-types numerical
-python scripts/generate_perturbations_full.py          # regenerate perturbations_all.json (canonical, 473 perturbations)
+python code/scripts/generate_perturbations_full.py          # regenerate perturbations_all.json (canonical, 473 perturbations)
 
 # Scoring & analysis
 python -m experiments.run_benchmark
-python scripts/analyze_errors.py                        # E1–E9 taxonomy, up to 100 LLM calls
-python scripts/analyze_errors.py --no-llm               # rule-based only
-python scripts/analyze_perturbations.py                 # RQ4 → rq4_analysis.json
-python scripts/summarize_results.py                     # → results_summary.json
+python code/scripts/analyze_errors.py                        # E1–E9 taxonomy, up to 100 LLM calls
+python code/scripts/analyze_errors.py --no-llm               # rule-based only
+python code/scripts/analyze_perturbations.py                 # RQ4 → rq4_analysis.json
+python code/scripts/summarize_results.py                     # → results_summary.json
 
 # Services
 python -m capstone_mcp.server                           # MCP server
 cd capstone-website && uvicorn backend.main:app --reload  # FastAPI :8000
 cd capstone-website/frontend && npm run dev             # Vite :3000
 
-# R visualizations (run from report_materials/r_analysis/)
+# R visualizations (run from code/visualization/)
 Rscript run_all.R                                       # 18 scripts → figures/ + interactive/
 
 # Quality
 ruff check .
-pytest baseline/frequentist/test_frequentist.py capstone_mcp/test_server.py -v
+pytest code/data_preprocessing/frequentist/test_frequentist.py code/capstone_mcp/test_server.py -v
 ```
 
 ---
@@ -81,7 +81,7 @@ Copy `.env.example` → `.env`. Missing key → error record (no exception).
 
 ## Model Clients
 
-`llm_runner/model_clients.py` — all use `httpx`, no vendor SDKs.
+`code/models/model_clients.py` — all use `httpx`, no vendor SDKs.
 
 | Family | Model string | Env var |
 |---|---|---|
@@ -101,9 +101,9 @@ Copy `.env.example` → `.env`. Missing key → error record (no exception).
 
 ## Scoring
 
-Two paths — **weights must match both files** (`evaluation/metrics.py` and `llm_runner/response_parser.py`):
+Two paths — **weights must match both files** (`code/analysis/metrics.py` and `code/models/response_parser.py`):
 
-`NMACR_WEIGHTS = A=0.30, R=0.25, M=0.20, C=0.15, N=0.10` (literature-derived; sole canonical scheme since Approach A, 2026-05-03). Defense in `evaluation/metrics.py` docstring cites Du 2025, Boye & Moell 2025, Yamauchi 2025, ReasonBench 2025, Wei 2022, Chen 2022, Bishop 2006, Nagarkar 2026, FermiEval 2025, Liu 2025. Full literature trail in `llm-stats-vault/90-archive/audit/methodology_continuity.md` §"NMACR weighting".
+`NMACR_WEIGHTS = A=0.30, R=0.25, M=0.20, C=0.15, N=0.10` (literature-derived; sole canonical scheme since Approach A, 2026-05-03). Defense in `code/analysis/metrics.py` docstring cites Du 2025, Boye & Moell 2025, Yamauchi 2025, ReasonBench 2025, Wei 2022, Chen 2022, Bishop 2006, Nagarkar 2026, FermiEval 2025, Liu 2025. Full literature trail in `llm-stats-vault/90-archive/audit/methodology_continuity.md` §"NMACR weighting".
 
 **Path A** (`response_parser.py`) — live runner:
 - `full_score(raw_response: str, task: dict) -> Dict`
@@ -113,7 +113,7 @@ Two paths — **weights must match both files** (`evaluation/metrics.py` and `ll
 - C: `extract_confidence()` → overconfident-on-wrong penalized 1.5×, underconfident-on-right 0.8×
 - R: 4 criteria × 0.25 (shows work / identifies model / states formula / interprets result)
 
-**Path B** (`evaluation/metrics.py`) — post-hoc:
+**Path B** (`code/analysis/metrics.py`) — post-hoc:
 - `score_all_models(tasks, runs)` operates on `TaskRun` dataclass objects
 - C/R read from `confidence_calib_score` / `reasoning_qual_score` fields (default 0.5)
 - Tier-5 multiplier: 1.5× (no tier-5 tasks exist)
@@ -163,9 +163,9 @@ Phase 2 solvers use `np.random.seed(42)` — true values are seeded MC estimates
 }
 ```
 
-**Perturbations** (`data/raw_data/synthetic/perturbations_all.json`, 473 records covering all 171 base tasks): `rephrase` (same math, reworded) / `numerical` (changed numbers, recomputed) / `semantic` (same math, new framing). Composition: 75 hand-authored seed records + 398 LLM-generated v2 records (v2 ids end with `_v2`). Regenerate with `python scripts/generate_perturbations_full.py`.
+**Perturbations** (`data/raw_data/synthetic/perturbations_all.json`, 473 records covering all 171 base tasks): `rephrase` (same math, reworded) / `numerical` (changed numbers, recomputed) / `semantic` (same math, new framing). Composition: 75 hand-authored seed records + 398 LLM-generated v2 records (v2 ids end with `_v2`). Regenerate with `python code/scripts/generate_perturbations_full.py`.
 
-**v1 perturbation deprecation (2026-05-04, Phase 1.8).** The legacy `data/raw_data/synthetic/perturbations.json` (75 hand-authored records) is deprecated as a data source — its records are preserved verbatim inside `perturbations_all.json`. The file is RETAINED on disk because 5 consumer scripts (`scripts/krippendorff_agreement.py`, `keyword_vs_judge_agreement.py`, `combined_pass_flip_analysis.py`, `calibration_analysis.py`, `recompute_downstream.py`), `capstone-website/backend/main.py`, and the R pipeline use it as the canonical list of v1-pert task_ids to filter out of `runs.jsonl` (Strategy C). Future cleanup: refactor consumers to derive the v1 list from `perturbations_all.json` (suffix-match `task_id` not ending in `_v2`), then delete `perturbations.json`. Generator `data/raw_data/synthetic/build_perturbations.py` is no longer the canonical generator — `scripts/generate_perturbations_full.py` is. See `llm-stats-vault/90-archive/audit/recompute_log.md` §"Phase 1.8".
+**v1 perturbation deprecation (2026-05-04, Phase 1.8).** The legacy `data/raw_data/synthetic/perturbations.json` (75 hand-authored records) is deprecated as a data source — its records are preserved verbatim inside `perturbations_all.json`. The file is RETAINED on disk because 5 consumer scripts (`code/scripts/krippendorff_agreement.py`, `keyword_vs_judge_agreement.py`, `combined_pass_flip_analysis.py`, `calibration_analysis.py`, `recompute_downstream.py`), `capstone-website/backend/main.py`, and the R pipeline use it as the canonical list of v1-pert task_ids to filter out of `runs.jsonl` (Strategy C). Future cleanup: refactor consumers to derive the v1 list from `perturbations_all.json` (suffix-match `task_id` not ending in `_v2`), then delete `perturbations.json`. Generator `data/raw_data/synthetic/build_perturbations.py` is no longer the canonical generator — `code/scripts/generate_perturbations_full.py` is. See `llm-stats-vault/90-archive/audit/recompute_log.md` §"Phase 1.8".
 
 ---
 
@@ -175,7 +175,7 @@ Phase 2 solvers use `np.random.seed(42)` — true values are seeded MC estimates
 - `runs.jsonl` is **append-only** — never truncate or overwrite.
 - Task JSON files (`tasks.json`, `tasks_advanced.json`, `tasks_all.json`) — **never edit manually**.
 - All scripts **must run from project root** for imports to resolve.
-- Scoring weights **must be updated in both** `evaluation/metrics.py` and `llm_runner/response_parser.py`.
+- Scoring weights **must be updated in both** `code/analysis/metrics.py` and `code/models/response_parser.py`.
 - Website: root `motion.div` has `filter:'blur(0px)'` → creates CSS stacking context → breaks `position:fixed` for descendants. Modals/lightboxes must be rendered as siblings outside that div.
 
 ---
@@ -188,18 +188,18 @@ Phase 2 solvers use `np.random.seed(42)` — true values are seeded MC estimates
 
 **Imports**: absolute only (`from llm_runner.logger import log_jsonl`). No relative imports outside packages.
 
-**Tests**: `capstone_mcp/test_server.py` (29), `baseline/frequentist/test_frequentist.py` (24). No tests for `evaluation/`, `baseline/bayesian/`, `llm_runner/`.
+**Tests**: `code/capstone_mcp/test_server.py` (29), `code/data_preprocessing/frequentist/test_frequentist.py` (24). No tests for `code/analysis/`, `code/data_preprocessing/bayesian/`, `code/models/`.
 
 **Adding a model client**:
-1. Subclass `BaseModelClient` in `llm_runner/model_clients.py`
+1. Subclass `BaseModelClient` in `code/models/model_clients.py`
 2. Set `model`, `model_family` attrs; implement `query(prompt, task_id) -> Dict`
 3. Return keys: `model, model_family, task_id, raw_response, input_tokens, output_tokens, latency_ms, error`
 4. Register in `_CLIENTS`; add to `--models` choices; add key to `.env.example`
 
 **Adding a task type**:
-1. `gen_<type>_tasks()` in `baseline/bayesian/build_tasks_bayesian.py`
-2. Ground-truth fn in `baseline/bayesian/ground_truth.py` if needed
-3. `_prompt_<type>()` in `llm_runner/prompt_builder.py`; register in `_DISPATCH`
+1. `gen_<type>_tasks()` in `code/data_preprocessing/bayesian/build_tasks_bayesian.py`
+2. Ground-truth fn in `code/data_preprocessing/bayesian/ground_truth.py` if needed
+3. `_prompt_<type>()` in `code/models/prompt_builder.py`; register in `_DISPATCH`
 4. Regenerate: `python -m baseline.bayesian.build_tasks_bayesian`
 
 **User Study hardening** (`capstone-website/backend/user_study.py`):

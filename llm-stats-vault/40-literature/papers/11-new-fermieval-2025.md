@@ -31,7 +31,7 @@ FermiEval (2025) report systematic LLM overconfidence on Fermi estimation; we ob
 fermieval2025
 
 ## Project artifacts that cite this
-- scripts/calibration_analysis.py
+- code/scripts/calibration_analysis.py
 - data/processed_data/results_v2/calibration.json
 - ../../90-archive/audit/limitations_disclosures.md
 - RQ5 calibration panel

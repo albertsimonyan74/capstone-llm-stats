@@ -17,7 +17,7 @@ However, MCMC is used internally as the ground-truth computation engine for Phas
 - Phase 2 tasks ask LLMs to compute/reason about the *results* of these methods (e.g., "given this Gibbs sampler setup, what is the conditional mean?") — not to implement them
 
 ## How It Works in Phase 2
-- `baseline/bayesian/advanced_methods.py` implements 7 computational Bayes solvers:
+- `code/data_preprocessing/bayesian/advanced_methods.py` implements 7 computational Bayes solvers:
   - `GibbsSampler`, `MetropolisHastings`, `HamiltonianMC`, `RJMCMC`
   - `VariationalBayes`, `ABCMethod`, `HierarchicalBayes`
 - All solvers call `np.random.seed(42)` in `solve()` for reproducibility

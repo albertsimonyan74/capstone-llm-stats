@@ -1,6 +1,6 @@
 """Paired ECE (verbalized vs self-consistency) — print theme.
 
-Mirrors scripts/plot_self_consistency_calibration.py exactly, swapping
+Mirrors code/scripts/plot_self_consistency_calibration.py exactly, swapping
 the dark site theme for the white print theme + vivid -400 model colors.
 
 Sources:

@@ -55,7 +55,7 @@ Only in audit: website_discovery.md
 | Tables | filled with model/run rows | empty headers only |
 | `generated_at` (header note) | 2026-05-03T15:59:00.436882+00:00 | 2026-05-03T15:59:00.436882+00:00 (same) |
 
-**Verdict:** staging file is a dry-run / zero-input scaffold of the same generator (`scripts/recompute_downstream.py`). Same timestamp metadata, but emitted with no records — empty markdown skeleton with table headers and `Records: 0`. Not an extract of the real audit log.
+**Verdict:** staging file is a dry-run / zero-input scaffold of the same generator (`code/scripts/recompute_downstream.py`). Same timestamp metadata, but emitted with no records — empty markdown skeleton with table headers and `Records: 0`. Not an extract of the real audit log.
 
 ---
 
@@ -78,13 +78,13 @@ Single file under `results_v2/`. Source `data/processed_data/results_v2/` has 20
 | Header `generated_at` | 2026-05-03T15:59:12.116159+00:00 | 2026-05-03T15:59:00.436452+00:00 |
 | Data records | 3,595 | 0 |
 
-**Verdict:** same scaffold pattern. Header-only artifact from a zero-input run of `scripts/recompute_downstream.py` writing into the vault destination instead of the canonical `experiments/` destination.
+**Verdict:** same scaffold pattern. Header-only artifact from a zero-input run of `code/scripts/recompute_downstream.py` writing into the vault destination instead of the canonical `experiments/` destination.
 
 ---
 
 ## 3. Provenance hypothesis
 
-`scripts/recompute_downstream.py` writes two outputs: a JSONL (`nmacr_scores_v2.jsonl`) and a markdown log (`recompute_log.md`). Both staging files match a zero-records run of that script. Likely cause: a previous session pointed the script's output paths at `llm-stats-vault/90-archive/...` while the input runs filter excluded everything (n=0), producing the scaffolds. They were never deleted.
+`code/scripts/recompute_downstream.py` writes two outputs: a JSONL (`nmacr_scores_v2.jsonl`) and a markdown log (`recompute_log.md`). Both staging files match a zero-records run of that script. Likely cause: a previous session pointed the script's output paths at `llm-stats-vault/90-archive/...` while the input runs filter excluded everything (n=0), producing the scaffolds. They were never deleted.
 
 Neither file is on disk anywhere else in the vault (verified by the file listing). They are not partial migrations of `audit/`, just orphaned dry-run output.
 

@@ -32,8 +32,8 @@ chen2022pot
 
 ## Project artifacts that cite this
 - Methodology / prompting strategy section
-- llm_runner/run_all_tasks.py
-- llm_runner/prompt_builder.py
+- code/models/run_all_tasks.py
+- code/models/prompt_builder.py
 
 ## Tags
 #prompting #pot #methodology #baseline

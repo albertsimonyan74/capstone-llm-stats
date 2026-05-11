@@ -37,4 +37,4 @@ Post-semester recruitment is harder. If infeasible → document as "future work"
 ## Related
 
 - RQ5 confidence calibration (C score) partially addresses trust angle — model's own confidence alignment
-- `evaluation/error_taxonomy.py` — error patterns could inform which LLM failures students caught
+- `code/analysis/error_taxonomy.py` — error patterns could inform which LLM failures students caught

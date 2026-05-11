@@ -1,6 +1,6 @@
 """Derive 2×2 keyword × judge confusion matrix on the combined eligible set.
 
-Mirrors scripts/combined_pass_flip_analysis.py exactly:
+Mirrors code/scripts/combined_pass_flip_analysis.py exactly:
   1. Eligibility: tasks with non-empty `required_assumption_checks`
      (loaded from tasks_all.json + perturbations_all.json).
   2. Filter base runs/judges: drop rows whose task_id is in
@@ -174,7 +174,7 @@ def main() -> int:
             "(assumption_compliance dimension). Reproduces "
             "combined_pass_flip_analysis.json headline values."
         ),
-        "_pipeline_source": "scripts/combined_pass_flip_analysis.py",
+        "_pipeline_source": "code/scripts/combined_pass_flip_analysis.py",
         "scope_notes": {
             "eligibility": (
                 "Tasks with non-empty required_assumption_checks (loaded from "

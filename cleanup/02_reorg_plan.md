@@ -22,7 +22,7 @@ capstone-llm-stats/
 │   │   ├── 06_discussion.tex
 │   │   ├── 07_threats_to_validity.tex
 │   │   └── 08_conclusion.tex
-│   ├── figures/                  ← Fresh exports re-rendered from report_materials/r_analysis/.
+│   ├── figures/                  ← Fresh exports re-rendered from code/visualization/.
 │   ├── tables/                   ← LaTeX tables produced from data/processed_data/results_v2/*.json.
 │   └── bib/refs.bib
 │
@@ -30,11 +30,11 @@ capstone-llm-stats/
 ├── report_materials/             ← UNCHANGED. R pipeline canonical figure source.
 │   └── r_analysis/               (R scripts assume cwd = this dir; do not move)
 │
-├── baseline/                     ← UNCHANGED. Bayesian/frequentist task generators + solvers.
-├── capstone_mcp/                 ← UNCHANGED. FastMCP server.
-├── evaluation/                   ← UNCHANGED. Metrics, judge, rubrics, schemas.
-├── llm_runner/                   ← UNCHANGED. 5 model clients + runner + parser.
-├── scripts/                      ← UNCHANGED. Analysis pipeline (24 .py + 1 .sh).
+├── code/data_preprocessing/                     ← UNCHANGED. Bayesian/frequentist task generators + solvers.
+├── code/capstone_mcp/                 ← UNCHANGED. FastMCP server.
+├── code/analysis/                   ← UNCHANGED. Metrics, judge, rubrics, schemas.
+├── code/models/                   ← UNCHANGED. 5 model clients + runner + parser.
+├── code/scripts/                      ← UNCHANGED. Analysis pipeline (24 .py + 1 .sh).
 │
 ├── data/                         ← UNCHANGED INTERNALLY. Path-stable for ~12 hard-coded callers.
 │   ├── benchmark_v1/             (171 tasks)
@@ -97,16 +97,16 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `.ruff_cache/` | DELETE | — | Lint cache. Phase 3a. |
 | `.venv/` | KEEP-IN-PLACE | — | Local Python env, gitignored. |
 | `.git/`, `.claude/`, `.planning/`, `.vercel/` | KEEP-IN-PLACE | — | Tooling. |
-| `baseline/` | KEEP-IN-PLACE | — | Task generators. Path-stable. |
-| `baseline/__pycache__/`, `baseline/{bayesian,frequentist}/__pycache__/` | DELETE | — | Phase 3a. |
-| `capstone_mcp/` | KEEP-IN-PLACE | — | MCP server. |
-| `capstone_mcp/__pycache__/`, `capstone_mcp/tools/__pycache__/` | DELETE | — | Phase 3a. |
-| `evaluation/` | KEEP-IN-PLACE | — | Path-stable. |
-| `evaluation/__pycache__/` | DELETE | — | Phase 3a. |
-| `llm_runner/` | KEEP-IN-PLACE | — | Path-stable. |
-| `llm_runner/__pycache__/` | DELETE | — | Phase 3a. |
-| `scripts/` | KEEP-IN-PLACE | — | Many internal cross-refs. |
-| `scripts/__pycache__/` | DELETE | — | Phase 3a. |
+| `code/data_preprocessing/` | KEEP-IN-PLACE | — | Task generators. Path-stable. |
+| `code/data_preprocessing/__pycache__/`, `code/data_preprocessing/{bayesian,frequentist}/__pycache__/` | DELETE | — | Phase 3a. |
+| `code/capstone_mcp/` | KEEP-IN-PLACE | — | MCP server. |
+| `code/capstone_mcp/__pycache__/`, `code/capstone_mcp/tools/__pycache__/` | DELETE | — | Phase 3a. |
+| `code/analysis/` | KEEP-IN-PLACE | — | Path-stable. |
+| `code/analysis/__pycache__/` | DELETE | — | Phase 3a. |
+| `code/models/` | KEEP-IN-PLACE | — | Path-stable. |
+| `code/models/__pycache__/` | DELETE | — | Phase 3a. |
+| `code/scripts/` | KEEP-IN-PLACE | — | Many internal cross-refs. |
+| `code/scripts/__pycache__/` | DELETE | — | Phase 3a. |
 | `experiments/` | KEEP-IN-PLACE | — | 100+ hard-coded callers. |
 | `experiments/__pycache__/` | DELETE | — | Phase 3a. |
 | `data/` | KEEP-IN-PLACE | — | Path-stable. |
@@ -129,7 +129,7 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 |---|---|---|---|
 | `data/error_taxonomy_results.json` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/error_taxonomy_results_v1.json` | Per `01c`: superseded by `data/processed_data/results_v2/error_taxonomy_v2.json`. No code reader except the script that writes it. |
 | `data/raw_data/synthetic/perturbations.json` | KEEP-IN-PLACE | — | Per CLAUDE.md Phase 1.8: still required as v1-ID filter source by 5 scripts + website + R pipeline. |
-| `data/raw_data/synthetic/perturbations_v2.json` | KEEP-IN-PLACE | — | Per `01e`: zero readers, but it IS the natural output of `scripts/generate_perturbations_full.py` (`DEFAULT_OUTPUT`). Leaving it lets the generator be re-run idempotently. Do not archive. |
+| `data/raw_data/synthetic/perturbations_v2.json` | KEEP-IN-PLACE | — | Per `01e`: zero readers, but it IS the natural output of `code/scripts/generate_perturbations_full.py` (`DEFAULT_OUTPUT`). Leaving it lets the generator be re-run idempotently. Do not archive. |
 | `data/raw_data/synthetic/perturbations_v2_sample.jsonl` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/perturbations_v2_sample.jsonl` | Sample/preview, no live consumer (per `llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md:202` — "Only consumer is inspect_judge_strictness.py"). |
 | `data/raw_data/synthetic/perturbations_all.json` | KEEP-IN-PLACE | — | Per `01d`: canonical 473, complete. |
 | `data/raw_data/synthetic/build_perturbations.py` | KEEP-IN-PLACE | — | Deprecated per CLAUDE.md but listed there as historical v1 generator; leave for traceability. |
@@ -138,11 +138,11 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `data/processed_data/results_v1/runs.jsonl.pre_tier1_20260503_195517` | ARCHIVE | `llm-stats-vault/90-archive/results_legacy/runs.jsonl.pre_tier1_20260503_195517` | Old backup. Never referenced by code. |
 | `data/processed_data/results_v1/{results.json, rq4_analysis.json}` | KEEP-IN-PLACE | — | Path-stable. |
 | `data/processed_data/results_v2/*` (24 files) | KEEP-IN-PLACE | — | Hard-coded paths in 100+ callers. Do not move. |
-| `evaluation/llm_judge_rubric.py` | KEEP-IN-PLACE | — | Per `01b`: not stale. Together AI Llama 3.3 70B Turbo, code matches docs. |
-| `scripts/dedup_runs.py` | KEEP-IN-PLACE | — | Per `01e`: called by `refresh_pipeline.sh`. |
-| `scripts/generate_group_a_figures.py` | KEEP-IN-PLACE | — | Per `01e`: canonical generator for `a1`–`a6` figures. |
-| `scripts/site_palette.py` | KEEP-IN-PLACE | — | Per `01e`: imported by 14 scripts. |
-| `scripts/inspect_judge_strictness.py` | ARCHIVE | `llm-stats-vault/90-archive/scripts_legacy/inspect_judge_strictness.py` | Per `01e` + audit `[CL-B6]`: post-poster, no callers, safe to archive. |
+| `code/analysis/llm_judge_rubric.py` | KEEP-IN-PLACE | — | Per `01b`: not stale. Together AI Llama 3.3 70B Turbo, code matches docs. |
+| `code/scripts/dedup_runs.py` | KEEP-IN-PLACE | — | Per `01e`: called by `refresh_pipeline.sh`. |
+| `code/scripts/generate_group_a_figures.py` | KEEP-IN-PLACE | — | Per `01e`: canonical generator for `a1`–`a6` figures. |
+| `code/scripts/site_palette.py` | KEEP-IN-PLACE | — | Per `01e`: imported by 14 scripts. |
+| `code/scripts/inspect_judge_strictness.py` | ARCHIVE | `llm-stats-vault/90-archive/scripts_legacy/inspect_judge_strictness.py` | Per `01e` + audit `[CL-B6]`: post-poster, no callers, safe to archive. |
 | `llm-stats-vault/90-archive/audit/tier1_baseline_20260503_195141/` (4.6M) | KEEP-IN-PLACE | — | Audit baseline (moved 2026-05-10). |
 | `llm-stats-vault/90-archive/audit/v1_deprecation_baseline_20260504_001522/` (1.7M) | KEEP-IN-PLACE | — | Same. |
 | `poster/IMG_9619.heic` | ARCHIVE | `llm-stats-vault/90-archive/poster_prep_assets/IMG_9619.heic` | Poster prep collateral (phone reference photo). Not paper material. |
@@ -154,9 +154,9 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `capstone-website/frontend/dist/` (68M) | KEEP-IN-PLACE | — | Build output. Already gitignored (verify in §E). |
 | `capstone-website/frontend/node_modules/` (196M) | KEEP-IN-PLACE | — | npm deps. Already gitignored. |
 
-### Top-level scripts/ status (post-`01e` resolution)
+### Top-level code/scripts/ status (post-`01e` resolution)
 
-All 24 `.py` + 1 `.sh` files in `scripts/` keep their current paths. None are orphaned except `inspect_judge_strictness.py` (action: ARCHIVE).
+All 24 `.py` + 1 `.sh` files in `code/scripts/` keep their current paths. None are orphaned except `inspect_judge_strictness.py` (action: ARCHIVE).
 
 ---
 
@@ -166,15 +166,15 @@ All 24 `.py` + 1 `.sh` files in `scripts/` keep their current paths. None are or
 
 ```text
 # Project __pycache__ (12 dirs)
-./baseline/__pycache__/
-./baseline/bayesian/__pycache__/
-./baseline/frequentist/__pycache__/
-./capstone_mcp/__pycache__/
-./capstone_mcp/tools/__pycache__/
+./code/data_preprocessing/__pycache__/
+./code/data_preprocessing/bayesian/__pycache__/
+./code/data_preprocessing/frequentist/__pycache__/
+./code/capstone_mcp/__pycache__/
+./code/capstone_mcp/tools/__pycache__/
 ./capstone-website/backend/__pycache__/
-./evaluation/__pycache__/
+./code/analysis/__pycache__/
 ./experiments/__pycache__/
-./llm_runner/__pycache__/
+./code/models/__pycache__/
 ./poster/scripts/__pycache__/
 ./scripts/__pycache__/
 # .venv/ pycaches stay — that's the local env, gitignored.
@@ -290,7 +290,7 @@ Two old timestamped backups (Apr 26, May 03) moved out of the live tree."
 ### Commit 5 — archive post-poster diagnostic script
 
 ```bash
-git mv scripts/inspect_judge_strictness.py \
+git mv code/scripts/inspect_judge_strictness.py \
        llm-stats-vault/90-archive/scripts_legacy/
 
 git commit -m "chore(archive): retire inspect_judge_strictness.py post-poster delivery
@@ -343,22 +343,22 @@ git commit -m "feat(paper): scaffold IEEEtran conference paper (stubs only, comp
 ## §E — Risks and verification steps
 
 ### R1. R pipeline working-directory dependence
-- **Risk**: [report_materials/r_analysis/00_load_data.R:20](report_materials/r_analysis/00_load_data.R#L20) uses `dirname(dirname(getwd()))` to find project root. Assumes cwd = `report_materials/r_analysis/`. None of our planned moves change `report_materials/` or `data/processed_data/results_v1/runs.jsonl`.
-- **Verification**: After Phase 3, `cd report_materials/r_analysis/ && Rscript 00_load_data.R` should still produce `data/benchmark_clean.{csv,rds}` in that same dir.
+- **Risk**: [code/visualization/00_load_data.R:20](code/visualization/00_load_data.R#L20) uses `dirname(dirname(getwd()))` to find project root. Assumes cwd = `code/visualization/`. None of our planned moves change `report_materials/` or `data/processed_data/results_v1/runs.jsonl`.
+- **Verification**: After Phase 3, `cd code/visualization/ && Rscript 00_load_data.R` should still produce `data/benchmark_clean.{csv,rds}` in that same dir.
 
 ### R2. Backend Docker static bundle
 - **Risk**: [capstone-website/backend/Dockerfile:6, 8](capstone-website/backend/Dockerfile) does `COPY static_data/ ./static_data/` and sets `ENV DATA_ROOT=/app/static_data`. The bundle includes copies of `data/`, `experiments/`, `llm-stats-vault/`. We are NOT moving anything that the bundle copies (perturbations.json, perturbations_all.json, runs.jsonl, results.json, results_v2/* all stay put).
 - **Verification**: Before Phase 3 ship, `cd capstone-website/backend && docker build -t capstone-backend . && docker run --rm capstone-backend ls /app/static_data/data/processed_data/results_v1/` should show `runs.jsonl + results.json + rq4_analysis.json` (no backups now, since they moved out — but the bundle script copies whatever's in `static_data/data/processed_data/results_v1/` so the prior baked-in copy stays valid). Resync `static_data/` only if backend redeploys.
 
 ### R3. Hard-coded `data/processed_data/results_v2/` paths (100+)
-- **Risk**: Any move of `data/processed_data/results_v2/` would break: 14+ analysis scripts, `evaluation/llm_judge_rubric.py`, `capstone-website/backend/v2_routes.py`, R pipeline, llm-stats-vault/90-archive/audit/recompute_log.md cross-refs.
+- **Risk**: Any move of `data/processed_data/results_v2/` would break: 14+ analysis scripts, `code/analysis/llm_judge_rubric.py`, `capstone-website/backend/v2_routes.py`, R pipeline, llm-stats-vault/90-archive/audit/recompute_log.md cross-refs.
 - **Mitigation**: Plan does NOT move these. Future refactor only.
-- **Verification**: After Phase 3, dry-run `bash scripts/refresh_pipeline.sh --help` (if it has --help) or read its top to ensure no path it touches has moved. `scripts/refresh_pipeline.sh` calls `dedup_runs.py` (unmoved), and downstream pipelines all read `experiments/results_v{1,2}/` (unmoved).
+- **Verification**: After Phase 3, dry-run `bash code/scripts/refresh_pipeline.sh --help` (if it has --help) or read its top to ensure no path it touches has moved. `code/scripts/refresh_pipeline.sh` calls `dedup_runs.py` (unmoved), and downstream pipelines all read `experiments/results_v{1,2}/` (unmoved).
 
 ### R4. Hard-coded `report_materials/figures/` paths (17+)
 - **Risk**: Each figure-generator script writes to `report_materials/figures/<name>.png`.
 - **Mitigation**: `report_materials/` not moved.
-- **Verification**: `python scripts/three_rankings_figure.py` (or similar) should still write to the same path.
+- **Verification**: `python code/scripts/three_rankings_figure.py` (or similar) should still write to the same path.
 
 ### R5. Frontend `dist/` and `node_modules/` gitignore
 - **Risk**: `dist/` 68M and `node_modules/` 196M committed by accident.
@@ -369,7 +369,7 @@ git commit -m "feat(paper): scaffold IEEEtran conference paper (stubs only, comp
 - **Verification**: `python poster/scripts/dimension_leaderboard_print.py` should produce `poster/figures/dimension_leaderboard.png` unchanged.
 
 ### R7. `data/raw_data/synthetic/perturbations_v2.json` regeneration
-- **Risk**: If user later runs `python scripts/generate_perturbations_full.py`, it overwrites `data/raw_data/synthetic/perturbations_v2.json`. Plan keeps file in place — not affected.
+- **Risk**: If user later runs `python code/scripts/generate_perturbations_full.py`, it overwrites `data/raw_data/synthetic/perturbations_v2.json`. Plan keeps file in place — not affected.
 - **Verification**: N/A — KEEP-IN-PLACE.
 
 ### R8. `paper/` collision
@@ -384,7 +384,7 @@ git commit -m "feat(paper): scaffold IEEEtran conference paper (stubs only, comp
 
 ```bash
 # Run after junk sweep, before Phase 3b moves
-pytest baseline/frequentist/test_frequentist.py capstone_mcp/test_server.py -v   # should pass (53 tests)
+pytest code/data_preprocessing/frequentist/test_frequentist.py code/capstone_mcp/test_server.py -v   # should pass (53 tests)
 
 # After every Phase 3b commit
 git status                                                                       # confirm clean
@@ -397,7 +397,7 @@ python -c "import json; json.load(open('data/raw_data/synthetic/perturbations_al
 python -c "import json; json.load(open('data/processed_data/results_v2/error_taxonomy_v2.json'))" # canonical readable
 
 # Optional, expensive
-bash scripts/refresh_pipeline.sh                                                 # full pipeline dry, only if confidence needed
+bash code/scripts/refresh_pipeline.sh                                                 # full pipeline dry, only if confidence needed
 ```
 
 ---
@@ -407,7 +407,7 @@ bash scripts/refresh_pipeline.sh                                                
 - Top-level `archive/` was removed 2026-05-10. Pre-modernization viz snapshots (`archive/visualizations-pre-*`) were superseded by the v2 results pipeline and not retained in vault; provenance preserved at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`. See archival convention note above. (`audit/` moved to `llm-stats-vault/90-archive/audit/` 2026-05-10; pre-move snapshot at `cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.)
 - Does not move `data/processed_data/results_v2/` or `report_materials/` contents (would require a 100+-line path refactor across scripts, R pipeline, and backend).
 - Does not consolidate `data/raw_data/synthetic/perturbations*.json` filenames (per CLAUDE.md, hard-coded callers exist).
-- Does not refactor `evaluation/llm_judge_rubric.py` Groq → Together docstring lag (cosmetic).
+- Does not refactor `code/analysis/llm_judge_rubric.py` Groq → Together docstring lag (cosmetic).
 - ~~Does not add `TOGETHER_API_KEY=` to `.env.example`~~ — addressed in pre-Phase-3 adjustments commit (2026-05-10).
 - Does not write a top-level `README.md` (out of scope here; will accompany `paper/` in Phase 4 if you want one).
 

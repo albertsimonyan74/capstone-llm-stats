@@ -32,7 +32,7 @@ Recent work (2025) shows that single-question swaps can shift Pass@1 by 3+ point
 fragility2025
 
 ## Project artifacts that cite this
-- scripts/bootstrap_ci.py
+- code/scripts/bootstrap_ci.py
 - data/processed_data/results_v2/bootstrap_ci.json
 - report_materials/figures/bootstrap_ci.png
 - ../../90-archive/audit/day2_audit_report.md (P-2 finding)

@@ -19,7 +19,7 @@ Catalogs LLM failure modes on mathematical reasoning, emphasizing unwarranted as
 - Multi-dimensional rubrics expose more failures than answer-correctness alone.
 
 ## How it grounds this project
-Validates the N·M·A·C·R rubric design. The "unwarranted assumptions" failure mode is exactly what our assumption_compliance dimension measures (51.5% zeros in judge scores). Maps to evaluation/llm_judge_rubric.py and the assumption_compliance result.
+Validates the N·M·A·C·R rubric design. The "unwarranted assumptions" failure mode is exactly what our assumption_compliance dimension measures (51.5% zeros in judge scores). Maps to code/analysis/llm_judge_rubric.py and the assumption_compliance result.
 
 ## Citation in poster
 (Boye & Moell, 2025)
@@ -31,8 +31,8 @@ Boye & Moell (2025) identify unwarranted assumptions and intuition-translation g
 mathfail2025
 
 ## Project artifacts that cite this
-- evaluation/llm_judge_rubric.py
-- evaluation/metrics.py (rubric weights)
+- code/analysis/llm_judge_rubric.py
+- code/analysis/metrics.py (rubric weights)
 - RQ3 failure taxonomy panel
 - Methodology section (rubric design)
 

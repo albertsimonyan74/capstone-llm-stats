@@ -151,7 +151,7 @@ Plus `.sec-overview::after` overlays a 1px grid at 80×80 px in
 
 ```javascript
 // Canonical site palette for Recharts components.
-// Mirrors scripts/site_palette.py — keep in sync.
+// Mirrors code/scripts/site_palette.py — keep in sync.
 
 export const SITE_PALETTE = {
   bg: '#0f1118',
@@ -1426,7 +1426,7 @@ Locations where literature weights `A=30, R=25, M=20, C=15, N=10` appear:
 
 The CLAUDE.md states `WEIGHTS = N=0.20, M=0.20, A=0.20, C=0.20, R=0.20`
 (equal) — this is the live runtime scoring weight in
-`evaluation/metrics.py` and `llm_runner/response_parser.py`. The
+`code/analysis/metrics.py` and `code/models/response_parser.py`. The
 **website's `NMACR_BARS` display + Methodology body ALL render the
 literature-derived scheme**, AND `Methodology.jsx:344-348` claims the
 runtime parser uses the SAME literature weights as the metrics path.

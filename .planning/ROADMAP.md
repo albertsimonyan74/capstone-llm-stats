@@ -12,7 +12,7 @@
 ### Plan 1.2 — Prune Error Records + Run Scoring
 - Identify 58 error records (score=0) in runs.jsonl for Gemini
 - Run `python -m experiments.run_benchmark` → populate results.json (855 entries)
-- Run `python scripts/summarize_results.py` → refresh results_summary.json
+- Run `python code/scripts/summarize_results.py` → refresh results_summary.json
 - Verify website LiveResults panel shows 5 models
 
 ---
@@ -27,7 +27,7 @@
 - Verify: 375 new records in runs.jsonl (75 tasks × 5 models)
 
 ### Plan 2.2 — Perturbation Comparison Analysis
-- Script: `scripts/analyze_perturbations.py`
+- Script: `code/scripts/analyze_perturbations.py`
 - Logic: group runs by base_task_id, compare avg score across rephrase/numerical/semantic
 - Output: `data/processed_data/results_v1/perturbation_analysis.json` + summary table
 - Add analysis section to 08_master_report.Rmd
@@ -88,7 +88,7 @@
 - Update 08_master_report.Rmd: replace "4 complete models" → "5 models"
 - Add RQ4 perturbation section
 - Add new task types section if Phase 3 completed
-- Re-render: `cd report_materials/r_analysis && Rscript run_all.R`
+- Re-render: `cd code/visualization && Rscript run_all.R`
 - Verify benchmark_report.html complete with Gemini data
 
 ### Plan 5.2 — CLAUDE.md + Docs Update

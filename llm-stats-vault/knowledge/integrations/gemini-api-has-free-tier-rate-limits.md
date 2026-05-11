@@ -6,7 +6,7 @@ date: 2026-04-26
 # Gemini API Has Free Tier Rate Limits
 
 ## Connection Details
-- **Class**: `GeminiClient` in `llm_runner/model_clients.py`
+- **Class**: `GeminiClient` in `code/models/model_clients.py`
 - **Model**: `gemini-2.5-flash`
 - **Endpoint**: `generativelanguage.googleapis.com/v1beta`
 - **Auth**: `?key=<GEMINI_API_KEY>` query param

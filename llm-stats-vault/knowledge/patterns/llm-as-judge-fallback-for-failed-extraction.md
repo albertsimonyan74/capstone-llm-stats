@@ -6,7 +6,7 @@ date: 2026-04-26
 # LLM-as-Judge Fallback for Failed Extraction
 
 ## The Pattern
-When primary answer extraction fails or structure scoring is weak, `evaluation/llm_judge.py` invokes Claude as an evaluator to improve scores.
+When primary answer extraction fails or structure scoring is weak, `code/analysis/llm_judge.py` invokes Claude as an evaluator to improve scores.
 
 ## Trigger Conditions
 ```python
@@ -54,7 +54,7 @@ python -m experiments.run_benchmark --no-judge  # faster, less accurate
 ```
 
 ## Implementation Reference
-- File: `evaluation/llm_judge.py`
+- File: `code/analysis/llm_judge.py`
 - Model: `claude-sonnet-4-6` (via `anthropic` SDK)
 - Paper basis: Nagarkar et al. (2026) — arXiv:2601.14479
 - Tagged results: `judge_assisted = True` in run records

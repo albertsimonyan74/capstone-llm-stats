@@ -6,7 +6,7 @@ date: 2026-04-26
 # anthropic Module Not in Venv by Default
 
 ## What Happened
-When running the integration tests for `evaluation/llm_judge.py` and `evaluation/task_validator.py`, this error appeared:
+When running the integration tests for `code/analysis/llm_judge.py` and `code/analysis/task_validator.py`, this error appeared:
 ```
 ModuleNotFoundError: No module named 'anthropic'
 ```
@@ -34,8 +34,8 @@ pip install anthropic
 - See [[httpx-used-directly-no-vendor-sdks]]
 
 ## Affected Files
-- `evaluation/llm_judge.py`
-- `evaluation/task_validator.py`
+- `code/analysis/llm_judge.py`
+- `code/analysis/task_validator.py`
 
 ## Prevention
 The `anthropic` package should be added to `requirements.txt` (or a separate `requirements-judge.txt` to keep it optional).

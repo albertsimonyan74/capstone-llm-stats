@@ -20,7 +20,7 @@ Comprehensive graduate ML reference. Covers Dirichlet-Multinomial models (Ch.2),
 - LOG_ML: marginal likelihood / evidence (Ch.3, 10)
 
 ## How it grounds this project
-Core reference for variational Bayes (VB_*) and Dirichlet (DIRICHLET_*) task ground-truth derivations. Bishop's mean-field VB derivation is the analytic baseline against which baseline/bayesian/advanced_methods.py:VB.solve() is checked. Cited in Foundations footer.
+Core reference for variational Bayes (VB_*) and Dirichlet (DIRICHLET_*) task ground-truth derivations. Bishop's mean-field VB derivation is the analytic baseline against which code/data_preprocessing/bayesian/advanced_methods.py:VB.solve() is checked. Cited in Foundations footer.
 
 ## Citation in poster
 Bishop (2006)
@@ -32,8 +32,8 @@ Bishop, C. M. (2006). *Pattern Recognition and Machine Learning*. Springer.
 bishop2006prml
 
 ## Project artifacts that cite this
-- baseline/bayesian/advanced_methods.py (VB class)
-- baseline/bayesian/conjugate.py (Dirichlet)
+- code/data_preprocessing/bayesian/advanced_methods.py (VB class)
+- code/data_preprocessing/bayesian/conjugate.py (Dirichlet)
 - Task ground-truth: VB_*, DIRICHLET_*, BAYES_REG_*, LOG_ML_*
 - References / Foundations footer
 

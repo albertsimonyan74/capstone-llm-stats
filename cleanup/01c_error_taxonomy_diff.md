@@ -22,8 +22,8 @@ A's per-error counts are inflated because tags overlap (one failure can be tagge
 
 ## Generators
 
-- A: [scripts/analyze_errors.py:22](scripts/analyze_errors.py#L22) writes to `data/error_taxonomy_results.json`. Documented in CLAUDE.md as `python scripts/analyze_errors.py`. Multi-tag rule-based + heuristic.
-- B: `scripts/error_taxonomy.py` writes to `data/processed_data/results_v2/error_taxonomy_v2.json` via Together AI judge.
+- A: [code/scripts/analyze_errors.py:22](code/scripts/analyze_errors.py#L22) writes to `data/error_taxonomy_results.json`. Documented in CLAUDE.md as `python code/scripts/analyze_errors.py`. Multi-tag rule-based + heuristic.
+- B: `code/scripts/error_taxonomy.py` writes to `data/processed_data/results_v2/error_taxonomy_v2.json` via Together AI judge.
 
 ## Downstream usage
 
@@ -34,10 +34,10 @@ A's per-error counts are inflated because tags overlap (one failure can be tagge
 - [llm-stats-vault/40-literature/citation-map.md:106](llm-stats-vault/40-literature/citation-map.md) — v2 mapped to Papers 09, 13.
 - Poster figures (`error_taxonomy_hierarchical.png`, `failure_taxonomy_stacked.png`) — derived from v2 (4-bucket L1 visible in PNGs).
 
-**A (v1) has no downstream consumers** other than its own generator. Zero references in code/figures/reports outside `scripts/analyze_errors.py` itself.
+**A (v1) has no downstream consumers** other than its own generator. Zero references in code/figures/reports outside `code/scripts/analyze_errors.py` itself.
 
 ## Recommendation
 
 - **Archive v1 file**: move `data/error_taxonomy_results.json` → `llm-stats-vault/90-archive/data_legacy/error_taxonomy_results_v1.json` in Phase 3. No deletion.
-- **Keep `scripts/analyze_errors.py` for now**: it is the script CLAUDE.md documents, and is callable. Mark as superseded in a doc comment in a follow-up; do not delete.
-- **No code refactor needed**: `scripts/error_taxonomy.py` (the v2 generator) is what the paper depends on; A/B never share a code path.
+- **Keep `code/scripts/analyze_errors.py` for now**: it is the script CLAUDE.md documents, and is callable. Mark as superseded in a doc comment in a follow-up; do not delete.
+- **No code refactor needed**: `code/scripts/error_taxonomy.py` (the v2 generator) is what the paper depends on; A/B never share a code path.

@@ -35,7 +35,7 @@ lu2025stateval
 - Abstract / poster header
 - RQ1 (methodology panel)
 - ../../90-archive/audit/literature_comparison.md (when written)
-- evaluation/llm_judge_rubric.py (rubric design rationale)
+- code/analysis/llm_judge_rubric.py (rubric design rationale)
 
 ## Tags
 #closest-prior-work #statistical-reasoning #benchmark #methodology

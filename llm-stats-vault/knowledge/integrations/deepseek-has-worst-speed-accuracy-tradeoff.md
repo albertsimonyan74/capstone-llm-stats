@@ -6,7 +6,7 @@ date: 2026-04-26
 # DeepSeek Has Worst Speed-Accuracy Tradeoff
 
 ## Connection Details
-- **Class**: `DeepSeekClient` in `llm_runner/model_clients.py`
+- **Class**: `DeepSeekClient` in `code/models/model_clients.py`
 - **Model**: `deepseek-chat`
 - **Endpoint**: `api.deepseek.com/v1/chat/completions`
 - **Auth**: `Authorization: Bearer <DEEPSEEK_API_KEY>`

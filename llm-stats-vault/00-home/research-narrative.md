@@ -99,7 +99,7 @@ N = 0.10
 ### CONCEPTUAL handling
 Tasks tagged CONCEPTUAL have no numeric target. Their N dimension is
 absent; the remaining four weights are renormalised to 1.0. Mirrors
-[`llm_runner/response_parser.py:full_score()`](../../llm_runner/response_parser.py).
+[`code/models/response_parser.py:full_score()`](../../code/models/response_parser.py).
 
 ---
 

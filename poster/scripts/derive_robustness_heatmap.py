@@ -20,7 +20,7 @@ from pathlib import Path
 from statistics import mean
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "baseline"))
+sys.path.insert(0, str(ROOT / "code" / "data_preprocessing"))
 from utils_task_id import task_type_from_id  # noqa: E402
 
 ROBUST = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"

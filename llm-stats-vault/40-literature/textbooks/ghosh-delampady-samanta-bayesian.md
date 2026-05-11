@@ -21,7 +21,7 @@ Graduate-level Bayesian analysis emphasizing theory. Covers Jeffreys priors, Fis
 - BAYES_RISK: decision-theoretic risk
 
 ## How it grounds this project
-Primary reference for JEFFREYS_*, FISHER_INFO_*, RC_BOUND_* task ground-truth derivations in baseline/frequentist/. The intentional NotImplementedError for `dist="uniform"` in fisher_information() reflects this book's caveat that Uniform is not a regular exponential family.
+Primary reference for JEFFREYS_*, FISHER_INFO_*, RC_BOUND_* task ground-truth derivations in code/data_preprocessing/frequentist/. The intentional NotImplementedError for `dist="uniform"` in fisher_information() reflects this book's caveat that Uniform is not a regular exponential family.
 
 ## Citation in poster
 Ghosh et al. (2006)
@@ -33,9 +33,9 @@ Ghosh, J. K., Delampady, M., & Samanta, T. (2006). *An Introduction to Bayesian 
 ghosh2006bayesian
 
 ## Project artifacts that cite this
-- baseline/frequentist/fisher_information.py (regularity conditions)
-- baseline/frequentist/rao_cramer.py
-- baseline/bayesian/jeffreys.py
+- code/data_preprocessing/frequentist/fisher_information.py (regularity conditions)
+- code/data_preprocessing/frequentist/rao_cramer.py
+- code/data_preprocessing/bayesian/jeffreys.py
 - Task ground-truth: JEFFREYS_*, FISHER_INFO_*, RC_BOUND_*, MLE_EFFICIENCY_*
 - References / Foundations footer
 

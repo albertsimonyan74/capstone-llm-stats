@@ -6,7 +6,7 @@ date: 2026-04-26
 # Resume-Safe Benchmark Skips Completed Tasks
 
 ## The Pattern
-`llm_runner/run_all_tasks.py` is safe to re-run at any time — it will skip tasks already recorded in `runs.jsonl`.
+`code/models/run_all_tasks.py` is safe to re-run at any time — it will skip tasks already recorded in `runs.jsonl`.
 
 ## How It Works
 At startup, `_load_completed()` reads the existing `runs.jsonl` and builds a set of completed `(model_family, task_id)` pairs. Any task with an existing record is skipped.
@@ -33,10 +33,10 @@ Consequence: Gemini's 58 error records (score=0) may prevent those tasks from be
 ## Related Commands
 ```bash
 # Dry run — no API calls, just print prompts
-python llm_runner/run_all_tasks.py --models claude --dry-run --limit 3
+python code/models/run_all_tasks.py --models claude --dry-run --limit 3
 
 # Filter by task type
-python llm_runner/run_all_tasks.py --models claude --task-types DISC_MEDIAN MARKOV
+python code/models/run_all_tasks.py --models claude --task-types DISC_MEDIAN MARKOV
 
 # Resume Gemini after quota reset
 python -m llm_runner.run_all_tasks --models gemini

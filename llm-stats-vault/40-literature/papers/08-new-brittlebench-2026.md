@@ -19,7 +19,7 @@ General-purpose framework for quantifying LLM robustness via systematic prompt p
 - Robustness deltas often within stochastic noise — must be tested for separability.
 
 ## How it grounds this project
-Our perturbation methodology (rephrase / numerical / semantic — 398 perturbations × 5 models) is a domain-specific instance of BrittleBench applied to Bayesian inference. Maps to scripts/generate_perturbations_full.py, data/raw_data/synthetic/perturbations_v2.json, and data/processed_data/results_v2/robustness_v2.json.
+Our perturbation methodology (rephrase / numerical / semantic — 398 perturbations × 5 models) is a domain-specific instance of BrittleBench applied to Bayesian inference. Maps to code/scripts/generate_perturbations_full.py, data/raw_data/synthetic/perturbations_v2.json, and data/processed_data/results_v2/robustness_v2.json.
 
 ## Citation in poster
 (BrittleBench, 2026)
@@ -31,9 +31,9 @@ BrittleBench (2026) provides the perturbation taxonomy we adapt for Bayesian-tas
 brittlebench2026
 
 ## Project artifacts that cite this
-- scripts/generate_perturbations_full.py
-- scripts/score_perturbations.py
-- scripts/robustness_analysis.py
+- code/scripts/generate_perturbations_full.py
+- code/scripts/score_perturbations.py
+- code/scripts/robustness_analysis.py
 - data/raw_data/synthetic/perturbations_v2.json
 - data/processed_data/results_v2/robustness_v2.json
 - report_materials/figures/robustness_heatmap.png

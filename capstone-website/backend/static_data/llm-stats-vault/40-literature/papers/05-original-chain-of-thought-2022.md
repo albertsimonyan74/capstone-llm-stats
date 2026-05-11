@@ -32,8 +32,8 @@ wei2022cot
 
 ## Project artifacts that cite this
 - Methodology section (foundational citation)
-- llm_runner/run_all_tasks.py
-- llm_runner/prompt_builder.py
+- code/models/run_all_tasks.py
+- code/models/prompt_builder.py
 - System-prompt definition (CLAUDE.md)
 
 ## Tags

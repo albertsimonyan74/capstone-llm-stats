@@ -14,7 +14,7 @@ Five papers directly informing the DS 299 Capstone benchmark design.
 
 **Relevance to this project:** This project addresses the same gap but focuses specifically on Bayesian/inferential reasoning with deterministic ground-truth baselines — complementary scope. We adopt StatEval's multi-difficulty-tier structure and extend to computational Bayesian methods (Phase 2) not covered by StatEval.
 
-**Our response:** `evaluation/task_validator.py` implements an automated proxy for StatEval's human-in-the-loop task quality validation. Multi-tier structure (Tiers 1–4) mirrors StatEval's difficulty stratification.
+**Our response:** `code/analysis/task_validator.py` implements an automated proxy for StatEval's human-in-the-loop task quality validation. Multi-tier structure (Tiers 1–4) mirrors StatEval's difficulty stratification.
 
 ---
 
@@ -26,7 +26,7 @@ Five papers directly informing the DS 299 Capstone benchmark design.
 
 **Abstract summary:** Demonstrates that LLM-as-Judge evaluation outperforms BLEU and BERTScore for statistical reasoning tasks. Shows that automated LLM evaluation correlates well with human expert judgement on mathematical content. Benchmarks multiple LLMs on statistical problem types similar to this project.
 
-**Relevance to this project:** Directly motivates the `evaluation/llm_judge.py` implementation. When primary `ANSWER:` extraction fails (yielding `parsed_values=[]`) or structure scoring is low (<0.3), Claude is invoked as evaluator — consistent with Nagarkar et al.'s finding that LLMs outperform surface-string metrics on reasoning quality.
+**Relevance to this project:** Directly motivates the `code/analysis/llm_judge.py` implementation. When primary `ANSWER:` extraction fails (yielding `parsed_values=[]`) or structure scoring is low (<0.3), Claude is invoked as evaluator — consistent with Nagarkar et al.'s finding that LLMs outperform surface-string metrics on reasoning quality.
 
 **Our response:** Judge-assisted runs flagged via `judge_assisted=True` in `runs.jsonl`. Two judge functions: `judge_extract_answer()` (N-score recovery) and `judge_score_structure()` (M/A-score recovery).
 
@@ -54,7 +54,7 @@ Five papers directly informing the DS 299 Capstone benchmark design.
 
 **Abstract summary:** PoT prompting instructs LLMs to generate Python code rather than prose reasoning, delegating computation to an external interpreter. Achieves ~12% accuracy gain over Chain-of-Thought (CoT) on numerical reasoning benchmarks by separating reasoning (LLM) from computation (interpreter).
 
-**Relevance to this project:** Directly motivates `llm_runner/prompt_builder_pot.py`. PoT provides a numerical accuracy upper bound — if an LLM can write correct Python for a statistical task, it demonstrates reasoning without arithmetic errors. Comparison between zero-shot CoT and PoT isolates arithmetic vs. conceptual failures.
+**Relevance to this project:** Directly motivates `code/models/prompt_builder_pot.py`. PoT provides a numerical accuracy upper bound — if an LLM can write correct Python for a statistical task, it demonstrates reasoning without arithmetic errors. Comparison between zero-shot CoT and PoT isolates arithmetic vs. conceptual failures.
 
 **Our response:** `build_pot_prompt()` appends Python code instruction to the standard prompt. `execute_pot_response()` sandboxes execution (10s timeout, forbidden imports list) and extracts `ANSWER:` from stdout. PoT is an optional prompting mode; results comparable to zero-shot baseline.
 

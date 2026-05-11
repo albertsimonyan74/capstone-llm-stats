@@ -97,7 +97,7 @@ Source: `data/processed_data/results_v2/error_taxonomy_v2.json` → `l1_totals`.
 
 ## Models — exact configuration strings
 
-Source: `llm_runner/model_clients.py` (httpx, no vendor SDKs). All 5 share `_MAX_TOKENS=1024`, `_TIMEOUT=60s`.
+Source: `code/models/model_clients.py` (httpx, no vendor SDKs). All 5 share `_MAX_TOKENS=1024`, `_TIMEOUT=60s`.
 
 | Family | Model string | Endpoint | Env var |
 |---|---|---|---|
@@ -111,7 +111,7 @@ Source: `llm_runner/model_clients.py` (httpx, no vendor SDKs). All 5 share `_MAX
 
 ## Judge protocol
 
-Source: `evaluation/llm_judge_rubric.py`.
+Source: `code/analysis/llm_judge_rubric.py`.
 
 - **Judge model**: `meta-llama/Llama-3.3-70B-Instruct-Turbo` (out-of-family — not one of the 5 benchmarked models).
 - **Provider**: Together AI, OpenAI-compatible REST endpoint `api.together.xyz/v1/chat/completions`.
@@ -135,7 +135,7 @@ Source: `data/raw_data/benchmark_v1/`, `data/raw_data/synthetic/perturbations_al
 
 ## NMACR weights (literature-derived)
 
-Source: `evaluation/metrics.py` docstring + `llm_runner/response_parser.py:29`.
+Source: `code/analysis/metrics.py` docstring + `code/models/response_parser.py:29`.
 
 | Symbol | Component | Weight | Citations |
 |---|---|---:|---|
@@ -168,12 +168,12 @@ For abstract / intro use:
 
 | Variable | Value | Source |
 |---|---|---|
-| Models | 5 (claude, chatgpt, gemini, deepseek, mistral) | `llm_runner/model_clients.py` |
+| Models | 5 (claude, chatgpt, gemini, deepseek, mistral) | `code/models/model_clients.py` |
 | Base tasks | 171 (= 136 Phase 1 + 35 Phase 2) | `data/raw_data/benchmark_v1/tasks_all.json` |
 | Task types | 38 | derived |
 | Perturbations | 473 | `data/raw_data/synthetic/perturbations_all.json` |
 | Perturbation axes | 3 (rephrase, semantic, numerical) | derived |
-| Judge model | Llama 3.3 70B Turbo (Together AI) | `evaluation/llm_judge_rubric.py` |
+| Judge model | Llama 3.3 70B Turbo (Together AI) | `code/analysis/llm_judge_rubric.py` |
 | ChatGPT accuracy rank → robustness rank | **5 → 1** | results_v1 + results_v2 |
 | ChatGPT accuracy | 0.6212 | results_v1 |
 | ChatGPT robustness | 0.9996 | results_v2 |

@@ -7,7 +7,7 @@ date: 2026-04-26
 
 ## Decision
 `data/processed_data/results_v1/runs.jsonl` is **never truncated, overwritten, or edited**.  
-All new run records are appended by `llm_runner/logger.py`'s `log_jsonl()`.
+All new run records are appended by `code/models/logger.py`'s `log_jsonl()`.
 
 ## Why
 - Provides a complete audit trail of all LLM calls including errors

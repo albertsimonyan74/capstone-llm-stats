@@ -11,7 +11,7 @@
 ### R2 — Results Pipeline
 - `python -m experiments.run_benchmark` produces non-empty results.json
 - results.json contains all 5 models × 171 tasks = 855 task_scores entries
-- `scripts/summarize_results.py` refreshes results_summary.json (read by website LiveResults panel)
+- `code/scripts/summarize_results.py` refreshes results_summary.json (read by website LiveResults panel)
 - Acceptance: results.json has model_aggregates with 5 entries, task_scores with 855 entries
 
 ### R3 — RQ4 Synthetic Benchmark
@@ -49,8 +49,8 @@
 ## Nice to Have
 
 ### R8 — Testing Coverage
-- Add tests for evaluation/metrics.py (scoring weight contract, aggregation math)
-- Add tests for llm_runner/response_parser.py (parse_and_score, extract_confidence)
+- Add tests for code/analysis/metrics.py (scoring weight contract, aggregation math)
+- Add tests for code/models/response_parser.py (parse_and_score, extract_confidence)
 - Acceptance: pytest passes, coverage > 60% for these modules
 
 ### R9 — CLAUDE.md Update

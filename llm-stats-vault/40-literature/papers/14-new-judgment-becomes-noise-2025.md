@@ -33,7 +33,7 @@ judgment2025noise
 ## Project artifacts that cite this
 - ../../90-archive/audit/day2_audit_report.md (P-7 finding)
 - ../../90-archive/audit/limitations_disclosures.md
-- evaluation/llm_judge_rubric.py
+- code/analysis/llm_judge_rubric.py
 - Limitations / future-work panel
 
 ## Tags

@@ -32,7 +32,7 @@ Lee, P. M. (2012). *Bayesian Statistics: An Introduction* (4th ed.). Wiley.
 lee2012bayesian
 
 ## Project artifacts that cite this
-- baseline/bayesian/advanced_methods.py (RJMCMC Bayes factor)
+- code/data_preprocessing/bayesian/advanced_methods.py (RJMCMC Bayes factor)
 - Task ground-truth: CI_CREDIBLE_*, BAYES_FACTOR_*, RJMCMC_*
 - References / Foundations footer
 

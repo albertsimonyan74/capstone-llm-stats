@@ -21,7 +21,7 @@ Foundational undergraduate-graduate text on Bayesian inference. Covers conjugate
 - GAMMA_POISSON: conjugate update (Ch.10)
 
 ## How it grounds this project
-Primary undergraduate reference for conjugate-update derivations in baseline/bayesian/conjugate.py. Task ground-truth derivations for BETA_BINOM_*, BINOM_FLAT_*, HPD_*, and CI_CREDIBLE_* trace to Bolstad's worked examples. Cited in Foundations footer.
+Primary undergraduate reference for conjugate-update derivations in code/data_preprocessing/bayesian/conjugate.py. Task ground-truth derivations for BETA_BINOM_*, BINOM_FLAT_*, HPD_*, and CI_CREDIBLE_* trace to Bolstad's worked examples. Cited in Foundations footer.
 
 ## Citation in poster
 Bolstad (2007)
@@ -33,7 +33,7 @@ Bolstad, W. M. (2007). *Introduction to Bayesian Statistics* (2nd ed.). Wiley.
 bolstad2007bayesian
 
 ## Project artifacts that cite this
-- baseline/bayesian/conjugate.py
+- code/data_preprocessing/bayesian/conjugate.py
 - Task ground-truth: BETA_BINOM_*, BINOM_FLAT_*, HPD_*, CI_CREDIBLE_*
 - References / Foundations footer
 

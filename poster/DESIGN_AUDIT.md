@@ -56,7 +56,7 @@ Inconsistency: same semantic in three+ different hexes per role (coral lives at 
 
 ### 1.4 Model brand colors
 
-Source of truth: [sitePalette.js:11-17](../capstone-website/frontend/src/data/sitePalette.js#L11-L17). Mirrored to Python at `scripts/site_palette.py` (per file comment). Used in every Recharts figure and every per-model card border.
+Source of truth: [sitePalette.js:11-17](../capstone-website/frontend/src/data/sitePalette.js#L11-L17). Mirrored to Python at `code/scripts/site_palette.py` (per file comment). Used in every Recharts figure and every per-model card border.
 
 | Model | Hex | Tailwind name |
 |---|---|---|
@@ -82,7 +82,7 @@ Source: [MethodologyPanels.jsx:13-19](../capstone-website/frontend/src/component
 
 Note: this collides with model colors — `claude` (`#5eead4`) shares hex with dim N, `deepseek` (`#93c5fd`) shares hex with dim C. Tooltip context disambiguates.
 
-The animated scoring bars in [App.jsx:533-537](../capstone-website/frontend/src/App.jsx#L533-L537) use a *different* per-dim color set (`#00897B`, `#EC4899`, `#A78BFA`, `#F59E0B`, `#00FFE0`) plus *different* weights (A=30, R=25, M=20, C=15, N=10) than the canonical equal-weight scoring (`evaluation/metrics.py`). This is the website's "literature-derived" display, not an authoritative token surface.
+The animated scoring bars in [App.jsx:533-537](../capstone-website/frontend/src/App.jsx#L533-L537) use a *different* per-dim color set (`#00897B`, `#EC4899`, `#A78BFA`, `#F59E0B`, `#00FFE0`) plus *different* weights (A=30, R=25, M=20, C=15, N=10) than the canonical equal-weight scoring (`code/analysis/metrics.py`). This is the website's "literature-derived" display, not an authoritative token surface.
 
 ### 1.6 Bucket / failure-mode colors
 
@@ -251,7 +251,7 @@ There is **no website robustness-heatmap component** — that figure lives only 
 
 ## 5. Print-theme deltas
 
-Cross-reference with [poster/scripts/print_theme.py](scripts/print_theme.py).
+Cross-reference with [poster/scripts/print_theme.py](code/scripts/print_theme.py).
 
 ### 5.1 Direct equivalents
 
@@ -285,7 +285,7 @@ Pattern: each pastel tailwind-300 model color maps to the matching tailwind-600 
 | α-strip dot fill | `#fff` web | `#0f172a` (slate-900) on print — anchors against saturated bg |
 | NMACR segment colors (stacked-bar order A,R,M,C,N) | Inline JSX uses six different color sets across components (no canonical) | `#10b981 / #8b5cf6 / #06b6d4 / #3b82f6 / #14b8a6` (canonical print) |
 | Calibration bucket — 0.3 / 0.5 / 0.6 | n/a | teal / purple / gold |
-| Heatmap colormap | n/a (no web heatmap) | matplotlib `RdBu_r` with `vmin=−0.3 / vmax=+0.3` ([robustness_heatmap_print.py:45](scripts/robustness_heatmap_print.py#L45)) |
+| Heatmap colormap | n/a (no web heatmap) | matplotlib `RdBu_r` with `vmin=−0.3 / vmax=+0.3` ([robustness_heatmap_print.py:45](code/scripts/robustness_heatmap_print.py#L45)) |
 | Heatmap white-text threshold | n/a | `|Δ| > 0.18` flips text to `#ffffff` |
 
 ### 5.3 Web tokens with no print equivalent (gaps)
@@ -301,7 +301,7 @@ These are atmosphere/UI tokens with no print analog defined — and probably sho
 
 ### 5.4 Heatmap-specific contracts (already locked)
 
-From [robustness_heatmap_print.py:45-46](scripts/robustness_heatmap_print.py#L45-L46) and the krippendorff strip script:
+From [robustness_heatmap_print.py:45-46](code/scripts/robustness_heatmap_print.py#L45-L46) and the krippendorff strip script:
 
 - Heatmap diverging colormap: `RdBu_r` with `vmin=-0.3 / vmax=+0.3` — symmetric around zero. Cell-text color flip threshold `|v| > 0.18`.
 - Krippendorff strip footer-zone tints (lighter than gradient anchors so dots pop): `#fca5a5` neg, `#cbd5e1` mid, `#5eead4` pos. Zone header colors use the matching -900 shades for high contrast.
@@ -344,5 +344,5 @@ Every chart with a meaningful threshold (cohort average, α=0, ECE=0.10, Δ=0) d
 - **No tailwind config** — site uses pure CSS custom properties + inline styles. The audit task referenced `tailwind.config.{js,ts}` but the codebase doesn't use Tailwind.
 - **No "robustness heatmap" website component** — the figure exists only in `poster/scripts/robustness_heatmap_print.py` and the R pipeline. The website renders robustness as bar panels (§4.5) and the three-rankings horizontal bars.
 - **No Next.js / app/ directory** — site is Vite + React Router (`src/pages/*.jsx`). The audit task assumed Next.js.
-- **No canonical NMACR weight set on the website**. `App.jsx:533-537` displays "literature-derived" `A=30, R=25, M=20, C=15, N=10`. `evaluation/metrics.py` and `response_parser.py` use equal `0.20` each (per CLAUDE.md). The displayed weights in the bars are illustrative, not the live-scored values.
+- **No canonical NMACR weight set on the website**. `App.jsx:533-537` displays "literature-derived" `A=30, R=25, M=20, C=15, N=10`. `code/analysis/metrics.py` and `response_parser.py` use equal `0.20` each (per CLAUDE.md). The displayed weights in the bars are illustrative, not the live-scored values.
 - **No system-wide opacity token scale** — alpha-tinted whites (`0.4–0.92`) are repeated inline 30+ times without abstraction. Treat the seven distinct values (`0.4, 0.5, 0.55, 0.65, 0.7, 0.78, 0.85, 0.92`) as the de-facto secondary text scale.

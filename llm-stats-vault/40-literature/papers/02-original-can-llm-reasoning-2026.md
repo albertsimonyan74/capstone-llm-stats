@@ -32,7 +32,7 @@ nagarkar2026canllm
 
 ## Project artifacts that cite this
 - RQ5 calibration panel
-- scripts/calibration_analysis.py
+- code/scripts/calibration_analysis.py
 - data/processed_data/results_v2/calibration.json
 - Discussion / limitations
 

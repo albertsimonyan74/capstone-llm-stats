@@ -31,7 +31,7 @@ Du et al. (2025) independently report assumption-violation as the dominant LLM f
 du2025icecream
 
 ## Project artifacts that cite this
-- scripts/error_taxonomy.py
+- code/scripts/error_taxonomy.py
 - data/processed_data/results_v2/error_taxonomy_v2.json
 - report_materials/figures/error_taxonomy_hierarchical.png
 - RQ3 failure-taxonomy panel

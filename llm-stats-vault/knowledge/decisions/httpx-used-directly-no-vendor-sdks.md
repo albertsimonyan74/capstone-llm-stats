@@ -6,7 +6,7 @@ date: 2026-04-26
 # httpx Used Directly — No Vendor SDKs
 
 ## Decision
-All 5 LLM API clients in `llm_runner/model_clients.py` use `httpx` for direct HTTP calls.  
+All 5 LLM API clients in `code/models/model_clients.py` use `httpx` for direct HTTP calls.  
 No Anthropic SDK, OpenAI SDK, or Mistral SDK installed in the project venv (except `anthropic` package for judge/validator use).
 
 ## Why
@@ -22,7 +22,7 @@ No Anthropic SDK, OpenAI SDK, or Mistral SDK installed in the project venv (exce
 - **Pro**: Single dependency for all 5 providers, no version lock-in
 
 ## Exception: LLM Judge and Validator
-`evaluation/llm_judge.py` and `evaluation/task_validator.py` use the `anthropic` Python SDK  
+`code/analysis/llm_judge.py` and `code/analysis/task_validator.py` use the `anthropic` Python SDK  
 because they need streaming/async features not worth reimplementing.  
 The `anthropic` package is NOT in the default `requirements.txt` — install separately:  
 `pip install anthropic`  

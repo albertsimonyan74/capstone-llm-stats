@@ -7,7 +7,7 @@ print rules.
 ## Phase 1 — DONE
 
 - Read inventory: `main.tex`, `DESIGN_AUDIT.md`, `assets/latex_palette.tex`,
-  `scripts/print_theme.py`, `figures/`, `README.md`,
+  `code/scripts/print_theme.py`, `figures/`, `README.md`,
   `frontend/src/{App.css, index.css, data/sitePalette.js,
   components/MethodologyPanels, ThreeRankingsComparison, KeyFindings, MobiusStrip}.jsx`,
   `CLAUDE.md`, `data/processed_data/results_v2/*`, `../90-archive/audit/recompute_log.md`.

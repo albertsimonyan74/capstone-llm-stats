@@ -20,7 +20,7 @@ Accessible graduate introduction. Covers Normal-Gamma conjugate family, posterio
 - HIERARCHICAL: hierarchical normal models (Ch.8)
 
 ## How it grounds this project
-Primary reference for NORMAL_GAMMA_*, PPC_*, and Phase-2 GIBBS_* task ground-truth derivations. baseline/bayesian/advanced_methods.py:GibbsSampler implements the Hoff Ch.6 algorithm. Open-access PDF available on author site.
+Primary reference for NORMAL_GAMMA_*, PPC_*, and Phase-2 GIBBS_* task ground-truth derivations. code/data_preprocessing/bayesian/advanced_methods.py:GibbsSampler implements the Hoff Ch.6 algorithm. Open-access PDF available on author site.
 
 ## Citation in poster
 Hoff (2009)
@@ -32,8 +32,8 @@ Hoff, P. D. (2009). *A First Course in Bayesian Statistical Methods*. Springer.
 hoff2009bayesian
 
 ## Project artifacts that cite this
-- baseline/bayesian/advanced_methods.py (GibbsSampler)
-- baseline/bayesian/conjugate.py (Normal-Gamma)
+- code/data_preprocessing/bayesian/advanced_methods.py (GibbsSampler)
+- code/data_preprocessing/bayesian/conjugate.py (Normal-Gamma)
 - Task ground-truth: NORMAL_GAMMA_*, PPC_*, GIBBS_*
 - References / Foundations footer
 

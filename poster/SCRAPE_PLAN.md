@@ -2,7 +2,7 @@
 
 Phase 1 deliverable. **Awaiting review before any `.tex` edits.** Source-of-truth files
 read in order: `main.tex`, `DESIGN_AUDIT.md`, `assets/latex_palette.tex`,
-`scripts/print_theme.py`, `figures/`, `README.md`,
+`code/scripts/print_theme.py`, `figures/`, `README.md`,
 `capstone-website/frontend/src/{App.css,index.css,data/sitePalette.js}`,
 `components/{MethodologyPanels,ThreeRankingsComparison,KeyFindings,MobiusStrip}.jsx`,
 `CLAUDE.md`, `data/processed_data/results_v2/*`, `llm-stats-vault/90-archive/audit/recompute_log.md`.
@@ -152,7 +152,7 @@ spins up puppeteer, captures, converts.
 
 `README.md` figure 1 ships `nmacr_weights.svg` showing **literature-derived**
 weights `A=30, R=25, M=20, C=15, N=10`. **All actually-computed scores in
-the figures use equal `0.20` weights** per CLAUDE.md and `evaluation/metrics.py`.
+the figures use equal `0.20` weights** per CLAUDE.md and `code/analysis/metrics.py`.
 The website's `KeyFindings` card 4 explicitly labels its Gemini-#1 finding
 "under the literature-weighted NMACR scheme" — i.e., the site is up-front
 that weights matter. The site shows BOTH: live equal-weight rankings
@@ -176,7 +176,7 @@ or use a single-row stacked-bar showing equal vs literature.
 
 ### DECIDE-3: Where do the PDF figures come from?
 
-`scripts/print_theme.py:dual_save()` is **policy-locked to SVG + PNG only**
+`code/scripts/print_theme.py:dual_save()` is **policy-locked to SVG + PNG only**
 (per docstring + README) — no PDF. But Overleaf XeLaTeX wants PDFs (or PNGs)
 for `\includegraphics`. SVG is not readable by `\includegraphics`.
 

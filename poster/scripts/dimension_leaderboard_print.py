@@ -1,6 +1,6 @@
 """Three-panel dimension leaderboard — print theme version for poster.
 
-Mirrors scripts/dimension_leaderboard.py but uses print_theme (light bg,
+Mirrors code/scripts/dimension_leaderboard.py but uses print_theme (light bg,
 dark text, darker model colors) and dual-saves SVG + PNG@600dpi to
 poster/figures/.
 

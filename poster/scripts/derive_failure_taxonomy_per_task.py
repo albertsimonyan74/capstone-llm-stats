@@ -2,7 +2,7 @@
 
 Mirrors the website's failure-rate-by-task-type figure
 (visualizations.js:failure_by_tasktype, R-generated PNG via
-report_materials/r_analysis/05_failure_analysis.R).
+code/visualization/05_failure_analysis.R).
 
 Numerator (per task_type): count of records in
 data/processed_data/results_v2/error_taxonomy_v2.json:records, broken down by L1
@@ -38,7 +38,7 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "baseline"))
+sys.path.insert(0, str(ROOT / "code" / "data_preprocessing"))
 from utils_task_id import task_type_from_id  # noqa: E402
 
 TAX_FILE  = ROOT / "data" / "processed_data" / "results_v2" / "error_taxonomy_v2.json"
@@ -134,7 +134,7 @@ def main() -> int:
             "Per-task-type failure category counts + failure rate. "
             "Numerator: error_taxonomy_v2.json:records L1-bucketed counts. "
             "Denominator: total runs in runs.jsonl for that task_type "
-            "(matches R script report_materials/r_analysis/"
+            "(matches R script code/visualization/"
             "05_failure_analysis.R Panel A)."
         ),
         "_pipeline_source": (

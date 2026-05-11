@@ -8,16 +8,16 @@ date: 2026-04-26
 ## The Pattern
 The benchmark has two scoring implementations that must stay in sync. When changing scoring weights, **always update both files simultaneously**:
 
-1. `llm_runner/response_parser.py` — Path A (live runner)
-2. `evaluation/metrics.py` — Path B (formal evaluation)
+1. `code/models/response_parser.py` — Path A (live runner)
+2. `code/analysis/metrics.py` — Path B (formal evaluation)
 
 Both files contain the same NMACR weights (literature-derived, sole
 canonical scheme since Approach A 2026-05-03):
 ```python
-# evaluation/metrics.py
+# code/analysis/metrics.py
 NMACR_WEIGHTS = {"A": 0.30, "R": 0.25, "M": 0.20, "C": 0.15, "N": 0.10}
 
-# llm_runner/response_parser.py
+# code/models/response_parser.py
 W_N = 0.10  # Numerical Accuracy
 W_M = 0.20  # Method Structure
 W_A = 0.30  # Assumption Compliance
@@ -27,8 +27,8 @@ W_R = 0.25  # Reasoning Quality
 
 ## How to Verify Sync
 Both files have a cross-reference comment:
-- In `response_parser.py`: `# Scoring weights must match evaluation/metrics.py — see CLAUDE.md §7`
-- In `metrics.py`: `# Scoring weights must match llm_runner/response_parser.py — see CLAUDE.md §7`
+- In `response_parser.py`: `# Scoring weights must match code/analysis/metrics.py — see CLAUDE.md §7`
+- In `metrics.py`: `# Scoring weights must match code/models/response_parser.py — see CLAUDE.md §7`
 
 ## Why This Is a Risk
 If weights diverge:
@@ -44,12 +44,12 @@ If weights diverge:
   scheme that Phase 1B (2026-05-01) had been applying post-hoc; verified
   byte-identical regeneration of canonical surfaces. See
   [../../90-archive/audit/recompute_log.md §"Phase 1.6 — Approach A"](../../90-archive/audit/recompute_log.md)
-- All existing runs were backfilled via `scripts/recompute_scores.py`
+- All existing runs were backfilled via `code/scripts/recompute_scores.py`
 
 ## How to Apply
-1. Change WEIGHTS in `evaluation/metrics.py`
-2. Change the same values in `llm_runner/response_parser.py`
-3. Run `scripts/recompute_scores.py` to backfill existing runs.jsonl records
+1. Change WEIGHTS in `code/analysis/metrics.py`
+2. Change the same values in `code/models/response_parser.py`
+3. Run `code/scripts/recompute_scores.py` to backfill existing runs.jsonl records
 4. Re-run `python -m experiments.run_benchmark` to refresh results.json
 
 ## Related

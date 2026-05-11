@@ -15,7 +15,7 @@ DS 299 Capstone — LLM statistical reasoning benchmark. The project is split in
 - JavaScript (ESM/JSX) — React frontend (`capstone-website/frontend/src/`)
 
 **Secondary:**
-- R 4.3.2 — offline statistical analysis and visualization scripts (`report_materials/r_analysis/`)
+- R 4.3.2 — offline statistical analysis and visualization scripts (`code/visualization/`)
 
 ---
 
@@ -49,7 +49,7 @@ DS 299 Capstone — LLM statistical reasoning benchmark. The project is split in
 - Uvicorn 0.30.0 — ASGI server, runs on port 8000
 
 **Python MCP Server:**
-- `mcp` (FastMCP) — Model Context Protocol server (`capstone_mcp/server.py`), exposes 8 tools over stdio transport
+- `mcp` (FastMCP) — Model Context Protocol server (`code/capstone_mcp/server.py`), exposes 8 tools over stdio transport
 
 **React Frontend:**
 - React 19.2.4 + React DOM 19.2.4 (`capstone-website/frontend/src/`)
@@ -58,7 +58,7 @@ DS 299 Capstone — LLM statistical reasoning benchmark. The project is split in
 - `@vitejs/plugin-react` 6.0.1 — JSX transform
 
 **Testing:**
-- pytest — Python tests (`baseline/frequentist/test_frequentist.py`, `capstone_mcp/test_server.py`)
+- pytest — Python tests (`code/data_preprocessing/frequentist/test_frequentist.py`, `code/capstone_mcp/test_server.py`)
 
 ---
 
@@ -69,7 +69,7 @@ DS 299 Capstone — LLM statistical reasoning benchmark. The project is split in
 
 **Scientific / Numerical:**
 - `numpy` 2.3.5 — array operations in all baseline modules
-- `scipy` 1.17.0 — statistical distributions and integration throughout `baseline/`
+- `scipy` 1.17.0 — statistical distributions and integration throughout `code/data_preprocessing/`
 - `pandas` 2.3.3 — data manipulation in evaluation and scripts
 - `statsmodels` 0.14.6 — regression and frequentist statistics
 - `scikit-learn` 1.8.0 — ML utilities
@@ -110,7 +110,7 @@ DS 299 Capstone — LLM statistical reasoning benchmark. The project is split in
 
 ## R Packages (Visualization Pipeline)
 
-All scripts in `report_materials/r_analysis/*.R`. Run from that directory: `cd report_materials/r_analysis && Rscript run_all.R`.
+All scripts in `code/visualization/*.R`. Run from that directory: `cd code/visualization && Rscript run_all.R`.
 
 - `ggplot2` — static plots
 - `plotly` + `htmlwidgets` — interactive HTML charts (14 outputs to `interactive/`)

@@ -7,8 +7,8 @@ date: 2026-04-26
 
 ## Decision
 Two separate scoring implementations co-exist and must stay in sync:
-1. **Path A** — `llm_runner/response_parser.py` (`full_score()`)
-2. **Path B** — `evaluation/metrics.py` (`score_all_models()`)
+1. **Path A** — `code/models/response_parser.py` (`full_score()`)
+2. **Path B** — `code/analysis/metrics.py` (`score_all_models()`)
 
 ## Why
 - **Path A** runs during live API calls — needs to be fast and operate on raw strings

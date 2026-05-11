@@ -220,7 +220,7 @@ def get_task(task_id: str):
     try:
         import sys
         sys.path.insert(0, str(BASE_DIR))
-        from llm_runner.prompt_builder import build_prompt
+        from models.prompt_builder import build_prompt
         question = build_prompt(t)
     except Exception as e:
         notes = t.get("notes", {})

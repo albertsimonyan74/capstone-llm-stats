@@ -19,7 +19,7 @@ Empirically evaluates LLM-as-a-Judge design choices, recommending Krippendorff's
 - Single-judge ensembles inflate reliability estimates.
 
 ## How it grounds this project
-Validates our judge-validation methodology (Llama 3.3 70B Instruct via Together AI). Their α-over-ρ recommendation maps to scripts/krippendorff_agreement.py (Group B1) and data/processed_data/results_v2/krippendorff_agreement.json. Cite for judge-design rationale and inter-rater reliability metric choice.
+Validates our judge-validation methodology (Llama 3.3 70B Instruct via Together AI). Their α-over-ρ recommendation maps to code/scripts/krippendorff_agreement.py (Group B1) and data/processed_data/results_v2/krippendorff_agreement.json. Cite for judge-design rationale and inter-rater reliability metric choice.
 
 ## Citation in poster
 (Park et al., 2025)
@@ -31,8 +31,8 @@ Park et al. (2025) recommend Krippendorff's α over Spearman ρ for LLM-as-Judge
 park2025judge
 
 ## Project artifacts that cite this
-- evaluation/llm_judge_rubric.py
-- scripts/keyword_vs_judge_agreement.py
+- code/analysis/llm_judge_rubric.py
+- code/scripts/keyword_vs_judge_agreement.py
 - data/processed_data/results_v2/keyword_vs_judge_agreement.json
 - Methodology / judge-validation panel
 

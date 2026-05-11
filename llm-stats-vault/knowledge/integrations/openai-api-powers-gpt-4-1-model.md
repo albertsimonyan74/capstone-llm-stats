@@ -6,7 +6,7 @@ date: 2026-04-26
 # OpenAI API Powers GPT-4.1 Model
 
 ## Connection Details
-- **Class**: `ChatGPTClient` in `llm_runner/model_clients.py`
+- **Class**: `ChatGPTClient` in `code/models/model_clients.py`
 - **Model**: `gpt-4.1` (upgraded from `gpt-4o-mini` in earlier runs)
 - **Endpoint**: `api.openai.com/v1/chat/completions`
 - **Auth**: `Authorization: Bearer <OPENAI_API_KEY>`

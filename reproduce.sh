@@ -14,19 +14,20 @@ echo "=== [2/6] Setting up Python environment ==="
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -q -r requirements.txt
+export PYTHONPATH="$(pwd)/code:${PYTHONPATH:-}"
 
 echo "=== [3/6] Restoring R environment ==="
-cd report_materials/r_analysis
+cd code/visualization
 Rscript -e 'if (!require("renv")) install.packages("renv", repos="https://cloud.r-project.org"); renv::restore()'
 cd ../..
 
 echo "=== [4/6] Running benchmark pipeline ==="
-bash scripts/refresh_pipeline.sh
+bash code/scripts/refresh_pipeline.sh
 
 echo "=== [5/6] Regenerating figures ==="
-cd report_materials/r_analysis && Rscript run_all.R && cd ../..
-cp report_materials/r_analysis/figures/rank_flow.* paper/figures/ 2>/dev/null || true
-cp report_materials/r_analysis/figures/dimension_leaderboard.* paper/figures/ 2>/dev/null || true
+cd code/visualization && Rscript run_all.R && cd ../..
+cp code/visualization/figures/rank_flow.* paper/figures/ 2>/dev/null || true
+cp code/visualization/figures/dimension_leaderboard.* paper/figures/ 2>/dev/null || true
 
 echo "=== [6/6] Compiling paper ==="
 cd paper

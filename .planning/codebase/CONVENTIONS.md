@@ -46,7 +46,7 @@ from .logger import log_jsonl
 ## Code Patterns
 
 ### Adding a model client
-1. Class in `llm_runner/model_clients.py` inheriting `BaseModelClient`
+1. Class in `code/models/model_clients.py` inheriting `BaseModelClient`
 2. Set `model` and `model_family` class attributes
 3. Implement `query(self, prompt, task_id) -> Dict`
 4. Return: `{model, model_family, task_id, raw_response, input_tokens, output_tokens, latency_ms, error}`
@@ -55,16 +55,16 @@ from .logger import log_jsonl
 7. Add key placeholder to `.env.example`
 
 ### Adding a task type
-1. `gen_<type>_tasks()` in `baseline/bayesian/build_tasks_bayesian.py`
-2. Ground-truth computation in `baseline/bayesian/ground_truth.py`
-3. `_prompt_<type>()` in `llm_runner/prompt_builder.py`
+1. `gen_<type>_tasks()` in `code/data_preprocessing/bayesian/build_tasks_bayesian.py`
+2. Ground-truth computation in `code/data_preprocessing/bayesian/ground_truth.py`
+3. `_prompt_<type>()` in `code/models/prompt_builder.py`
 4. Register in `_DISPATCH` dict in `prompt_builder.py`
 5. Regenerate: `python -m baseline.bayesian.build_tasks_bayesian`
 
 ### Scoring weight changes
 Two files must stay in sync — always update both together:
-- `WEIGHTS` dict in `evaluation/metrics.py`
-- Formula comment + `full_score()` in `llm_runner/response_parser.py`
+- `WEIGHTS` dict in `code/analysis/metrics.py`
+- Formula comment + `full_score()` in `code/models/response_parser.py`
 Current weights: N=M=A=C=R=0.20 (all equal)
 
 ### Task spec schema (tasks.json)
@@ -90,7 +90,7 @@ Phase 1 tasks use `notes.inputs` + `notes.topic`; Phase 2 tasks use top-level `i
 - `data/raw_data/benchmark_v1/tasks_advanced.json` — Phase 2 (35 tasks). **Do not edit manually.**
 - `data/raw_data/benchmark_v1/tasks_all.json` — Merged 171 tasks. **Do not edit manually.**
 - `data/processed_data/results_v1/runs.jsonl` — append-only, never truncate
-- All baseline computation in `baseline/` — no ML, no approximations, closed-form only (except Phase 2 MCMC solvers which seed at 42)
+- All baseline computation in `code/data_preprocessing/` — no ML, no approximations, closed-form only (except Phase 2 MCMC solvers which seed at 42)
 
 ---
 
