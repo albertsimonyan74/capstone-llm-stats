@@ -112,13 +112,7 @@ def main():
                 xlabel="Verbalized ECE",
                 value_fmt="{:.3f}")
 
-    fig.suptitle("Performance leaderboard across three dimensions",
-                 fontsize=15, fontweight="bold", color=PRINT_FG, y=1.02)
-    fig.text(0.5, 0.925,
-             "Each panel sorted by its own metric. No model wins all three.",
-             ha="center", fontsize=10.5, color=PRINT_FG_MUTED, style="italic")
-
-    fig.tight_layout(rect=(0, 0.0, 1, 0.9))
+    fig.tight_layout()
 
     dual_save(fig, "dimension_leaderboard", out_dir=str(OUT_DIR))
     plt.close(fig)
