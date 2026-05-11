@@ -4,7 +4,7 @@ Mirrors scripts/combined_pass_flip_analysis.py exactly:
   1. Eligibility: tasks with non-empty `required_assumption_checks`
      (loaded from tasks_all.json + perturbations_all.json).
   2. Filter base runs/judges: drop rows whose task_id is in
-     data/synthetic/perturbations.json (v1-pert task_ids).
+     data/raw_data/synthetic/perturbations.json (v1-pert task_ids).
   3. Inner-join base runs.jsonl × llm_judge_scores_full.jsonl on run_id;
      drop judge errors. Eligibility lookup uses task_id.
   4. Inner-join perturbation_runs.jsonl × perturbation_judge_scores.jsonl
@@ -29,14 +29,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 
-BASE_RUNS  = ROOT / "experiments" / "results_v1" / "runs.jsonl"
-BASE_JUDGE = ROOT / "experiments" / "results_v2" / "llm_judge_scores_full.jsonl"
-PERT_RUNS  = ROOT / "experiments" / "results_v2" / "perturbation_runs.jsonl"
-PERT_JUDGE = ROOT / "experiments" / "results_v2" / "perturbation_judge_scores.jsonl"
+BASE_RUNS  = ROOT / "data" / "processed_data" / "results_v1" / "runs.jsonl"
+BASE_JUDGE = ROOT / "data" / "processed_data" / "results_v2" / "llm_judge_scores_full.jsonl"
+PERT_RUNS  = ROOT / "data" / "processed_data" / "results_v2" / "perturbation_runs.jsonl"
+PERT_JUDGE = ROOT / "data" / "processed_data" / "results_v2" / "perturbation_judge_scores.jsonl"
 
-TASKS_PATH      = ROOT / "data" / "benchmark_v1" / "tasks_all.json"
-PERT_SPECS_PATH = ROOT / "data" / "synthetic" / "perturbations_all.json"
-V1_PERT_PATH    = ROOT / "data" / "synthetic" / "perturbations.json"
+TASKS_PATH      = ROOT / "data" / "raw_data" / "benchmark_v1" / "tasks_all.json"
+PERT_SPECS_PATH = ROOT / "data" / "raw_data" / "synthetic" / "perturbations_all.json"
+V1_PERT_PATH    = ROOT / "data" / "raw_data" / "synthetic" / "perturbations.json"
 
 OUT_JSON = ROOT / "poster" / "figures" / "derived" / "disagreement_matrix_2x2.json"
 
@@ -181,7 +181,7 @@ def main() -> int:
                 "tasks_all.json + perturbations_all.json)."
             ),
             "v1_pert_filter": (
-                "Base runs/judges with task_id in data/synthetic/perturbations.json "
+                "Base runs/judges with task_id in data/raw_data/synthetic/perturbations.json "
                 "(v1-pert seed records) are dropped before join."
             ),
             "join": (

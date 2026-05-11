@@ -5,7 +5,7 @@ Uses the same eligibility filter and joining logic as
 `scripts/combined_pass_flip_analysis.py` so denominators (1,095 base,
 2,100 pert) match exactly.
 
-Output: experiments/results_v2/keyword_degradation_check.json
+Output: data/processed_data/results_v2/keyword_degradation_check.json
 """
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ from combined_pass_flip_analysis import (  # noqa: E402
 )
 
 
-OUT_JSON = Path("experiments/results_v2/keyword_degradation_check.json")
+OUT_JSON = Path("data/processed_data/results_v2/keyword_degradation_check.json")
 
 
 def pass_rates(rows: list[dict]) -> tuple[float, float, int]:

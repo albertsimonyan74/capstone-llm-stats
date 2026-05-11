@@ -19,7 +19,7 @@ Argues that standard LLM benchmarks under-quantify uncertainty and proposes Baye
 - Recommends always reporting CI alongside accuracy.
 
 ## How it grounds this project
-Direct motivation for our bootstrap CI workstream (Window 4). Maps to scripts/bootstrap_ci.py and experiments/results_v2/bootstrap_ci.json. Their argument that uncertainty quantification is missing from existing benchmarks is exactly the gap our P-2 audit finding addresses.
+Direct motivation for our bootstrap CI workstream (Window 4). Maps to scripts/bootstrap_ci.py and data/processed_data/results_v2/bootstrap_ci.json. Their argument that uncertainty quantification is missing from existing benchmarks is exactly the gap our P-2 audit finding addresses.
 
 ## Citation in poster
 (Longjohn et al., 2025)
@@ -32,7 +32,7 @@ longjohn2025bayesian
 
 ## Project artifacts that cite this
 - scripts/bootstrap_ci.py
-- experiments/results_v2/bootstrap_ci.json
+- data/processed_data/results_v2/bootstrap_ci.json
 - report_materials/figures/bootstrap_ci.png
 - ../../90-archive/audit/day2_audit_report.md (P-2 finding)
 - Three Rankings poster panel

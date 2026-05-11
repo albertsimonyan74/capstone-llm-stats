@@ -27,9 +27,9 @@ from print_theme import (
 
 apply_print_theme()
 
-BOOTSTRAP = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
-ROBUST = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
-CALIB = ROOT / "experiments" / "results_v2" / "calibration.json"
+BOOTSTRAP = ROOT / "data" / "processed_data" / "results_v2" / "bootstrap_ci.json"
+ROBUST = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"
+CALIB = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
 
 OUT_DIR = ROOT / "poster" / "figures"
 

@@ -20,7 +20,7 @@ Demonstrates that single-question swaps can flip Pass@1 rankings on standard LLM
 - Recommends bootstrap CIs and separability matrices for all benchmark claims.
 
 ## How it grounds this project
-Direct motivation for the bootstrap-CI separability analysis (P-2 audit finding). Their result that ChatGPT vs DeepSeek deltas can be within noise validates our claim that robustness rankings need separability tests. Maps to experiments/results_v2/bootstrap_ci.json separability matrix and report_materials/figures/bootstrap_ci.png.
+Direct motivation for the bootstrap-CI separability analysis (P-2 audit finding). Their result that ChatGPT vs DeepSeek deltas can be within noise validates our claim that robustness rankings need separability tests. Maps to data/processed_data/results_v2/bootstrap_ci.json separability matrix and report_materials/figures/bootstrap_ci.png.
 
 ## Citation in poster
 (Statistical Fragility, 2025)
@@ -33,7 +33,7 @@ fragility2025
 
 ## Project artifacts that cite this
 - scripts/bootstrap_ci.py
-- experiments/results_v2/bootstrap_ci.json
+- data/processed_data/results_v2/bootstrap_ci.json
 - report_materials/figures/bootstrap_ci.png
 - ../../90-archive/audit/day2_audit_report.md (P-2 finding)
 - Three-rankings panel

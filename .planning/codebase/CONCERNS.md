@@ -9,36 +9,36 @@
 ### Gemini Phase 1 Incomplete — 23 tasks never attempted, 45 errored
 
 - **What:** Gemini has only 68/136 successful Phase 1 runs. 45 records are error entries (429 daily quota). 23 task IDs have no record at all.
-- **Files:** `experiments/results_v1/runs.jsonl`, `llm_runner/model_clients.py`
+- **Files:** `data/processed_data/results_v1/runs.jsonl`, `llm_runner/model_clients.py`
 - **Impact:** Gemini's Phase 1 score in `results.json` is computed from partial data. Cross-model comparison is invalid until all 136 tasks complete.
 - **Fix:** Resume: `python -m llm_runner.run_all_tasks --models gemini` (resume logic skips completed tasks). Run after midnight Pacific if daily quota is spent.
 
 ### Gemini Phase 2 Incomplete — 24 tasks never attempted, 10 errored
 
 - **What:** Gemini has only 1/35 successful Phase 2 runs. 10 error records from 429s. 24 tasks have no record.
-- **Files:** `experiments/results_v1/runs.jsonl`
+- **Files:** `data/processed_data/results_v1/runs.jsonl`
 - **Impact:** Phase 2 advanced computational Bayes analysis is 4/5 models only.
-- **Fix:** `python -m llm_runner.run_all_tasks --models gemini --tasks data/benchmark_v1/tasks_advanced.json --delay 5`
+- **Fix:** `python -m llm_runner.run_all_tasks --models gemini --tasks data/raw_data/benchmark_v1/tasks_advanced.json --delay 5`
 
 ### Gemini Synthetic Runs Missing — 0/75 done
 
 - **What:** 4 models (claude, chatgpt, deepseek, mistral) each have 75 synthetic runs (300 total). Gemini has 0.
-- **Files:** `experiments/results_v1/runs.jsonl`, `data/synthetic/perturbations.json`
+- **Files:** `data/processed_data/results_v1/runs.jsonl`, `data/raw_data/synthetic/perturbations.json`
 - **Impact:** RQ4 robustness analysis across 5 models is impossible. Published results will exclude Gemini from perturbation analysis.
 - **Fix:** `python -m llm_runner.run_all_tasks --models gemini --synthetic --delay 5`
 
 ### 546 runs.jsonl Records Missing confidence_score / reasoning_score
 
 - **What:** Only 562/1108 records have `confidence_score` and `reasoning_score` fields. The 546 missing records include 491 valid (non-error) runs across all 5 models.
-- **Files:** `experiments/results_v1/runs.jsonl`, `scripts/recompute_scores.py`
+- **Files:** `data/processed_data/results_v1/runs.jsonl`, `scripts/recompute_scores.py`
 - **Impact:** `run_benchmark.py` defaults missing scores to 0.5 when building `TaskRun` objects. The C and R components are not computed from actual LLM text for these runs.
-- **Root cause:** `scripts/recompute_scores.py` only loaded `data/benchmark_v1/tasks.json` (Phase 1 — 136 tasks), not `tasks_all.json` (171 tasks). Phase 2 runs and synthetic runs never had their scores computed.
-- **Fix:** Update `recompute_scores.py` to use `data/benchmark_v1/tasks_all.json`. Re-run: `python scripts/recompute_scores.py`.
+- **Root cause:** `scripts/recompute_scores.py` only loaded `data/raw_data/benchmark_v1/tasks.json` (Phase 1 — 136 tasks), not `tasks_all.json` (171 tasks). Phase 2 runs and synthetic runs never had their scores computed.
+- **Fix:** Update `recompute_scores.py` to use `data/raw_data/benchmark_v1/tasks_all.json`. Re-run: `python scripts/recompute_scores.py`.
 
 ### results.json Schema Mismatch vs CLAUDE.md Documentation
 
 - **What:** `CLAUDE.md §7` states "top-level is a **list** of aggregate objects (not a dict with `model_aggregates` key)." The actual `results.json` written by `run_benchmark.py` is a dict with keys `model_aggregates` and `task_scores`.
-- **Files:** `experiments/results_v1/results.json`, `experiments/run_benchmark.py`
+- **Files:** `data/processed_data/results_v1/results.json`, `experiments/run_benchmark.py`
 - **Impact:** Any analysis code written against the CLAUDE.md description (expecting a list) will fail at import. The backend `main.py` does not consume `results.json` at all — it reads `runs.jsonl` directly — so this is currently latent.
 - **Fix:** Either update CLAUDE.md §7 to match actual output, or update `run_benchmark.py` to write the list format.
 
@@ -49,7 +49,7 @@
 ### RQ4 Analysis Not Implemented
 
 - **What:** `perturbations.json` exists (75 tasks), 300/375 synthetic runs are complete (Gemini missing). No code exists to compare rephrase vs numerical vs semantic perturbation types per base task.
-- **Files:** `data/synthetic/perturbations.json`, `experiments/results_v1/runs.jsonl`
+- **Files:** `data/raw_data/synthetic/perturbations.json`, `data/processed_data/results_v1/runs.jsonl`
 - **Impact:** RQ4 ("Robustness to prompt variations") has data but no analysis or visualization.
 - **Fix:** Write a script under `scripts/` or `experiments/` that groups perturbation runs by `base_task_id` and computes variance across perturbation types per model.
 
@@ -69,7 +69,7 @@
 
 ### recompute_scores.py Uses tasks.json (Phase 1 Only), Not tasks_all.json
 
-- **What:** `scripts/recompute_scores.py` hardcodes `TASKS_PATH = Path("data/benchmark_v1/tasks.json")` — Phase 1 only (136 tasks). Phase 2 tasks (in `tasks_advanced.json`) and synthetic perturbation tasks (in `perturbations.json`) are not in scope.
+- **What:** `scripts/recompute_scores.py` hardcodes `TASKS_PATH = Path("data/raw_data/benchmark_v1/tasks.json")` — Phase 1 only (136 tasks). Phase 2 tasks (in `tasks_advanced.json`) and synthetic perturbation tasks (in `perturbations.json`) are not in scope.
 - **Files:** `scripts/recompute_scores.py`
 - **Impact:** Score recomputation leaves Phase 2 runs and all synthetic runs with `confidence_score=None` / `reasoning_score=None`.
 - **Fix:** Change `TASKS_PATH` to `tasks_all.json` and add logic to also load `perturbations.json` task specs.
@@ -125,8 +125,8 @@
 
 ### tasks_all.json Is a Manually-Merged Artifact With No CI Guard
 
-- **What:** `data/benchmark_v1/tasks_all.json` (171 tasks) is regenerated by a one-liner merge command. If `tasks.json` or `tasks_advanced.json` are regenerated but `tasks_all.json` is not re-merged, the merged file silently falls behind.
-- **Files:** `data/benchmark_v1/tasks_all.json`, `data/benchmark_v1/tasks.json`, `data/benchmark_v1/tasks_advanced.json`
+- **What:** `data/raw_data/benchmark_v1/tasks_all.json` (171 tasks) is regenerated by a one-liner merge command. If `tasks.json` or `tasks_advanced.json` are regenerated but `tasks_all.json` is not re-merged, the merged file silently falls behind.
+- **Files:** `data/raw_data/benchmark_v1/tasks_all.json`, `data/raw_data/benchmark_v1/tasks.json`, `data/raw_data/benchmark_v1/tasks_advanced.json`
 - **Impact:** `run_benchmark.py` and the backend load `tasks_all.json`. A stale merge means some tasks are scored against wrong ground truth.
 - **Fix:** Add a validation step to `build_tasks_bayesian.py` and `build_tasks_advanced.py` that auto-regenerates the merged file, or add an assertion in `run_benchmark.py` checking that `tasks_all.json` count equals `tasks.json` + `tasks_advanced.json`.
 
@@ -150,7 +150,7 @@
 ### runs.jsonl Contains Raw LLM Prompts and Responses (PII Risk)
 
 - **What:** `runs.jsonl` stores the full prompt and raw LLM response for every run (field `prompt` and `raw_response`). These fields are read and served by the FastAPI backend at `/api/results/summary` (indirectly) and `/api/task/{task_id}`.
-- **Files:** `experiments/results_v1/runs.jsonl`, `capstone-website/backend/main.py`
+- **Files:** `data/processed_data/results_v1/runs.jsonl`, `capstone-website/backend/main.py`
 - **Impact:** For a research benchmark this is expected, but the backend's `allow_origins=["*"]` CORS policy means any website can query these endpoints and retrieve full prompt/response text.
 
 ### FastAPI Backend Has Wildcard CORS
@@ -196,7 +196,7 @@
 
 **Immediate next actions (in order):**
 1. Resume Gemini Phase 1: `python -m llm_runner.run_all_tasks --models gemini`
-2. Resume Gemini Phase 2: `python -m llm_runner.run_all_tasks --models gemini --tasks data/benchmark_v1/tasks_advanced.json --delay 5`
+2. Resume Gemini Phase 2: `python -m llm_runner.run_all_tasks --models gemini --tasks data/raw_data/benchmark_v1/tasks_advanced.json --delay 5`
 3. Run Gemini synthetic: `python -m llm_runner.run_all_tasks --models gemini --synthetic --delay 5`
 4. Fix `scripts/recompute_scores.py` to use `tasks_all.json`, then rerun
 5. Regenerate `results.json`: `python -m experiments.run_benchmark`

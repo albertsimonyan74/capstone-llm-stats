@@ -3,7 +3,7 @@
   "_pipeline_source": "scripts/combined_pass_flip_analysis.py",
   "scope_notes": {
     "eligibility": "Tasks with non-empty required_assumption_checks (loaded from tasks_all.json + perturbations_all.json).",
-    "v1_pert_filter": "Base runs/judges with task_id in data/synthetic/perturbations.json (v1-pert seed records) are dropped before join.",
+    "v1_pert_filter": "Base runs/judges with task_id in data/raw_data/synthetic/perturbations.json (v1-pert seed records) are dropped before join.",
     "join": "Inner-join on run_id. Base lookup uses task_id; perturbation lookup uses base_task_id. Judge errors and rows missing kw assumption_score or judge assumption_compliance.score are dropped.",
     "dedup": "Run-id deduplicated set union of base + perturbation rows.",
     "binarization": "Threshold = 0.5 on both kw and judge (\u22650.5 = PASS, <0.5 = FAIL)."

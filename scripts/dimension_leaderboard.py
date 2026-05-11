@@ -32,9 +32,9 @@ from site_palette import (
 
 apply_site_theme()
 
-BOOTSTRAP = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
-ROBUST = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
-CALIB = ROOT / "experiments" / "results_v2" / "calibration.json"
+BOOTSTRAP = ROOT / "data" / "processed_data" / "results_v2" / "bootstrap_ci.json"
+ROBUST = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"
+CALIB = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
 
 OUT = ROOT / "report_materials" / "figures" / "dimension_leaderboard.png"
 WEB_OUT = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "dimension_leaderboard.png"

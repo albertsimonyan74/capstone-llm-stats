@@ -5,7 +5,7 @@ Mirrors the website's failure-rate-by-task-type figure
 report_materials/r_analysis/05_failure_analysis.R).
 
 Numerator (per task_type): count of records in
-experiments/results_v2/error_taxonomy_v2.json:records, broken down by L1
+data/processed_data/results_v2/error_taxonomy_v2.json:records, broken down by L1
 bucket. The four real L1 buckets (no HALLUCINATION, no "other"
 collapse):
 
@@ -14,7 +14,7 @@ collapse):
   FORMATTING_FAILURE     → formatting_failure
   CONCEPTUAL_ERROR       → conceptual_error
 
-Denominator (per task_type): total runs in experiments/results_v1/runs.jsonl
+Denominator (per task_type): total runs in data/processed_data/results_v1/runs.jsonl
 for that task_type (matches R script `05_failure_analysis.R` Panel A,
 which uses df_complete with no v1-pert filter).
 
@@ -41,8 +41,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "baseline"))
 from utils_task_id import task_type_from_id  # noqa: E402
 
-TAX_FILE  = ROOT / "experiments" / "results_v2" / "error_taxonomy_v2.json"
-RUNS_FILE = ROOT / "experiments" / "results_v1" / "runs.jsonl"
+TAX_FILE  = ROOT / "data" / "processed_data" / "results_v2" / "error_taxonomy_v2.json"
+RUNS_FILE = ROOT / "data" / "processed_data" / "results_v1" / "runs.jsonl"
 OUT       = ROOT / "poster" / "figures" / "derived" / "failure_taxonomy_per_task.json"
 
 L1_TO_BUCKET = {

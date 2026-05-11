@@ -1,7 +1,7 @@
 """Derive 4-panel 5×5 keyword × judge crosstabs for poster.
 
 Population (n=1230):
-  experiments/results_v1/runs.jsonl × experiments/results_v2/llm_judge_scores_full.jsonl
+  data/processed_data/results_v1/runs.jsonl × data/processed_data/results_v2/llm_judge_scores_full.jsonl
   inner-joined on run_id, judge errors dropped. NO v1-pert filter applied
   (1230 = 855 non-v1pert base runs + 375 v1-pert base runs). NO eligibility
   filter on required_assumption_checks. Matches the website's published
@@ -31,8 +31,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 
-BASE_RUNS  = ROOT / "experiments" / "results_v1" / "runs.jsonl"
-BASE_JUDGE = ROOT / "experiments" / "results_v2" / "llm_judge_scores_full.jsonl"
+BASE_RUNS  = ROOT / "data" / "processed_data" / "results_v1" / "runs.jsonl"
+BASE_JUDGE = ROOT / "data" / "processed_data" / "results_v2" / "llm_judge_scores_full.jsonl"
 
 OUT_JSON = ROOT / "poster" / "figures" / "derived" / "keyword_judge_heatmap_4panel.json"
 

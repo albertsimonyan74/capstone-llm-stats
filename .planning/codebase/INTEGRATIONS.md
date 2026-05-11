@@ -98,14 +98,14 @@ All clients live in `llm_runner/model_clients.py`. They share a common base clas
 ## Data Storage
 
 **Benchmark data (local files, no external DB):**
-- `data/benchmark_v1/tasks.json` — 136 Phase 1 task specs
-- `data/benchmark_v1/tasks_advanced.json` — 35 Phase 2 task specs
-- `data/benchmark_v1/tasks_all.json` — 171 merged tasks (read by FastAPI backend)
-- `data/synthetic/perturbations.json` — 75 RQ4 perturbation tasks
+- `data/raw_data/benchmark_v1/tasks.json` — 136 Phase 1 task specs
+- `data/raw_data/benchmark_v1/tasks_advanced.json` — 35 Phase 2 task specs
+- `data/raw_data/benchmark_v1/tasks_all.json` — 171 merged tasks (read by FastAPI backend)
+- `data/raw_data/synthetic/perturbations.json` — 75 RQ4 perturbation tasks
 
 **Run results (append-only JSONL):**
-- `experiments/results_v1/runs.jsonl` — one JSON object per LLM run, written by `llm_runner/logger.py`
-- `experiments/results_v1/results.json` — scoring output from `experiments/run_benchmark.py`
+- `data/processed_data/results_v1/runs.jsonl` — one JSON object per LLM run, written by `llm_runner/logger.py`
+- `data/processed_data/results_v1/results.json` — scoring output from `experiments/run_benchmark.py`
 
 **Frontend static data:**
 - `capstone-website/frontend/src/data/results_summary.json` — pre-computed summary for LiveResults component
@@ -141,7 +141,7 @@ All clients live in `llm_runner/model_clients.py`. They share a common base clas
 
 **Error tracking:** None — no Sentry or similar service.
 
-**Logging:** Run logs written to `experiments/results_v1/runs.jsonl` via `llm_runner/logger.py` (`log_jsonl()` — append-only JSONL). Errors captured in the `error` field of each run record.
+**Logging:** Run logs written to `data/processed_data/results_v1/runs.jsonl` via `llm_runner/logger.py` (`log_jsonl()` — append-only JSONL). Errors captured in the `error` field of each run record.
 
 **Console output:** Each client prints progress to stdout during benchmark runs (e.g., `Querying claude on TASK_ID...`).
 

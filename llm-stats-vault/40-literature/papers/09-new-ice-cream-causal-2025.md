@@ -19,7 +19,7 @@ Benchmarks LLMs on classic statistical-causal pitfalls (confounding, selection b
 - Correct numeric answer often coexists with wrong causal interpretation.
 
 ## How it grounds this project
-Independent confirmation of our finding that ASSUMPTION_VIOLATION is the dominant failure mode (matches our 46.9%). Their "convincing yet misleading" framing mirrors our error taxonomy. Maps to experiments/results_v2/error_taxonomy_v2.json and report_materials/figures/error_taxonomy_hierarchical.png.
+Independent confirmation of our finding that ASSUMPTION_VIOLATION is the dominant failure mode (matches our 46.9%). Their "convincing yet misleading" framing mirrors our error taxonomy. Maps to data/processed_data/results_v2/error_taxonomy_v2.json and report_materials/figures/error_taxonomy_hierarchical.png.
 
 ## Citation in poster
 (Du et al., 2025)
@@ -32,7 +32,7 @@ du2025icecream
 
 ## Project artifacts that cite this
 - scripts/error_taxonomy.py
-- experiments/results_v2/error_taxonomy_v2.json
+- data/processed_data/results_v2/error_taxonomy_v2.json
 - report_materials/figures/error_taxonomy_hierarchical.png
 - RQ3 failure-taxonomy panel
 

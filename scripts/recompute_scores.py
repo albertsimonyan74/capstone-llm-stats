@@ -1,5 +1,5 @@
 """
-Recompute all scores in experiments/results_v1/runs.jsonl using the
+Recompute all scores in data/processed_data/results_v1/runs.jsonl using the
 current full_score() implementation (5-component equal weights).
 
 No API calls made — uses stored raw_response text.
@@ -19,9 +19,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from llm_runner.response_parser import full_score
 
-RUNS_PATH  = Path("experiments/results_v1/runs.jsonl")
-TASKS_PATH = Path("data/benchmark_v1/tasks_all.json")
-PERTS_PATH = Path("data/synthetic/perturbations_all.json")
+RUNS_PATH  = Path("data/processed_data/results_v1/runs.jsonl")
+TASKS_PATH = Path("data/raw_data/benchmark_v1/tasks_all.json")
+PERTS_PATH = Path("data/raw_data/synthetic/perturbations_all.json")
 
 
 def main() -> None:

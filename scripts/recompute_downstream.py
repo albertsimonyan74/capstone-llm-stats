@@ -1,13 +1,13 @@
 """
 Phase 1B Step 3 — recompute downstream analyses under literature-derived NMACR weights.
 
-Reads experiments/results_v2/nmacr_scores_v2.jsonl (produced by recompute_scores.py)
+Reads data/processed_data/results_v2/nmacr_scores_v2.jsonl (produced by recompute_scores.py)
 and updates:
 
-3a. experiments/results_v2/bootstrap_ci.json
-3b. experiments/results_v2/robustness_v2.json (Layer 1 + Layer 2 per-dim deltas)
-3c. experiments/results_v2/per_dim_calibration.json (NEW)
-3d. experiments/results_v2/calibration.json (append accuracy_calibration_correlation)
+3a. data/processed_data/results_v2/bootstrap_ci.json
+3b. data/processed_data/results_v2/robustness_v2.json (Layer 1 + Layer 2 per-dim deltas)
+3c. data/processed_data/results_v2/per_dim_calibration.json (NEW)
+3d. data/processed_data/results_v2/calibration.json (append accuracy_calibration_correlation)
 
 Figures (regenerated from the recomputed data):
 3b. report_materials/figures/a4b_per_dim_robustness.png (NEW)
@@ -43,18 +43,18 @@ from site_palette import (
 apply_site_theme()
 
 ROOT = Path(__file__).resolve().parents[1]
-NMACR = ROOT / "experiments" / "results_v2" / "nmacr_scores_v2.jsonl"
-TASKS_ALL = ROOT / "data" / "benchmark_v1" / "tasks_all.json"
-TAXONOMY = ROOT / "experiments" / "results_v2" / "error_taxonomy_v2.json"
+NMACR = ROOT / "data" / "processed_data" / "results_v2" / "nmacr_scores_v2.jsonl"
+TASKS_ALL = ROOT / "data" / "raw_data" / "benchmark_v1" / "tasks_all.json"
+TAXONOMY = ROOT / "data" / "processed_data" / "results_v2" / "error_taxonomy_v2.json"
 # v1-pert specs — used to filter v1-pert task_ids out of nmacr_scores rows that
 # carry perturbation=False (historical mislabel: v1-pert rows were loaded into
 # base runs.jsonl). Empty after B-2 cleanup.
-V1_PERT_PATH = ROOT / "data" / "synthetic" / "perturbations.json"
+V1_PERT_PATH = ROOT / "data" / "raw_data" / "synthetic" / "perturbations.json"
 
-OUT_BOOT = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
-OUT_ROB = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
-OUT_PERDIM_CAL = ROOT / "experiments" / "results_v2" / "per_dim_calibration.json"
-CALIB = ROOT / "experiments" / "results_v2" / "calibration.json"
+OUT_BOOT = ROOT / "data" / "processed_data" / "results_v2" / "bootstrap_ci.json"
+OUT_ROB = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"
+OUT_PERDIM_CAL = ROOT / "data" / "processed_data" / "results_v2" / "per_dim_calibration.json"
+CALIB = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
 
 FIG_DIR = ROOT / "report_materials" / "figures"
 

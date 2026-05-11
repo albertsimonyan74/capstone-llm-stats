@@ -6,8 +6,8 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-_RESULTS_FILE = Path(__file__).parent.parent.parent / "experiments" / "results_v1" / "results.json"
-_RUNS_FILE    = Path(__file__).parent.parent.parent / "experiments" / "results_v1" / "runs.jsonl"
+_RESULTS_FILE = Path(__file__).parent.parent.parent / "data" / "processed_data" / "results_v1" / "results.json"
+_RUNS_FILE    = Path(__file__).parent.parent.parent / "data" / "processed_data" / "results_v1" / "runs.jsonl"
 
 _results_cache: Optional[Dict[str, Any]] = None
 

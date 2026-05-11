@@ -10,9 +10,9 @@ print rules.
   `scripts/print_theme.py`, `figures/`, `README.md`,
   `frontend/src/{App.css, index.css, data/sitePalette.js,
   components/MethodologyPanels, ThreeRankingsComparison, KeyFindings, MobiusStrip}.jsx`,
-  `CLAUDE.md`, `experiments/results_v2/*`, `../90-archive/audit/recompute_log.md`.
-- Verified live numerics from `experiments/results_v2/*` and
-  `data/synthetic/perturbations_all.json`.
+  `CLAUDE.md`, `data/processed_data/results_v2/*`, `../90-archive/audit/recompute_log.md`.
+- Verified live numerics from `data/processed_data/results_v2/*` and
+  `data/raw_data/synthetic/perturbations_all.json`.
 - Wrote `poster/SCRAPE_PLAN.md` with sections A–J.
 
 ## Numeric corrections found vs current `main.tex`

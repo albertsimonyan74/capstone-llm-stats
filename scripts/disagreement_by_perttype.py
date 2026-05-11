@@ -5,7 +5,7 @@ judge) split by perturbation flavor: REPHRASE, NUMERICAL, SEMANTIC. Reference
 line at the combined cohort rate (20.74%) demonstrates structural stability.
 
 Source (canonical):
-  experiments/results_v2/combined_pass_flip_analysis.json
+  data/processed_data/results_v2/combined_pass_flip_analysis.json
     perturbation.per_perturbation_type.{rephrase,numerical,semantic}.{n_pass_flip,n_eligible,pct}
     combined.pct_pass_flip
 
@@ -32,7 +32,7 @@ from site_palette import (
 
 apply_site_theme()
 
-SRC = ROOT / "experiments" / "results_v2" / "combined_pass_flip_analysis.json"
+SRC = ROOT / "data" / "processed_data" / "results_v2" / "combined_pass_flip_analysis.json"
 OUT = ROOT / "report_materials" / "figures" / "disagreement_by_perttype.png"
 WEB_OUT = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "disagreement_by_perttype.png"
 

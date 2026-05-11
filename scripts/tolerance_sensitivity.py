@@ -12,10 +12,10 @@ tolerance (run-level all-targets accuracy). Runs without numeric targets
 (CONCEPTUAL) are excluded from accuracy denominators.
 
 Inputs (read-only):
-    experiments/results_v1/runs.jsonl
+    data/processed_data/results_v1/runs.jsonl
 
 Outputs:
-    experiments/results_v2/tolerance_sensitivity.json
+    data/processed_data/results_v2/tolerance_sensitivity.json
     report_materials/figures/tolerance_sensitivity.png
 """
 from __future__ import annotations
@@ -37,8 +37,8 @@ from site_palette import (
 apply_site_theme()
 
 ROOT = Path(__file__).resolve().parent.parent
-RUNS_PATH = ROOT / "experiments" / "results_v1" / "runs.jsonl"
-OUT_JSON = ROOT / "experiments" / "results_v2" / "tolerance_sensitivity.json"
+RUNS_PATH = ROOT / "data" / "processed_data" / "results_v1" / "runs.jsonl"
+OUT_JSON = ROOT / "data" / "processed_data" / "results_v2" / "tolerance_sensitivity.json"
 OUT_FIG = ROOT / "report_materials" / "figures" / "tolerance_sensitivity.png"
 
 TOLERANCE_LEVELS: Dict[str, Tuple[float, float]] = {

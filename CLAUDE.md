@@ -28,11 +28,11 @@ python -m baseline.bayesian.build_tasks_bayesian        # → tasks.json (136)
 python -m baseline.bayesian.build_tasks_advanced        # → tasks_advanced.json (35)
 python3 -c "
 import json
-t1=json.load(open('data/benchmark_v1/tasks.json'))
-t2=json.load(open('data/benchmark_v1/tasks_advanced.json'))
+t1=json.load(open('data/raw_data/benchmark_v1/tasks.json'))
+t2=json.load(open('data/raw_data/benchmark_v1/tasks_advanced.json'))
 all_=t1+t2
 assert len(set(t['task_id'] for t in all_))==len(all_)
-json.dump(all_,open('data/benchmark_v1/tasks_all.json','w'),indent=2)
+json.dump(all_,open('data/raw_data/benchmark_v1/tasks_all.json','w'),indent=2)
 "  # → tasks_all.json (171)
 
 # Benchmark runs
@@ -131,16 +131,16 @@ input_tokens, output_tokens, latency_ms, error
 Note: file contains one old placeholder record with different schema — handle heterogeneity.
 
 **Result files**:
-- `experiments/results_v1/runs.jsonl` — append-only, never truncate
-- `experiments/results_v1/results.json` — dict: `model_aggregates` + `task_scores`
+- `data/processed_data/results_v1/runs.jsonl` — append-only, never truncate
+- `data/processed_data/results_v1/results.json` — dict: `model_aggregates` + `task_scores`
 
 ---
 
 ## Tasks
 
-**Phase 1** (`data/benchmark_v1/tasks.json`): 136 tasks, 31 types. Do not edit — regenerate.
+**Phase 1** (`data/raw_data/benchmark_v1/tasks.json`): 136 tasks, 31 types. Do not edit — regenerate.
 
-**Phase 2** (`data/benchmark_v1/tasks_advanced.json`): 35 tasks. Do not edit — regenerate.
+**Phase 2** (`data/raw_data/benchmark_v1/tasks_advanced.json`): 35 tasks. Do not edit — regenerate.
 
 | Type | Count | Tolerance |
 |---|---|---|
@@ -163,9 +163,9 @@ Phase 2 solvers use `np.random.seed(42)` — true values are seeded MC estimates
 }
 ```
 
-**Perturbations** (`data/synthetic/perturbations_all.json`, 473 records covering all 171 base tasks): `rephrase` (same math, reworded) / `numerical` (changed numbers, recomputed) / `semantic` (same math, new framing). Composition: 75 hand-authored seed records + 398 LLM-generated v2 records (v2 ids end with `_v2`). Regenerate with `python scripts/generate_perturbations_full.py`.
+**Perturbations** (`data/raw_data/synthetic/perturbations_all.json`, 473 records covering all 171 base tasks): `rephrase` (same math, reworded) / `numerical` (changed numbers, recomputed) / `semantic` (same math, new framing). Composition: 75 hand-authored seed records + 398 LLM-generated v2 records (v2 ids end with `_v2`). Regenerate with `python scripts/generate_perturbations_full.py`.
 
-**v1 perturbation deprecation (2026-05-04, Phase 1.8).** The legacy `data/synthetic/perturbations.json` (75 hand-authored records) is deprecated as a data source — its records are preserved verbatim inside `perturbations_all.json`. The file is RETAINED on disk because 5 consumer scripts (`scripts/krippendorff_agreement.py`, `keyword_vs_judge_agreement.py`, `combined_pass_flip_analysis.py`, `calibration_analysis.py`, `recompute_downstream.py`), `capstone-website/backend/main.py`, and the R pipeline use it as the canonical list of v1-pert task_ids to filter out of `runs.jsonl` (Strategy C). Future cleanup: refactor consumers to derive the v1 list from `perturbations_all.json` (suffix-match `task_id` not ending in `_v2`), then delete `perturbations.json`. Generator `data/synthetic/build_perturbations.py` is no longer the canonical generator — `scripts/generate_perturbations_full.py` is. See `llm-stats-vault/90-archive/audit/recompute_log.md` §"Phase 1.8".
+**v1 perturbation deprecation (2026-05-04, Phase 1.8).** The legacy `data/raw_data/synthetic/perturbations.json` (75 hand-authored records) is deprecated as a data source — its records are preserved verbatim inside `perturbations_all.json`. The file is RETAINED on disk because 5 consumer scripts (`scripts/krippendorff_agreement.py`, `keyword_vs_judge_agreement.py`, `combined_pass_flip_analysis.py`, `calibration_analysis.py`, `recompute_downstream.py`), `capstone-website/backend/main.py`, and the R pipeline use it as the canonical list of v1-pert task_ids to filter out of `runs.jsonl` (Strategy C). Future cleanup: refactor consumers to derive the v1 list from `perturbations_all.json` (suffix-match `task_id` not ending in `_v2`), then delete `perturbations.json`. Generator `data/raw_data/synthetic/build_perturbations.py` is no longer the canonical generator — `scripts/generate_perturbations_full.py` is. See `llm-stats-vault/90-archive/audit/recompute_log.md` §"Phase 1.8".
 
 ---
 

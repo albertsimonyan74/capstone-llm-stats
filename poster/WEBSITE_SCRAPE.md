@@ -1385,7 +1385,7 @@ const STATIC_FALLBACK = {
 
 | Number | Meaning | Source |
 |---|---|---|
-| **473** unique perturbation records | full count of perturbation specs (75 v1 + 398 v2 covering all 171 base task_ids) | `data/synthetic/perturbations_all.json` (live `len()`); pipeline visual title `App.jsx:1146`: `3 perturbation types · 473 total`; CLAUDE.md §"Perturbations" |
+| **473** unique perturbation records | full count of perturbation specs (75 v1 + 398 v2 covering all 171 base task_ids) | `data/raw_data/synthetic/perturbations_all.json` (live `len()`); pipeline visual title `App.jsx:1146`: `3 perturbation types · 473 total`; CLAUDE.md §"Perturbations" |
 | **398** v2 perturbations | the LLM-generated v2 records subset (suffix `_v2`); also legacy figure in `Methodology.jsx:123` literature comparison row | `Methodology.jsx:123`: `'Perturbations:': '✓ 398 v2 perturbations'`; `App.jsx:1147-1153` `count: 171/131/171` (rephrase/numerical/semantic) — sums to 473 |
 | **2,365** perturbation runs | 473 × 5 models = 2,365 total perturbation runs scored | `EligibilityFunnelPanel.jsx`: `pertTotal = 2365` |
 | **2,100** perturbation eligible | 2,365 − 265 excluded (21 task families × 5 models with empty `required_assumption_checks`) | `EligibilityFunnelPanel.jsx`: `pertElig = 2100` |
@@ -1456,7 +1456,7 @@ the literature scheme.
 
 Source: `MethodologyPanels.jsx:634-640` `BOOTSTRAP_ACCURACY` static const
 + `ThreeRankingsComparison.jsx:14`. Backed by
-`experiments/results_v2/bootstrap_ci.json` (B=10,000, seed=42).
+`data/processed_data/results_v2/bootstrap_ci.json` (B=10,000, seed=42).
 
 #### Robustness Δ (base − perturbation; lower is better)
 
@@ -1470,7 +1470,7 @@ Source: `MethodologyPanels.jsx:634-640` `BOOTSTRAP_ACCURACY` static const
 
 Source: `MethodologyPanels.jsx:642-648` `BOOTSTRAP_ROBUSTNESS` +
 `ThreeRankingsComparison.jsx:19-25`. Backed by
-`experiments/results_v2/robustness_v2.json`.
+`data/processed_data/results_v2/robustness_v2.json`.
 
 #### Calibration ECE (verbalized; lower is better)
 
@@ -1483,7 +1483,7 @@ Source: `MethodologyPanels.jsx:642-648` `BOOTSTRAP_ROBUSTNESS` +
 | 5 | DeepSeek | 0.1977 |
 
 Source: `MethodologyPanels.jsx:1007-1013` `CALIB_VERBALIZED`. Backed by
-`experiments/results_v2/calibration.json`.
+`data/processed_data/results_v2/calibration.json`.
 
 `ThreeRankingsComparison.jsx:26-32` displays values rounded to 3 decimals:
 `claude 0.033, chatgpt 0.034, gemini 0.077, mistral 0.081, deepseek 0.198`.
@@ -1499,7 +1499,7 @@ Source: `MethodologyPanels.jsx:1007-1013` `CALIB_VERBALIZED`. Backed by
 | 5 | Claude | 0.7342 | ↓ 4 |
 
 Source: `MethodologyPanels.jsx:1015-1021` `CALIB_CONSISTENCY`. Backed by
-`experiments/results_v2/self_consistency_calibration.json`.
+`data/processed_data/results_v2/self_consistency_calibration.json`.
 
 #### Per-model accuracy-calibration Pearson r
 
@@ -1560,7 +1560,7 @@ Source: `JudgeValidationPanels.jsx:215-219`.
 
 Source: `MethodologyPanels.jsx:771-787` `KRIPP_DIMS` +
 `JudgeValidationPanels.jsx:8-23`. Backed by
-`experiments/results_v2/krippendorff_agreement.json` (B=1,000, seed=42).
+`data/processed_data/results_v2/krippendorff_agreement.json` (B=1,000, seed=42).
 KeyFindings card 1 displays α_A as `0.57` (truncated 1-decimal).
 
 ### G.6 — Failure taxonomy (L1 buckets, n=143 audited)
@@ -1576,7 +1576,7 @@ KeyFindings card 1 displays α_A as `0.57` (truncated 1-decimal).
 Source: `KeyFindings.jsx:13-15` (`dominant_failure_pct: 0.469,
 dominant_failure_n: 67, dominant_failure_total: 143`); `Limitations.jsx:7`
 hallucination caveat. L1 totals also reachable via
-`experiments/results_v2/error_taxonomy_v2.json`. Per-model L1 breakdown
+`data/processed_data/results_v2/error_taxonomy_v2.json`. Per-model L1 breakdown
 in `MethodologyPanels.jsx:267-274`.
 
 ### G.7 — Assumption-skip rate — multiple framings
@@ -1588,7 +1588,7 @@ The site does NOT display the 51.5% judge-zero-rate framing.
 | Number | Definition | Where displayed |
 |---|---|---|
 | **46.9%** | 67 / 143 audited failures classified as ASSUMPTION_VIOLATION | KeyFindings card 2; Limitations metaphors; Methodology §6 literature convergence: `the 46.9% empirical finding here independently agrees` |
-| 51.5% (NOT shown on site) | base-judge zero-rate on assumption_compliance dim, n=1,229 | only in `experiments/results_v2/judge_dimension_means.json` |
+| 51.5% (NOT shown on site) | base-judge zero-rate on assumption_compliance dim, n=1,229 | only in `data/processed_data/results_v2/judge_dimension_means.json` |
 
 ### G.8 — Other site-displayed numerics
 

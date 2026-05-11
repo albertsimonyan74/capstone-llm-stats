@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 summarize_results.py
-Reads experiments/results_v1/runs.jsonl → generates
+Reads data/processed_data/results_v1/runs.jsonl → generates
 capstone-website/frontend/src/data/results_summary.json
 
 Run from project root: python scripts/summarize_results.py

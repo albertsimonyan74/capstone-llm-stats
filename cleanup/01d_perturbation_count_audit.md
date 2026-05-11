@@ -63,7 +63,7 @@ Sample v1 base_task_ids (covered by hand-authored only): `BAYES_FACTOR_01`, `BAY
 - Canonical `perturbations_all.json` is **complete**: 473 records, all 171 base tasks covered, sum exactly matches v1+v2.
 - The headline claim "473 perturbations across 171 base tasks = 2.77 avg" is correct.
 - The earlier "~14 per base task" recollection is wrong — likely a confusion with a different artefact (perhaps total runs per task = 5 models × ~3 perturbations + base = ~17–20 runs/base, near "~14"-ish for some subset).
-- `data/synthetic/perturbations.json` and `perturbations_v2.json` are **superseded for data purposes** but `perturbations.json` remains required as the v1-id filter source per CLAUDE.md (kept on disk).
+- `data/raw_data/synthetic/perturbations.json` and `perturbations_v2.json` are **superseded for data purposes** but `perturbations.json` remains required as the v1-id filter source per CLAUDE.md (kept on disk).
 
 ## Implications for `data/perturbations/` reorg
 
@@ -74,4 +74,4 @@ data/perturbations/
   v1_hand_authored.json     ← rename of perturbations.json (v1, 75 records, kept for filter use)
   v2_llm_generated.json     ← rename of perturbations_v2.json (v2, 398 records)
 ```
-…OR keep filenames as-is to avoid breaking the 5+ consumer scripts and website backend hard-coded path `data/synthetic/perturbations.json` (per CLAUDE.md "Phase 1.8" deprecation note). **Reorg plan defaults to keep-in-place + symlink/copy under `data/perturbations/` if a fresher layout is needed**, since renaming would touch many call sites.
+…OR keep filenames as-is to avoid breaking the 5+ consumer scripts and website backend hard-coded path `data/raw_data/synthetic/perturbations.json` (per CLAUDE.md "Phase 1.8" deprecation note). **Reorg plan defaults to keep-in-place + symlink/copy under `data/perturbations/` if a fresher layout is needed**, since renaming would touch many call sites.

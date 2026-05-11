@@ -6,7 +6,7 @@
 
 ### Plan 1.1 — Resume Gemini Runs
 - Resume Phase 1 (62 missing tasks): `python -m llm_runner.run_all_tasks --models gemini`
-- Resume Phase 2 (35 tasks): `python -m llm_runner.run_all_tasks --models gemini --tasks data/benchmark_v1/tasks_advanced.json --delay 5`
+- Resume Phase 2 (35 tasks): `python -m llm_runner.run_all_tasks --models gemini --tasks data/raw_data/benchmark_v1/tasks_advanced.json --delay 5`
 - Monitor for quota exhaustion; resume next day if hit
 
 ### Plan 1.2 — Prune Error Records + Run Scoring
@@ -29,7 +29,7 @@
 ### Plan 2.2 — Perturbation Comparison Analysis
 - Script: `scripts/analyze_perturbations.py`
 - Logic: group runs by base_task_id, compare avg score across rephrase/numerical/semantic
-- Output: `experiments/results_v1/perturbation_analysis.json` + summary table
+- Output: `data/processed_data/results_v1/perturbation_analysis.json` + summary table
 - Add analysis section to 08_master_report.Rmd
 
 ---

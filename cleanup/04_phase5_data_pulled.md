@@ -6,7 +6,7 @@ Generated 2026-05-10. All values pulled from canonical sources only. No `audit/`
 
 ## Per-model accuracy (171 base tasks, NMACR-weighted normalized score)
 
-Source: `experiments/results_v1/results.json` → `model_aggregates[*].normalized_score`.
+Source: `data/processed_data/results_v1/results.json` → `model_aggregates[*].normalized_score`.
 
 | Rank | Model | Accuracy |
 |---:|---|---:|
@@ -20,7 +20,7 @@ Source: `experiments/results_v1/results.json` → `model_aggregates[*].normalize
 
 ## Per-model calibration (binary-pass ECE, lower = better)
 
-Source: `experiments/results_v2/calibration.json` → `<model>.ece`.
+Source: `data/processed_data/results_v2/calibration.json` → `<model>.ece`.
 
 | Rank | Model | ECE |
 |---:|---|---:|
@@ -36,7 +36,7 @@ Source: `experiments/results_v2/calibration.json` → `<model>.ece`.
 
 ## Per-model robustness (1 − Δ between base and perturbation pass rate)
 
-Source: `experiments/results_v2/robustness_v2.json` → `ranking`. n = 398 perturbations per model (v2 set).
+Source: `data/processed_data/results_v2/robustness_v2.json` → `ranking`. n = 398 perturbations per model (v2 set).
 
 | Rank | Model | Robustness | Δ (base − pert) |
 |---:|---|---:|---:|
@@ -54,7 +54,7 @@ Headline divergences:
 
 ## Keyword-rubric vs external-judge agreement (Spearman ρ)
 
-Source: `experiments/results_v2/keyword_vs_judge_agreement.json` → `overall_per_dimension`. n = 750 paired runs.
+Source: `data/processed_data/results_v2/keyword_vs_judge_agreement.json` → `overall_per_dimension`. n = 750 paired runs.
 
 | Dimension | Spearman ρ | Pearson r | Cohen κ (pass/fail) | Keyword pass rate | Judge pass rate |
 |---|---:|---:|---:|---:|---:|
@@ -70,7 +70,7 @@ Headline: **assumption-compliance** is the only dimension where keyword rubric a
 
 ## Krippendorff α (3 dimensions, n=750)
 
-Source: `experiments/results_v2/krippendorff_agreement.json` → `overall`.
+Source: `data/processed_data/results_v2/krippendorff_agreement.json` → `overall`.
 
 | Dimension | α | 95% CI |
 |---|---:|---|
@@ -84,7 +84,7 @@ All three labeled `"questionable"` per `interpretation` field. Use carefully in 
 
 ## Failure taxonomy (n = 143 judge-classified failures)
 
-Source: `experiments/results_v2/error_taxonomy_v2.json` → `l1_totals`. Judge: `meta-llama/Llama-3.3-70B-Instruct-Turbo`.
+Source: `data/processed_data/results_v2/error_taxonomy_v2.json` → `l1_totals`. Judge: `meta-llama/Llama-3.3-70B-Instruct-Turbo`.
 
 | L1 category | Count | Share |
 |---|---:|---:|
@@ -124,7 +124,7 @@ Source: `evaluation/llm_judge_rubric.py`.
 
 ## Task suite + perturbation taxonomy
 
-Source: `data/benchmark_v1/`, `data/synthetic/perturbations_all.json`.
+Source: `data/raw_data/benchmark_v1/`, `data/raw_data/synthetic/perturbations_all.json`.
 
 - **171 base tasks** = 136 Phase 1 (31 task types) + 35 Phase 2 (7 advanced types: GIBBS / MH / HMC / RJMCMC / HIERARCHICAL / VB / ABC) = **38 task types**.
 - **473 perturbations** = 75 v1 hand-authored + 398 v2 LLM-generated (Together AI Llama 3.3 70B). Disjoint partition: v1 covers 25 baselines × 3 axes; v2 covers the remaining 146 baselines.
@@ -169,9 +169,9 @@ For abstract / intro use:
 | Variable | Value | Source |
 |---|---|---|
 | Models | 5 (claude, chatgpt, gemini, deepseek, mistral) | `llm_runner/model_clients.py` |
-| Base tasks | 171 (= 136 Phase 1 + 35 Phase 2) | `data/benchmark_v1/tasks_all.json` |
+| Base tasks | 171 (= 136 Phase 1 + 35 Phase 2) | `data/raw_data/benchmark_v1/tasks_all.json` |
 | Task types | 38 | derived |
-| Perturbations | 473 | `data/synthetic/perturbations_all.json` |
+| Perturbations | 473 | `data/raw_data/synthetic/perturbations_all.json` |
 | Perturbation axes | 3 (rephrase, semantic, numerical) | derived |
 | Judge model | Llama 3.3 70B Turbo (Together AI) | `evaluation/llm_judge_rubric.py` |
 | ChatGPT accuracy rank → robustness rank | **5 → 1** | results_v1 + results_v2 |

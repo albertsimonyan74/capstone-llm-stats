@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """Score 473 perturbations × 5 models — keyword rubric only.
 
-Loads the canonical merged perturbation set from data/synthetic/perturbations_all.json
+Loads the canonical merged perturbation set from data/raw_data/synthetic/perturbations_all.json
 (473 records: the 75 historical hand-authored task_ids preserved verbatim plus 398
 generated v2 perturbations), queries each model, scores via keyword rubric
 (`response_parser.full_score`), appends to
-`experiments/results_v2/perturbation_runs.jsonl`. Resume-safe: skips any
+`data/processed_data/results_v2/perturbation_runs.jsonl`. Resume-safe: skips any
 (model_family, task_id) pair already present with non-empty raw_response and
 no error. After this completes, run the external Llama judge via:
 
     python -m evaluation.llm_judge_rubric \\
-        --runs experiments/results_v2/perturbation_runs.jsonl \\
-        --tasks data/synthetic/perturbations_all.json \\
-        --output experiments/results_v2/perturbation_judge_scores.jsonl
+        --runs data/processed_data/results_v2/perturbation_runs.jsonl \\
+        --tasks data/raw_data/synthetic/perturbations_all.json \\
+        --output data/processed_data/results_v2/perturbation_judge_scores.jsonl
 """
 from __future__ import annotations
 
@@ -36,8 +36,8 @@ from llm_runner.model_clients import get_client, GeminiQuotaExhausted
 from llm_runner.response_parser import full_score
 from baseline.utils_task_id import task_type_from_id
 
-COMBINED = Path("data/synthetic/perturbations_all.json")
-DEFAULT_OUTPUT = Path("experiments/results_v2/perturbation_runs.jsonl")
+COMBINED = Path("data/raw_data/synthetic/perturbations_all.json")
+DEFAULT_OUTPUT = Path("data/processed_data/results_v2/perturbation_runs.jsonl")
 ALL_MODELS = ["claude", "gemini", "chatgpt", "deepseek", "mistral"]
 
 

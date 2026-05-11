@@ -20,7 +20,7 @@ RUNS_PATH <- file.path(dirname(dirname(getwd())),
                        "experiments", "results_v1", "runs.jsonl")
 # Resolve relative to script location when sourced
 if (!file.exists(RUNS_PATH)) {
-  RUNS_PATH <- "../../experiments/results_v1/runs.jsonl"
+  RUNS_PATH <- "../../data/processed_data/results_v1/runs.jsonl"
 }
 
 DATA_DIR  <- "data"

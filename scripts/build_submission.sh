@@ -32,10 +32,10 @@ find "$STAGE/code" -type d -name renv -exec rm -rf {} + 2>/dev/null || true
 find "$STAGE/code" -name '.Rhistory' -delete 2>/dev/null || true
 
 # data/  (split into raw vs processed per the example)
-cp -r data/benchmark_v1 "$STAGE/data/raw_data"
+cp -r data/raw_data/benchmark_v1 "$STAGE/data/raw_data"
 mkdir -p "$STAGE/data/raw_data/synthetic"
-cp -r data/synthetic/* "$STAGE/data/raw_data/synthetic/"
-cp -r experiments/results_v2 "$STAGE/data/processed_data"
+cp -r data/raw_data/synthetic/* "$STAGE/data/raw_data/synthetic/"
+cp -r data/processed_data/results_v2 "$STAGE/data/processed_data"
 
 # Drop oversized JSONL files from processed_data if they exceed 10 MB
 find "$STAGE/data/processed_data" -name '*.jsonl' -size +10M -delete 2>/dev/null || true
@@ -65,7 +65,7 @@ different layout optimized for development; mappings:
     code/models/                → llm_runner/
     code/visualization/         → report_materials/r_analysis/
     data/raw_data/              → data/
-    data/processed_data/        → experiments/results_v2/
+    data/processed_data/        → data/processed_data/results_v2/
 
 All scripts reference paths relative to the working-repo layout. To
 actually run the code, use the working repo (linked in README.md) or

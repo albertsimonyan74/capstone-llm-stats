@@ -17,8 +17,8 @@ import argparse
 from collections import defaultdict
 from pathlib import Path
 
-RUNS_PATH  = "experiments/results_v1/runs.jsonl"
-TASKS_PATH = "data/benchmark_v1/tasks_all.json"
+RUNS_PATH  = "data/processed_data/results_v1/runs.jsonl"
+TASKS_PATH = "data/raw_data/benchmark_v1/tasks_all.json"
 OUTPUT_PATH = "data/error_taxonomy_results.json"
 
 SYNTH_SUFFIX = ("_rephrase", "_numerical", "_semantic")

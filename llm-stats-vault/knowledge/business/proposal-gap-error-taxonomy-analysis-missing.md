@@ -33,7 +33,7 @@ Error taxonomy is one of three named deliverables alongside benchmark dataset an
 # task_type == "CONCEPTUAL" and pass=False → INTERPRETATION
 ```
 
-Output: `experiments/results_v1/error_taxonomy.json`
+Output: `data/processed_data/results_v1/error_taxonomy.json`
 ```json
 {
   "by_model": {"claude": {"MATHEMATICAL": 5, "ASSUMPTION": 12, ...}, ...},
@@ -51,5 +51,5 @@ Then: add taxonomy section to R master report + website.
 ## Related
 
 - `evaluation/error_taxonomy.py` — stub to build on
-- `experiments/results_v1/runs.jsonl` — source data (1230 records, 375 synthetic flagged by suffix)
+- `data/processed_data/results_v1/runs.jsonl` — source data (1230 records, 375 synthetic flagged by suffix)
 - `scripts/analyze_perturbations.py` — reference for how to process runs.jsonl

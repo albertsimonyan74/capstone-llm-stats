@@ -3,7 +3,7 @@ Runner skeleton:
 - loads TaskSpecs from JSON
 - loads TaskRuns from a JSONL file (produced by your LLM runner)
 - scores tasks + aggregates models
-- writes results to experiments/results_v1/results.json
+- writes results to data/processed_data/results_v1/results.json
 
 This runner assumes you've already created TaskRun logs (JSONL).
 Pass --no-judge to skip LLM-as-Judge fallback (faster, less accurate).
@@ -118,9 +118,9 @@ def load_runs_jsonl(path: str, tasks_by_id: dict) -> List[TaskRun]:
 
 
 def main() -> None:
-    tasks_path = "data/benchmark_v1/tasks_all.json"  # 171 tasks (Phase 1 + Phase 2)
-    runs_path  = "experiments/results_v1/runs.jsonl"
-    out_path   = "experiments/results_v1/results.json"
+    tasks_path = "data/raw_data/benchmark_v1/tasks_all.json"  # 171 tasks (Phase 1 + Phase 2)
+    runs_path  = "data/processed_data/results_v1/runs.jsonl"
+    out_path   = "data/processed_data/results_v1/results.json"
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 

@@ -23,7 +23,7 @@ capstone-llm-stats/
 │   │   ├── 07_threats_to_validity.tex
 │   │   └── 08_conclusion.tex
 │   ├── figures/                  ← Fresh exports re-rendered from report_materials/r_analysis/.
-│   ├── tables/                   ← LaTeX tables produced from experiments/results_v2/*.json.
+│   ├── tables/                   ← LaTeX tables produced from data/processed_data/results_v2/*.json.
 │   └── bib/refs.bib
 │
 ├── poster/                       ← UNCHANGED. Historical artifact, stays in place.
@@ -73,7 +73,7 @@ capstone-llm-stats/
 └── README.md                     ← Optional new top-level README (out of scope here).
 ```
 
-**Why minimal**: 100+ hard-coded `experiments/results_v2/` paths, 17+ `report_materials/figures/` paths, R pipeline cwd-dependent, backend Docker bundles `static_data/{experiments,data,llm-stats-vault}/`. Wholesale `results/accuracy/`, `results/calibration/`, `results/robustness/` reorg is **deferred to a refactor phase** — it would require touching every script + the website backend + the R pipeline + the Docker build. Not Phase 3.
+**Why minimal**: 100+ hard-coded `data/processed_data/results_v2/` paths, 17+ `report_materials/figures/` paths, R pipeline cwd-dependent, backend Docker bundles `static_data/{experiments,data,llm-stats-vault}/`. Wholesale `results/accuracy/`, `results/calibration/`, `results/robustness/` reorg is **deferred to a refactor phase** — it would require touching every script + the website backend + the R pipeline + the Docker build. Not Phase 3.
 
 The new directories that DO appear: `paper/` (entirely new, no path collisions); `llm-stats-vault/90-archive/{data_legacy,results_legacy,scripts_legacy,poster_prep_assets}/` (new sub-dirs receiving moved items). All other top-levels stay untouched.
 
@@ -127,17 +127,17 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 
 | Current path | Action | New path | Rationale |
 |---|---|---|---|
-| `data/error_taxonomy_results.json` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/error_taxonomy_results_v1.json` | Per `01c`: superseded by `experiments/results_v2/error_taxonomy_v2.json`. No code reader except the script that writes it. |
-| `data/synthetic/perturbations.json` | KEEP-IN-PLACE | — | Per CLAUDE.md Phase 1.8: still required as v1-ID filter source by 5 scripts + website + R pipeline. |
-| `data/synthetic/perturbations_v2.json` | KEEP-IN-PLACE | — | Per `01e`: zero readers, but it IS the natural output of `scripts/generate_perturbations_full.py` (`DEFAULT_OUTPUT`). Leaving it lets the generator be re-run idempotently. Do not archive. |
-| `data/synthetic/perturbations_v2_sample.jsonl` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/perturbations_v2_sample.jsonl` | Sample/preview, no live consumer (per `llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md:202` — "Only consumer is inspect_judge_strictness.py"). |
-| `data/synthetic/perturbations_all.json` | KEEP-IN-PLACE | — | Per `01d`: canonical 473, complete. |
-| `data/synthetic/build_perturbations.py` | KEEP-IN-PLACE | — | Deprecated per CLAUDE.md but listed there as historical v1 generator; leave for traceability. |
-| `experiments/results_v1/runs.jsonl` | KEEP-IN-PLACE | — | Append-only canonical (CLAUDE.md). |
-| `experiments/results_v1/runs.jsonl.bak_20260426_211605` | ARCHIVE | `llm-stats-vault/90-archive/results_legacy/runs.jsonl.bak_20260426_211605` | Old backup. Never referenced by code. |
-| `experiments/results_v1/runs.jsonl.pre_tier1_20260503_195517` | ARCHIVE | `llm-stats-vault/90-archive/results_legacy/runs.jsonl.pre_tier1_20260503_195517` | Old backup. Never referenced by code. |
-| `experiments/results_v1/{results.json, rq4_analysis.json}` | KEEP-IN-PLACE | — | Path-stable. |
-| `experiments/results_v2/*` (24 files) | KEEP-IN-PLACE | — | Hard-coded paths in 100+ callers. Do not move. |
+| `data/error_taxonomy_results.json` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/error_taxonomy_results_v1.json` | Per `01c`: superseded by `data/processed_data/results_v2/error_taxonomy_v2.json`. No code reader except the script that writes it. |
+| `data/raw_data/synthetic/perturbations.json` | KEEP-IN-PLACE | — | Per CLAUDE.md Phase 1.8: still required as v1-ID filter source by 5 scripts + website + R pipeline. |
+| `data/raw_data/synthetic/perturbations_v2.json` | KEEP-IN-PLACE | — | Per `01e`: zero readers, but it IS the natural output of `scripts/generate_perturbations_full.py` (`DEFAULT_OUTPUT`). Leaving it lets the generator be re-run idempotently. Do not archive. |
+| `data/raw_data/synthetic/perturbations_v2_sample.jsonl` | ARCHIVE | `llm-stats-vault/90-archive/data_legacy/perturbations_v2_sample.jsonl` | Sample/preview, no live consumer (per `llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md:202` — "Only consumer is inspect_judge_strictness.py"). |
+| `data/raw_data/synthetic/perturbations_all.json` | KEEP-IN-PLACE | — | Per `01d`: canonical 473, complete. |
+| `data/raw_data/synthetic/build_perturbations.py` | KEEP-IN-PLACE | — | Deprecated per CLAUDE.md but listed there as historical v1 generator; leave for traceability. |
+| `data/processed_data/results_v1/runs.jsonl` | KEEP-IN-PLACE | — | Append-only canonical (CLAUDE.md). |
+| `data/processed_data/results_v1/runs.jsonl.bak_20260426_211605` | ARCHIVE | `llm-stats-vault/90-archive/results_legacy/runs.jsonl.bak_20260426_211605` | Old backup. Never referenced by code. |
+| `data/processed_data/results_v1/runs.jsonl.pre_tier1_20260503_195517` | ARCHIVE | `llm-stats-vault/90-archive/results_legacy/runs.jsonl.pre_tier1_20260503_195517` | Old backup. Never referenced by code. |
+| `data/processed_data/results_v1/{results.json, rq4_analysis.json}` | KEEP-IN-PLACE | — | Path-stable. |
+| `data/processed_data/results_v2/*` (24 files) | KEEP-IN-PLACE | — | Hard-coded paths in 100+ callers. Do not move. |
 | `evaluation/llm_judge_rubric.py` | KEEP-IN-PLACE | — | Per `01b`: not stale. Together AI Llama 3.3 70B Turbo, code matches docs. |
 | `scripts/dedup_runs.py` | KEEP-IN-PLACE | — | Per `01e`: called by `refresh_pipeline.sh`. |
 | `scripts/generate_group_a_figures.py` | KEEP-IN-PLACE | — | Per `01e`: canonical generator for `a1`–`a6` figures. |
@@ -261,12 +261,12 @@ mkdir -p llm-stats-vault/90-archive/data_legacy \
 ```bash
 git mv data/error_taxonomy_results.json \
        llm-stats-vault/90-archive/data_legacy/error_taxonomy_results_v1.json
-git mv data/synthetic/perturbations_v2_sample.jsonl \
+git mv data/raw_data/synthetic/perturbations_v2_sample.jsonl \
        llm-stats-vault/90-archive/data_legacy/perturbations_v2_sample.jsonl
 
 git commit -m "chore(archive): move v1 error taxonomy + perturbation sample to vault/90-archive/data_legacy/
 
-- error_taxonomy_results.json superseded by experiments/results_v2/error_taxonomy_v2.json
+- error_taxonomy_results.json superseded by data/processed_data/results_v2/error_taxonomy_v2.json
   (v1: rule-based 9-class flat; v2: Llama 3.3 70B 4-class hierarchical, n=143 both)
   See cleanup/01c_error_taxonomy_diff.md.
 - perturbations_v2_sample.jsonl was a sample preview, no live consumer.
@@ -276,14 +276,14 @@ git commit -m "chore(archive): move v1 error taxonomy + perturbation sample to v
 ### Commit 4 — archive runs.jsonl backups
 
 ```bash
-git mv experiments/results_v1/runs.jsonl.bak_20260426_211605 \
+git mv data/processed_data/results_v1/runs.jsonl.bak_20260426_211605 \
        llm-stats-vault/90-archive/results_legacy/
-git mv experiments/results_v1/runs.jsonl.pre_tier1_20260503_195517 \
+git mv data/processed_data/results_v1/runs.jsonl.pre_tier1_20260503_195517 \
        llm-stats-vault/90-archive/results_legacy/
 
 git commit -m "chore(archive): move runs.jsonl backups to vault/90-archive/results_legacy/
 
-Canonical experiments/results_v1/runs.jsonl is append-only and untouched.
+Canonical data/processed_data/results_v1/runs.jsonl is append-only and untouched.
 Two old timestamped backups (Apr 26, May 03) moved out of the live tree."
 ```
 
@@ -343,15 +343,15 @@ git commit -m "feat(paper): scaffold IEEEtran conference paper (stubs only, comp
 ## §E — Risks and verification steps
 
 ### R1. R pipeline working-directory dependence
-- **Risk**: [report_materials/r_analysis/00_load_data.R:20](report_materials/r_analysis/00_load_data.R#L20) uses `dirname(dirname(getwd()))` to find project root. Assumes cwd = `report_materials/r_analysis/`. None of our planned moves change `report_materials/` or `experiments/results_v1/runs.jsonl`.
+- **Risk**: [report_materials/r_analysis/00_load_data.R:20](report_materials/r_analysis/00_load_data.R#L20) uses `dirname(dirname(getwd()))` to find project root. Assumes cwd = `report_materials/r_analysis/`. None of our planned moves change `report_materials/` or `data/processed_data/results_v1/runs.jsonl`.
 - **Verification**: After Phase 3, `cd report_materials/r_analysis/ && Rscript 00_load_data.R` should still produce `data/benchmark_clean.{csv,rds}` in that same dir.
 
 ### R2. Backend Docker static bundle
 - **Risk**: [capstone-website/backend/Dockerfile:6, 8](capstone-website/backend/Dockerfile) does `COPY static_data/ ./static_data/` and sets `ENV DATA_ROOT=/app/static_data`. The bundle includes copies of `data/`, `experiments/`, `llm-stats-vault/`. We are NOT moving anything that the bundle copies (perturbations.json, perturbations_all.json, runs.jsonl, results.json, results_v2/* all stay put).
-- **Verification**: Before Phase 3 ship, `cd capstone-website/backend && docker build -t capstone-backend . && docker run --rm capstone-backend ls /app/static_data/experiments/results_v1/` should show `runs.jsonl + results.json + rq4_analysis.json` (no backups now, since they moved out — but the bundle script copies whatever's in `static_data/experiments/results_v1/` so the prior baked-in copy stays valid). Resync `static_data/` only if backend redeploys.
+- **Verification**: Before Phase 3 ship, `cd capstone-website/backend && docker build -t capstone-backend . && docker run --rm capstone-backend ls /app/static_data/data/processed_data/results_v1/` should show `runs.jsonl + results.json + rq4_analysis.json` (no backups now, since they moved out — but the bundle script copies whatever's in `static_data/data/processed_data/results_v1/` so the prior baked-in copy stays valid). Resync `static_data/` only if backend redeploys.
 
-### R3. Hard-coded `experiments/results_v2/` paths (100+)
-- **Risk**: Any move of `experiments/results_v2/` would break: 14+ analysis scripts, `evaluation/llm_judge_rubric.py`, `capstone-website/backend/v2_routes.py`, R pipeline, llm-stats-vault/90-archive/audit/recompute_log.md cross-refs.
+### R3. Hard-coded `data/processed_data/results_v2/` paths (100+)
+- **Risk**: Any move of `data/processed_data/results_v2/` would break: 14+ analysis scripts, `evaluation/llm_judge_rubric.py`, `capstone-website/backend/v2_routes.py`, R pipeline, llm-stats-vault/90-archive/audit/recompute_log.md cross-refs.
 - **Mitigation**: Plan does NOT move these. Future refactor only.
 - **Verification**: After Phase 3, dry-run `bash scripts/refresh_pipeline.sh --help` (if it has --help) or read its top to ensure no path it touches has moved. `scripts/refresh_pipeline.sh` calls `dedup_runs.py` (unmoved), and downstream pipelines all read `experiments/results_v{1,2}/` (unmoved).
 
@@ -368,8 +368,8 @@ git commit -m "feat(paper): scaffold IEEEtran conference paper (stubs only, comp
 - **Risk**: [poster/scripts/*.py](poster/scripts/) write to `poster/figures/`. We are not moving `poster/`.
 - **Verification**: `python poster/scripts/dimension_leaderboard_print.py` should produce `poster/figures/dimension_leaderboard.png` unchanged.
 
-### R7. `data/synthetic/perturbations_v2.json` regeneration
-- **Risk**: If user later runs `python scripts/generate_perturbations_full.py`, it overwrites `data/synthetic/perturbations_v2.json`. Plan keeps file in place — not affected.
+### R7. `data/raw_data/synthetic/perturbations_v2.json` regeneration
+- **Risk**: If user later runs `python scripts/generate_perturbations_full.py`, it overwrites `data/raw_data/synthetic/perturbations_v2.json`. Plan keeps file in place — not affected.
 - **Verification**: N/A — KEEP-IN-PLACE.
 
 ### R8. `paper/` collision
@@ -393,8 +393,8 @@ ls llm-stats-vault/90-archive/{data_legacy,results_legacy,scripts_legacy,poster_
 
 # After all of Phase 3
 ruff check .                                                                     # lint stays green
-python -c "import json; json.load(open('data/synthetic/perturbations_all.json'))" # canonical readable
-python -c "import json; json.load(open('experiments/results_v2/error_taxonomy_v2.json'))" # canonical readable
+python -c "import json; json.load(open('data/raw_data/synthetic/perturbations_all.json'))" # canonical readable
+python -c "import json; json.load(open('data/processed_data/results_v2/error_taxonomy_v2.json'))" # canonical readable
 
 # Optional, expensive
 bash scripts/refresh_pipeline.sh                                                 # full pipeline dry, only if confidence needed
@@ -405,8 +405,8 @@ bash scripts/refresh_pipeline.sh                                                
 ## §F — What this plan does NOT do (deferred)
 
 - Top-level `archive/` was removed 2026-05-10. Pre-modernization viz snapshots (`archive/visualizations-pre-*`) were superseded by the v2 results pipeline and not retained in vault; provenance preserved at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`. See archival convention note above. (`audit/` moved to `llm-stats-vault/90-archive/audit/` 2026-05-10; pre-move snapshot at `cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.)
-- Does not move `experiments/results_v2/` or `report_materials/` contents (would require a 100+-line path refactor across scripts, R pipeline, and backend).
-- Does not consolidate `data/synthetic/perturbations*.json` filenames (per CLAUDE.md, hard-coded callers exist).
+- Does not move `data/processed_data/results_v2/` or `report_materials/` contents (would require a 100+-line path refactor across scripts, R pipeline, and backend).
+- Does not consolidate `data/raw_data/synthetic/perturbations*.json` filenames (per CLAUDE.md, hard-coded callers exist).
 - Does not refactor `evaluation/llm_judge_rubric.py` Groq → Together docstring lag (cosmetic).
 - ~~Does not add `TOGETHER_API_KEY=` to `.env.example`~~ — addressed in pre-Phase-3 adjustments commit (2026-05-10).
 - Does not write a top-level `README.md` (out of scope here; will accompany `paper/` in Phase 4 if you want one).

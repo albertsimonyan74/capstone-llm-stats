@@ -1,6 +1,6 @@
 """Derive per-base-task-type × model robustness Δ heatmap for poster.
 
-Source: experiments/results_v2/robustness_v2.json, field
+Source: data/processed_data/results_v2/robustness_v2.json, field
 per_task_type_heatmap (per-perturbation-task × model). Aggregate by
 base task type (mean Δ across all perturbation suffixes for each
 base type × model).
@@ -23,8 +23,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "baseline"))
 from utils_task_id import task_type_from_id  # noqa: E402
 
-ROBUST = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
-TASKS  = ROOT / "data" / "benchmark_v1" / "tasks_all.json"
+ROBUST = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"
+TASKS  = ROOT / "data" / "raw_data" / "benchmark_v1" / "tasks_all.json"
 OUT    = ROOT / "poster" / "figures" / "derived" / "robustness_heatmap_data.json"
 
 MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]

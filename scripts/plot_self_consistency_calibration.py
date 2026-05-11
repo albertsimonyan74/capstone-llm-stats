@@ -24,8 +24,8 @@ from site_palette import (
 apply_site_theme()
 
 ROOT = Path(__file__).resolve().parent.parent
-VERB_CAL = ROOT / "experiments" / "results_v2" / "calibration.json"
-SC_CAL = ROOT / "experiments" / "results_v2" / "self_consistency_calibration.json"
+VERB_CAL = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
+SC_CAL = ROOT / "data" / "processed_data" / "results_v2" / "self_consistency_calibration.json"
 OUT = ROOT / "report_materials" / "figures" / "self_consistency_calibration.png"
 WEB_OUT = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "self_consistency_calibration.png"
 

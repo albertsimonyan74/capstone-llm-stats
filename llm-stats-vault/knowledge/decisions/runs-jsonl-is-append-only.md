@@ -6,7 +6,7 @@ date: 2026-04-26
 # runs.jsonl Is Append-Only
 
 ## Decision
-`experiments/results_v1/runs.jsonl` is **never truncated, overwritten, or edited**.  
+`data/processed_data/results_v1/runs.jsonl` is **never truncated, overwritten, or edited**.  
 All new run records are appended by `llm_runner/logger.py`'s `log_jsonl()`.
 
 ## Why

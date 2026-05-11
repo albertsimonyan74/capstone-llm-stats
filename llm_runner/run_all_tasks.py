@@ -4,7 +4,7 @@
 Core benchmark runner.
 
 Queries Claude, Gemini, ChatGPT, DeepSeek, and/or Mistral against all 136 tasks and
-logs results to experiments/results_v1/runs.jsonl.
+logs results to data/processed_data/results_v1/runs.jsonl.
 
 Usage examples:
   # Dry-run (no API calls): print prompts for first 3 tasks
@@ -44,7 +44,7 @@ load_dotenv()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-_SYNTHETIC_PATH = "data/synthetic/perturbations_all.json"
+_SYNTHETIC_PATH = "data/raw_data/synthetic/perturbations_all.json"
 
 
 def _task_prefix(task_id: str) -> str:
@@ -330,12 +330,12 @@ def _parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
         help="Model families to query (default: claude)",
     )
     p.add_argument(
-        "--tasks", default="data/benchmark_v1/tasks.json",
-        help="Path to tasks.json (default: data/benchmark_v1/tasks.json)",
+        "--tasks", default="data/raw_data/benchmark_v1/tasks.json",
+        help="Path to tasks.json (default: data/raw_data/benchmark_v1/tasks.json)",
     )
     p.add_argument(
-        "--output", default="experiments/results_v1/runs.jsonl",
-        help="Output JSONL path (default: experiments/results_v1/runs.jsonl)",
+        "--output", default="data/processed_data/results_v1/runs.jsonl",
+        help="Output JSONL path (default: data/processed_data/results_v1/runs.jsonl)",
     )
     p.add_argument(
         "--task-types", nargs="*", dest="task_types",
@@ -352,7 +352,7 @@ def _parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     p.add_argument(
         "--synthetic", action="store_true",
         help=(
-            "Run perturbation tasks from data/synthetic/perturbations.json "
+            "Run perturbation tasks from data/raw_data/synthetic/perturbations.json "
             "instead of the main benchmark (RQ4 robustness evaluation)"
         ),
     )

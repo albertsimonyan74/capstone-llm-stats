@@ -1,6 +1,6 @@
 """Robustness heatmap PNG (RQ4 v2).
 
-Reads canonical experiments/results_v2/robustness_v2.json (written by
+Reads canonical data/processed_data/results_v2/robustness_v2.json (written by
 scripts/recompute_downstream.py) and aggregates per-perturbation Δ
 values to base task_type for the heatmap visualization.
 
@@ -34,7 +34,7 @@ from site_palette import (
 apply_site_theme()
 
 ROOT = Path(__file__).resolve().parents[1]
-CANONICAL_JSON = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
+CANONICAL_JSON = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"
 OUT_FIG = ROOT / "report_materials" / "figures" / "robustness_heatmap.png"
 WEB_OUT = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "robustness_heatmap.png"
 

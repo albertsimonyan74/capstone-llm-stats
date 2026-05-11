@@ -60,7 +60,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - `synthetic/perturbations_v2.json` (660K, 398 LLM-generated v2) — **[UNCLEAR]**: subsumed by `perturbations_all.json` but unclear if any script reads it directly. Verify before archiving.
 - `synthetic/perturbations_v2_sample.jsonl` (20K) — **[STALE]** sample/preview file.
 - `synthetic/build_perturbations.py` — **[KEEP-REFERENCE]**: superseded by `scripts/generate_perturbations_full.py` per CLAUDE.md but listed there as the v1 generator.
-- `data/error_taxonomy_results.json` — **[UNCLEAR]**: top-level orphan; possibly superseded by `experiments/results_v2/error_taxonomy_v2.json`.
+- `data/error_taxonomy_results.json` — **[UNCLEAR]**: top-level orphan; possibly superseded by `data/processed_data/results_v2/error_taxonomy_v2.json`.
 - `data/README.md` — **[KEEP-REFERENCE]**.
 
 ### `evaluation/`
@@ -132,12 +132,12 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 ### Duplicate / near-duplicate files
 | Files | Notes |
 |-------|-------|
-| `experiments/results_v1/runs.jsonl`, `runs.jsonl.bak_20260426_211605`, `runs.jsonl.pre_tier1_20260503_195517` | 3 versions; only canonical needed. Backups [STALE]. |
-| `experiments/results_v1/runs.jsonl` ↔ `llm-stats-vault/90-archive/audit/tier1_baseline_20260503_195141/runs.jsonl` | Audit baseline snapshot. [KEEP-REFERENCE]. |
-| `experiments/results_v1/runs.jsonl` ↔ `capstone-website/backend/static_data/experiments/results_v1/runs.jsonl` | Deliberate Render Docker bundle (per `.gitignore` un-ignore rule). [KEEP-CORE for site]. |
-| `data/synthetic/perturbations.json` (75) + `perturbations_v2.json` (398) ↔ `perturbations_all.json` (473) | `_all` is canonical superset. v1 retained for filtering (per CLAUDE.md). v2 file's necessity unclear. |
-| `data/synthetic/perturbations_v2_sample.jsonl` | Sample/preview only. [STALE]. |
-| `data/error_taxonomy_results.json` (top-level) ↔ `experiments/results_v2/error_taxonomy_v2.json` | Possibly superseded. [UNCLEAR]. |
+| `data/processed_data/results_v1/runs.jsonl`, `runs.jsonl.bak_20260426_211605`, `runs.jsonl.pre_tier1_20260503_195517` | 3 versions; only canonical needed. Backups [STALE]. |
+| `data/processed_data/results_v1/runs.jsonl` ↔ `llm-stats-vault/90-archive/audit/tier1_baseline_20260503_195141/runs.jsonl` | Audit baseline snapshot. [KEEP-REFERENCE]. |
+| `data/processed_data/results_v1/runs.jsonl` ↔ `capstone-website/backend/static_data/data/processed_data/results_v1/runs.jsonl` | Deliberate Render Docker bundle (per `.gitignore` un-ignore rule). [KEEP-CORE for site]. |
+| `data/raw_data/synthetic/perturbations.json` (75) + `perturbations_v2.json` (398) ↔ `perturbations_all.json` (473) | `_all` is canonical superset. v1 retained for filtering (per CLAUDE.md). v2 file's necessity unclear. |
+| `data/raw_data/synthetic/perturbations_v2_sample.jsonl` | Sample/preview only. [STALE]. |
+| `data/error_taxonomy_results.json` (top-level) ↔ `data/processed_data/results_v2/error_taxonomy_v2.json` | Possibly superseded. [UNCLEAR]. |
 | `archive/visualizations-pre-modernization-2026-05-05/scripts/{error_taxonomy.py, self_consistency_full.py, generate_perturbations_full.py}` ↔ `scripts/{same names}` | Archived snapshot. [KEEP-REFERENCE] (already in archive/). |
 | Poster figures `*.png` and `*.svg` ↔ `report_materials/figures/*.png` | Different aesthetics (poster vs report). Both [KEEP-CORE]. |
 | Frontend `dist/visualizations/` (66M) ↔ `public/visualizations/` (66M) | Build output vs source. `dist/` rebuildable. |
@@ -153,12 +153,12 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - `.Rhistory` (empty) — delete.
 - `.pytest_cache/`, `.ruff_cache/`, `__pycache__/` (12 dirs) — delete from repo, gitignore covers `__pycache__` already.
 - `.DS_Store` (×3) — delete; not in `.gitignore` for non-root locations.
-- `data/synthetic/perturbations_v2_sample.jsonl` — sample preview, looks orphaned.
-- `data/synthetic/build_perturbations.py` — deprecated per CLAUDE.md (canonical generator now in `scripts/`).
+- `data/raw_data/synthetic/perturbations_v2_sample.jsonl` — sample preview, looks orphaned.
+- `data/raw_data/synthetic/build_perturbations.py` — deprecated per CLAUDE.md (canonical generator now in `scripts/`).
 - `archive/visualizations-pre-*` — already archived; leave in place but plan to move under `archive/` in new layout.
 
 ### Unclear (need user input before classifying)
-- `data/synthetic/perturbations_v2.json` — superseded by `_all` but unclear if read by any script. Will grep in Phase 2.
+- `data/raw_data/synthetic/perturbations_v2.json` — superseded by `_all` but unclear if read by any script. Will grep in Phase 2.
 - `data/error_taxonomy_results.json` (top-level orphan) — vs v2 in `experiments/`.
 - `evaluation/llm_judge_rubric.py` — current vs stale judge code path (CLAUDE.md says Llama 3.3 70B; this file references OpenAI).
 - `scripts/{dedup_runs.py, inspect_judge_strictness.py, generate_group_a_figures.py, site_palette.py}` — one-shot diagnostics or kept utilities?

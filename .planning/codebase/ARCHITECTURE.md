@@ -51,7 +51,7 @@
 | Baseline (Bayesian) | Closed-form ground-truth computation for all 31 Phase 1 task types | `baseline/bayesian/ground_truth.py`, `conjugate_models.py`, `decision_theory.py`, `intervals.py`, `bayes_estimators.py`, `posterior_predictive.py`, `normal_gamma.py`, `dirichlet_multinomial.py` |
 | Baseline (Advanced) | Monte Carlo ground-truth for 7 Phase 2 computational Bayes types | `baseline/bayesian/advanced_methods.py` |
 | Baseline (Frequentist) | Fisher information, order statistics, regression, sampling baselines | `baseline/frequentist/fisher_information.py`, `order_statistics.py`, `regression.py`, `sampling.py`, `uniform_estimators.py` |
-| Task Builders | Generate JSON task files from baseline computations | `baseline/bayesian/build_tasks_bayesian.py`, `baseline/bayesian/build_tasks_advanced.py`, `data/synthetic/build_perturbations.py` |
+| Task Builders | Generate JSON task files from baseline computations | `baseline/bayesian/build_tasks_bayesian.py`, `baseline/bayesian/build_tasks_advanced.py`, `data/raw_data/synthetic/build_perturbations.py` |
 | LLM Runner | CLI driver that sends tasks to LLM APIs, scores responses, appends to runs.jsonl | `llm_runner/run_all_tasks.py` |
 | Prompt Builder | Constructs human-readable prompts from task dicts; dispatches by task type | `llm_runner/prompt_builder.py` |
 | Model Clients | 5 httpx-based API clients (no vendor SDKs) | `llm_runner/model_clients.py` |
@@ -83,7 +83,7 @@
 
 **Data Layer:**
 - Purpose: Static task specifications and run logs
-- Location: `data/benchmark_v1/`, `data/synthetic/`, `experiments/results_v1/`
+- Location: `data/raw_data/benchmark_v1/`, `data/raw_data/synthetic/`, `data/processed_data/results_v1/`
 - Contains: `tasks.json` (136), `tasks_advanced.json` (35), `tasks_all.json` (171), `perturbations.json` (75), `runs.jsonl`, `results.json`
 - Generated: Never edit task JSON files manually — regenerate with builder scripts
 - Used by: Runner, evaluator, MCP server, FastAPI backend
@@ -92,8 +92,8 @@
 - Purpose: Execute live API calls against all 5 LLM providers, parse responses, score on the fly, append records to `runs.jsonl`
 - Location: `llm_runner/`
 - Contains: `run_all_tasks.py` (CLI driver), `model_clients.py` (5 clients), `prompt_builder.py` (31 task type handlers), `response_parser.py` (scoring), `logger.py`
-- Depends on: `data/benchmark_v1/tasks.json`, LLM API keys in `.env`
-- Used by: Run from CLI; produces `experiments/results_v1/runs.jsonl`
+- Depends on: `data/raw_data/benchmark_v1/tasks.json`, LLM API keys in `.env`
+- Used by: Run from CLI; produces `data/processed_data/results_v1/runs.jsonl`
 
 **Evaluation Layer:**
 - Purpose: Formal post-hoc scoring using typed dataclasses; produces `results.json`
@@ -112,9 +112,9 @@
 
 ### Primary Benchmark Run (end-to-end)
 
-1. **Generate tasks** — `python -m baseline.bayesian.build_tasks_bayesian` → writes `data/benchmark_v1/tasks.json` (136 tasks)
-2. **Generate advanced tasks** — `python -m baseline.bayesian.build_tasks_advanced` → writes `data/benchmark_v1/tasks_advanced.json` (35 tasks)
-3. **Merge** — manual one-liner merges both into `data/benchmark_v1/tasks_all.json` (171 tasks)
+1. **Generate tasks** — `python -m baseline.bayesian.build_tasks_bayesian` → writes `data/raw_data/benchmark_v1/tasks.json` (136 tasks)
+2. **Generate advanced tasks** — `python -m baseline.bayesian.build_tasks_advanced` → writes `data/raw_data/benchmark_v1/tasks_advanced.json` (35 tasks)
+3. **Merge** — manual one-liner merges both into `data/raw_data/benchmark_v1/tasks_all.json` (171 tasks)
 4. **Load tasks** — `run_all_tasks.py:_load_tasks()` reads tasks JSON into list of dicts
 5. **Check resume state** — `_load_completed()` scans existing `runs.jsonl`; returns set of `(model_family, task_id)` pairs to skip
 6. **For each model × task** — `get_client(family)` returns the appropriate `BaseModelClient`
@@ -127,7 +127,7 @@
    - **C** (Confidence Calibration): `extract_confidence()` → `confidence_calibration_score()`
    - **R** (Reasoning Quality): regex patterns for 4 criteria × 0.25
    - Final: `0.20*N + 0.20*M + 0.20*A + 0.20*C + 0.20*R` (or rubric-only for CONCEPTUAL tasks)
-10. **Append to JSONL** — `log_jsonl(output_path, record)` appends one JSON object per run to `experiments/results_v1/runs.jsonl`
+10. **Append to JSONL** — `log_jsonl(output_path, record)` appends one JSON object per run to `data/processed_data/results_v1/runs.jsonl`
 
 ### Post-Hoc Scoring (Path B)
 
@@ -136,17 +136,17 @@
 3. Optionally applies LLM-as-Judge fallback via `evaluation/llm_judge.py` (for records where parsing failed)
 4. `score_all_models(tasks, runs)` from `evaluation/metrics.py` groups runs by `(model_name, task_id)`, calls `score_task_with_perturbations()` per group
 5. `aggregate_model_scores()` computes normalized scores by tier and difficulty
-6. Writes `experiments/results_v1/results.json` — a dict with `model_aggregates` list and `task_scores` list
+6. Writes `data/processed_data/results_v1/results.json` — a dict with `model_aggregates` list and `task_scores` list
 
 ### RQ4 Perturbation Run
 
-1. `data/synthetic/build_perturbations.py` generates `perturbations.json` (75 records = 25 base tasks × 3 perturbation types: rephrase/numerical/semantic)
+1. `data/raw_data/synthetic/build_perturbations.py` generates `perturbations.json` (75 records = 25 base tasks × 3 perturbation types: rephrase/numerical/semantic)
 2. `run_all_tasks.py --synthetic` loads `perturbations.json` instead of `tasks.json`; perturbation records carry pre-built prompts (no `build_prompt()` call needed)
 3. Records are scored and appended to the same `runs.jsonl`
 
 ### Website Data Flow
 
-1. FastAPI backend (`capstone-website/backend/main.py`) reads from `data/benchmark_v1/tasks_all.json` and `experiments/results_v1/runs.jsonl` on each request — no caching
+1. FastAPI backend (`capstone-website/backend/main.py`) reads from `data/raw_data/benchmark_v1/tasks_all.json` and `data/processed_data/results_v1/runs.jsonl` on each request — no caching
 2. Endpoints: `/api/tasks`, `/api/task/{task_id}`, `/api/results/summary`, `/api/leaderboard`, `/api/results/by_type`, `/api/status`
 3. React frontend bundles static copies of key data files at build time: `src/data/tasks.json`, `src/data/results_summary.json`, `src/data/stats.json`
 4. Visualizations are pre-generated R/Plotly files served as static assets from `frontend/public/visualizations/`
@@ -219,8 +219,8 @@ Both paths use **identical weights**: `N=0.20, M=0.20, A=0.20, C=0.20, R=0.20`
 
 - **Working directory:** All Python scripts must be run from project root — absolute imports rely on this (e.g., `from llm_runner.logger import log_jsonl`)
 - **No vendor SDKs:** All 5 LLM clients use `httpx` directly — no `anthropic`, `openai`, or `google-generativeai` packages
-- **Append-only log:** `experiments/results_v1/runs.jsonl` must never be truncated; resume logic depends on scanning it at startup
-- **Task JSON immutability:** `data/benchmark_v1/tasks.json`, `tasks_advanced.json`, and `tasks_all.json` must never be edited manually — always regenerate with builder scripts
+- **Append-only log:** `data/processed_data/results_v1/runs.jsonl` must never be truncated; resume logic depends on scanning it at startup
+- **Task JSON immutability:** `data/raw_data/benchmark_v1/tasks.json`, `tasks_advanced.json`, and `tasks_all.json` must never be edited manually — always regenerate with builder scripts
 - **Dual scoring sync:** Weights defined in both `evaluation/metrics.py:WEIGHTS` and `llm_runner/response_parser.py` must stay identical
 - **Seeded reproducibility:** All Phase 2 advanced method solvers call `np.random.seed(42)` in `solve()`; ground truth values are MC estimates, not analytic
 - **Schema heterogeneity:** `runs.jsonl` contains an old placeholder record with a different schema; all analysis code must handle this
@@ -228,7 +228,7 @@ Both paths use **identical weights**: `N=0.20, M=0.20, A=0.20, C=0.20, R=0.20`
 ## Anti-Patterns
 
 ### Editing task JSON files directly
-**What happens:** A developer edits `data/benchmark_v1/tasks.json` by hand to fix a typo or adjust a tolerance.
+**What happens:** A developer edits `data/raw_data/benchmark_v1/tasks.json` by hand to fix a typo or adjust a tolerance.
 **Why it's wrong:** The file is the output of `build_tasks_bayesian.py`. Manual edits are lost the next time the builder runs, and introduce inconsistency between the JSON and the baseline computation.
 **Do this instead:** Edit the relevant `gen_<type>_tasks()` function in `baseline/bayesian/build_tasks_bayesian.py` and re-run `python -m baseline.bayesian.build_tasks_bayesian`.
 

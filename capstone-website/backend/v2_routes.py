@@ -1,5 +1,5 @@
 """
-v2 API routes — serves Day 1-3 analysis results from experiments/results_v2/
+v2 API routes — serves Day 1-3 analysis results from data/processed_data/results_v2/
 and llm-stats-vault/40-literature/.
 
 Mounted at /api/v2/ via the existing FastAPI app in main.py.
@@ -20,7 +20,7 @@ router = APIRouter(prefix="/api/v2", tags=["v2"])
 
 # ─── Paths ────────────────────────────────────────────────────────
 BASE_DIR = Path(os.environ.get("DATA_ROOT", str(Path(__file__).parent.parent.parent)))
-RESULTS_V2 = BASE_DIR / "experiments" / "results_v2"
+RESULTS_V2 = BASE_DIR / "data" / "processed_data" / "results_v2"
 LIT_DIR = BASE_DIR / "llm-stats-vault" / "40-literature"
 
 V2_FILES = {
@@ -33,7 +33,7 @@ V2_FILES = {
     "error_taxonomy": RESULTS_V2 / "error_taxonomy_v2.json",
     "judge_dimension_means": RESULTS_V2 / "judge_dimension_means.json",
     "tolerance_sensitivity": RESULTS_V2 / "tolerance_sensitivity.json",
-    "perturbations_all": BASE_DIR / "data" / "synthetic" / "perturbations_all.json",
+    "perturbations_all": BASE_DIR / "data" / "raw_data" / "synthetic" / "perturbations_all.json",
     "pass_flip": RESULTS_V2 / "combined_pass_flip_analysis.json",
     "keyword_degradation": RESULTS_V2 / "keyword_degradation_check.json",
     "calibration_per_dim": RESULTS_V2 / "per_dim_calibration.json",
@@ -271,7 +271,7 @@ def headline_numbers() -> HeadlineNumbers:
         dom_mode, dom_n, dom_total, dom_pct = "UNKNOWN", 0, 0, 0.0
 
     # robustness_v2.n_perturbations is total perturbation runs (rows).
-    # Unique perturbation count lives in data/synthetic/perturbations_all.json.
+    # Unique perturbation count lives in data/raw_data/synthetic/perturbations_all.json.
     n_runs = int(rob.get("n_perturbations", 0))
     n_models = len(rob.get("models", [])) or 5
     perts_path = V2_FILES["perturbations_all"]

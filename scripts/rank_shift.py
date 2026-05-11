@@ -25,9 +25,9 @@ from site_palette import (
 apply_site_theme()
 
 ROOT = Path(__file__).resolve().parents[1]
-BOOTSTRAP_PATH = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
-ROBUST_PATH = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
-CALIB_PATH = ROOT / "experiments" / "results_v2" / "calibration.json"
+BOOTSTRAP_PATH = ROOT / "data" / "processed_data" / "results_v2" / "bootstrap_ci.json"
+ROBUST_PATH = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"
+CALIB_PATH = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
 
 WEB_OUT = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "rank_shift.png"
 FIG_OUT = ROOT / "report_materials" / "figures" / "rank_shift.png"

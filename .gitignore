@@ -17,7 +17,7 @@ venv/
 # Runs & results data (large/sensitive)
 runs.jsonl
 results.json
-experiments/results_v1/
+data/processed_data/results_v1/
 
 # Un-ignore static copies bundled for Render Docker build
 !capstone-website/backend/static_data/**
@@ -72,3 +72,4 @@ paper/*.toc
 paper/*.pdf
 paper/sections/*.aux
 paper/main.synctex.gz
+cleanup/pre_phase10_refactor_snapshot_*.tar.gz

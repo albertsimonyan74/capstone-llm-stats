@@ -6,7 +6,7 @@ Excluded from grep: `.venv/`, `node_modules/`, `.git/`, `archive/`, `llm-stats-v
 
 ---
 
-## 1. `data/synthetic/perturbations_v2.json` — TRUE ORPHAN (read side)
+## 1. `data/raw_data/synthetic/perturbations_v2.json` — TRUE ORPHAN (read side)
 
 **Code readers**: 0
 **Code writer**: 1
@@ -95,7 +95,7 @@ Standalone diagnostic, never imported. **Archive candidate** — poster has been
 
 | Candidate | True orphan? | Action |
 |---|---|---|
-| `data/synthetic/perturbations_v2.json` | ✅ orphan as data input | Archive (or leave if generator output path retained) |
+| `data/raw_data/synthetic/perturbations_v2.json` | ✅ orphan as data input | Archive (or leave if generator output path retained) |
 | `scripts/dedup_runs.py` | ❌ — called by `refresh_pipeline.sh` | **KEEP** |
 | `scripts/generate_group_a_figures.py` | ❌ — canonical figure generator for `a1`–`a6` | **KEEP** |
 | `scripts/site_palette.py` | ❌ — imported by 14 scripts | **KEEP** |

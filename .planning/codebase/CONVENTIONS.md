@@ -86,10 +86,10 @@ Phase 1 tasks use `notes.inputs` + `notes.topic`; Phase 2 tasks use top-level `i
 
 ## File Organization Rules
 
-- `data/benchmark_v1/tasks.json` — Phase 1 (136 tasks). **Do not edit manually.**
-- `data/benchmark_v1/tasks_advanced.json` — Phase 2 (35 tasks). **Do not edit manually.**
-- `data/benchmark_v1/tasks_all.json` — Merged 171 tasks. **Do not edit manually.**
-- `experiments/results_v1/runs.jsonl` — append-only, never truncate
+- `data/raw_data/benchmark_v1/tasks.json` — Phase 1 (136 tasks). **Do not edit manually.**
+- `data/raw_data/benchmark_v1/tasks_advanced.json` — Phase 2 (35 tasks). **Do not edit manually.**
+- `data/raw_data/benchmark_v1/tasks_all.json` — Merged 171 tasks. **Do not edit manually.**
+- `data/processed_data/results_v1/runs.jsonl` — append-only, never truncate
 - All baseline computation in `baseline/` — no ML, no approximations, closed-form only (except Phase 2 MCMC solvers which seed at 42)
 
 ---

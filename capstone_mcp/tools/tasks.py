@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-_TASKS_FILE = Path(__file__).parent.parent.parent / "data" / "benchmark_v1" / "tasks.json"
+_TASKS_FILE = Path(__file__).parent.parent.parent / "data" / "raw_data" / "benchmark_v1" / "tasks.json"
 
 _tasks_cache: Optional[List[Dict[str, Any]]] = None
 

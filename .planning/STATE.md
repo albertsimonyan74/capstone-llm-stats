@@ -40,9 +40,9 @@ Phase 1 — Gemini Completion + Results Pipeline
 
 ## Key Files
 
-- tasks: data/benchmark_v1/tasks_all.json (171 tasks)
-- runs: experiments/results_v1/runs.jsonl (~620+ records)
-- results: experiments/results_v1/results.json (EMPTY)
+- tasks: data/raw_data/benchmark_v1/tasks_all.json (171 tasks)
+- runs: data/processed_data/results_v1/runs.jsonl (~620+ records)
+- results: data/processed_data/results_v1/results.json (EMPTY)
 - website: capstone-website/ (FastAPI + React)
 - R report: report_materials/r_analysis/benchmark_report.html
 
@@ -58,5 +58,5 @@ python -m llm_runner.run_all_tasks --models gemini
 Then Phase 2:
 
 ```bash
-python -m llm_runner.run_all_tasks --models gemini --tasks data/benchmark_v1/tasks_advanced.json --delay 5
+python -m llm_runner.run_all_tasks --models gemini --tasks data/raw_data/benchmark_v1/tasks_advanced.json --delay 5
 ```

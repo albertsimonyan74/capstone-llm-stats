@@ -12,7 +12,7 @@ Accuracy:
 - Conceptual / no numeric_score: judge's `reasoning_quality.score`
 
 Outputs:
-- experiments/results_v2/calibration.json
+- data/processed_data/results_v2/calibration.json
 - report_materials/figures/calibration_reliability.png
 - report_materials/figures/calibration_ece_ranking.png
 
@@ -42,11 +42,11 @@ from site_palette import (
 
 apply_site_theme()
 
-RUNS_PATH = Path("experiments/results_v1/runs.jsonl")
+RUNS_PATH = Path("data/processed_data/results_v1/runs.jsonl")
 # v1-pert specs (75 task_ids) — filter v1-pert rows out of base scope. Empty after B-2.
-V1_PERT_PATH = Path("data/synthetic/perturbations.json")
-JUDGE_PATH = Path("experiments/results_v2/llm_judge_scores_full.jsonl")
-OUT_JSON = Path("experiments/results_v2/calibration.json")
+V1_PERT_PATH = Path("data/raw_data/synthetic/perturbations.json")
+JUDGE_PATH = Path("data/processed_data/results_v2/llm_judge_scores_full.jsonl")
+OUT_JSON = Path("data/processed_data/results_v2/calibration.json")
 FIG_RELIABILITY = Path("report_materials/figures/calibration_reliability.png")
 FIG_RELIABILITY_WEB = Path(
     "capstone-website/frontend/public/visualizations/png/v2/calibration_reliability.png"

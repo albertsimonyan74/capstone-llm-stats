@@ -1642,7 +1642,7 @@ def gen_conceptual_tasks() -> List[Dict[str, Any]]:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def main() -> None:
-    out_path = "data/benchmark_v1/tasks.json"
+    out_path = "data/raw_data/benchmark_v1/tasks.json"
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
     generators = [

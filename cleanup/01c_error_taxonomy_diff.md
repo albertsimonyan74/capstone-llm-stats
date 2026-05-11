@@ -6,7 +6,7 @@
 
 ## File comparison
 
-| Property | A: `data/error_taxonomy_results.json` (v1) | B: `experiments/results_v2/error_taxonomy_v2.json` (v2) |
+| Property | A: `data/error_taxonomy_results.json` (v1) | B: `data/processed_data/results_v2/error_taxonomy_v2.json` (v2) |
 |---|---|---|
 | mtime | 2026-04-26 22:49 | 2026-05-06 13:45 |
 | size | 94,113 bytes | 91,607 bytes |
@@ -23,7 +23,7 @@ A's per-error counts are inflated because tags overlap (one failure can be tagge
 ## Generators
 
 - A: [scripts/analyze_errors.py:22](scripts/analyze_errors.py#L22) writes to `data/error_taxonomy_results.json`. Documented in CLAUDE.md as `python scripts/analyze_errors.py`. Multi-tag rule-based + heuristic.
-- B: `scripts/error_taxonomy.py` writes to `experiments/results_v2/error_taxonomy_v2.json` via Together AI judge.
+- B: `scripts/error_taxonomy.py` writes to `data/processed_data/results_v2/error_taxonomy_v2.json` via Together AI judge.
 
 ## Downstream usage
 

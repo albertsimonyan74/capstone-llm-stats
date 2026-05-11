@@ -12,7 +12,7 @@ import os
 import sys
 
 ROOT       = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RUNS_PATH  = os.path.join(ROOT, "experiments", "results_v1", "runs.jsonl")
+RUNS_PATH  = os.path.join(ROOT, "data", "processed_data", "results_v1", "runs.jsonl")
 
 
 def main() -> int:

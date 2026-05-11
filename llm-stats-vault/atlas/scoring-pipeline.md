@@ -36,7 +36,7 @@ consolidated to one scheme. See
 - Entry: `score_all_models(tasks: Dict[str, TaskSpec], runs: List[TaskRun])`
 - Called by `experiments/run_benchmark.py`
 - Operates on `TaskRun` dataclass objects (not raw strings)
-- Output: `experiments/results_v1/results.json`
+- Output: `data/processed_data/results_v1/results.json`
 
 ## Five Scoring Components
 

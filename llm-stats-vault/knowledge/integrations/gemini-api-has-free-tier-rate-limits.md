@@ -37,7 +37,7 @@ See [[gemini-daily-quota-exhausted-on-2026-04-24]] for the specific incident.
 ```bash
 python -m llm_runner.run_all_tasks --models gemini          # Phase 1
 python -m llm_runner.run_all_tasks --models gemini \
-  --tasks data/benchmark_v1/tasks_advanced.json --delay 5   # Phase 2
+  --tasks data/raw_data/benchmark_v1/tasks_advanced.json --delay 5   # Phase 2
 ```
 
 ## Request Format

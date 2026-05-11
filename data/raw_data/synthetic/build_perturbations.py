@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate data/synthetic/perturbations.json — 75 perturbations (25 base tasks × 3 types).
+Generate data/raw_data/synthetic/perturbations.json — 75 perturbations (25 base tasks × 3 types).
 
 Perturbation types:
   rephrase   — identical inputs/answers, reworded prompt
@@ -8,7 +8,7 @@ Perturbation types:
   semantic   — identical math, new real-world framing
 
 Run from project root:
-  python data/synthetic/build_perturbations.py
+  python data/raw_data/synthetic/build_perturbations.py
 """
 from __future__ import annotations
 

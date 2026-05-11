@@ -5,11 +5,11 @@ Robustness: per-model bootstrap of paired (base - pert) deltas (n=473 per model)
 Calibration: ECE point estimates only — bootstrap requires binned resampling, deferred.
 
 Inputs:
-- experiments/results_v1/runs.jsonl
-- experiments/results_v2/perturbation_runs.jsonl
+- data/processed_data/results_v1/runs.jsonl
+- data/processed_data/results_v2/perturbation_runs.jsonl
 
 Outputs:
-- experiments/results_v2/bootstrap_ci.json
+- data/processed_data/results_v2/bootstrap_ci.json
 - report_materials/figures/bootstrap_ci.png
 """
 from __future__ import annotations
@@ -32,10 +32,10 @@ from site_palette import (
 apply_site_theme()
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE_RUNS = ROOT / "experiments" / "results_v1" / "runs.jsonl"
-PERT_RUNS = ROOT / "experiments" / "results_v2" / "perturbation_runs.jsonl"
-CALIB = ROOT / "experiments" / "results_v2" / "calibration.json"
-OUT_JSON = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
+BASE_RUNS = ROOT / "data" / "processed_data" / "results_v1" / "runs.jsonl"
+PERT_RUNS = ROOT / "data" / "processed_data" / "results_v2" / "perturbation_runs.jsonl"
+CALIB = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
+OUT_JSON = ROOT / "data" / "processed_data" / "results_v2" / "bootstrap_ci.json"
 OUT_FIG = ROOT / "report_materials" / "figures" / "bootstrap_ci.png"
 
 MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]

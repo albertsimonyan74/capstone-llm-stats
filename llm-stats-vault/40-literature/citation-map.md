@@ -101,14 +101,14 @@ Per-dimension citations grounding the locked weights
 
 ## By experimental output
 
-- `experiments/results_v2/bootstrap_ci.json`: Papers 06, 15
-- `experiments/results_v2/robustness_v2.json`: Paper 08
-- `experiments/results_v2/error_taxonomy_v2.json`: Papers 09, 13
-- `experiments/results_v2/calibration.json`: Papers 02, 11, 12
-- `experiments/results_v2/keyword_vs_judge_agreement.json`: Paper 10
-- `experiments/results_v2/llm_judge_scores_full.jsonl`: Papers 10, 14
-- `experiments/results_v2/nmacr_scores_v2.jsonl` (Phase 1B): All 15 papers
-- `experiments/results_v2/per_dim_calibration.json` (Phase 1B): Papers 11, 12
+- `data/processed_data/results_v2/bootstrap_ci.json`: Papers 06, 15
+- `data/processed_data/results_v2/robustness_v2.json`: Paper 08
+- `data/processed_data/results_v2/error_taxonomy_v2.json`: Papers 09, 13
+- `data/processed_data/results_v2/calibration.json`: Papers 02, 11, 12
+- `data/processed_data/results_v2/keyword_vs_judge_agreement.json`: Paper 10
+- `data/processed_data/results_v2/llm_judge_scores_full.jsonl`: Papers 10, 14
+- `data/processed_data/results_v2/nmacr_scores_v2.jsonl` (Phase 1B): All 15 papers
+- `data/processed_data/results_v2/per_dim_calibration.json` (Phase 1B): Papers 11, 12
 
 ## By figure
 
@@ -151,9 +151,9 @@ Per-dimension citations grounding the locked weights
   Papers 02, 11, 12
 
 ### By experimental output
-- `experiments/results_v2/self_consistency_calibration.json` (canonical,
+- `data/processed_data/results_v2/self_consistency_calibration.json` (canonical,
   full coverage): Papers 11, 12
-- `experiments/results_v2/self_consistency_runs.jsonl` (2,415 records):
+- `data/processed_data/results_v2/self_consistency_runs.jsonl` (2,415 records):
   Papers 11, 12
 
 ### By figure

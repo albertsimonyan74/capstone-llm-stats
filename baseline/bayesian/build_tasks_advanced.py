@@ -2,7 +2,7 @@
 # baseline/bayesian/build_tasks_advanced.py
 """
 Generate 35 advanced computational-Bayes tasks (5 per method × 7 methods).
-Writes to data/benchmark_v1/tasks_advanced.json.
+Writes to data/raw_data/benchmark_v1/tasks_advanced.json.
 Run from project root:
   python -m baseline.bayesian.build_tasks_advanced
 """
@@ -25,7 +25,7 @@ from baseline.bayesian.advanced_methods import (
     HierarchicalBayes,
 )
 
-OUT_PATH = "data/benchmark_v1/tasks_advanced.json"
+OUT_PATH = "data/raw_data/benchmark_v1/tasks_advanced.json"
 
 
 # ── shared builder ────────────────────────────────────────────────────────────

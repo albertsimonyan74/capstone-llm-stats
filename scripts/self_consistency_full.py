@@ -23,8 +23,8 @@ Differences from B3 (scripts/self_consistency_proxy.py):
 - Writes progress every 50 calls to logs/self_consistency_full.log.
 
 Outputs:
-- experiments/results_v2/self_consistency_runs_full.jsonl       (append-only)
-- experiments/results_v2/self_consistency_calibration_full.json
+- data/processed_data/results_v2/self_consistency_runs_full.jsonl       (append-only)
+- data/processed_data/results_v2/self_consistency_calibration_full.json
 - (Step 7 separately regenerates the calibration figure.)
 
 Run from project root:
@@ -48,11 +48,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from llm_runner.prompt_builder import build_prompt, parse_answer
-TASKS_PATH = ROOT / "data/benchmark_v1/tasks_all.json"
-CALIB_VERBALIZED = ROOT / "experiments/results_v2/calibration.json"
-B3_CALIB = ROOT / "experiments/results_v2/self_consistency_calibration.json"
-OUT_RUNS = ROOT / "experiments/results_v2/self_consistency_runs_full.jsonl"
-OUT_CALIB = ROOT / "experiments/results_v2/self_consistency_calibration_full.json"
+TASKS_PATH = ROOT / "data/raw_data/benchmark_v1/tasks_all.json"
+CALIB_VERBALIZED = ROOT / "data/processed_data/results_v2/calibration.json"
+B3_CALIB = ROOT / "data/processed_data/results_v2/self_consistency_calibration.json"
+OUT_RUNS = ROOT / "data/processed_data/results_v2/self_consistency_runs_full.jsonl"
+OUT_CALIB = ROOT / "data/processed_data/results_v2/self_consistency_calibration_full.json"
 LOG = ROOT / "logs/self_consistency_full.log"
 
 CITATION = (

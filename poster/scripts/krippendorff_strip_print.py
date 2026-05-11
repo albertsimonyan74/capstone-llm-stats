@@ -1,6 +1,6 @@
 """Krippendorff α gradient-strip — print theme version.
 
-Reads experiments/results_v2/krippendorff_agreement.json and renders a
+Reads data/processed_data/results_v2/krippendorff_agreement.json and renders a
 horizontal gradient strip (red → neutral → teal) over x ∈ [-1, +1] with
 labelled dots at each dimension's α. Footer zone bar partitions the axis
 into "systematic disagreement / chance / agreement beyond chance".
@@ -28,7 +28,7 @@ from print_theme import (
 
 apply_print_theme()
 
-KRIPP   = ROOT / "experiments" / "results_v2" / "krippendorff_agreement.json"
+KRIPP   = ROOT / "data" / "processed_data" / "results_v2" / "krippendorff_agreement.json"
 OUT_DIR = ROOT / "poster" / "figures"
 
 # Gradient anchor colors (saturated red → slate-300 → saturated teal)

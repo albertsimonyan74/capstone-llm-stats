@@ -10,7 +10,7 @@ Numerical-feasible coverage:
 - 12 solver_with_adapter types (RJMCMC reclassified analytic — included)
 - 1 inline_math (BIAS_VAR) extracted into uniform_estimators.bias_variance_decomp_uniform_max
 
-Output: data/synthetic/perturbations_v2.json (does NOT overwrite v1).
+Output: data/raw_data/synthetic/perturbations_v2.json (does NOT overwrite v1).
 For base tasks already covered in v1, v2 SKIPS regeneration to preserve provenance —
 analysis-time concatenation handles the union.
 
@@ -101,9 +101,9 @@ RETRY_BACKOFF_S = 5.0
 RATE_LIMIT_BACKOFF_S = 30.0
 MAX_TOKENS = 2048
 
-TASKS_PATH = ROOT / "data" / "benchmark_v1" / "tasks_all.json"
-V1_PATH = ROOT / "data" / "synthetic" / "perturbations.json"
-DEFAULT_OUTPUT = ROOT / "data" / "synthetic" / "perturbations_v2.json"
+TASKS_PATH = ROOT / "data" / "raw_data" / "benchmark_v1" / "tasks_all.json"
+V1_PATH = ROOT / "data" / "raw_data" / "synthetic" / "perturbations.json"
+DEFAULT_OUTPUT = ROOT / "data" / "raw_data" / "synthetic" / "perturbations_v2.json"
 
 MC_SEEDED_TYPES = {"GIBBS", "MH", "HMC", "VB", "ABC", "HIERARCHICAL"}
 CONCEPTUAL_TYPE = "CONCEPTUAL"

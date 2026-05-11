@@ -26,7 +26,7 @@ Citations:
   - User direction (Day 4 Phase 1.5): combined population with run_id dedup.
 
 Outputs:
-  - experiments/results_v2/combined_pass_flip_analysis.json
+  - data/processed_data/results_v2/combined_pass_flip_analysis.json
   - report_materials/figures/combined_pass_flip_comparison.png
 
 Constraints:
@@ -60,18 +60,18 @@ from site_palette import (
 apply_site_theme()
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-BASE_RUNS = Path("experiments/results_v1/runs.jsonl")
-BASE_JUDGE = Path("experiments/results_v2/llm_judge_scores_full.jsonl")
-PERT_RUNS = Path("experiments/results_v2/perturbation_runs.jsonl")
-PERT_JUDGE = Path("experiments/results_v2/perturbation_judge_scores.jsonl")
+BASE_RUNS = Path("data/processed_data/results_v1/runs.jsonl")
+BASE_JUDGE = Path("data/processed_data/results_v2/llm_judge_scores_full.jsonl")
+PERT_RUNS = Path("data/processed_data/results_v2/perturbation_runs.jsonl")
+PERT_JUDGE = Path("data/processed_data/results_v2/perturbation_judge_scores.jsonl")
 
-TASKS_PATH = Path("data/benchmark_v1/tasks_all.json")
-PERT_SPECS_PATH = Path("data/synthetic/perturbations_all.json")
+TASKS_PATH = Path("data/raw_data/benchmark_v1/tasks_all.json")
+PERT_SPECS_PATH = Path("data/raw_data/synthetic/perturbations_all.json")
 # v1-pert specs (75 task_ids) — used to filter v1-pert rows out of base runs.jsonl.
 # Empty after B-2 cleanup.
-V1_PERT_PATH = Path("data/synthetic/perturbations.json")
+V1_PERT_PATH = Path("data/raw_data/synthetic/perturbations.json")
 
-OUT_JSON = Path("experiments/results_v2/combined_pass_flip_analysis.json")
+OUT_JSON = Path("data/processed_data/results_v2/combined_pass_flip_analysis.json")
 OUT_FIG = Path("report_materials/figures/combined_pass_flip_comparison.png")
 
 # ── Constants ────────────────────────────────────────────────────────────────

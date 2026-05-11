@@ -35,6 +35,6 @@ python scripts/analyze_perturbations.py
 echo ""
 echo "=== Pipeline complete ==="
 echo "Outputs:"
-echo "  experiments/results_v1/results.json"
-echo "  experiments/results_v1/rq4_analysis.json"
+echo "  data/processed_data/results_v1/results.json"
+echo "  data/processed_data/results_v1/rq4_analysis.json"
 echo "  capstone-website/frontend/src/data/results_summary.json"

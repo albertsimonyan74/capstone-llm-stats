@@ -1,7 +1,7 @@
 """Keyword-rubric vs LLM-judge agreement analysis.
 
-Reads keyword scores from experiments/results_v1/runs.jsonl and judge scores
-from experiments/results_v2/llm_judge_scores_full.jsonl. Joins by run_id.
+Reads keyword scores from data/processed_data/results_v1/runs.jsonl and judge scores
+from data/processed_data/results_v2/llm_judge_scores_full.jsonl. Joins by run_id.
 Produces per-dimension correlations, per-model and per-task-type breakdowns,
 top disagreements, and two PNG figures for the poster.
 
@@ -33,15 +33,15 @@ from site_palette import (
 
 apply_site_theme()
 
-RUNS_PATH = Path("experiments/results_v1/runs.jsonl")
-JUDGE_PATH = Path("experiments/results_v2/llm_judge_scores_full.jsonl")
-TASKS_PATH = Path("data/benchmark_v1/tasks_all.json")
-PERT_PATH = Path("data/synthetic/perturbations_all.json")
+RUNS_PATH = Path("data/processed_data/results_v1/runs.jsonl")
+JUDGE_PATH = Path("data/processed_data/results_v2/llm_judge_scores_full.jsonl")
+TASKS_PATH = Path("data/raw_data/benchmark_v1/tasks_all.json")
+PERT_PATH = Path("data/raw_data/synthetic/perturbations_all.json")
 # v1-pert specs (75 task_ids) — used to filter v1-pert rows out of base runs.jsonl
 # (those rows were historically appended; not 'base'). Empty after B-2 cleanup.
-V1_PERT_PATH = Path("data/synthetic/perturbations.json")
-OUT_JSON = Path("experiments/results_v2/keyword_vs_judge_agreement.json")
-TOP_JSON = Path("experiments/results_v2/top_disagreements_assumption.json")
+V1_PERT_PATH = Path("data/raw_data/synthetic/perturbations.json")
+OUT_JSON = Path("data/processed_data/results_v2/keyword_vs_judge_agreement.json")
+TOP_JSON = Path("data/processed_data/results_v2/top_disagreements_assumption.json")
 FIG_SCATTER = Path("report_materials/figures/judge_validation_scatter.png")
 FIG_BARS = Path("report_materials/figures/judge_validation_by_model.png")
 WEB_SCATTER = Path("capstone-website/frontend/public/visualizations/png/v2/judge_validation_scatter.png")

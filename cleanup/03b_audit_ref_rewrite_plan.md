@@ -252,8 +252,8 @@ cp llm-stats-vault/40-literature/papers/14-new-judgment-becomes-noise-2025.md \
 ```bash
 rm llm-stats-vault/90-archive/audit/recompute_log.md
 rmdir llm-stats-vault/90-archive/audit/
-rm llm-stats-vault/90-archive/experiments/results_v2/nmacr_scores_v2.jsonl
-rmdir llm-stats-vault/90-archive/experiments/results_v2/
+rm llm-stats-vault/90-archive/data/processed_data/results_v2/nmacr_scores_v2.jsonl
+rmdir llm-stats-vault/90-archive/data/processed_data/results_v2/
 rmdir llm-stats-vault/90-archive/experiments/
 ```
 
@@ -395,6 +395,6 @@ git log --oneline -5
 
 - `experiments/` — out of scope per `cleanup/02_reorg_plan.md` §F; the staging stub is removed in prep but the source `experiments/` is untouched.
 - Any `.obsidian/` state — Obsidian re-resolves links on next open.
-- Pre-existing dirty state (`poster/figures/*`, `report_materials/*`, `experiments/results_v2/error_taxonomy_v2.json`, `poster/scripts/dimension_leaderboard_print.py`) — not from this migration; leave as found.
+- Pre-existing dirty state (`poster/figures/*`, `report_materials/*`, `data/processed_data/results_v2/error_taxonomy_v2.json`, `poster/scripts/dimension_leaderboard_print.py`) — not from this migration; leave as found.
 
 End of plan.

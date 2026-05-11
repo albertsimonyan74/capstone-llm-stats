@@ -40,13 +40,13 @@ WEB_DIR = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" /
 WEB_DIR.mkdir(parents=True, exist_ok=True)
 
 # Data paths
-RUNS_V1 = ROOT / "experiments" / "results_v1" / "runs.jsonl"
-PERT_RUNS = ROOT / "experiments" / "results_v2" / "perturbation_runs.jsonl"
-TAXONOMY = ROOT / "experiments" / "results_v2" / "error_taxonomy_v2.json"
-ROBUST = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
-CALIB = ROOT / "experiments" / "results_v2" / "calibration.json"
-BOOTSTRAP = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
-JUDGE_DIM_MEANS = ROOT / "experiments" / "results_v2" / "judge_dimension_means.json"
+RUNS_V1 = ROOT / "data" / "processed_data" / "results_v1" / "runs.jsonl"
+PERT_RUNS = ROOT / "data" / "processed_data" / "results_v2" / "perturbation_runs.jsonl"
+TAXONOMY = ROOT / "data" / "processed_data" / "results_v2" / "error_taxonomy_v2.json"
+ROBUST = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"
+CALIB = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
+BOOTSTRAP = ROOT / "data" / "processed_data" / "results_v2" / "bootstrap_ci.json"
+JUDGE_DIM_MEANS = ROOT / "data" / "processed_data" / "results_v2" / "judge_dimension_means.json"
 
 MODEL_LABEL = {
     "claude":   "Claude",
@@ -58,7 +58,7 @@ MODEL_LABEL = {
 MODELS = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]
 
 # 4 populated L1 buckets. HALLUCINATION omitted — 0/143 across all models
-# (canonical experiments/results_v2/error_taxonomy_v2.json). See Limitations L1
+# (canonical data/processed_data/results_v2/error_taxonomy_v2.json). See Limitations L1
 # for methodological framing on the empty bucket.
 L1_COLORS = {
     "ASSUMPTION_VIOLATION": "#fbbf24",  # amber/gold
@@ -778,7 +778,7 @@ def figure_a6():
 
     # Load formatting_failure_rate (populated by recompute_downstream.py into
     # canonical calibration.json). Fall back to zeros if missing.
-    calib_path = ROOT / "experiments" / "results_v2" / "calibration.json"
+    calib_path = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
     try:
         cal = json.loads(calib_path.read_text())
         fmt_rates = cal.get("formatting_failure_rate_per_model", {})

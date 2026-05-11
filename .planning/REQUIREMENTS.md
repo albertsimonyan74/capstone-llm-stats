@@ -4,7 +4,7 @@
 
 ### R1 — Gemini Completion
 - Resume Phase 1: 62 missing tasks (`python -m llm_runner.run_all_tasks --models gemini`)
-- Resume Phase 2: 35 tasks (`python -m llm_runner.run_all_tasks --models gemini --tasks data/benchmark_v1/tasks_advanced.json --delay 5`)
+- Resume Phase 2: 35 tasks (`python -m llm_runner.run_all_tasks --models gemini --tasks data/raw_data/benchmark_v1/tasks_advanced.json --delay 5`)
 - After completion: prune/annotate 58 error records in runs.jsonl
 - Acceptance: gemini row in results shows 171/171 runs, avg_score > 0 (no error-inflated zeros)
 

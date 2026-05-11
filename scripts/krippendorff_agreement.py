@@ -9,13 +9,13 @@ calibration shifts that ρ ignores. Single-judge designs (Llama 3.3 70B here) ca
 silent noise (Judgment-Becomes-Noise 2025), so α is required to bound that noise.
 
 Inputs (same join as scripts/keyword_vs_judge_agreement.py):
-- experiments/results_v1/runs.jsonl
-- experiments/results_v2/llm_judge_scores_full.jsonl
-- data/benchmark_v1/tasks_all.json (+ data/synthetic/perturbations_all.json)
+- data/processed_data/results_v1/runs.jsonl
+- data/processed_data/results_v2/llm_judge_scores_full.jsonl
+- data/raw_data/benchmark_v1/tasks_all.json (+ data/raw_data/synthetic/perturbations_all.json)
 
 Outputs:
-- experiments/results_v2/krippendorff_agreement.json
-- experiments/results_v2/keyword_vs_judge_agreement.json (augmented with α fields)
+- data/processed_data/results_v2/krippendorff_agreement.json
+- data/processed_data/results_v2/keyword_vs_judge_agreement.json (augmented with α fields)
 - report_materials/figures/agreement_metrics_comparison.png
 
 Run from project root:
@@ -44,17 +44,17 @@ from site_palette import (
 apply_site_theme()
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNS_PATH = ROOT / "experiments/results_v1/runs.jsonl"
-JUDGE_PATH = ROOT / "experiments/results_v2/llm_judge_scores_full.jsonl"
-PERT_RUNS_PATH = ROOT / "experiments/results_v2/perturbation_runs.jsonl"
-PERT_JUDGE_PATH = ROOT / "experiments/results_v2/perturbation_judge_scores.jsonl"
-TASKS_PATH = ROOT / "data/benchmark_v1/tasks_all.json"
-PERT_ALL_PATH = ROOT / "data/synthetic/perturbations_all.json"
+RUNS_PATH = ROOT / "data/processed_data/results_v1/runs.jsonl"
+JUDGE_PATH = ROOT / "data/processed_data/results_v2/llm_judge_scores_full.jsonl"
+PERT_RUNS_PATH = ROOT / "data/processed_data/results_v2/perturbation_runs.jsonl"
+PERT_JUDGE_PATH = ROOT / "data/processed_data/results_v2/perturbation_judge_scores.jsonl"
+TASKS_PATH = ROOT / "data/raw_data/benchmark_v1/tasks_all.json"
+PERT_ALL_PATH = ROOT / "data/raw_data/synthetic/perturbations_all.json"
 # v1 perturbations.json is deprecated — task specs for the 75 v1 task_ids
 # are preserved verbatim inside perturbations_all.json (473 records total).
-V1_PERT_PATH = ROOT / "data/synthetic/perturbations.json"
-OUT_JSON = ROOT / "experiments/results_v2/krippendorff_agreement.json"
-EXISTING_AGREEMENT = ROOT / "experiments/results_v2/keyword_vs_judge_agreement.json"
+V1_PERT_PATH = ROOT / "data/raw_data/synthetic/perturbations.json"
+OUT_JSON = ROOT / "data/processed_data/results_v2/krippendorff_agreement.json"
+EXISTING_AGREEMENT = ROOT / "data/processed_data/results_v2/keyword_vs_judge_agreement.json"
 FIG_OUT = ROOT / "report_materials/figures/agreement_metrics_comparison.png"
 
 # (label, kw_field, judge_field). reasoning_completeness has no keyword equivalent
@@ -100,7 +100,7 @@ def load_task_specs() -> dict[str, dict]:
 def load_v1_pert_ids() -> frozenset[str]:
     """v1-pert task_ids that must be filtered out of base runs.jsonl.
 
-    v1 perturbations were appended into experiments/results_v1/runs.jsonl
+    v1 perturbations were appended into data/processed_data/results_v1/runs.jsonl
     historically; those rows are not 'base' and must be excluded from base-scope
     analyses. Specs for the same 75 task_ids are preserved inside
     perturbations_all.json. Returns empty set if v1 file is gone (B-2 cleanup).

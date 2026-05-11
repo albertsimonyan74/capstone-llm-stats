@@ -1,6 +1,6 @@
 # evaluation/task_spec_schema.py
 """
-Define TaskSpec via JSON so you can store tasks in data/benchmark_v1/tasks.json
+Define TaskSpec via JSON so you can store tasks in data/raw_data/benchmark_v1/tasks.json
 
 This loader converts JSON to TaskSpec objects used by metrics.py.
 

@@ -3,7 +3,7 @@
 analyze_perturbations.py  — RQ4 robustness analysis
 
 Compares LLM scores on perturbed tasks vs. their base tasks.
-Outputs experiments/results_v1/rq4_analysis.json
+Outputs data/processed_data/results_v1/rq4_analysis.json
 
 Metrics per model × perturbation_type:
   sensitivity       mean |score_pert - score_base|
@@ -24,9 +24,9 @@ from statistics import mean, stdev
 from datetime import datetime, timezone
 
 ROOT          = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RUNS_PATH     = os.path.join(ROOT, "experiments", "results_v1", "runs.jsonl")
-PERT_PATH     = os.path.join(ROOT, "data", "synthetic", "perturbations_all.json")
-OUTPUT_PATH   = os.path.join(ROOT, "experiments", "results_v1", "rq4_analysis.json")
+RUNS_PATH     = os.path.join(ROOT, "data", "processed_data", "results_v1", "runs.jsonl")
+PERT_PATH     = os.path.join(ROOT, "data", "raw_data", "synthetic", "perturbations_all.json")
+OUTPUT_PATH   = os.path.join(ROOT, "data", "processed_data", "results_v1", "rq4_analysis.json")
 
 
 def load_runs() -> list[dict]:

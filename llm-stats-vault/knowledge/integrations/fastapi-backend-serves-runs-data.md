@@ -12,7 +12,7 @@ date: 2026-04-26
 - **Start**: `cd capstone-website && uvicorn backend.main:app --reload`
 
 ## What It Serves
-- Reads `experiments/results_v1/runs.jsonl` directly
+- Reads `data/processed_data/results_v1/runs.jsonl` directly
 - Provides endpoints consumed by the React frontend
 - Also serves data for the leaderboard and task browser
 

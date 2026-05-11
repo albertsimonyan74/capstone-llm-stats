@@ -111,6 +111,6 @@ def validate_all_tasks(tasks_path: str, output_path: str) -> dict:
 
 if __name__ == "__main__":
     validate_all_tasks(
-        "data/benchmark_v1/tasks_all.json",
-        "data/benchmark_v1/validation_report.json",
+        "data/raw_data/benchmark_v1/tasks_all.json",
+        "data/raw_data/benchmark_v1/validation_report.json",
     )

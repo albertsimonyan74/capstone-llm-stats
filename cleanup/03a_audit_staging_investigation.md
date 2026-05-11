@@ -63,10 +63,10 @@ Only in audit: website_discovery.md
 
 ### Listing
 ```
-llm-stats-vault/90-archive/experiments/results_v2/nmacr_scores_v2.jsonl  (542 bytes, 1 line)
+llm-stats-vault/90-archive/data/processed_data/results_v2/nmacr_scores_v2.jsonl  (542 bytes, 1 line)
 ```
 
-Single file under `results_v2/`. Source `experiments/results_v2/` has 20 files (~24 MB).
+Single file under `results_v2/`. Source `data/processed_data/results_v2/` has 20 files (~24 MB).
 
 ### `nmacr_scores_v2.jsonl` content comparison
 
@@ -99,7 +99,7 @@ Concrete steps for Phase C:
 1. `rm llm-stats-vault/90-archive/audit/recompute_log.md`
 2. `rmdir llm-stats-vault/90-archive/audit/`
 3. `git mv audit/ llm-stats-vault/90-archive/audit/` — preserves history.
-4. (Out of scope for this prompt — `experiments/` is staying put per the spec.) Cleanup of the stub `llm-stats-vault/90-archive/experiments/results_v2/nmacr_scores_v2.jsonl` can be folded into a follow-up. Recommended: delete it + the empty parent dirs in the same Phase C commit, since it's a zero-data orphan with no provenance value.
+4. (Out of scope for this prompt — `experiments/` is staying put per the spec.) Cleanup of the stub `llm-stats-vault/90-archive/data/processed_data/results_v2/nmacr_scores_v2.jsonl` can be folded into a follow-up. Recommended: delete it + the empty parent dirs in the same Phase C commit, since it's a zero-data orphan with no provenance value.
 
 No risk of overwriting real archived content — the staging holds zero data records.
 

@@ -255,7 +255,7 @@ framing. Nagarkar et al. (2026) — reliability motivation.
 | gemini   | 1        | 0.41% |
 | mistral  | 5        | 2.03% |
 
-Surfaced in `experiments/results_v2/calibration.json` →
+Surfaced in `data/processed_data/results_v2/calibration.json` →
 `formatting_failure_rate_per_model` and on the aggregate-ranking figure.
 
 ---

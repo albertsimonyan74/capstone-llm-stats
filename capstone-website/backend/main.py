@@ -31,12 +31,12 @@ app.include_router(user_study_router)
 app.include_router(v2_router)
 
 BASE_DIR   = Path(os.environ.get("DATA_ROOT", str(Path(__file__).parent.parent.parent)))
-TASKS_FILE = BASE_DIR / "data" / "benchmark_v1" / "tasks_all.json"
-RUNS_FILE  = BASE_DIR / "experiments" / "results_v1" / "runs.jsonl"
+TASKS_FILE = BASE_DIR / "data" / "raw_data" / "benchmark_v1" / "tasks_all.json"
+RUNS_FILE  = BASE_DIR / "data" / "processed_data" / "results_v1" / "runs.jsonl"
 # v1 perturbations.json carries 75 task_ids that were historically appended into
 # runs.jsonl. They are not 'base' runs and must be excluded from /api/runs.
 # Empty after B-2 cleanup deletes the file.
-V1_PERT_FILE = BASE_DIR / "data" / "synthetic" / "perturbations.json"
+V1_PERT_FILE = BASE_DIR / "data" / "raw_data" / "synthetic" / "perturbations.json"
 
 
 def _v1_pert_ids() -> frozenset:

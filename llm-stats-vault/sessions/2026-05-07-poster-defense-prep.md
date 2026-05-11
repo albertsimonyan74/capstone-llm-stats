@@ -4,15 +4,15 @@ date: 2026-05-07
 author: Albert Simonyan
 purpose: Drill numbers, methods, Q&A, and 7-min speech for DS 299 capstone defense
 canonical-sources:
-  - experiments/results_v2/bootstrap_ci.json
-  - experiments/results_v2/robustness_v2.json
-  - experiments/results_v2/calibration.json
-  - experiments/results_v2/self_consistency_calibration.json
-  - experiments/results_v2/per_dim_calibration.json
-  - experiments/results_v2/krippendorff_agreement.json
-  - experiments/results_v2/keyword_vs_judge_agreement.json
-  - experiments/results_v2/combined_pass_flip_analysis.json
-  - experiments/results_v2/error_taxonomy_v2.json
+  - data/processed_data/results_v2/bootstrap_ci.json
+  - data/processed_data/results_v2/robustness_v2.json
+  - data/processed_data/results_v2/calibration.json
+  - data/processed_data/results_v2/self_consistency_calibration.json
+  - data/processed_data/results_v2/per_dim_calibration.json
+  - data/processed_data/results_v2/krippendorff_agreement.json
+  - data/processed_data/results_v2/keyword_vs_judge_agreement.json
+  - data/processed_data/results_v2/combined_pass_flip_analysis.json
+  - data/processed_data/results_v2/error_taxonomy_v2.json
 ---
 
 # DS 299 Capstone Poster Defense Prep — 2026-05-07
@@ -51,7 +51,7 @@ These are real conflicts between artifacts. **Do not get caught misquoting them 
 
 ### 1.1 Combined keyword-judge disagreement on assumption_compliance
 
-**Source:** `experiments/results_v2/combined_pass_flip_analysis.json` (key: `combined.pct_pass_flip`)
+**Source:** `data/processed_data/results_v2/combined_pass_flip_analysis.json` (key: `combined.pct_pass_flip`)
 
 | Population | n_total | n_eligible | pass-flip rate | inverse-flip rate |
 |---|---|---|---|---|
@@ -70,7 +70,7 @@ These are real conflicts between artifacts. **Do not get caught misquoting them 
 
 ### 1.2 Krippendorff α per dimension (binary, with 95% bootstrap CI, B=1000, seed=42)
 
-**Source:** `experiments/results_v2/krippendorff_agreement.json` (`overall` block = base population, n=750 — this is what the poster Fig 3 strip plots)
+**Source:** `data/processed_data/results_v2/krippendorff_agreement.json` (`overall` block = base population, n=750 — this is what the poster Fig 3 strip plots)
 
 | Dimension | α | 95% CI | n | Interpretation |
 |---|---|---|---|---|
@@ -89,7 +89,7 @@ These are real conflicts between artifacts. **Do not get caught misquoting them 
 
 ### 1.3 NMACR aggregate scores per model (literature weights A-30/R-25/M-20/C-15/N-10) with 95% bootstrap CI (B=10,000, seed=42)
 
-**Source:** `experiments/results_v2/bootstrap_ci.json` (`accuracy.{model}`)
+**Source:** `data/processed_data/results_v2/bootstrap_ci.json` (`accuracy.{model}`)
 
 | Model | NMACR mean | 95% CI | n |
 |---|---|---|---|
@@ -106,7 +106,7 @@ These are real conflicts between artifacts. **Do not get caught misquoting them 
 
 ### 1.4 Robustness Δ per model (base − perturbation; smaller = more robust)
 
-**Source:** `experiments/results_v2/robustness_v2.json` (`per_model.{model}.delta`) and CIs in `bootstrap_ci.json:robustness`.
+**Source:** `data/processed_data/results_v2/robustness_v2.json` (`per_model.{model}.delta`) and CIs in `bootstrap_ci.json:robustness`.
 
 | Model | Δ | 95% CI | n (paired) | Robustness (1−Δ) |
 |---|---|---|---|---|
@@ -122,7 +122,7 @@ Only **Claude and DeepSeek have CIs strictly above zero** — they are the only 
 
 ### 1.5 Verbalized ECE per model (n = 171/model)
 
-**Source:** `experiments/results_v2/calibration.json` (`{model}.ece`; bucket schema low/med/high/unstated, weight by bucket size).
+**Source:** `data/processed_data/results_v2/calibration.json` (`{model}.ece`; bucket schema low/med/high/unstated, weight by bucket size).
 
 | Model | ECE (verbalized, lower = better) | n |
 |---|---|---|
@@ -145,7 +145,7 @@ All positive (well-calibrated answers track actual accuracy). All in the moderat
 
 ### 1.6 Self-consistency ECE per model (n = 161 numeric tasks, 3 reruns @ T=0.7)
 
-**Source:** `experiments/results_v2/self_consistency_calibration.json` (`per_model.{model}.ece_consistency`). 10 of 171 tasks excluded as CONCEPTUAL.
+**Source:** `data/processed_data/results_v2/self_consistency_calibration.json` (`per_model.{model}.ece_consistency`). 10 of 171 tasks excluded as CONCEPTUAL.
 
 | Model | Self-consistency ECE | n_high (consistent across reruns) | Brier | Failures |
 |---|---|---|---|---|
@@ -161,7 +161,7 @@ Note: `accuracy_overall: 0.0` and `*_bucket_accuracy: 0.0` for all models is a *
 
 ### 1.7 Failure taxonomy (143 audited; L1 + L2)
 
-**Source:** `experiments/results_v2/error_taxonomy_v2.json`. Judge: `meta-llama/Llama-3.3-70B-Instruct-Turbo`.
+**Source:** `data/processed_data/results_v2/error_taxonomy_v2.json`. Judge: `meta-llama/Llama-3.3-70B-Instruct-Turbo`.
 
 **L1 (4 categories) — `l1_totals`:**
 - ASSUMPTION_VIOLATION: **67 / 143 = 46.9%**
@@ -415,7 +415,7 @@ Active production code/docs (filtered): clean. Notable hits all in expected loca
 - `capstone-website/frontend/src/App.jsx`, `UserStudy.jsx` — `placeholder=` HTML form attributes (legitimate).
 - `poster/poster.html:4490` — `qr-stub` styled span for the QR code (cosmetic, intended).
 - `poster/main.tex:46–355` — multiple `\figstub{}` and "Stub — to fill" placeholders. **This file is stale.** The deliverable is `poster.html`.
-- `llm-stats-vault/00-home/index.md`, `knowledge/business/proposal-gap-error-taxonomy-analysis-missing.md` — vault docs flagging `evaluation/error_taxonomy.py` as a dataclass-only stub. **Legitimate concern — the canonical taxonomy data lives in `experiments/results_v2/error_taxonomy_v2.json`, not in `evaluation/error_taxonomy.py`.** If asked: *"The analyzer pipeline writes to a JSON file; the dataclass module is a future refactor target."*
+- `llm-stats-vault/00-home/index.md`, `knowledge/business/proposal-gap-error-taxonomy-analysis-missing.md` — vault docs flagging `evaluation/error_taxonomy.py` as a dataclass-only stub. **Legitimate concern — the canonical taxonomy data lives in `data/processed_data/results_v2/error_taxonomy_v2.json`, not in `evaluation/error_taxonomy.py`.** If asked: *"The analyzer pipeline writes to a JSON file; the dataclass module is a future refactor target."*
 - `90-archive/` — pre-archived sprint history with closed TODOs. Not production-facing.
 
 ---

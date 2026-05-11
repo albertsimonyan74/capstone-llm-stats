@@ -5,7 +5,7 @@ two-level taxonomy. Resume-safe: rerun re-judges only errored / missing
 records.
 
 Output:
-    experiments/results_v2/error_taxonomy_v2.json
+    data/processed_data/results_v2/error_taxonomy_v2.json
     report_materials/figures/error_taxonomy_hierarchical.png
 """
 from __future__ import annotations
@@ -35,10 +35,10 @@ from site_palette import (
 load_dotenv()
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNS_PATH = ROOT / "experiments/results_v1/runs.jsonl"
-TASKS_PATH = ROOT / "data/benchmark_v1/tasks_all.json"
-OUT_JSON = ROOT / "experiments/results_v2/error_taxonomy_v2.json"
-JUDGE_JSONL = ROOT / "experiments/results_v2/error_taxonomy_v2_judge.jsonl"
+RUNS_PATH = ROOT / "data/processed_data/results_v1/runs.jsonl"
+TASKS_PATH = ROOT / "data/raw_data/benchmark_v1/tasks_all.json"
+OUT_JSON = ROOT / "data/processed_data/results_v2/error_taxonomy_v2.json"
+JUDGE_JSONL = ROOT / "data/processed_data/results_v2/error_taxonomy_v2_judge.jsonl"
 FIG_PATH = ROOT / "report_materials/figures/error_taxonomy_hierarchical.png"
 
 TOGETHER_URL = "https://api.together.xyz/v1/chat/completions"

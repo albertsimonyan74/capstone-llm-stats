@@ -22,9 +22,9 @@ from site_palette import (
 apply_site_theme()
 
 ROOT = Path(__file__).resolve().parents[1]
-CALIB_PATH = ROOT / "experiments" / "results_v2" / "calibration.json"
-ROBUST_PATH = ROOT / "experiments" / "results_v2" / "robustness_v2.json"
-BOOTSTRAP_PATH = ROOT / "experiments" / "results_v2" / "bootstrap_ci.json"
+CALIB_PATH = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
+ROBUST_PATH = ROOT / "data" / "processed_data" / "results_v2" / "robustness_v2.json"
+BOOTSTRAP_PATH = ROOT / "data" / "processed_data" / "results_v2" / "bootstrap_ci.json"
 OUT_PATH = ROOT / "report_materials" / "figures" / "three_rankings.png"
 WEB_OUT = ROOT / "capstone-website" / "frontend" / "public" / "visualizations" / "png" / "v2" / "three_rankings.png"
 MODEL_LABEL = {

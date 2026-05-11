@@ -20,12 +20,12 @@ Task Generation ──► Benchmark Runner ──► Scoring Pipeline ──► 
 ### Task Generation
 | File | Output | Count |
 |------|--------|-------|
-| `baseline/bayesian/build_tasks_bayesian.py` | `data/benchmark_v1/tasks.json` | 136 |
-| `baseline/bayesian/build_tasks_advanced.py` | `data/benchmark_v1/tasks_advanced.json` | 35 |
-| merge script (manual) | `data/benchmark_v1/tasks_all.json` | 171 |
-| `scripts/generate_perturbations_full.py` | `data/synthetic/perturbations_all.json` | 473 |
+| `baseline/bayesian/build_tasks_bayesian.py` | `data/raw_data/benchmark_v1/tasks.json` | 136 |
+| `baseline/bayesian/build_tasks_advanced.py` | `data/raw_data/benchmark_v1/tasks_advanced.json` | 35 |
+| merge script (manual) | `data/raw_data/benchmark_v1/tasks_all.json` | 171 |
+| `scripts/generate_perturbations_full.py` | `data/raw_data/synthetic/perturbations_all.json` | 473 |
 
-Note: `data/synthetic/perturbations.json` (75 hand-authored seed
+Note: `data/raw_data/synthetic/perturbations.json` (75 hand-authored seed
 perturbations) was deprecated 2026-05-04. Records are preserved
 verbatim inside `perturbations_all.json` (75 hand-authored + 398
 LLM-generated = 473 total). The hand-authored generator
@@ -69,9 +69,9 @@ See [[react-frontend-uses-vite]] and [[fastapi-backend-serves-runs-data]].
 
 | File | Created by | Read by | Rule |
 |------|-----------|---------|------|
-| `data/benchmark_v1/tasks_all.json` | build scripts | runner, website | never edit manually |
-| `experiments/results_v1/runs.jsonl` | run_all_tasks.py | run_benchmark.py | append-only |
-| `experiments/results_v1/results.json` | run_benchmark.py | website, scripts | currently empty |
+| `data/raw_data/benchmark_v1/tasks_all.json` | build scripts | runner, website | never edit manually |
+| `data/processed_data/results_v1/runs.jsonl` | run_all_tasks.py | run_benchmark.py | append-only |
+| `data/processed_data/results_v1/results.json` | run_benchmark.py | website, scripts | currently empty |
 | `capstone-website/frontend/src/data/results_summary.json` | summarize_results.py | website | refresh after runs |
 
 ## Critical Cross-Cutting Rules

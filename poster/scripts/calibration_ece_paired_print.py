@@ -4,9 +4,9 @@ Mirrors scripts/plot_self_consistency_calibration.py exactly, swapping
 the dark site theme for the white print theme + vivid -400 model colors.
 
 Sources:
-  experiments/results_v2/calibration.json:[model].ece
+  data/processed_data/results_v2/calibration.json:[model].ece
     → verbalized ECE
-  experiments/results_v2/self_consistency_calibration.json
+  data/processed_data/results_v2/self_consistency_calibration.json
     :ece_comparison_full[model].consistency_ece_full
     → self-consistency ECE (Phase 1C full coverage)
 """
@@ -28,8 +28,8 @@ from print_theme import (
 
 apply_print_theme()
 
-VERB_FILE = ROOT / "experiments" / "results_v2" / "calibration.json"
-SC_FILE   = ROOT / "experiments" / "results_v2" / "self_consistency_calibration.json"
+VERB_FILE = ROOT / "data" / "processed_data" / "results_v2" / "calibration.json"
+SC_FILE   = ROOT / "data" / "processed_data" / "results_v2" / "self_consistency_calibration.json"
 OUT_DIR   = ROOT / "poster" / "figures"
 
 MODEL_ORDER = ["claude", "chatgpt", "gemini", "deepseek", "mistral"]

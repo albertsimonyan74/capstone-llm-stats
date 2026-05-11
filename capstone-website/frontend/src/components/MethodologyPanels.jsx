@@ -899,7 +899,7 @@ export function AlphaValidationPanel() {
 }
 
 // ─── §5.3 — Tolerance sensitivity slope chart ──────────────────
-// Canonical from experiments/results_v2/tolerance_sensitivity.json
+// Canonical from data/processed_data/results_v2/tolerance_sensitivity.json
 // Rankings (1 = top accuracy at level):
 //   tight   → chatgpt, claude, deepseek, mistral, gemini
 //   default → claude, chatgpt, deepseek, mistral, gemini

@@ -48,12 +48,12 @@ date: 2026-04-26
 
 | File | Path | Status (2026-04-26) |
 |------|------|---------------------|
-| Phase 1 tasks | `data/benchmark_v1/tasks.json` | ✅ 136 tasks |
-| Phase 2 tasks | `data/benchmark_v1/tasks_advanced.json` | ✅ 35 tasks |
-| All tasks | `data/benchmark_v1/tasks_all.json` | ✅ 171 tasks |
-| Synthetic | `data/synthetic/perturbations_all.json` | ✅ 473 perturbations (75 hand-authored + 398 LLM-generated; v1 file deprecated 2026-05-04) |
-| Run log | `experiments/results_v1/runs.jsonl` | ⚠️ ~620+ (Gemini incomplete) |
-| Results | `experiments/results_v1/results.json` | ❌ EMPTY |
+| Phase 1 tasks | `data/raw_data/benchmark_v1/tasks.json` | ✅ 136 tasks |
+| Phase 2 tasks | `data/raw_data/benchmark_v1/tasks_advanced.json` | ✅ 35 tasks |
+| All tasks | `data/raw_data/benchmark_v1/tasks_all.json` | ✅ 171 tasks |
+| Synthetic | `data/raw_data/synthetic/perturbations_all.json` | ✅ 473 perturbations (75 hand-authored + 398 LLM-generated; v1 file deprecated 2026-05-04) |
+| Run log | `data/processed_data/results_v1/runs.jsonl` | ⚠️ ~620+ (Gemini incomplete) |
+| Results | `data/processed_data/results_v1/results.json` | ❌ EMPTY |
 | Website data | `capstone-website/frontend/src/data/` | ⚠️ 4 models only |
 | R PNGs | `report_materials/r_analysis/figures/` | ✅ 15 PNGs + 1 GIF |
 | R HTML | `report_materials/r_analysis/interactive/` | ✅ 14 Plotly HTMLs |
@@ -99,11 +99,11 @@ Analysis code must handle heterogeneous records.
 ```bash
 python3 -c "
 import json
-with open('data/benchmark_v1/tasks.json') as f: t1 = json.load(f)
-with open('data/benchmark_v1/tasks_advanced.json') as f: t2 = json.load(f)
+with open('data/raw_data/benchmark_v1/tasks.json') as f: t1 = json.load(f)
+with open('data/raw_data/benchmark_v1/tasks_advanced.json') as f: t2 = json.load(f)
 all_ = t1 + t2
 assert len(set(t['task_id'] for t in all_)) == len(all_)
-with open('data/benchmark_v1/tasks_all.json', 'w') as f: json.dump(all_, f, indent=2)
+with open('data/raw_data/benchmark_v1/tasks_all.json', 'w') as f: json.dump(all_, f, indent=2)
 print(f'Merged {len(t1)} + {len(t2)} = {len(all_)} tasks')
 "
 ```

@@ -19,10 +19,10 @@ The earlier inventory flag was a false positive: my Phase 1 grep regex `api[-_]?
 
 ### Result JSONL headers
 All v2 judge JSONLs carry `"judge_model": "meta-llama/Llama-3.3-70B-Instruct-Turbo"`:
-- `experiments/results_v2/llm_judge_scores_full.jsonl`
-- `experiments/results_v2/llm_judge_scores_sample.jsonl`
-- `experiments/results_v2/perturbation_judge_scores.jsonl`
-- `experiments/results_v2/error_taxonomy_v2_judge.jsonl`
+- `data/processed_data/results_v2/llm_judge_scores_full.jsonl`
+- `data/processed_data/results_v2/llm_judge_scores_sample.jsonl`
+- `data/processed_data/results_v2/perturbation_judge_scores.jsonl`
+- `data/processed_data/results_v2/error_taxonomy_v2_judge.jsonl`
 
 ### `.env.example`
 [/.env.example](.env.example) declares 5 model keys: `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `OPENAI_API_KEY`, `DEEPSEEK_API_KEY`, `MISTRAL_API_KEY`.

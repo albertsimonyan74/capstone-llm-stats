@@ -807,7 +807,7 @@ def format_numeric_targets(task: dict) -> List[float]:
 if __name__ == "__main__":
     import json
 
-    tasks = json.load(open("data/benchmark_v1/tasks.json"))
+    tasks = json.load(open("data/raw_data/benchmark_v1/tasks.json"))
     for task in tasks[:3]:
         print(f"\n{'='*60}")
         print(f"Task: {task['task_id']}")
