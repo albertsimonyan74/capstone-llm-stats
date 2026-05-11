@@ -1,35 +1,127 @@
 % --- Section: Methodology ---
-% Outline:
-%   - Task suite construction (171 base tasks):
-%     - 136 Phase 1 tasks across 31 types (conjugate models, posterior
-%       predictive, decision theory, intervals, Bayes factors, regression,
-%       Markov chains, etc.). Source generators:
-%       baseline/bayesian/build_tasks_bayesian.py;
-%       baseline/bayesian/ground_truth.py.
-%     - 35 Phase 2 advanced tasks: GIBBS, MH, HMC, RJMCMC, HIERARCHICAL
-%       (5 each, tol 0.05); VB, ABC (5 each, tol 0.10). Seeded MC ground
-%       truths via np.random.seed(42). Source:
-%       baseline/bayesian/build_tasks_advanced.py.
-%   - Task spec schema (numeric_targets, structure_checks,
-%     assumption_checks); CONCEPTUAL vs numeric+rubric task families.
-%     Source: data/benchmark_v1/tasks_all.json.
-%   - Perturbation taxonomy (473 records, mean 2.77/base):
-%     - rephrase (171), numerical (131), semantic (171). All 171 baselines
-%       covered (40 with 2 perturbations, 131 with 3). Source:
-%       data/synthetic/perturbations_all.json. Generator:
-%       scripts/generate_perturbations_full.py (398 v2 records via Llama
-%       3.3 70B Turbo) + 75 hand-authored v1 seeds.
-%   - External-judge protocol:
-%     - Model: Llama 3.3 70B Turbo via Together AI (out-of-family —
-%       not one of the benchmarked 5). Source: evaluation/llm_judge_rubric.py.
-%     - 4-dimension rubric: METHOD_STRUCTURE, ASSUMPTION_COMPLIANCE,
-%       REASONING_QUALITY, REASONING_COMPLETENESS. Temperature 0.0,
-%       max_tokens 1024.
-%     - Aggregation: see llm-stats-vault/90-archive/audit/aggregation_locus.md
-%       and methodology_continuity.md for the locus-of-aggregation rule
-%       and run-vs-task averaging conventions.
-% TODO: prose draft
+% Drafted Phase 6 — values pulled from cleanup/04_phase5_data_pulled.md
+% and canonical sources (baseline/, evaluation/, llm_runner/).
+% Target: ~700 words.
 
 \section{Methodology}
 \label{sec:methodology}
-% placeholder
+
+\subsection{Task Suite}
+
+The benchmark consists of 171 base tasks across 38 task types,
+partitioned into two phases. Phase~1 (136 tasks, 31 types) covers
+closed-form conjugate Bayesian models: Beta--Binomial, Gamma--Poisson,
+Normal mean with known and unknown variance (Normal--Inverse-Gamma),
+Dirichlet--Multinomial, Bayesian linear regression, and decision-theory
+tasks (Bayes risk under squared, absolute, and 0--1 loss). Phase~2
+(35 tasks, 7 types, 5 tasks each) covers computational Bayesian
+methods: Gibbs sampling, Metropolis--Hastings, Hamiltonian Monte
+Carlo, Reversible-Jump MCMC, hierarchical models, Variational Bayes,
+and Approximate Bayesian Computation. Each task includes a
+ground-truth solver implemented from textbooks~\cite{bolstad2007bayesian,hoff2009bayesian,bishop2006prml};
+stochastic methods (Phase~2) use seeded MC estimates as ground truth
+with tolerances of 0.05 for MCMC variants and 0.10 for VB and ABC.
+
+\subsection{Perturbation Taxonomy}
+
+Each base task can be perturbed along three principled axes.
+\emph{Rephrase} preserves the mathematics and the answer while
+rewording the prompt; \emph{semantic} preserves the mathematics while
+relocating the problem to a different real-world framing; and
+\emph{numerical} changes the numerical inputs and recomputes the
+ground-truth answer. The full perturbation set contains 473 records:
+75 hand-authored seeds (covering 25 base tasks across all three axes)
+and 398 LLM-generated perturbations (covering the remaining 146 base
+tasks), produced by the same external Llama 3.3 70B Turbo used as the
+assumption-compliance judge. All LLM-generated perturbations were
+filtered against the ground-truth solver before inclusion, which acts
+as an automated validity check. Mean coverage is 2.77 perturbations
+per base task; the numerical axis is skipped for 40 conceptual or
+seeded-MC tasks where number replacement would invalidate the
+ground-truth procedure.
+
+\subsection{Three-Path Scoring}
+
+Each model response is scored by three independent paths.
+\textbf{Path~A} (a keyword rubric in the live runner) is a
+deterministic keyword rubric: it extracts the answer line, compares
+numeric targets against the ground truth within a per-task tolerance,
+and checks for required structural and assumption keywords in the
+free-form prose. \textbf{Path~B} (a post-hoc NMACR aggregator) is the
+rubric-based NMACR aggregator. Each task contributes five components
+in $[0,1]$: numerical accuracy (N), method structure (M), assumption
+compliance (A), confidence calibration (C), and reasoning quality (R).
+The combined score is a weighted sum
+\[
+  s = 0.10\,N + 0.20\,M + 0.30\,A + 0.15\,C + 0.25\,R,
+\]
+with weights derived from the chain-of-thought, calibration, and
+assumption literatures~\cite{wei2022cot,chen2022pot,guo2017calibration,du2025icecream,park2025judge,nagarkar2026canllm,fermieval2025,liu2025matheval}.
+The largest weight (A) reflects the centrality of assumption
+articulation in Bayesian reasoning; the smallest (N) reflects that a
+correct number with no derivation is not the goal. Pass threshold is
+$s \geq 0.5$. \textbf{Path~C}, the external judge, is constrained to
+one dimension. Each (task, response) pair is sent to Llama 3.3 70B
+Turbo via the Together AI API with a fixed rubric prompt asking
+whether the response explicitly states the assumptions the task
+requires. The constrained scope is a deliberate response to the
+holistic-judge failure modes documented by Feuer et
+al.~\cite{judgment2025noise}.
+
+\subsection{Three-Ranking Framework}
+
+Three rank orders are computed from the same response corpus. The
+\emph{accuracy ranking} uses the Path~B NMACR pass rate per model
+across all 171 base tasks. The \emph{robustness ranking} uses the
+perturbation pass-flip rate: for each (base, perturbation) pair, we
+record whether the model's pass status changes; per-model robustness
+is one minus the flip rate, with bootstrap CIs from 10{,}000
+resamples. The \emph{calibration ranking} uses binary-pass Expected
+Calibration Error~\cite{guo2017calibration} with four confidence
+buckets (low, medium, high, unstated); we extract confidence from the
+model's free-form response with a rule-based parser and treat
+low-confidence-correct and high-confidence-incorrect tokens
+symmetrically. These three
+rankings are not redundant: a model can be accurate but brittle
+(high accuracy, low robustness), accurate and well-calibrated but
+still brittle, or robust but low-accuracy. The central empirical
+claim of this paper (\S\ref{sec:results}) is that all three of those
+configurations are realised among the five models we benchmark.
+
+\subsection{Experimental Setup}
+
+\textbf{Models and APIs.} We benchmark five frontier LLMs queried
+directly over their HTTP APIs, with no vendor SDK abstractions: Claude
+Sonnet 4.5 (Anthropic Messages API), GPT-4.1 (OpenAI Chat Completions),
+Gemini 2.5 Flash (Google Generative Language API), DeepSeek-Chat
+(DeepSeek), and Mistral Large (Mistral). Common decoding settings are
+shared across providers: temperature is left at the API default
+(typically near 1.0 for the chat endpoints), maximum output is 1024
+tokens, and each call carries a 60-second timeout with retry on
+transient 429 and 5xx responses. The same Bayesian-statistics system
+prompt is used for every model.
+
+\textbf{Evaluation pipeline.} Each (task, model) pair produces one
+response. Path~A extracts the final answer line and structural keywords;
+Path~B aggregates the five NMACR components into a weighted score; and
+the external Llama 3.3 70B Turbo judge, served by Together AI's
+OpenAI-compatible API, scores the response on assumption-compliance
+alone. Perturbations are evaluated with the same prompts and the same
+three paths. Single-pass per (task, model) is the default; a small
+self-consistency subset (3 samples) is used for the calibration
+analysis.
+
+\textbf{Calibration computation.} Binary-pass ECE uses four confidence
+buckets (low, medium, high, unstated) parsed from the response's
+hedging language. Uncertainty is reported as 95\% percentile bootstrap
+confidence intervals, computed from 10{,}000 non-parametric resamples
+of per-run aggregate scores with a fixed RNG seed (42) for
+reproducibility.
+
+\textbf{Reproducibility.} The full analysis pipeline is driven by a
+single shell script that runs deduplication, scoring, perturbation
+scoring, judge invocation, and aggregation in order. Unit tests
+(53 in total) cover the task generators and the MCP query interface.
+All figures in this paper are generated programmatically by the R
+analysis pipeline at \emph{report\_materials/r\_analysis/run\_all.R};
+no figure is hand-edited.

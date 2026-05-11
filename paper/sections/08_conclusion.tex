@@ -1,24 +1,55 @@
 % --- Section: Conclusion ---
-% Outline:
-%   - Restate the tri-axis ranking finding: top-2 swap between Claude
-%     (accuracy) and ChatGPT (calibration), with a third axis (robustness)
-%     introducing further reordering. Rankings of the same five models
-%     change as the metric changes.
-%   - Restate the assumption-compliance gap (51.5\% of responses miss
-%     required assumptions) as evidence that ``answer correctness'' alone
-%     is not a faithful proxy for statistical-reasoning quality.
-%   - Future work:
-%     - Wider task coverage (continuous-time MCMC, Bayesian non-parametrics).
-%     - Cross-judge replication (a second out-of-family judge, e.g.
-%       Qwen-72B or Mixtral) to bound judge-bias variance.
-%     - Live-stream benchmark (rolling perturbation generation) per
-%       brittlebench2026 / reasonbench2025 design notes.
-%     - Reasoning-trace-aware scoring (process vs outcome rewards).
-%   - Closing line: leaderboard consumers should demand tri-axis reports;
-%     a single accuracy number is, for inferential statistics at least,
-%     incomplete.
-% TODO: prose draft
+% Drafted Phase 6 Checkpoint C. Merged with prior §07 threats-to-validity
+% and future-work content per A.5 structure migration.
+% Target: ~400 words (200 conclusion + 200 threats/limitations).
 
 \section{Conclusion}
 \label{sec:conclusion}
-% placeholder
+
+We benchmarked five frontier LLMs on 171 Bayesian and inferential
+statistical tasks with 473 perturbations, scored by a deterministic
+keyword rubric, a literature-weighted NMACR aggregator, and an
+external out-of-family Llama 3.3 70B Turbo judge constrained to
+assumption-compliance. The same five models produce three different
+rank orders depending on the evaluation axis. The model with the
+lowest base accuracy (GPT-4.1, $0.621$) is the most robust to
+perturbation ($0.9996$); the model that leads on both accuracy
+($0.683$) and binary-pass calibration (ECE $0.0334$) places fourth
+of five on robustness ($0.9565$). Independent of ranking, $44.3\%$
+of responses fail to articulate the statistical assumptions their
+derivations require, and the keyword rubric overcounts assumption
+articulation by $15.4$ percentage points relative to the external
+judge. Single-number leaderboards are insufficient for
+statistical-reasoning evaluation; the right ranking depends on the
+property being measured.
+
+\textbf{Threats to validity.} The Llama 3.3 70B Turbo judge may have
+systematic biases inherited from its training, which we mitigate by
+constraining its scope to one dimension rather than a holistic
+preference signal and by validating against the keyword rubric
+(Spearman $\rho = 0.602$ on assumption-compliance). Krippendorff's
+$\alpha$ across the three judged dimensions falls in the
+``questionable'' range; this reflects genuine ambiguity in scoring
+free-form Bayesian reasoning and is reported here as honest
+disclosure rather than instrument failure. The three-ranking
+divergence is a within-model cross-metric finding and does not
+require inter-rater agreement to hold. Task coverage is broad for
+Bayesian and inferential reasoning but is not representative of
+statistical reasoning generally --- causal inference and experimental
+design are out of scope. Mean perturbation count is $2.77$ per base
+task, and ECE estimates rely on $10{,}000$-sample bootstrap CIs that
+capture the resulting uncertainty. Model versions are May 2026
+snapshots and the inversion patterns may not replicate as APIs
+evolve.
+
+\textbf{Future work.} Three extensions follow naturally. First,
+broaden the task suite into causal inference, experimental design,
+and frequentist hypothesis testing to test whether the three-axis
+divergence generalizes beyond Bayesian-specific reasoning. Second,
+replicate the analysis with a second out-of-family judge to bound the
+judge-bias variance; cross-judge agreement on assumption-compliance
+would be a defensible upper bound on inter-rater reliability for the
+dimension. Third, treat the GPT-4.1 accuracy-to-robustness inversion
+as a hypothesis about training-data composition and decoding choices,
+and design controlled experiments at the provider level that isolate
+the relevant factors.

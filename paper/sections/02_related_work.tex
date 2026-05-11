@@ -1,24 +1,75 @@
 % --- Section: Related Work ---
-% Outline:
-%   - Statistical-reasoning benchmarks for LLMs:
-%     - lu2025stateval, liu2025matheval, nagarkar2026canllm
-%     - longjohn2025bayesian (Bayesian-specific evaluation)
-%     - source: llm-stats-vault/40-literature/citation-map.md
-%   - Calibration / ECE: Guo et al. 2017 (Expected Calibration Error,
-%     temperature scaling). TODO: add to refs.bib (not yet in vault).
-%   - LLM-as-judge methodology: Zheng et al. 2023 MT-Bench (chatbot arena);
-%     park2025judge (Yamauchi et al. design-choice survey);
-%     judgment2025noise (Feuer et al. judge-design failure modes).
-%     Position our judge protocol w.r.t. their findings.
-%   - Robustness / perturbation evaluation:
-%     - reasonbench2025 (instability under reasoning perturbations)
-%     - brittlebench2026 (prompt-sensitivity benchmarking)
-%     - fragility2025 (LLM mathematical-reasoning fragility)
-%   - Bayesian textbook references for task-design grounding:
-%     bolstad2007bayesian, hoff2009bayesian, ghosh2006bayesian,
-%     carlin2008bayesian (vault textbooks/).
-% TODO: prose draft
+% Drafted Phase 6 — values pulled from cleanup/04_phase5_data_pulled.md
+% Target: ~400 words.
 
-\section{Related Work}
+\section{Literature Review}
 \label{sec:related}
-% placeholder
+
+\textbf{LLM benchmarks for quantitative reasoning.} Statistical and
+mathematical reasoning benchmarks have proliferated in the past two
+years. StatEval~\cite{lu2025stateval} catalogues 13{,}817 problems
+across descriptive statistics, probability, inference, and regression,
+scored primarily by answer correctness. MathEval~\cite{liu2025matheval}
+aggregates 19 datasets to compare 23 LLMs on mathematical reasoning,
+again with accuracy as the headline metric. Nagarkar et
+al.~\cite{nagarkar2026canllm} compare LLMs against human respondents
+on statistical tasks. All three measure how often the model lands on
+the right number; none separately measure whether the reasoning that
+produced the number is well-formed or robust to perturbation.
+
+\textbf{Bayesian-reasoning evaluation.} Longjohn et
+al.~\cite{longjohn2025bayesian} propose a Bayesian framework for
+evaluating LLM behavior probabilistically, but the focus is on
+posterior-based aggregation of benchmark results, not on Bayesian
+reasoning as a task. Du et al.~\cite{du2025icecream} document
+assumption-blindness in causal reasoning, finding that LLMs often
+produce ``convincing yet misleading'' answers without articulating
+the assumptions those answers depend on. Our finding that 44.3 percent
+of Bayesian responses fail to state required assumptions extends this
+pattern to inferential statistics specifically.
+
+\textbf{Calibration.} Guo et al.~\cite{guo2017calibration} introduced
+Expected Calibration Error (ECE) and showed that modern neural
+networks are systematically miscalibrated despite high accuracy. ECE
+is well-studied for classifiers; its application to free-form LLM
+reasoning is recent and methodologically less settled. FermiEval and
+related work~\cite{fermieval2025,multianswer2026,nagarkar2026canllm}
+adapt calibration to natural-language outputs but typically along a
+single dimension. We compute binary-pass ECE plus per-NMACR-dimension
+ECE.
+
+\textbf{LLM-as-judge.} Zheng et al.~\cite{zheng2023judge} popularised
+LLM-as-judge with MT-Bench, demonstrating that strong LLMs can
+substitute for human raters on open-ended tasks. Subsequent work
+catalogs design-choice sensitivity and self-preference
+bias~\cite{park2025judge,judgment2025noise}. Brittlebench and
+ReasonBench~\cite{brittlebench2026,reasonbench2025} document prompt
+sensitivity and reasoning instability under perturbation. Our protocol
+constrains the judge to a single dimension (assumption-compliance) and
+uses an out-of-family open-weights model (Llama 3.3 70B Turbo), which
+together address two of the failure modes catalogued by Feuer et
+al.~\cite{judgment2025noise}.
+
+Across these threads, evaluation typically collapses to a single
+accuracy or pass-rate number. We synthesize the three threads
+--- accuracy, robustness, and calibration --- into a tri-axis
+ranking framework and show that the resulting rank orders disagree
+non-trivially for the same five frontier LLMs on the same task suite.
+
+\textbf{Positioning.} Prior work treats accuracy, robustness, and
+calibration as separable evaluation concerns and addresses them in
+isolation. Benchmarks for quantitative reasoning measure accuracy at
+scale but rarely report robustness or
+calibration~\cite{lu2025stateval,liu2025matheval,nagarkar2026canllm}.
+Calibration studies operate on classification or short-answer
+formats, not on the free-form numerical and prose responses typical
+of Bayesian reasoning~\cite{guo2017calibration}. LLM-as-judge work has
+matured into a default validation tool but is most often applied as a
+holistic preference signal that carries documented
+biases~\cite{zheng2023judge,park2025judge,judgment2025noise}. To our
+knowledge, no prior benchmark for Bayesian or inferential statistical
+reasoning combines (i) a principled perturbation taxonomy for
+robustness, (ii) an external single-dimension judge protocol for
+assumption-compliance, and (iii) calibration measured directly on the
+same task set. Our contribution is the multi-axis framework that
+surfaces ranking divergences hidden by single-metric leaderboards.
