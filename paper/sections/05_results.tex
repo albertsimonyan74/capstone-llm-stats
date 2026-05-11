@@ -46,7 +46,7 @@ two on every axis.
 
 \subsection{Headline Divergence}
 
-\begin{figure}[t]
+\begin{figure}[!t]
   \centering
   \includegraphics[width=\columnwidth]{figures/rank_flow.png}
   \caption{Rank flow across the three metrics. Each panel ranks the
@@ -106,38 +106,71 @@ of whether the assumption is actually articulated. The
 assumption-blindness pattern matches the causal-reasoning failure
 mode catalogued by Du et al.~\cite{du2025icecream}.
 
-\subsection{Per-Dimension Calibration}
+\subsection{Calibration Across Extraction Methods}
 
-Krippendorff's $\alpha$ on the three judged dimensions (method
-structure, assumption compliance, reasoning quality) sits in the
-``questionable'' range: $-0.009$, $0.573$, and $-0.125$ respectively.
-Assumption-compliance is the only dimension with non-trivial
-inter-rater reliability, and even there the $\alpha = 0.573$ is below
-the conventional $0.667$ cutoff for tentative conclusions. This is
-honest disclosure rather than a refutation of our central claim ---
-the three-ranking divergence is a within-model cross-metric finding,
-not an inter-rater agreement claim --- and we revisit the
-implications in Section~\ref{sec:discussion}.
-
-Per-NMACR-dimension ECE tells a finer story than the binary-pass ECE
-in Table~\ref{tab:rankings}. Figure~\ref{fig:dimension-leaderboard}
-breaks the per-dimension ECE out by N, M, A, C, R. On the Reasoning
-Quality (R) dimension specifically, GPT-4.1 leads with ECE $0.097$,
-followed by Mistral ($0.102$), DeepSeek ($0.106$), Claude ($0.117$),
-and Gemini ($0.130$). The model that leads on overall binary-pass ECE
-(Claude) is third on the R-dimension calibration, while the
-accuracy-bottom GPT-4.1 leads both robustness and reasoning
-calibration. The picture matches the binary-pass ECE story
-directionally but locates the GPT-4.1 ``reasoning calibration''
-advantage more precisely.
-
-\begin{figure}[t]
+\begin{figure}[!t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/dimension_leaderboard.png}
-  \caption{Per-NMACR-dimension Expected Calibration Error. While
-           Claude leads the binary-pass ECE aggregate, GPT-4.1 leads
-           on the reasoning (R) dimension specifically, illustrating
-           that even within a single ranking axis, models exchange
-           positions across sub-dimensions.}
-  \label{fig:dimension-leaderboard}
+  \includegraphics[width=\columnwidth]{figures/krippendorff_strip.png}
+  \caption{Krippendorff's $\alpha$ across the three judged dimensions
+           (method structure, assumption compliance, reasoning quality).
+           Values along the horizontal axis are bucketed by convention
+           into systematic-disagreement, chance-level, and
+           agreement-beyond-chance regions; the assumption-compliance
+           $\alpha = 0.573$ sits in the conventionally
+           ``questionable'' range, and the other two dimensions
+           cluster near chance. The three-ranking divergence claim is
+           within-model cross-metric and does not depend on inter-rater
+           agreement, so these $\alpha$ values qualify --- but do not
+           invalidate --- the central findings.}
+  \label{fig:krippendorff-strip}
 \end{figure}
+
+A single ECE value can obscure the source of (mis)calibration. We
+separate two extraction methods: \emph{verbalized confidence}, where
+the model states a probability or confidence level alongside its
+answer, and \emph{self-consistency confidence}, where confidence is
+inferred from how often the model returns the same answer across
+reruns at temperature $T = 0.7$. Inter-rater agreement on the rubric
+dimensions, summarized in Figure~\ref{fig:krippendorff-strip}, sits
+in the questionable range and informs our interpretation.
+
+\begin{figure*}[!t]
+  \centering
+  \includegraphics[width=\textwidth]{figures/calibration_ece_paired.png}
+  \caption{Calibration measured by two extraction methods.
+           \emph{Left:} verbalized ECE on $n=855$ truly-base runs
+           (171 base tasks $\times$ 5 models), where the model is
+           asked to state a probability or confidence; Claude (0.033)
+           and GPT-4.1 (0.034) appear well-calibrated, with DeepSeek
+           (0.198) the clear outlier. \emph{Right:} self-consistency
+           ECE on $n=2{,}415$ reruns (3-rerun protocol at temperature
+           $T=0.7$), where confidence is computed from cross-rerun
+           answer agreement; all five models exceed $\text{ECE}=0.6$,
+           indicating severe overconfidence. The verbalized-vs-self-
+           consistency gap is direct evidence that stated confidence
+           does not reflect actual response stability.}
+  \label{fig:calibration-paired}
+\end{figure*}
+
+Figure~\ref{fig:calibration-paired} reframes the calibration story.
+Verbalized confidence is what users observe when interacting with a
+model: Claude and GPT-4.1 appear excellently calibrated by this
+measure, and the binary-pass ECE leaderboard in
+Table~\ref{tab:rankings} reflects exactly this. Self-consistency
+confidence, by contrast, captures how often the model actually
+produces the same answer across reruns at $T = 0.7$, and the picture
+inverts: every model exceeds the conventional $\text{ECE} = 0.6$
+threshold for ``severe overconfidence'', and the cross-model spread
+collapses. A model that claims ``I am $90\%$ sure'' but agrees with
+itself only $60\%$ of the time across reruns is calibrated only in
+the verbal sense; the verbal claim is decoupled from the empirical
+answer distribution. This is the same divergence the paper's title
+names: verbalized confidence is pattern matching on
+calibration-shaped language, while self-consistency probes whether
+the reasoning behind the answer is stable, and the two diverge by an
+order of magnitude. We disclose one methodological choice: the
+self-consistency ECE treats single-answer agreement across reruns as
+the ground-truth signal, which excludes the rare cases where all
+three reruns fail to produce a parseable answer line; those cases
+are tracked separately in the run logs but not included in the
+$n = 2{,}415$ figure here.

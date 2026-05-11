@@ -44,10 +44,19 @@ model that lands on the right number while quietly assuming
 exchangeability where the task posits hierarchical structure has
 solved a different problem than the one asked. Du et
 al.~\cite{du2025icecream} document the same blindness in causal
-reasoning. The implication for evaluation design is that future
-benchmarks for statistical reasoning should treat
-assumption-compliance as an independent dimension scored by a non-
-self-referential judge, not as a sub-clause of a keyword rubric.
+reasoning. A parallel divergence appears in the calibration analysis
+(Figure~\ref{fig:calibration-paired}): verbalized confidence places
+Claude and GPT-4.1 in the well-calibrated tier (ECE $\approx 0.033$),
+while self-consistency confidence on three reruns at $T = 0.7$ pushes
+every model past the $\text{ECE} = 0.6$ ``severe overconfidence''
+threshold. Verbalized confidence is pattern matching on
+calibration-shaped language; self-consistency probes the underlying
+answer distribution. The implication for evaluation design is that
+future benchmarks for statistical reasoning should treat
+assumption-compliance as an independent dimension scored by a
+non-self-referential judge, and should report calibration with both
+verbalized and self-consistency extractors, not as a sub-clause of a
+keyword rubric.
 
 \textbf{Broader implications.} The multi-axis ranking framework is
 inexpensive to add to existing benchmarks: the same response corpus
