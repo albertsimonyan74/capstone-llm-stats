@@ -51,9 +51,43 @@ Operating rules: [CLAUDE.md](CLAUDE.md). Methodology rationale: `llm-stats-vault
 - TeX Live or TinyTeX 2024+ for paper compile. Needs `IEEEtran.cls`, `IEEEtran.bst`, `amsmath`, `graphicx`, `booktabs`, `float`, `hyperref`. `IEEEtran` files vendored in `paper/`.
 - macOS or Linux. Tested on macOS Darwin 25.3.0.
 
-## Required API Keys
+## API Keys (advanced workflow only)
 
-Copy `.env.example` → `.env` and fill in:
+API keys are NOT required to verify the paper's results — all benchmark outputs are committed in `data/processed_data/`, and the default reproduction path regenerates figures and the paper from these cached results.
+
+API keys are only needed if you want to re-run the LLM benchmark from scratch (i.e., make fresh API calls to all five providers plus the external judge). This is documented under "Advanced: regenerate benchmark from scratch" below.
+
+## Quick Start (verify paper results)
+
+Reproduces all paper figures and the PDF from committed benchmark results. No API keys required. About 5 minutes.
+
+```bash
+./reproduce.sh
+```
+
+This installs Python and R dependencies, regenerates figures from `data/processed_data/`, and compiles `paper/main.pdf`.
+
+## Detailed Reproduction Steps (verify paper results)
+
+1. Clone the repository.
+2. `python -m venv .venv && source .venv/bin/activate`
+3. `pip install -r requirements.txt`
+4. `Rscript -e 'renv::restore()'`   # restores R deps from `renv.lock`
+5. `export PYTHONPATH="$(pwd)/code"`
+6. `cd code/visualization && Rscript run_all.R && cd ../..`
+7. `cp code/visualization/figures/* paper/figures/`
+8. `cd paper && pdflatex main.tex && bibtex main && \`
+   `              pdflatex main.tex && pdflatex main.tex && cd ..`
+
+Output: `paper/main.pdf`
+
+No API keys, no benchmark execution. The repository's `data/processed_data/` directory contains all model responses, scoring outputs, and judge classifications used in the paper.
+
+## Advanced: Regenerate benchmark from scratch
+
+This re-runs the full LLM benchmark (paid API calls, ~30 minutes, ~$10 total across providers). Only needed if you want to verify benchmark outputs themselves, not the downstream analysis.
+
+Requires API keys for all five model providers plus Together AI for the external judge. Copy `.env.example` to `.env` and fill in:
 
 | Variable | Used by |
 |---|---|
@@ -62,29 +96,22 @@ Copy `.env.example` → `.env` and fill in:
 | `GEMINI_API_KEY` | Gemini 2.5 Flash |
 | `DEEPSEEK_API_KEY` | DeepSeek-Chat |
 | `MISTRAL_API_KEY` | Mistral Large |
-| `TOGETHER_API_KEY` | Llama 3.3 70B Turbo (external judge) |
+| `TOGETHER_API_KEY` | Llama 3.3 70B (external judge) |
 
-Missing keys produce error records rather than aborting; runs are skipped per missing key.
-
-## Quick Start
+Then run:
 
 ```bash
-./reproduce.sh
+export PYTHONPATH="$(pwd)/code"
+bash code/scripts/refresh_pipeline.sh
 ```
 
-Runs the full pipeline: dependency install, benchmark execution, scoring, figure generation, paper compilation. About 30 minutes on first run; ~5 minutes for figure-only regeneration with warm cache.
+This calls all five model APIs across 171 base tasks + 473 perturbations, runs the external judge on each (task, response) pair, computes scoring, calibration, robustness, and writes outputs to `data/processed_data/`. After this completes, follow the default reproduction path above to regenerate figures and the PDF.
 
-## Detailed Reproduction Steps
+Alternatively, the regenerate path is gated in `reproduce.sh`:
 
-1. Clone the repo and create `.env` from `.env.example` with valid API keys for all five LLM providers plus `TOGETHER_API_KEY`.
-2. `python -m venv .venv && source .venv/bin/activate`
-3. `pip install -r requirements.txt`
-4. `Rscript -e 'renv::restore()'` (restores R deps from `renv.lock`)
-5. `export PYTHONPATH="$(pwd)/code"`
-6. `bash code/scripts/refresh_pipeline.sh` — canonical analysis entry point. Deduplicates runs, scores, aggregates, computes calibration, robustness, agreement, taxonomy.
-7. `cd code/visualization && Rscript run_all.R` — regenerates all paper figures into `figures/`.
-8. `cp code/visualization/figures/* paper/figures/` (or pick the figures referenced by `main.tex`).
-9. `cd paper && pdflatex main.tex && bibtex main && pdflatex main.tex && pdflatex main.tex`
+```bash
+REGENERATE_BENCHMARK=1 ./reproduce.sh
+```
 
 ## Benchmark Design
 
