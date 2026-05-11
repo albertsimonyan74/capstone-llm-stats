@@ -6,7 +6,7 @@ mark pairs whose 95% bootstrap CIs overlap.
 
 Output: BOTH
   - capstone-website/frontend/public/visualizations/png/v2/rank_shift.png
-  - report_materials/figures/rank_shift.png
+  - paper/figures/rank_shift.png
 """
 from __future__ import annotations
 

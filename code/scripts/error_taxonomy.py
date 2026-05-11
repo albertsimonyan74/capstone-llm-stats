@@ -6,7 +6,7 @@ records.
 
 Output:
     data/processed_data/results_v2/error_taxonomy_v2.json
-    report_materials/figures/error_taxonomy_hierarchical.png
+    paper/figures/error_taxonomy_hierarchical.png
 """
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ RUNS_PATH = ROOT / "data/processed_data/results_v1/runs.jsonl"
 TASKS_PATH = ROOT / "data/raw_data/benchmark_v1/tasks_all.json"
 OUT_JSON = ROOT / "data/processed_data/results_v2/error_taxonomy_v2.json"
 JUDGE_JSONL = ROOT / "data/processed_data/results_v2/error_taxonomy_v2_judge.jsonl"
-FIG_PATH = ROOT / "report_materials/figures/error_taxonomy_hierarchical.png"
+FIG_PATH = ROOT / "paper/figures/error_taxonomy_hierarchical.png"
 
 TOGETHER_URL = "https://api.together.xyz/v1/chat/completions"
 JUDGE_MODEL = "meta-llama/Llama-3.3-70B-Instruct-Turbo"

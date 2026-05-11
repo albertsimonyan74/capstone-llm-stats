@@ -11,7 +11,7 @@ Sources (canonical, post-Phase-1.8):
   - calibration.json           → {model}.ece (verbalized)
 
 Output (dual-write per Tier 2A spec):
-  - report_materials/figures/dimension_leaderboard.png
+  - paper/figures/dimension_leaderboard.png
   - capstone-website/frontend/public/visualizations/png/v2/dimension_leaderboard.png
 """
 from __future__ import annotations

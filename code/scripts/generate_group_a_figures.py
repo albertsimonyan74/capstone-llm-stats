@@ -1,7 +1,7 @@
 """Group A figures for poster — A1..A6.
 
 Reads existing artifacts (no model API calls). Writes 6 PNGs at 300 DPI,
-transparent background, to report_materials/figures/.
+transparent background, to paper/figures/.
 
 Usage:
     python scripts/generate_group_a_figures.py

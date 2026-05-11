@@ -16,7 +16,7 @@ Inputs (read-only):
 
 Outputs:
     data/processed_data/results_v2/tolerance_sensitivity.json
-    report_materials/figures/tolerance_sensitivity.png
+    paper/figures/tolerance_sensitivity.png
 """
 from __future__ import annotations
 

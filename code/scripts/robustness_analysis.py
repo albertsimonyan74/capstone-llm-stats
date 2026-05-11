@@ -10,7 +10,7 @@ annotate cells where |Δ| exceeds threshold. Category taxonomy matches
 scripts/generate_group_a_figures.py.
 
 Output:
-- report_materials/figures/robustness_heatmap.png
+- paper/figures/robustness_heatmap.png
 """
 from __future__ import annotations
 

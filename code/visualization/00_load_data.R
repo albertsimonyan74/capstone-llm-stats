@@ -1,6 +1,6 @@
 ## 00_load_data.R
 ## Read runs.jsonl, parse into clean tibble, save as RDS + CSV.
-## Run from: report_materials/r_analysis/
+## Run from: code/visualization/
 
 # ── Package bootstrap ────────────────────────────────────────────────────────
 pkgs <- c("jsonlite", "dplyr", "readr", "tibble", "stringr")

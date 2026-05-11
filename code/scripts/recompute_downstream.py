@@ -10,12 +10,12 @@ and updates:
 3d. data/processed_data/results_v2/calibration.json (append accuracy_calibration_correlation)
 
 Figures (regenerated from the recomputed data):
-3b. report_materials/figures/a4b_per_dim_robustness.png (NEW)
-3c. report_materials/figures/a5b_per_dim_calibration.png (NEW)
-3e. report_materials/figures/three_rankings.png
-3f. report_materials/figures/a2_accuracy_by_category.png
-3g. report_materials/figures/a3_failure_heatmap.png
-3h. report_materials/figures/a6_aggregate_ranking.png
+3b. paper/figures/a4b_per_dim_robustness.png (NEW)
+3c. paper/figures/a5b_per_dim_calibration.png (NEW)
+3e. paper/figures/three_rankings.png
+3f. paper/figures/a2_accuracy_by_category.png
+3g. paper/figures/a3_failure_heatmap.png
+3h. paper/figures/a6_aggregate_ranking.png
 3i. formatting_failure_rate_per_model embedded in /api/v2/headline_numbers source
     (added as a key inside calibration.json — the headline_numbers endpoint
      reads multiple files, so we surface this metric on the literature_v1 side

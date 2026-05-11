@@ -32,7 +32,7 @@ reasonbench2025
 
 ## Project artifacts that cite this
 - code/scripts/three_rankings_figure.py
-- report_materials/figures/three_rankings.png
+- paper/figures/three_rankings.png
 - RQ4 robustness panel
 - Abstract / methodology framing
 

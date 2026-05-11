@@ -27,7 +27,7 @@ Citations:
 
 Outputs:
   - data/processed_data/results_v2/combined_pass_flip_analysis.json
-  - report_materials/figures/combined_pass_flip_comparison.png
+  - paper/figures/combined_pass_flip_comparison.png
 
 Constraints:
   - Deterministic. No randomness. No model API calls.
@@ -72,7 +72,7 @@ PERT_SPECS_PATH = Path("data/raw_data/synthetic/perturbations_all.json")
 V1_PERT_PATH = Path("data/raw_data/synthetic/perturbations.json")
 
 OUT_JSON = Path("data/processed_data/results_v2/combined_pass_flip_analysis.json")
-OUT_FIG = Path("report_materials/figures/combined_pass_flip_comparison.png")
+OUT_FIG = Path("paper/figures/combined_pass_flip_comparison.png")
 
 # ── Constants ────────────────────────────────────────────────────────────────
 THRESHOLD = 0.5

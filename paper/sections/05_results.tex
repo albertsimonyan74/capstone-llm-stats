@@ -105,8 +105,8 @@ per-dimension $\alpha$ values from the inter-rater check.
 
 \subsection{Calibration Across Extraction Methods}
 
-A single ECE number hides where the (mis)calibration comes from. We
-separate two extraction methods. \emph{Verbalized confidence} uses
+A single ECE number hides where the (mis)calibration comes from.
+Two extraction methods are separated below. \emph{Verbalized confidence} uses
 what the model states alongside its answer. \emph{Self-consistency
 confidence} is inferred from how often the model returns the same
 answer across reruns at temperature $T = 0.7$.
@@ -118,7 +118,7 @@ Self-consistency confidence asks instead how often the model agrees
 with itself on the same prompt across reruns, and the picture
 inverts. Every model crosses the conventional $\text{ECE} = 0.6$
 threshold for ``severe overconfidence,'' and the cross-model spread
-collapses. A model that says ``I am $90\%$ sure'' but reproduces
+collapses. A model that states $90\%$ confidence but reproduces
 its own answer only $60\%$ of the time is calibrated only verbally;
 the verbal claim is detached from the empirical answer distribution.
 Verbalized confidence is pattern matching on calibration-shaped

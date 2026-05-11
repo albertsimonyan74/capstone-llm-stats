@@ -16,7 +16,7 @@ Inputs (same join as scripts/keyword_vs_judge_agreement.py):
 Outputs:
 - data/processed_data/results_v2/krippendorff_agreement.json
 - data/processed_data/results_v2/keyword_vs_judge_agreement.json (augmented with α fields)
-- report_materials/figures/agreement_metrics_comparison.png
+- paper/figures/agreement_metrics_comparison.png
 
 Run from project root:
     python scripts/krippendorff_agreement.py
@@ -55,7 +55,7 @@ PERT_ALL_PATH = ROOT / "data/raw_data/synthetic/perturbations_all.json"
 V1_PERT_PATH = ROOT / "data/raw_data/synthetic/perturbations.json"
 OUT_JSON = ROOT / "data/processed_data/results_v2/krippendorff_agreement.json"
 EXISTING_AGREEMENT = ROOT / "data/processed_data/results_v2/keyword_vs_judge_agreement.json"
-FIG_OUT = ROOT / "report_materials/figures/agreement_metrics_comparison.png"
+FIG_OUT = ROOT / "paper/figures/agreement_metrics_comparison.png"
 
 # (label, kw_field, judge_field). reasoning_completeness has no keyword equivalent
 # so it cannot be α-validated against keywords; we still report keyword vs the

@@ -10,7 +10,7 @@ Inputs:
 
 Outputs:
 - data/processed_data/results_v2/bootstrap_ci.json
-- report_materials/figures/bootstrap_ci.png
+- paper/figures/bootstrap_ci.png
 """
 from __future__ import annotations
 

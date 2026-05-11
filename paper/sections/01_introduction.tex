@@ -14,9 +14,9 @@ and ad-hoc Bayesian evaluations~\cite{longjohn2025bayesian} all
 report accuracy alone. When the three properties disagree, that
 column is misleading.
 
-We make the disagreement concrete on 171 Bayesian and inferential
-tasks. Five frontier LLMs are scored on accuracy, robustness, and
-calibration; the rank orders differ. Two patterns carry the
+The disagreement is made concrete here on 171 Bayesian and
+inferential tasks. Five frontier LLMs are scored on accuracy,
+robustness, and calibration; the rank orders differ. Two patterns carry the
 headline. GPT-4.1 is last on accuracy (0.621) but first on robustness
 (0.9996); its base and perturbation pass rates fall within 0.0003 of
 each other. Claude leads accuracy (0.683) and binary-pass calibration
@@ -34,7 +34,7 @@ or both. Both have known biases. Keyword rubrics confuse surface
 form with substance: the word ``assume'' is not the same as actually
 stating an assumption. Single-judge protocols suffer self-preference
 bias and design-choice sensitivity~\cite{park2025judge,judgment2025noise}.
-We score each response twice: once with a deterministic keyword
+Each response is scored twice: once with a deterministic keyword
 rubric, once with an external out-of-family judge (Llama 3.3 70B
 Turbo via Together AI, not one of the five benchmarked models). The
 two views disagree where it matters. They agree only moderately on

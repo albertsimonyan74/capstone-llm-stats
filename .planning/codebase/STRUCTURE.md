@@ -108,14 +108,6 @@ capstone-llm-stats/                  # Project root (all scripts run from here)
 │   ├── recompute_scores.py          # Backfill confidence_score+reasoning_score in runs.jsonl
 │   └── summarize_results.py         # Regenerates results_summary.json for the website
 │
-├── report_materials/                # Research report artifacts
-│   └── r_analysis/
-│       ├── benchmark_report.html    # Master R Markdown report (9.3 MB, Flatly theme)
-│       ├── run_all.R                # Runs all 15 R visualization scripts
-│       ├── figures/                 # 15 PNG + 1 GIF (15_bar_race.gif)
-│       ├── interactive/             # 14 Plotly HTML + _files/ subdirs
-│       └── data/                    # R analysis data files
-│
 ├── literature/                      # Background reading (PDFs, notes)
 ├── website/                         # Older static site (separate from capstone-website/)
 ├── .claude/

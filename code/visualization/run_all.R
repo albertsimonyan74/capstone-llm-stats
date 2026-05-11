@@ -4,7 +4,7 @@
 ## Run `python scripts/analyze_errors.py` from project root before running this.
 ## Creates data/ and figures/ dirs if needed.
 ## Wraps each script in tryCatch; prints progress and final manifest.
-## Run from: report_materials/r_analysis/
+## Run from: code/visualization/
 
 cat("\n")
 cat("╔══════════════════════════════════════════════════════════════╗\n")

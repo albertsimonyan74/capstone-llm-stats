@@ -13,8 +13,8 @@ Accuracy:
 
 Outputs:
 - data/processed_data/results_v2/calibration.json
-- report_materials/figures/calibration_reliability.png
-- report_materials/figures/calibration_ece_ranking.png
+- paper/figures/calibration_reliability.png
+- paper/figures/calibration_ece_ranking.png
 
 Run:
     python scripts/calibration_analysis.py
@@ -47,17 +47,17 @@ RUNS_PATH = Path("data/processed_data/results_v1/runs.jsonl")
 V1_PERT_PATH = Path("data/raw_data/synthetic/perturbations.json")
 JUDGE_PATH = Path("data/processed_data/results_v2/llm_judge_scores_full.jsonl")
 OUT_JSON = Path("data/processed_data/results_v2/calibration.json")
-FIG_RELIABILITY = Path("report_materials/figures/calibration_reliability.png")
+FIG_RELIABILITY = Path("paper/figures/calibration_reliability.png")
 FIG_RELIABILITY_WEB = Path(
     "capstone-website/frontend/public/visualizations/png/v2/calibration_reliability.png"
 )
 FIG_RELIABILITY_SM = Path(
-    "report_materials/figures/calibration_reliability_smallmultiples.png"
+    "paper/figures/calibration_reliability_smallmultiples.png"
 )
 FIG_RELIABILITY_SM_WEB = Path(
     "capstone-website/frontend/public/visualizations/png/v2/calibration_reliability_smallmultiples.png"
 )
-FIG_ECE = Path("report_materials/figures/calibration_ece_ranking.png")
+FIG_ECE = Path("paper/figures/calibration_ece_ranking.png")
 FIG_ECE_WEB = Path(
     "capstone-website/frontend/public/visualizations/png/v2/calibration_ece_ranking.png"
 )
@@ -461,7 +461,7 @@ def main() -> int:
     OUT_JSON.write_text(json.dumps(per_model, indent=2))
     # Tier 2A.6: smallmultiples is the §5 canonical view on the website.
     # The single-panel `calibration_reliability.png` is poster-only — emit
-    # only to report_materials/, not to public/v2 (orphan was archived).
+    # only to paper/figures/, not to public/v2 (orphan was archived).
     make_reliability_figure(per_model, [FIG_RELIABILITY])
     make_reliability_smallmultiples(per_model, [FIG_RELIABILITY_SM, FIG_RELIABILITY_SM_WEB])
     make_ece_figure(per_model, [FIG_ECE, FIG_ECE_WEB])

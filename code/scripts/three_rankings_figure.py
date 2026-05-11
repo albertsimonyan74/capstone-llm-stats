@@ -2,7 +2,7 @@
 
 Poster centerpiece — visualizes that single-number leaderboards mislead.
 Bootstrap CIs (B=10,000) used to mark statistically non-separable ranks.
-Output: report_materials/figures/three_rankings.png (300 DPI, transparent).
+Output: paper/figures/three_rankings.png (300 DPI, transparent).
 """
 from __future__ import annotations
 

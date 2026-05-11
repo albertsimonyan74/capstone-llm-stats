@@ -1,6 +1,6 @@
 ## 16_error_taxonomy.R
 ## Error taxonomy: dark-theme visualizations.
-## Run from: report_materials/r_analysis/
+## Run from: code/visualization/
 
 pkgs <- c("jsonlite", "ggplot2", "dplyr", "tidyr", "scales")
 for (pkg in pkgs) {

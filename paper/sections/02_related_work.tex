@@ -19,9 +19,9 @@ al.~\cite{longjohn2025bayesian} aggregate benchmark results
 probabilistically rather than evaluating Bayesian reasoning itself.
 Du et al.~\cite{du2025icecream} document assumption-blindness in
 causal reasoning: LLMs produce ``convincing yet misleading'' answers
-without articulating the assumptions those answers depend on. Our
-44.3\% missing-assumption rate extends the pattern to inferential
-statistics.
+without articulating the assumptions those answers depend on. The
+$44.3\%$ missing-assumption rate reported here extends the pattern
+to inferential statistics.
 
 \textbf{Calibration.} Guo et al.~\cite{guo2017calibration} introduced
 Expected Calibration Error and showed that modern neural networks
@@ -30,7 +30,8 @@ well-studied for classifiers; applying it to free-form LLM reasoning
 is recent and less settled. FermiEval and related
 work~\cite{fermieval2025,multianswer2026,nagarkar2026canllm} adapt
 calibration to natural-language outputs, usually on a single
-dimension. We report binary-pass ECE and a per-NMACR-dimension ECE.
+dimension. Binary-pass ECE and a per-NMACR-dimension ECE are
+reported in this work.
 
 \textbf{LLM-as-judge.} Zheng et al.~\cite{zheng2023judge} introduced
 LLM-as-judge with MT-Bench, showing strong LLMs can substitute for
@@ -38,15 +39,15 @@ human raters on open-ended tasks. Follow-up work documents
 design-choice sensitivity and self-preference
 bias~\cite{park2025judge,judgment2025noise}. Brittlebench and
 ReasonBench~\cite{brittlebench2026,reasonbench2025} document prompt
-sensitivity and reasoning instability under perturbation. Our
-protocol constrains the judge to a single dimension
+sensitivity and reasoning instability under perturbation. The
+protocol used here constrains the judge to a single dimension
 (assumption-compliance) and uses an out-of-family open-weights
 model (Llama 3.3 70B Turbo). Both choices address failure modes
 Feuer et al.~\cite{judgment2025noise} document.
 
-We are not aware of a benchmark for Bayesian or inferential
+No prior benchmark is known for Bayesian or inferential
 statistical reasoning that combines (i) a perturbation taxonomy
 for robustness, (ii) an external single-dimension judge for
 assumption-compliance, and (iii) calibration measured on the same
-task set. Our contribution is that combination; it surfaces ranking
-divergences a single-metric leaderboard cannot.
+task set. The contribution of this work is that combination; it
+surfaces ranking divergences a single-metric leaderboard cannot.

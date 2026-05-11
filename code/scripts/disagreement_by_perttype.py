@@ -10,7 +10,7 @@ Source (canonical):
     combined.pct_pass_flip
 
 Output (dual-write):
-  report_materials/figures/disagreement_by_perttype.png
+  paper/figures/disagreement_by_perttype.png
   capstone-website/frontend/public/visualizations/png/v2/disagreement_by_perttype.png
 """
 from __future__ import annotations
