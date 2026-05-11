@@ -126,7 +126,7 @@ capstone-llm-stats/                  # Project root (all scripts run from here)
 ├── .env.example                     # API key template — copy to .env and fill in
 ├── .env                             # API keys (never committed)
 ├── CLAUDE.md                        # Single source of truth for all project state
-├── bayesian_scope.md                # Defines scope of MCMC (out-of-scope for tasks)
+├── README.md                        # Canonical project doc (merged with bayesian_scope 2026-05-11)
 ├── pyproject.toml                   # Python project config (ruff lint settings)
 └── .venv/                           # Python 3.11 virtual environment
 ```

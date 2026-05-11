@@ -46,7 +46,6 @@ cp requirements.txt "$STAGE/requirements.txt"
 cp environment.yml "$STAGE/environment.yml" 2>/dev/null || true
 cp code/visualization/renv.lock "$STAGE/renv.lock" 2>/dev/null || true
 cp reproduce.sh "$STAGE/reproduce.sh"
-cp bayesian_scope.md "$STAGE/PROJECT_OVERVIEW.md"
 cp .env.example "$STAGE/.env.example"
 cp CLAUDE.md "$STAGE/CLAUDE.md" 2>/dev/null || true
 cp conftest.py "$STAGE/conftest.py" 2>/dev/null || true
