@@ -219,7 +219,7 @@ def get_task(task_id: str):
     question = ""
     try:
         import sys
-        sys.path.insert(0, str(BASE_DIR))
+        sys.path.insert(0, str(BASE_DIR / "code"))
         from models.prompt_builder import build_prompt
         question = build_prompt(t)
     except Exception as e:

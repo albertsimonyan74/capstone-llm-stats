@@ -18,14 +18,15 @@ DS 299 Capstone — benchmarking LLMs on Bayesian/inferential statistical reason
 
 ## Commands
 
-Run all from project root.
+Run all from project root. Python packages live under `code/` — `pytest` finds them via `conftest.py`; CLI invocations need `PYTHONPATH=$(pwd)/code` (or run `source <(echo 'export PYTHONPATH=$(pwd)/code')`).
 
 ```bash
 source .venv/bin/activate
+export PYTHONPATH="$(pwd)/code"
 
 # Task generation (DO NOT edit output files manually)
-python -m baseline.bayesian.build_tasks_bayesian        # → tasks.json (136)
-python -m baseline.bayesian.build_tasks_advanced        # → tasks_advanced.json (35)
+python -m data_preprocessing.bayesian.build_tasks_bayesian   # → tasks.json (136)
+python -m data_preprocessing.bayesian.build_tasks_advanced   # → tasks_advanced.json (35)
 python3 -c "
 import json
 t1=json.load(open('data/raw_data/benchmark_v1/tasks.json'))
@@ -36,15 +37,15 @@ json.dump(all_,open('data/raw_data/benchmark_v1/tasks_all.json','w'),indent=2)
 "  # → tasks_all.json (171)
 
 # Benchmark runs
-python -m llm_runner.run_all_tasks --models claude gemini chatgpt deepseek mistral
-python -m llm_runner.run_all_tasks --models claude --dry-run --limit 3
-python -m llm_runner.run_all_tasks --models claude --task-types DISC_MEDIAN MARKOV
-python -m llm_runner.run_all_tasks --models claude gemini --synthetic
-python -m llm_runner.run_all_tasks --models claude --synthetic --pert-types numerical
+python -m models.run_all_tasks --models claude gemini chatgpt deepseek mistral
+python -m models.run_all_tasks --models claude --dry-run --limit 3
+python -m models.run_all_tasks --models claude --task-types DISC_MEDIAN MARKOV
+python -m models.run_all_tasks --models claude gemini --synthetic
+python -m models.run_all_tasks --models claude --synthetic --pert-types numerical
 python code/scripts/generate_perturbations_full.py          # regenerate perturbations_all.json (canonical, 473 perturbations)
 
 # Scoring & analysis
-python -m experiments.run_benchmark
+python code/scripts/run_benchmark.py
 python code/scripts/analyze_errors.py                        # E1–E9 taxonomy, up to 100 LLM calls
 python code/scripts/analyze_errors.py --no-llm               # rule-based only
 python code/scripts/analyze_perturbations.py                 # RQ4 → rq4_analysis.json
@@ -186,7 +187,7 @@ Phase 2 solvers use `np.random.seed(42)` — true values are seeded MC estimates
 - Task IDs: `TYPE_NN` (e.g. `DISC_MEDIAN_01`, padded 2 digits)
 - Model family names lowercase: `claude`, `gemini`, `chatgpt`, `deepseek`, `mistral`
 
-**Imports**: absolute only (`from llm_runner.logger import log_jsonl`). No relative imports outside packages.
+**Imports**: absolute only (`from models.logger import log_jsonl`). No relative imports outside packages. Package roots: `data_preprocessing`, `analysis`, `models`, `capstone_mcp` — all under `code/`, importable with `code/` on `sys.path` (handled by `conftest.py` for tests; export `PYTHONPATH=$(pwd)/code` for CLI).
 
 **Tests**: `code/capstone_mcp/test_server.py` (29), `code/data_preprocessing/frequentist/test_frequentist.py` (24). No tests for `code/analysis/`, `code/data_preprocessing/bayesian/`, `code/models/`.
 
@@ -200,7 +201,7 @@ Phase 2 solvers use `np.random.seed(42)` — true values are seeded MC estimates
 1. `gen_<type>_tasks()` in `code/data_preprocessing/bayesian/build_tasks_bayesian.py`
 2. Ground-truth fn in `code/data_preprocessing/bayesian/ground_truth.py` if needed
 3. `_prompt_<type>()` in `code/models/prompt_builder.py`; register in `_DISPATCH`
-4. Regenerate: `python -m baseline.bayesian.build_tasks_bayesian`
+4. Regenerate: `python -m data_preprocessing.bayesian.build_tasks_bayesian`
 
 **User Study hardening** (`capstone-website/backend/user_study.py`):
 - Concurrency: `asyncio.Semaphore(3)` — max 3 parallel 5-model fan-outs (15 in-flight LLM calls)

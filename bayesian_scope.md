@@ -157,23 +157,31 @@ The same five models reorder when scored on different axes. This is the central 
 
 ---
 
-## 7. Repository map (post-cleanup, 2026-05-10)
+## 7. Repository map (post Phase 10 refactor, 2026-05-11)
 
 ```
-code/data_preprocessing/                       Bayesian + frequentist task generators + ground-truth solvers
-code/capstone_mcp/                   FastMCP server exposing 7 query tools over the benchmark
-data/                           tasks_all.json (171), perturbations_all.json (473), schema
-code/analysis/                     metrics.py (Path B), llm_judge_rubric.py (Together judge), rubrics
-experiments/                    results_v1/ (Path A scores) + results_v2/ (judge + analyses)
-literature/                     textbooks/ + lectures/ subdir (37 lecture PDFs, gitignored)
-code/models/                     5 model clients (httpx, no SDKs), runner, prompt builders, parser
-paper/                          IEEEtran conference scaffold (Phase 4) — main.tex + 9 section stubs
+code/
+  data_preprocessing/           Bayesian + frequentist task generators + ground-truth solvers (was baseline/)
+  analysis/                     metrics.py (Path B), llm_judge_rubric.py (Together judge), rubrics (was evaluation/)
+  models/                       5 model clients (httpx, no SDKs), runner, prompt builders, parser (was llm_runner/)
+  capstone_mcp/                 FastMCP server exposing 7 query tools over the benchmark
+  scripts/                      Analysis pipeline entry points + figure generators + run_benchmark.py
+  visualization/                R analysis pipeline (run_all.R, 18 R scripts) + figures (was report_materials/r_analysis/)
+data/
+  raw_data/benchmark_v1/        tasks.json + tasks_advanced.json + tasks_all.json (171)
+  raw_data/synthetic/           perturbations_all.json (473) + schema
+  processed_data/results_v1/    Path A scores (runs.jsonl, results.json)
+  processed_data/results_v2/    judge scores + downstream analyses
+paper/                          IEEEtran conference scaffold — main.tex + 9 section stubs + references.bib
 poster/                         AUA poster TeX + figures + scripts (historical artifact)
-report_materials/               R analysis pipeline (run_all.R, 18 R scripts) + figures
-code/scripts/                        Analysis pipeline entry points + figure generators (24 .py + 1 .sh)
+report_materials/figures/       Paper-side figure outputs (R pipeline pushes here)
+literature/                     textbooks/ + lectures/ subdir (37 lecture PDFs, gitignored)
 llm-stats-vault/                Obsidian vault (sessions, knowledge, atlas, 40-literature/)
   └── 90-archive/               Canonical archive root (audit/, scripts_legacy/, data_legacy/, …)
+conftest.py                     Puts code/ on sys.path for pytest
 ```
+
+Phase 10 (2026-05-11) restructured the repo to capstone-guideline §5 layout. Pre-Phase-10 directories `baseline/`, `evaluation/`, `llm_runner/`, `scripts/`, `experiments/`, `report_materials/r_analysis/` no longer exist at the working-repo root. Top-level `archive/` removed 2026-05-10; archival now under `llm-stats-vault/90-archive/<category>_legacy/`.
 
 Top-level `archive/` removed 2026-05-10; convention now: all archival under `llm-stats-vault/90-archive/<category>_legacy/`.
 
@@ -185,17 +193,18 @@ Top-level `archive/` removed 2026-05-10; convention now: all archival under `llm
 # Set up
 source .venv/bin/activate
 cp .env.example .env  # then fill 5 model keys + TOGETHER_API_KEY
+export PYTHONPATH="$(pwd)/code"
 
 # Regenerate tasks (171)
-python -m baseline.bayesian.build_tasks_bayesian        # → tasks.json (136)
-python -m baseline.bayesian.build_tasks_advanced        # → tasks_advanced.json (35)
+python -m data_preprocessing.bayesian.build_tasks_bayesian   # → tasks.json (136)
+python -m data_preprocessing.bayesian.build_tasks_advanced   # → tasks_advanced.json (35)
 
 # Regenerate perturbations (473)
 python code/scripts/generate_perturbations_full.py           # → perturbations_v2.json (398)
-                                                        # merged with 75 v1 → perturbations_all.json
+                                                             # merged with 75 v1 → perturbations_all.json
 
 # Run benchmark on all 5 models
-python -m llm_runner.run_all_tasks --models claude gemini chatgpt deepseek mistral
+python -m models.run_all_tasks --models claude gemini chatgpt deepseek mistral
 
 # Run perturbation benchmark
 python code/scripts/score_perturbations.py
@@ -205,7 +214,7 @@ bash code/scripts/refresh_pipeline.sh                        # all steps
 bash code/scripts/refresh_pipeline.sh --no-judge             # skip the Llama judge
 
 # Run external Llama judge separately (if --no-judge was used)
-python -m evaluation.llm_judge_rubric \
+python -m analysis.llm_judge_rubric \
     --runs data/processed_data/results_v1/runs.jsonl \
     --tasks data/raw_data/benchmark_v1/tasks_all.json \
     --output data/processed_data/results_v2/llm_judge_scores_full.jsonl
