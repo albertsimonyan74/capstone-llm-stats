@@ -58,6 +58,10 @@ benchmark_report.html
 report_materials/r_analysis/benchmark_report.html
 .vercel
 
+# Submission staging
+capstone_simonyan_submission/
+capstone_simonyan_submission.zip
+
 # LaTeX build artifacts
 paper/*.aux
 paper/*.log
