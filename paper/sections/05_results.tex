@@ -44,9 +44,7 @@ is the clear laggard at ECE $0.198$, six times the leader's error.
 DeepSeek is the only model that consistently ranks among the bottom
 two on every axis.
 
-\subsection{Headline Divergence}
-
-\begin{figure}[!t]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\columnwidth]{figures/rank_flow.png}
   \caption{Rank flow across the three metrics. Each panel ranks the
@@ -61,6 +59,8 @@ two on every axis.
            zero.}
   \label{fig:rank-flow}
 \end{figure}
+
+\subsection{Headline Divergence}
 
 Figure~\ref{fig:rank-flow} visualizes the rank divergence. Two
 parallel examples carry the headline. \textbf{Example 1 (the GPT-4.1
@@ -106,9 +106,7 @@ of whether the assumption is actually articulated. The
 assumption-blindness pattern matches the causal-reasoning failure
 mode catalogued by Du et al.~\cite{du2025icecream}.
 
-\subsection{Calibration Across Extraction Methods}
-
-\begin{figure}[!t]
+\begin{figure}[!ht]
   \centering
   \includegraphics[width=\columnwidth]{figures/krippendorff_strip.png}
   \caption{Krippendorff's $\alpha$ across the three judged dimensions
@@ -125,6 +123,8 @@ mode catalogued by Du et al.~\cite{du2025icecream}.
   \label{fig:krippendorff-strip}
 \end{figure}
 
+\subsection{Calibration Across Extraction Methods}
+
 A single ECE value can obscure the source of (mis)calibration. We
 separate two extraction methods: \emph{verbalized confidence}, where
 the model states a probability or confidence level alongside its
@@ -134,9 +134,9 @@ reruns at temperature $T = 0.7$. Inter-rater agreement on the rubric
 dimensions, summarized in Figure~\ref{fig:krippendorff-strip}, sits
 in the questionable range and informs our interpretation.
 
-\begin{figure*}[!t]
+\begin{figure}[!ht]
   \centering
-  \includegraphics[width=\textwidth]{figures/calibration_ece_paired.png}
+  \includegraphics[width=\columnwidth]{figures/calibration_ece_paired.png}
   \caption{Calibration measured by two extraction methods.
            \emph{Left:} verbalized ECE on $n=855$ truly-base runs
            (171 base tasks $\times$ 5 models), where the model is
@@ -150,7 +150,7 @@ in the questionable range and informs our interpretation.
            consistency gap is direct evidence that stated confidence
            does not reflect actual response stability.}
   \label{fig:calibration-paired}
-\end{figure*}
+\end{figure}
 
 Figure~\ref{fig:calibration-paired} reframes the calibration story.
 Verbalized confidence is what users observe when interacting with a

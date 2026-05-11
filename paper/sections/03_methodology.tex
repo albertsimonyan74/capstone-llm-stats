@@ -6,18 +6,6 @@
 \section{Methodology}
 \label{sec:methodology}
 
-\begin{figure}[t]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/pipeline.png}
-  \caption{Evaluation pipeline. Each task and its perturbations are
-           passed to five frontier LLMs in parallel. Responses are
-           scored via three independent paths: deterministic extraction,
-           NMACR rubric scoring, and an external Llama 3.3 70B judge
-           for assumption-compliance. Aggregated scores yield three
-           independent rankings.}
-  \label{fig:pipeline}
-\end{figure}
-
 \subsection{Task Suite}
 
 The benchmark consists of 171 base tasks across 38 task types,
@@ -33,6 +21,18 @@ and Approximate Bayesian Computation. Each task includes a
 ground-truth solver implemented from textbooks~\cite{bolstad2007bayesian,hoff2009bayesian,bishop2006prml};
 stochastic methods (Phase~2) use seeded MC estimates as ground truth
 with tolerances of 0.05 for MCMC variants and 0.10 for VB and ABC.
+
+\begin{figure}[!ht]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/pipeline.png}
+  \caption{Evaluation pipeline. Each task and its perturbations are
+           passed to five frontier LLMs in parallel. Responses are
+           scored via three independent paths: deterministic extraction,
+           NMACR rubric scoring, and an external Llama 3.3 70B judge
+           for assumption-compliance. Aggregated scores yield three
+           independent rankings.}
+  \label{fig:pipeline}
+\end{figure}
 
 \subsection{Perturbation Taxonomy}
 
