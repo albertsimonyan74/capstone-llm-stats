@@ -10,18 +10,17 @@ for all reported confidence intervals.
 
 \subsection{NMACR Aggregate}
 
-For each (task, model) pair, five dimension-level scores
-$N, M, A, C, R \in [0,1]$ are produced by the Path~B rubric. The
-literature-weighted aggregate score restated from~(\ref{eq:nmacr}) is
+For each (task, model) pair, the Path~B rubric produces five
+dimension-level scores $N, M, A, C, R \in [0,1]$. The aggregate
+score from~(\ref{eq:nmacr}), restated here,
 \[
   S_{\text{NMACR}} = 0.10\,N + 0.20\,M + 0.30\,A + 0.15\,C + 0.25\,R.
 \]
-The weight ordering ($A > R > M > C > N$) reflects the centrality of
-assumption articulation in Bayesian reasoning and the relative
-lesser importance of a single numerical answer when the derivation
-is absent. Per-model accuracy is the mean of $S_{\text{NMACR}}$ over
-the 171 base tasks; the literature-derived weights are documented and
-defended in the source's scoring metadata.
+The ordering $A > R > M > C > N$ comes from weighting assumption
+articulation highest in a Bayesian-reasoning task and weighting a
+correct number with no derivation lowest. Per-model accuracy is
+the mean of $S_{\text{NMACR}}$ over the 171 base tasks. The
+literature trail behind the weights lives in the scoring metadata.
 
 \subsection{Robustness Pass-Flip}
 
@@ -67,17 +66,16 @@ to characterize keyword-vs-judge alignment in Section~\ref{sec:results}.
 \subsection{Spearman Rank Correlation}
 
 Per-dimension keyword-vs-judge agreement is also reported as a
-Spearman rank correlation
+Spearman rank correlation,
 \begin{equation}
   \rho = 1 - \frac{6 \sum_{i=1}^{n} d_i^2}{n(n^2 - 1)},
   \label{eq:spearman}
 \end{equation}
-where $d_i$ is the rank difference between the keyword-rubric score
-and the external-judge score for the $i$-th response in the paired
-sample of size $n$. Spearman $\rho$ is more sensitive to
-monotonic but non-linear scorer relationships than Pearson $r$,
-which makes it the appropriate primary statistic for rubric--judge
-comparison.
+where $d_i$ is the rank difference between the keyword-rubric
+score and the external-judge score for the $i$-th response in the
+paired sample of size $n$. We report Spearman $\rho$ rather than
+Pearson $r$ because the rubric--judge relationship is monotonic
+but not linear.
 
 \subsection{Bootstrap Procedure}
 

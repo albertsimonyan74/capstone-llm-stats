@@ -3,28 +3,26 @@
 % Target: 200–250 words; no math markup, no symbols, no footnotes.
 
 \begin{abstract}
-Large language models are increasingly applied to quantitative and
-statistical reasoning, yet accuracy-only leaderboards obscure failure
-modes that matter in practice. We benchmark five frontier LLMs (Claude
-Sonnet 4.5, GPT-4.1, Gemini 2.5 Flash, DeepSeek-Chat, and Mistral Large)
-on 171 Bayesian and inferential tasks spanning 38 task types, plus 473
-principled perturbations across three axes (rephrase, semantic, and
-numerical). Each response is scored by both a deterministic keyword
-rubric and an external out-of-family judge, Llama 3.3 70B Turbo via
-Together AI, which independently rates assumption-compliance and
-reasoning quality. Rankings of the same five models reorder substantially
-when the evaluation axis changes. The model worst on accuracy (ChatGPT,
-0.621) is best on robustness (0.9996), an essentially perfect score
-under perturbation. The model leading on accuracy and on binary-pass
-calibration (Claude, accuracy 0.683, ECE 0.0334) ranks fourth of five on
-robustness (0.9565). Independent of ranking, 44.3 percent of responses
-fail to explicitly state the statistical assumptions their derivations
-require, and assumption violation is the dominant failure mode (47
-percent of judge-classified failures). Keyword and external-judge
-agreement on assumption-compliance is moderate (Spearman 0.602) and far
-weaker on the other two judged dimensions. We argue that single-number
-leaderboards are insufficient for statistical-reasoning evaluation and
-that the right ranking depends on the property being measured.
+Accuracy-only leaderboards hide the failure modes that matter when
+large language models are used for statistical reasoning. We
+benchmark five frontier LLMs (Claude Sonnet 4.5, GPT-4.1, Gemini
+2.5 Flash, DeepSeek-Chat, and Mistral Large) on 171 Bayesian and
+inferential tasks across 38 task types, with 473 perturbations
+along three axes: rephrase, semantic, and numerical. Each response
+is scored twice, once by a deterministic keyword rubric and once by
+an out-of-family judge, Llama 3.3 70B Turbo via Together AI, that
+rates assumption-compliance and reasoning quality. The rankings
+disagree. The model with the lowest accuracy (GPT-4.1, 0.621) tops
+the robustness ranking with 0.9996. The model that leads both
+accuracy (Claude, 0.683) and binary-pass calibration (Claude, ECE
+0.0334) drops to fourth on robustness (0.9565). 44.3\% of responses
+do not state the statistical assumptions the derivation depends on,
+and assumption violation accounts for 47\% of judge-classified
+failures. Keyword and judge agree only moderately on
+assumption-compliance (Spearman 0.602) and barely at all on the
+other two judged dimensions. A single-number leaderboard is the
+wrong instrument for this domain; the model that wins depends on
+the metric.
 \end{abstract}
 
 \begin{IEEEkeywords}

@@ -7,11 +7,11 @@
 
 \subsection{Per-Metric Rankings}
 
-Table~\ref{tab:rankings} shows the per-model summary across the three
-metrics. Accuracy is the Path~B NMACR-weighted pass rate on the 171
-base tasks; robustness is one minus the perturbation pass-flip rate
-on the 473 perturbations; ECE is binary-pass Expected Calibration
-Error (lower is better).
+Table~\ref{tab:rankings} gives the per-model summary. Accuracy is
+the Path~B NMACR-weighted pass rate on the 171 base tasks.
+Robustness is one minus the perturbation pass-flip rate on the
+473 perturbations. ECE is binary-pass Expected Calibration Error
+(lower is better).
 
 \begin{table}[t]
 \centering
@@ -30,19 +30,19 @@ GPT-4.1           & 0.621 & \textbf{0.9996} & 0.0339 \\
 \end{tabular}
 \end{table}
 
-No two of the three rankings agree. The accuracy ranking is
-Claude $>$ Mistral $>$ Gemini $>$ DeepSeek $>$ GPT-4.1, with Claude
-ahead of the runner-up by nearly four percentage points and GPT-4.1
-in last place. The robustness ranking is
-GPT-4.1 $>$ Mistral $>$ Gemini $>$ Claude $>$ DeepSeek, which moves
-GPT-4.1 from last to first and Claude from first to fourth. The
-calibration ranking is
-Claude $>$ GPT-4.1 $>$ Gemini $>$ Mistral $>$ DeepSeek; Claude and
-GPT-4.1 are essentially tied at the top (the 0.0005 gap is within the
-95\% bootstrap CI estimated over 10{,}000 resamples), while DeepSeek
-is the clear laggard at ECE $0.198$, six times the leader's error.
-DeepSeek is the only model that consistently ranks among the bottom
-two on every axis.
+No two rankings agree. The accuracy ranking is
+Claude $>$ Mistral $>$ Gemini $>$ DeepSeek $>$ GPT-4.1, with
+Claude four percentage points ahead of the runner-up and GPT-4.1
+last. The robustness ranking is
+GPT-4.1 $>$ Mistral $>$ Gemini $>$ Claude $>$ DeepSeek, which
+moves GPT-4.1 from last to first and Claude from first to fourth.
+The calibration ranking is
+Claude $>$ GPT-4.1 $>$ Gemini $>$ Mistral $>$ DeepSeek; Claude
+and GPT-4.1 are tied at the top to within the 95\% bootstrap CI
+(10{,}000 resamples; the 0.0005 gap falls inside the interval),
+while DeepSeek's ECE of $0.198$ is roughly six times the leader's.
+DeepSeek is the only model that finishes in the bottom two on
+every axis.
 
 \begin{figure}[!ht]
   \centering
@@ -62,49 +62,46 @@ two on every axis.
 
 \subsection{Headline Divergence}
 
-Figure~\ref{fig:rank-flow} visualizes the rank divergence. Two
-parallel examples carry the headline. \textbf{Example 1 (the GPT-4.1
+Figure~\ref{fig:rank-flow} shows the rank divergence. Two
+examples carry the headline. \textbf{Example 1 (GPT-4.1
 inversion).} The model that finishes last on accuracy (GPT-4.1,
-$0.621$) finishes first on robustness ($0.9996$), with an essentially
-zero gap between its base and perturbation pass rates ($0.6661$ vs
-$0.6658$). \textbf{Example 2 (the Claude pattern).} The model that
-leads on accuracy ($0.683$) and is tied for the lead on calibration
-(ECE $0.0334$) places fourth on robustness ($0.9565$), with a three-
-percentage-point drop between base and perturbation pass rates
-($0.7011$ vs $0.6706$). Neither pattern is visible from a single
-accuracy column. The configurations they instantiate ---
-high-accuracy-low-robustness and low-accuracy-high-robustness ---
-are usually treated as theoretical edge cases; here they are the
-empirical centerpieces of the same five-model leaderboard. A consumer
-choosing GPT-4.1 because of its robustness score would be choosing
-the model with the lowest base accuracy on the benchmark; a consumer
-choosing Claude because of its accuracy and calibration scores would
-be choosing the third most brittle of the five.
+$0.621$) finishes first on robustness ($0.9996$); its base and
+perturbation pass rates are $0.6661$ and $0.6658$, a gap of
+$0.0003$. \textbf{Example 2 (Claude pattern).} The model that
+leads on accuracy ($0.683$) and ties for the lead on calibration
+(ECE $0.0334$) drops to fourth on robustness ($0.9565$); its base
+pass rate is $0.7011$ and its perturbed pass rate is $0.6706$.
+Neither pattern shows up in an accuracy-only ranking. Both
+configurations (high accuracy with low robustness, low accuracy
+with high robustness) are usually treated as theoretical edge
+cases; in this five-model sample they are simultaneously real. A
+consumer who picks GPT-4.1 for its robustness score is picking the
+model with the lowest base accuracy. A consumer who picks Claude
+for its accuracy and calibration is picking the third-most-brittle
+of the five.
 
 \subsection{Assumption-Compliance Results}
 
-The external Llama 3.3 70B Turbo judge scored each (task, response)
-pair on whether the model explicitly stated the statistical
-assumptions the task required. Across $n=750$ paired runs, the judge
-passes only $55.7\%$ of responses on the assumption-compliance
-dimension --- meaning $44.3\%$ of responses fail to articulate the
-assumptions the derivations depend on, even when the final numeric
-answer is correct. The keyword rubric, by contrast, passes $71.1\%$
-of the same responses on the same dimension, an absolute gap of
-$15.4$ percentage points. Spearman rank correlation between keyword
-and judge scores on assumption-compliance is $\rho = 0.602$
-(95\% CI via Krippendorff bootstrap $[0.516, 0.622]$).
+The Llama 3.3 70B Turbo judge scored each (task, response) pair on
+whether the model explicitly stated the assumptions the task
+requires. On $n=750$ paired runs the judge passes only $55.7\%$ of
+responses on assumption-compliance. That is $44.3\%$ of responses
+that fail to articulate the assumptions the derivation depends on,
+even when the final number is right. The keyword rubric passes
+$71.1\%$ of the same responses, $15.4$ percentage points higher.
+Spearman rank correlation between keyword and judge scores on
+this dimension is $\rho = 0.602$ (95\% CI $[0.516, 0.622]$ via
+Krippendorff bootstrap).
 
-On the larger combined pool ($n=2850$ eligible runs, base $+$
-perturbation), $20.7\%$ of responses exhibit a pass-flip between the
-keyword rubric and the judge --- the keyword rubric and the judge
-disagree on pass/fail status. This gap is the strongest single piece
-of evidence for the title's reasoning-versus-pattern-matching framing:
-models produce surface-correct outputs that pass keyword checks for
-``assume'' or ``given'' tokens while failing the substantive check
-of whether the assumption is actually articulated. The
-assumption-blindness pattern matches the causal-reasoning failure
-mode catalogued by Du et al.~\cite{du2025icecream}.
+On the combined base-plus-perturbation pool ($n=2850$ eligible
+runs), $20.7\%$ of responses pass-flip between the keyword rubric
+and the judge: one in five times, the two scorers disagree on
+whether the assumption was actually articulated. That gap is the
+clearest evidence in the paper for the title's question. Models
+produce surface-correct outputs that pass keyword checks for
+``assume'' or ``given'' tokens while failing the substantive
+check. Du et al.~\cite{du2025icecream} report the same
+assumption-blindness in causal reasoning.
 
 \begin{figure}[!ht]
   \centering
@@ -125,37 +122,35 @@ mode catalogued by Du et al.~\cite{du2025icecream}.
 
 \subsection{Calibration Across Extraction Methods}
 
-A single ECE value can obscure the source of (mis)calibration. We
-separate two extraction methods: \emph{verbalized confidence}, where
-the model states a probability or confidence level alongside its
-answer, and \emph{self-consistency confidence}, where confidence is
-inferred from how often the model returns the same answer across
-reruns at temperature $T = 0.7$. Inter-rater agreement on the rubric
-dimensions, summarized in Figure~\ref{fig:krippendorff-strip}, sits
-in the questionable range and informs our interpretation.
+A single ECE number hides where the (mis)calibration comes from.
+We separate two extraction methods. \emph{Verbalized confidence}
+uses what the model states alongside its answer. \emph{Self-
+consistency confidence} is inferred from how often the model
+returns the same answer across reruns at temperature $T = 0.7$.
+Inter-rater agreement on the rubric dimensions, summarized in
+Figure~\ref{fig:krippendorff-strip}, sits in the conventionally
+``questionable'' range, which informs how we read the results.
 
 Figure~\ref{fig:calibration-paired} reframes the calibration story.
-Verbalized confidence is what users observe when interacting with a
-model: Claude and GPT-4.1 appear excellently calibrated by this
-measure, and the binary-pass ECE leaderboard in
-Table~\ref{tab:rankings} reflects exactly this. Self-consistency
-confidence, by contrast, captures how often the model actually
-produces the same answer across reruns at $T = 0.7$, and the picture
-inverts: every model exceeds the conventional $\text{ECE} = 0.6$
-threshold for ``severe overconfidence'', and the cross-model spread
-collapses. A model that claims ``I am $90\%$ sure'' but agrees with
-itself only $60\%$ of the time across reruns is calibrated only in
-the verbal sense; the verbal claim is decoupled from the empirical
-answer distribution. This is the same divergence the paper's title
-names: verbalized confidence is pattern matching on
-calibration-shaped language, while self-consistency probes whether
-the reasoning behind the answer is stable, and the two diverge by an
-order of magnitude. We disclose one methodological choice: the
-self-consistency ECE treats single-answer agreement across reruns as
-the ground-truth signal, which excludes the rare cases where all
-three reruns fail to produce a parseable answer line; those cases
-are tracked separately in the run logs but not included in the
-$n = 2{,}415$ figure here.
+Verbalized confidence is what a user sees when interacting with the
+model: Claude and GPT-4.1 look well-calibrated by this measure, and
+Table~\ref{tab:rankings} reflects that. Self-consistency confidence
+asks instead how often the model agrees with itself on the same
+prompt across reruns at $T = 0.7$, and the picture inverts. Every
+model crosses the conventional $\text{ECE} = 0.6$ threshold for
+``severe overconfidence'' and the cross-model spread collapses. A
+model that says ``I am $90\%$ sure'' but reproduces its own answer
+only $60\%$ of the time is calibrated only verbally; the verbal
+claim is detached from the empirical answer distribution. That is
+the divergence the title names: verbalized confidence is pattern
+matching on calibration-shaped language, self-consistency probes
+whether the reasoning underneath is stable, and the two come apart
+by an order of magnitude. One methodological choice we should
+disclose: the self-consistency ECE treats single-answer agreement
+across reruns as the ground-truth signal, which excludes the rare
+cases where all three reruns fail to produce a parseable answer
+line. Those cases sit in the run logs but are not in the
+$n = 2{,}415$ figure.
 
 \begin{figure}[H]
   \centering
