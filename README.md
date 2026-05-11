@@ -80,7 +80,7 @@ llm-stats-vault/                Obsidian vault (sessions, knowledge, atlas, 40-l
 conftest.py                     Puts code/ on sys.path for pytest
 ```
 
-Detailed inventory + classification: see `cleanup/01_inventory.md`. Project overview: `bayesian_scope.md`. Operating rules: `CLAUDE.md`.
+Detailed inventory + classification: see `llm-stats-vault/cleanup/01_inventory.md`. Project overview: `bayesian_scope.md`. Operating rules: `CLAUDE.md`.
 
 ## Data Sources
 

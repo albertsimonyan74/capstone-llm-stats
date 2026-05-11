@@ -20,7 +20,7 @@ Differences from B3 (scripts/self_consistency_proxy.py):
 - No stratification by category × failure rate.
 - Output to self_consistency_runs_full.jsonl (separate from B3 raw).
 - Cost guards adjusted: warn at $5, abort at $15.
-- Writes progress every 50 calls to logs/self_consistency_full.log.
+- Writes progress every 50 calls to llm-stats-vault/logs/self_consistency_full.log.
 
 Outputs:
 - data/processed_data/results_v2/self_consistency_runs_full.jsonl       (append-only)
@@ -53,7 +53,7 @@ CALIB_VERBALIZED = ROOT / "data/processed_data/results_v2/calibration.json"
 B3_CALIB = ROOT / "data/processed_data/results_v2/self_consistency_calibration.json"
 OUT_RUNS = ROOT / "data/processed_data/results_v2/self_consistency_runs_full.jsonl"
 OUT_CALIB = ROOT / "data/processed_data/results_v2/self_consistency_calibration_full.json"
-LOG = ROOT / "logs/self_consistency_full.log"
+LOG = ROOT / "llm-stats-vault/logs/self_consistency_full.log"
 
 CITATION = (
     "Methodology grounded in Multi-Answer Confidence (arxiv 2602.07842) "

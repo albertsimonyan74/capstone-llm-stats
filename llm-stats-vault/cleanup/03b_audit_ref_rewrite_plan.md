@@ -15,7 +15,7 @@ Built from `grep -rn audit/ … | grep -v 90-archive/audit/`. Filters applied: d
 | C. Vault internal links (relative — need per-file depth math) | **9** | 21 | Both `[link](path)` and inline-code path tokens |
 | D. Vault sibling `90-archive/*` refs to audit/ | **5** | 9 | After move, audit/ becomes their sibling |
 | E. Bundled vault under `capstone-website/backend/static_data/` | **4** | 5 | Hand-copy from source vault after edits — no automated sync script |
-| F. Do-not-touch (already correct, or non-text state) | **3** | n/a | `.obsidian/workspace.json`, `cleanup/03a_audit_staging_investigation.md`, `2026-05-07-poster-defense-prep.md:253` already says `90-archive/audit/` |
+| F. Do-not-touch (already correct, or non-text state) | **3** | n/a | `.obsidian/workspace.json`, `llm-stats-vault/cleanup/03a_audit_staging_investigation.md`, `2026-05-07-poster-defense-prep.md:253` already says `90-archive/audit/` |
 
 **Total live references to rewrite:** **62 occurrences across 28 files.**
 
@@ -23,7 +23,7 @@ Built from `grep -rn audit/ … | grep -v 90-archive/audit/`. Filters applied: d
 
 ## Replacement convention
 
-### Repo-root-relative (source code, top-level docs, cleanup/, bundled-vault sources)
+### Repo-root-relative (source code, top-level docs, llm-stats-vault/cleanup/, bundled-vault sources)
 
 `audit/<file>` → `llm-stats-vault/90-archive/audit/<file>`
 
@@ -70,14 +70,14 @@ All repo-root-relative. Same `audit/X` → `llm-stats-vault/90-archive/audit/X` 
 | `CLAUDE.md` | 168 | 1 (`audit/recompute_log.md`) |
 | `poster/SCRAPE_PLAN.md` | 8, 112 | 2 (both `audit/recompute_log.md`) |
 | `capstone-website/mobile-fixes-changelog.md` | 3 | 1 (`audit/website_discovery.md`) |
-| `cleanup/01_inventory.md` | 99, 141, 180 | 3 (`### audit/` heading; `audit/tier1_baseline_…/runs.jsonl`; `audit/, vault, .planning/, cleanup/`) |
-| `cleanup/01c_error_taxonomy_diff.md` | 31, 32 | 2 (linked refs to `audit/comprehensive_audit_2026-05-01.md`, `audit/rq_ieee_formulations.md`) |
-| `cleanup/01e_script_callers.md` | 46, 86, 87, 88 | 5 (refs to `audit/personal_todo_status.md`, `audit/tier2a6_dual_write_fix.md`, `audit/cleanup_audit_2026-05-02.md` ×2, `audit/discovery_audit_2026-05-02.md`, `audit/recompute_log.md`) |
-| `cleanup/02_reorg_plan.md` | 52, 54, 113, 133, 146, 147, 298, 354, 380, 407 | 8 inline path refs (note: line 52 says `audit/ ← UNCHANGED in this phase` describing repo-tree position — see special-cases below) |
+| `llm-stats-vault/cleanup/01_inventory.md` | 99, 141, 180 | 3 (`### audit/` heading; `audit/tier1_baseline_…/runs.jsonl`; `audit/, vault, .planning/, llm-stats-vault/cleanup/`) |
+| `llm-stats-vault/cleanup/01c_error_taxonomy_diff.md` | 31, 32 | 2 (linked refs to `audit/comprehensive_audit_2026-05-01.md`, `audit/rq_ieee_formulations.md`) |
+| `llm-stats-vault/cleanup/01e_script_callers.md` | 46, 86, 87, 88 | 5 (refs to `audit/personal_todo_status.md`, `audit/tier2a6_dual_write_fix.md`, `audit/cleanup_audit_2026-05-02.md` ×2, `audit/discovery_audit_2026-05-02.md`, `audit/recompute_log.md`) |
+| `llm-stats-vault/cleanup/02_reorg_plan.md` | 52, 54, 113, 133, 146, 147, 298, 354, 380, 407 | 8 inline path refs (note: line 52 says `audit/ ← UNCHANGED in this phase` describing repo-tree position — see special-cases below) |
 
 ### Special cases inside Group B
 
-- **`cleanup/02_reorg_plan.md`**: this file describes the *post-state* tree. Several refs are intentional descriptions of the new location, not stale paths. Inspect each line; the rewrite list is:
+- **`llm-stats-vault/cleanup/02_reorg_plan.md`**: this file describes the *post-state* tree. Several refs are intentional descriptions of the new location, not stale paths. Inspect each line; the rewrite list is:
   - L52 `├── audit/ ← UNCHANGED in this phase. (Separate prompt to archive/keep.)` — **REWRITE** to `├── llm-stats-vault/90-archive/audit/        ← (was top-level audit/, moved 2026-05-10)`
   - L54 `│   ├── audit/                    (existing)` — **DO NOT REWRITE**: this line is showing the *new* `90-archive/audit/` subtree contents. It's correct after the move (the line above it is the `90-archive/` parent). Verify in execution.
   - L113 `| audit/ | KEEP-IN-PLACE | — | (Separate prompt handles fate.) |` — **REWRITE** to `| llm-stats-vault/90-archive/audit/ | KEEP-IN-PLACE | — | Moved 2026-05-10 from repo root. |`
@@ -89,12 +89,12 @@ All repo-root-relative. Same `audit/X` → `llm-stats-vault/90-archive/audit/X` 
   - L380 `audit/recompute_log.md, audit/cleanup_audit_2026-05-02.md, etc., reference moved file paths.` — **REWRITE** (both).
   - L407 — **DO NOT REWRITE**: text already says `Does not touch audit/ (separate prompt). Top-level archive/ was removed …` — the `audit/` here is the past-tense name. After the move, "audit/" no longer exists as a name; this prose stays factual as a historical note. Recommend a small edit: append `(audit/ moved to llm-stats-vault/90-archive/audit/ 2026-05-10.)` to L407 for clarity.
 
-**Per-file sed (selective; do NOT pipe across all of `cleanup/02_reorg_plan.md` because of the L54 + L407 special cases):**
+**Per-file sed (selective; do NOT pipe across all of `llm-stats-vault/cleanup/02_reorg_plan.md` because of the L54 + L407 special cases):**
 
 ```bash
 # repo-rooted docs that are safe for global replace
 for f in CLAUDE.md poster/SCRAPE_PLAN.md capstone-website/mobile-fixes-changelog.md \
-         cleanup/01_inventory.md cleanup/01c_error_taxonomy_diff.md cleanup/01e_script_callers.md ; do
+         llm-stats-vault/cleanup/01_inventory.md llm-stats-vault/cleanup/01c_error_taxonomy_diff.md llm-stats-vault/cleanup/01e_script_callers.md ; do
   sed -i '' -E 's#(^| |\(|`|\[)audit/([a-zA-Z0-9_./-]+(\.md|\.json|\.jsonl|/[a-zA-Z0-9_./-]+|/))#\1llm-stats-vault/90-archive/audit/\2#g' "$f"
 done
 
@@ -241,7 +241,7 @@ cp llm-stats-vault/40-literature/papers/14-new-judgment-becomes-noise-2025.md \
 |---|---|---|
 | `llm-stats-vault/.obsidian/workspace.json` | 179 | Already says `"90-archive/audit/recompute_log.md"`. Obsidian session state from prior exploration; correct after move. |
 | `llm-stats-vault/sessions/2026-05-07-poster-defense-prep.md` | 253 | Already says `90-archive/audit/`. Already migrated. |
-| `cleanup/03a_audit_staging_investigation.md` | 17, 49, 89 | This investigation file describes the staging vs source state; its `audit/` references are correct historical descriptions of the pre-move repo. **DO NOT REWRITE** — the document is a forensic record. |
+| `llm-stats-vault/cleanup/03a_audit_staging_investigation.md` | 17, 49, 89 | This investigation file describes the staging vs source state; its `audit/` references are correct historical descriptions of the pre-move repo. **DO NOT REWRITE** — the document is a forensic record. |
 
 ---
 
@@ -262,9 +262,9 @@ rmdir llm-stats-vault/90-archive/experiments/
 ### Step 1: snapshot
 
 ```bash
-tar -czf cleanup/pre_audit_migration_snapshot_$(date +%Y%m%d).tar.gz audit/
-tar -tzf cleanup/pre_audit_migration_snapshot_$(date +%Y%m%d).tar.gz | wc -l
-ls -la cleanup/pre_audit_migration_snapshot_*.tar.gz
+tar -czf llm-stats-vault/cleanup/pre_audit_migration_snapshot_$(date +%Y%m%d).tar.gz audit/
+tar -tzf llm-stats-vault/cleanup/pre_audit_migration_snapshot_$(date +%Y%m%d).tar.gz | wc -l
+ls -la llm-stats-vault/cleanup/pre_audit_migration_snapshot_*.tar.gz
 ```
 
 ### Step 2: git mv (preserves history)
@@ -283,7 +283,7 @@ Expect 5 line changes total. Show diff before staging.
 
 ### Step 4: apply Group B (project docs) sed
 
-Run the safe-loop sed for 6 files. Then hand-edit `cleanup/02_reorg_plan.md` per the L52/L54/L407 notes in Section B. Diff each.
+Run the safe-loop sed for 6 files. Then hand-edit `llm-stats-vault/cleanup/02_reorg_plan.md` per the L52/L54/L407 notes in Section B. Diff each.
 
 ### Step 5: apply Group C (vault internal) sed
 
@@ -323,7 +323,7 @@ grep -rn -E "(^|[^a-zA-Z0-9_/-])audit/" \
   . 2>/dev/null
 ```
 
-Expected output: empty (or only `cleanup/03a_audit_staging_investigation.md` and `cleanup/03b_audit_ref_rewrite_plan.md` historical descriptions).
+Expected output: empty (or only `llm-stats-vault/cleanup/03a_audit_staging_investigation.md` and `llm-stats-vault/cleanup/03b_audit_ref_rewrite_plan.md` historical descriptions).
 
 ### Step 10: tests
 
@@ -339,18 +339,18 @@ Expected: 53 passing (24 + 29). No new failures from this migration since the ch
 # Chunk 1: the move itself (preserves git history)
 git add llm-stats-vault/90-archive/audit/
 # (git mv already staged the moves, but stage tarball + cleanup files)
-git add cleanup/pre_audit_migration_snapshot_*.tar.gz cleanup/03a_audit_staging_investigation.md cleanup/03b_audit_ref_rewrite_plan.md
+git add llm-stats-vault/cleanup/pre_audit_migration_snapshot_*.tar.gz llm-stats-vault/cleanup/03a_audit_staging_investigation.md llm-stats-vault/cleanup/03b_audit_ref_rewrite_plan.md
 git commit -m "Move audit/ → llm-stats-vault/90-archive/audit/ (git mv, history preserved)
 
 Consolidates archival under llm-stats-vault/90-archive/ per the
 single-canonical-archive convention established 2026-05-10. Pre-move
-snapshot at cleanup/pre_audit_migration_snapshot_<date>.tar.gz. No
+snapshot at llm-stats-vault/cleanup/pre_audit_migration_snapshot_<date>.tar.gz. No
 content changes in this commit; ref rewrites land in the next."
 
 # Chunk 2: rewrite all refs
 git add code/analysis/metrics.py code/models/response_parser.py code/scripts/recompute_downstream.py \
         CLAUDE.md poster/SCRAPE_PLAN.md capstone-website/mobile-fixes-changelog.md \
-        cleanup/01_inventory.md cleanup/01c_error_taxonomy_diff.md cleanup/01e_script_callers.md cleanup/02_reorg_plan.md \
+        llm-stats-vault/cleanup/01_inventory.md llm-stats-vault/cleanup/01c_error_taxonomy_diff.md llm-stats-vault/cleanup/01e_script_callers.md llm-stats-vault/cleanup/02_reorg_plan.md \
         llm-stats-vault/00-home/research-narrative.md llm-stats-vault/00-home/current-priorities.md \
         llm-stats-vault/atlas/scoring-pipeline.md \
         llm-stats-vault/40-literature/citation-map.md \
@@ -393,7 +393,7 @@ git log --oneline -5
 
 ## Files NOT touched in this plan
 
-- `experiments/` — out of scope per `cleanup/02_reorg_plan.md` §F; the staging stub is removed in prep but the source `experiments/` is untouched.
+- `experiments/` — out of scope per `llm-stats-vault/cleanup/02_reorg_plan.md` §F; the staging stub is removed in prep but the source `experiments/` is untouched.
 - Any `.obsidian/` state — Obsidian re-resolves links on next open.
 - Pre-existing dirty state (`poster/figures/*`, `report_materials/*`, `data/processed_data/results_v2/error_taxonomy_v2.json`, `poster/scripts/dimension_leaderboard_print.py`) — not from this migration; leave as found.
 

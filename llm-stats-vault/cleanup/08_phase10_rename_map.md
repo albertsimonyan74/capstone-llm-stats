@@ -34,7 +34,7 @@ Plus in `paper/main.tex`: `\bibliography{bib/refs}` → `\bibliography{reference
 
 ## Unchanged (stay at root)
 
-`poster/`, `literature/`, `llm-stats-vault/`, `cleanup/`, `logs/`,
+`poster/`, `literature/`, `llm-stats-vault/`, `llm-stats-vault/cleanup/`, `llm-stats-vault/logs/`,
 `capstone-website/`, `paper/`, `bayesian_scope.md`, `CLAUDE.md`,
 `README.md`, `requirements.txt`, `environment.yml`, `reproduce.sh`.
 `renv.lock` currently lives at `code/visualization/renv.lock` —
@@ -161,7 +161,7 @@ overlapping rewrites, false positives in comment/prose contexts).
    all of them.
 
 4. **`llm_runner` MD count 101** — vast majority in `llm-stats-vault/`
-   (44) and the historic `cleanup/` audit docs. Sed pass against MD
+   (44) and the historic `llm-stats-vault/cleanup/` audit docs. Sed pass against MD
    files (with `--exclude-dir=90-archive,cleanup`) will catch the live
    ones.
 

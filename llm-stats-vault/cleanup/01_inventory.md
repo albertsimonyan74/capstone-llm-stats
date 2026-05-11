@@ -26,8 +26,8 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 | 2.1M  | `data/`                    | [KEEP-CORE] mostly | Tasks (171), perturbations. Some [STALE] v1 perturbation artifacts. |
 | 2.5M  | `llm-stats-vault/`         | [KEEP-REFERENCE]   | Obsidian session/notes vault. Self-contained, mostly markdown. (Now includes the moved `audit/` under `90-archive/audit/` — see note below.) |
 
-> `archive/` removed 2026-05-10; snapshot at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`.
-> `audit/` moved 2026-05-10 → `llm-stats-vault/90-archive/audit/`; pre-move snapshot at `cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.
+> `archive/` removed 2026-05-10; snapshot at `llm-stats-vault/cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`.
+> `audit/` moved 2026-05-10 → `llm-stats-vault/90-archive/audit/`; pre-move snapshot at `llm-stats-vault/cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.
 | 28M   | `poster/`                  | [KEEP-CORE]        | Poster LaTeX + figures + scripts. Headline narrative source for paper. |
 | 34M   | `experiments/`             | [KEEP-CORE] mostly | `results_v1/` + `results_v2/` JSONLs (raw + scored). Two `runs.jsonl` backups [STALE]. |
 | 76M   | `literature/`              | [KEEP-REFERENCE]   | Lecture PDFs + 4 textbooks. Big but small footprint via `.gitignore`. |
@@ -106,7 +106,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - `backend/` (FastAPI: `main.py`, `user_study.py`, `v2_routes.py`, `data/{user_study_results.json, vote_memory.json}`, `static_data/` (7.3M, bundles `experiments/` + `data/` + `llm-stats-vault/` for Render Docker). **[KEEP-REFERENCE]** for paper.
 - `frontend/` (Vite/React: `src/`, `public/`, `dist/` (68M built), `node_modules/` (196M), `package.json`, `vite.config.js`, `vercel.json`). **[KEEP-REFERENCE]**. Reproducible from `npm install`.
 
-### `logs/`
+### `llm-stats-vault/logs/`
 - `self_consistency_full.log`. **[KEEP-REFERENCE]**.
 
 ---
@@ -172,6 +172,6 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - **Code**: ~1.8M total in `code/data_preprocessing/`, `code/analysis/`, `code/models/`, `code/scripts/`, `code/capstone_mcp/`.
 - **Data**: 171 tasks, 473 perturbations, ~24M v2 results JSONL, ~4.4M v1 `runs.jsonl`.
 - **Figures**: ~14 poster figures (PNG+SVG), ~25 R-pipeline figures (PNG+HTML), `dist/` 68M built site assets.
-- **Notes**: ~50 markdown files in `llm-stats-vault/90-archive/audit/`, vault, `.planning/`, `cleanup/`.
+- **Notes**: ~50 markdown files in `llm-stats-vault/90-archive/audit/`, vault, `.planning/`, `llm-stats-vault/cleanup/`.
 
 End of inventory. Awaiting confirmation before Phase 2.

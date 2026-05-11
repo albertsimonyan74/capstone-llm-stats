@@ -2,7 +2,7 @@
 
 Generated 2026-05-10. Run from repo root.
 
-Excludes: `.venv/`, `node_modules/`, `.git/`, `llm-stats-vault/90-archive/`, `cleanup/`.
+Excludes: `.venv/`, `node_modules/`, `.git/`, `llm-stats-vault/90-archive/`, `llm-stats-vault/cleanup/`.
 
 ## Summary
 

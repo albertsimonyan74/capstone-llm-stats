@@ -64,8 +64,8 @@ capstone-llm-stats/
 │   ├── results_legacy/           ← NEW. runs.jsonl backups land here.
 │   ├── scripts_legacy/           ← NEW. inspect_judge_strictness.py (post-poster, per CL-B6).
 │   └── poster_prep_assets/       ← NEW. Random-named poster prep images + how-to PDFs.
-├── cleanup/                      ← Temporary planning dir. Survives until paper-ship.
-├── logs/                         ← UNCHANGED. self_consistency_full.log.
+├── llm-stats-vault/cleanup/                      ← Temporary planning dir. Survives until paper-ship.
+├── llm-stats-vault/logs/                         ← UNCHANGED. self_consistency_full.log.
 ├── .planning/  .claude/  .vercel/
 ├── .venv/  .pytest_cache/  .ruff_cache/    ← STALE; .venv stays (gitignored), caches deleted.
 ├── CLAUDE.md  bayesian_scope.md  requirements.txt
@@ -112,7 +112,7 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `data/` | KEEP-IN-PLACE | — | Path-stable. |
 | `llm-stats-vault/90-archive/audit/` | KEEP-IN-PLACE | — | Moved 2026-05-10 from repo root. |
 | `llm-stats-vault/90-archive/` | KEEP-IN-PLACE | — | Canonical archive root. Receives newly archived items via new sub-dirs `data_legacy/`, `results_legacy/`, `scripts_legacy/`, `poster_prep_assets/`. |
-| `cleanup/` | KEEP-IN-PLACE | — | Active planning dir. |
+| `llm-stats-vault/cleanup/` | KEEP-IN-PLACE | — | Active planning dir. |
 | `poster/` | KEEP-IN-PLACE | — | Historical artifact, do not merge with `paper/`. |
 | `poster/scripts/__pycache__/` | DELETE | — | Phase 3a. |
 | `report_materials/` | KEEP-IN-PLACE | — | R pipeline, working-dir-sensitive. |
@@ -120,7 +120,7 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `llm-stats-vault/` | KEEP-IN-PLACE | — | Obsidian vault, self-contained. |
 | `capstone-website/` | KEEP-IN-PLACE | — | Confirm `frontend/{dist,node_modules}/` already gitignored (✓ — see §E). |
 | `capstone-website/backend/__pycache__/` | DELETE | — | Phase 3a. |
-| `logs/` | KEEP-IN-PLACE | — | self_consistency_full.log. |
+| `llm-stats-vault/logs/` | KEEP-IN-PLACE | — | self_consistency_full.log. |
 | `paper/` | NEW | — | Phase 4 will scaffold IEEE LaTeX project here. |
 
 ### Subpaths flagged in `01_inventory.md` and resolved by 01a–01e
@@ -268,9 +268,9 @@ git commit -m "chore(archive): move v1 error taxonomy + perturbation sample to v
 
 - error_taxonomy_results.json superseded by data/processed_data/results_v2/error_taxonomy_v2.json
   (v1: rule-based 9-class flat; v2: Llama 3.3 70B 4-class hierarchical, n=143 both)
-  See cleanup/01c_error_taxonomy_diff.md.
+  See llm-stats-vault/cleanup/01c_error_taxonomy_diff.md.
 - perturbations_v2_sample.jsonl was a sample preview, no live consumer.
-  See cleanup/01e_script_callers.md."
+  See llm-stats-vault/cleanup/01e_script_callers.md."
 ```
 
 ### Commit 4 — archive runs.jsonl backups
@@ -297,7 +297,7 @@ git commit -m "chore(archive): retire inspect_judge_strictness.py post-poster de
 
 No code callers. Per llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md [CL-B6]: keep until poster
 delivered; poster shipped 2026-05-07. Destination: vault/90-archive/scripts_legacy/.
-See cleanup/01e_script_callers.md."
+See llm-stats-vault/cleanup/01e_script_callers.md."
 ```
 
 ### Commit 6 — archive poster prep collateral
@@ -404,7 +404,7 @@ bash code/scripts/refresh_pipeline.sh                                           
 
 ## §F — What this plan does NOT do (deferred)
 
-- Top-level `archive/` was removed 2026-05-10. Pre-modernization viz snapshots (`archive/visualizations-pre-*`) were superseded by the v2 results pipeline and not retained in vault; provenance preserved at `cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`. See archival convention note above. (`audit/` moved to `llm-stats-vault/90-archive/audit/` 2026-05-10; pre-move snapshot at `cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.)
+- Top-level `archive/` was removed 2026-05-10. Pre-modernization viz snapshots (`archive/visualizations-pre-*`) were superseded by the v2 results pipeline and not retained in vault; provenance preserved at `llm-stats-vault/cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`. See archival convention note above. (`audit/` moved to `llm-stats-vault/90-archive/audit/` 2026-05-10; pre-move snapshot at `llm-stats-vault/cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.)
 - Does not move `data/processed_data/results_v2/` or `report_materials/` contents (would require a 100+-line path refactor across scripts, R pipeline, and backend).
 - Does not consolidate `data/raw_data/synthetic/perturbations*.json` filenames (per CLAUDE.md, hard-coded callers exist).
 - Does not refactor `code/analysis/llm_judge_rubric.py` Groq → Together docstring lag (cosmetic).

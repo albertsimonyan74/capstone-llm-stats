@@ -72,4 +72,5 @@ paper/*.toc
 paper/*.pdf
 paper/sections/*.aux
 paper/main.synctex.gz
-cleanup/pre_phase10_refactor_snapshot_*.tar.gz
+llm-stats-vault/cleanup/pre_phase10_refactor_snapshot_*.tar.gz
+llm-stats-vault/logs/*.log
