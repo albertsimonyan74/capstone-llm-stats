@@ -28,6 +28,17 @@ data/processed_data/results_v1/
 secrets.*
 *api_key*
 
+# Backup files (including timestamped variants)
+*.bak
+*.bak.*
+*.bak_*
+*.jsonl.bak
+*.jsonl.bak.*
+*.jsonl.bak_*
+*.tmp
+*.swp
+*.orig
+
 # R
 .Rhistory
 .RData
