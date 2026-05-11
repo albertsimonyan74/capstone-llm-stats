@@ -6,6 +6,18 @@
 \section{Methodology}
 \label{sec:methodology}
 
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/pipeline.png}
+  \caption{Evaluation pipeline. Each task and its perturbations are
+           passed to five frontier LLMs in parallel. Responses are
+           scored via three independent paths: deterministic extraction,
+           NMACR rubric scoring, and an external Llama 3.3 70B judge
+           for assumption-compliance. Aggregated scores yield three
+           independent rankings.}
+  \label{fig:pipeline}
+\end{figure}
+
 \subsection{Task Suite}
 
 The benchmark consists of 171 base tasks across 38 task types,
@@ -51,10 +63,11 @@ free-form prose. \textbf{Path~B} (a post-hoc NMACR aggregator) is the
 rubric-based NMACR aggregator. Each task contributes five components
 in $[0,1]$: numerical accuracy (N), method structure (M), assumption
 compliance (A), confidence calibration (C), and reasoning quality (R).
-The combined score is a weighted sum
-\[
-  s = 0.10\,N + 0.20\,M + 0.30\,A + 0.15\,C + 0.25\,R,
-\]
+The combined score is a literature-weighted sum
+\begin{equation}
+  S_{\text{NMACR}} = 0.10\,N + 0.20\,M + 0.30\,A + 0.15\,C + 0.25\,R
+  \label{eq:nmacr}
+\end{equation}
 with weights derived from the chain-of-thought, calibration, and
 assumption literatures~\cite{wei2022cot,chen2022pot,guo2017calibration,du2025icecream,park2025judge,nagarkar2026canllm,fermieval2025,liu2025matheval}.
 The largest weight (A) reflects the centrality of assumption
@@ -73,15 +86,29 @@ al.~\cite{judgment2025noise}.
 Three rank orders are computed from the same response corpus. The
 \emph{accuracy ranking} uses the Path~B NMACR pass rate per model
 across all 171 base tasks. The \emph{robustness ranking} uses the
-perturbation pass-flip rate: for each (base, perturbation) pair, we
-record whether the model's pass status changes; per-model robustness
-is one minus the flip rate, with bootstrap CIs from 10{,}000
-resamples. The \emph{calibration ranking} uses binary-pass Expected
-Calibration Error~\cite{guo2017calibration} with four confidence
-buckets (low, medium, high, unstated); we extract confidence from the
-model's free-form response with a rule-based parser and treat
-low-confidence-correct and high-confidence-incorrect tokens
-symmetrically. These three
+perturbation pass-flip rate. For each base task $t$ and model $m$,
+let $\mathrm{pass}(t, m) \in \{0,1\}$ be the binary base pass and
+$\overline{\mathrm{pass}}(t, m)$ the mean pass over $t$'s perturbations
+$\mathcal{P}(t)$. The model's robustness is
+\begin{equation}
+  R_m = 1 - \frac{1}{|\mathcal{T}|}\sum_{t \in \mathcal{T}}
+        \left| \mathrm{pass}(t, m) - \overline{\mathrm{pass}}(t, m) \right|,
+  \label{eq:robustness}
+\end{equation}
+with $R_m = 1$ indicating perfect base/perturbation agreement.
+Bootstrap CIs use 10{,}000 non-parametric resamples (seed 42). The
+\emph{calibration ranking} uses binary-pass Expected Calibration
+Error~\cite{guo2017calibration} over $B$ confidence buckets:
+\begin{equation}
+  \mathrm{ECE} = \sum_{b=1}^{B} \frac{|B_b|}{N}
+                 \,\bigl|\,\mathrm{acc}(B_b) - \mathrm{conf}(B_b)\,\bigr|,
+  \label{eq:ece}
+\end{equation}
+where $B_b$ is the set of predictions in bucket $b$,
+$\mathrm{acc}(B_b)$ is empirical accuracy within the bucket, and
+$\mathrm{conf}(B_b)$ is the bucket's mean confidence. We use $B = 4$
+buckets (low, medium, high, unstated) parsed from the response's
+hedging language. These three
 rankings are not redundant: a model can be accurate but brittle
 (high accuracy, low robustness), accurate and well-calibrated but
 still brittle, or robust but low-accuracy. The central empirical
@@ -111,12 +138,11 @@ three paths. Single-pass per (task, model) is the default; a small
 self-consistency subset (3 samples) is used for the calibration
 analysis.
 
-\textbf{Calibration computation.} Binary-pass ECE uses four confidence
-buckets (low, medium, high, unstated) parsed from the response's
-hedging language. Uncertainty is reported as 95\% percentile bootstrap
-confidence intervals, computed from 10{,}000 non-parametric resamples
-of per-run aggregate scores with a fixed RNG seed (42) for
-reproducibility.
+\textbf{Calibration computation.} Equation~\ref{eq:ece} is computed
+per model on the full response corpus. Uncertainty is reported as
+95\% percentile bootstrap confidence intervals from 10{,}000
+non-parametric resamples of per-run aggregate scores (seed 42), the
+same procedure used for the accuracy and robustness CIs.
 
 \textbf{Reproducibility.} The full analysis pipeline is driven by a
 single shell script that runs deduplication, scoring, perturbation

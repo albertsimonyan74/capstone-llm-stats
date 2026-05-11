@@ -18,6 +18,11 @@
 \usepackage{booktabs}
 \usepackage[hidelinks]{hyperref}
 
+% TikZ deferred (tikz.sty missing from local TinyTeX install, blocked by
+% TeX Live 2024 vs remote 2026 cross-release rule). Pipeline diagram
+% rendered as PNG via matplotlib instead; switch to TikZ once tlmgr
+% upgrade is available.
+
 % Optional polish pkgs (not in current TinyTeX install — re-enable once
 % available: `tlmgr install microtype siunitx cleveref`):
 % \usepackage{microtype}
@@ -63,6 +68,10 @@
 The author thanks Vahe Movsisyan, PhD, for advising this capstone
 project, and the Akian College of Science and Engineering at the
 American University of Armenia for supporting the work.
+
+\appendices
+\section{Formal Metric Definitions}
+\input{sections/A_metric_definitions}
 
 \bibliographystyle{IEEEtran}
 \bibliography{bib/refs}
