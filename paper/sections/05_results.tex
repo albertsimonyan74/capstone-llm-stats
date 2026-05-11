@@ -1,6 +1,6 @@
 % --- Section: Results ---
 % Drafted Phase 6 Checkpoint B — values from cleanup/04_phase5_data_pulled.md
-% and experiments/results_v2/. Target: ~1000 words.
+% and data/processed_data/results_v2/. Target: ~1000 words.
 
 \section{Results}
 \label{sec:results}
@@ -134,9 +134,9 @@ reruns at temperature $T = 0.7$. Inter-rater agreement on the rubric
 dimensions, summarized in Figure~\ref{fig:krippendorff-strip}, sits
 in the questionable range and informs our interpretation.
 
-\begin{figure}[!t]
+\begin{figure*}[!t]
   \centering
-  \includegraphics[width=\columnwidth]{figures/calibration_ece_paired.png}
+  \includegraphics[width=\textwidth]{figures/calibration_ece_paired.png}
   \caption{Calibration measured by two extraction methods.
            \emph{Left:} verbalized ECE on $n=855$ truly-base runs
            (171 base tasks $\times$ 5 models), where the model is
@@ -150,7 +150,7 @@ in the questionable range and informs our interpretation.
            consistency gap is direct evidence that stated confidence
            does not reflect actual response stability.}
   \label{fig:calibration-paired}
-\end{figure}
+\end{figure*}
 
 Figure~\ref{fig:calibration-paired} reframes the calibration story.
 Verbalized confidence is what users observe when interacting with a
