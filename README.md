@@ -3,6 +3,8 @@
 DS 299 Capstone, American University of Armenia, Akian College of Science & Engineering.
 Author: Albert Simonyan. Advisor: Vahe Movsisyan, PhD.
 
+**Live demo:** <https://bayes-benchmark.vercel.app/>  ·  **Paper:** [paper/main.pdf](paper/main.pdf)
+
 ## Project Objective
 
 Benchmark five frontier large-language-model APIs (Claude Sonnet 4.5, GPT-4.1, Gemini 2.5 Flash, DeepSeek-Chat, Mistral Large) on 171 Bayesian and inferential statistical-reasoning tasks with 473 perturbations across three axes (rephrase, semantic, numerical). Score each response by a deterministic keyword rubric, a literature-weighted NMACR aggregator, and an external out-of-family Llama 3.3 70B Turbo judge constrained to assumption-compliance and reasoning quality. Compute three independent rank orders — accuracy, robustness, calibration — and characterize the divergences hidden by single-number leaderboards.
@@ -34,6 +36,7 @@ data/
   processed_data/results_v2/    judge scores + downstream analyses
 paper/                          IEEEtran conference scaffold + 6 section files + main.tex + references.bib + figures/
 poster/                         AUA poster TeX + figures + scripts (historical artifact)
+capstone-website/               Live website (Next.js frontend + FastAPI backend); deployed at bayes-benchmark.vercel.app
 literature/                     textbooks/ + lectures/ subdir (37 lecture PDFs, gitignored)
 llm-stats-vault/                Obsidian vault (sessions, knowledge, atlas, 40-literature/, cleanup/, logs/)
   └── 90-archive/               Canonical archive root (audit/, scripts_legacy/, data_legacy/, …)
@@ -50,6 +53,14 @@ Operating rules: [CLAUDE.md](CLAUDE.md). Methodology rationale: `llm-stats-vault
 - R 4.3+ (for figure pipeline)
 - TeX Live or TinyTeX 2024+ for paper compile. Needs `IEEEtran.cls`, `IEEEtran.bst`, `amsmath`, `graphicx`, `booktabs`, `float`, `hyperref`. `IEEEtran` files vendored in `paper/`.
 - macOS or Linux. Tested on macOS Darwin 25.3.0.
+
+## Live Demo
+
+Interactive results dashboard: <https://bayes-benchmark.vercel.app/>
+
+The website presents the paper's findings — three-ranking framework, per-model accuracy/robustness/calibration breakdowns, per-task drill-downs, perturbation analyses, and the external-judge failure taxonomy — as a browsable web interface. No installation required.
+
+The source for the site lives in `capstone-website/` (Next.js frontend in `frontend/`, FastAPI backend in `backend/`); the deployed version reads from the same committed `data/processed_data/` outputs used by the paper.
 
 ## Quick Start
 
