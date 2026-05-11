@@ -46,9 +46,9 @@ two on every axis.
 
 \subsection{Headline Divergence}
 
-\begin{figure*}[t]
+\begin{figure}[t]
   \centering
-  \includegraphics[width=\textwidth]{figures/rank_flow.png}
+  \includegraphics[width=\columnwidth]{figures/rank_flow.png}
   \caption{Rank flow across the three metrics. Each panel ranks the
            five frontier models on one dimension; lines connect each
            model's positions to reveal cross-metric rank changes.
@@ -60,7 +60,7 @@ two on every axis.
            Robustness panel indicates a $\Delta$ not separable from
            zero.}
   \label{fig:rank-flow}
-\end{figure*}
+\end{figure}
 
 Figure~\ref{fig:rank-flow} visualizes the rank divergence. Two
 parallel examples carry the headline. \textbf{Example 1 (the GPT-4.1
@@ -120,11 +120,24 @@ not an inter-rater agreement claim --- and we revisit the
 implications in Section~\ref{sec:discussion}.
 
 Per-NMACR-dimension ECE tells a finer story than the binary-pass ECE
-in Table~\ref{tab:rankings}. On the Reasoning Quality (R) dimension
-specifically, GPT-4.1 leads with ECE $0.097$, followed by Mistral
-($0.102$), DeepSeek ($0.106$), Claude ($0.117$), and Gemini ($0.130$).
-The model that leads on overall binary-pass ECE (Claude) is third on
-the R-dimension calibration, while the accuracy-bottom GPT-4.1 leads
-both robustness and reasoning calibration. The picture matches the
-binary-pass ECE story directionally but locates the GPT-4.1
-``reasoning calibration'' advantage more precisely.
+in Table~\ref{tab:rankings}. Figure~\ref{fig:dimension-leaderboard}
+breaks the per-dimension ECE out by N, M, A, C, R. On the Reasoning
+Quality (R) dimension specifically, GPT-4.1 leads with ECE $0.097$,
+followed by Mistral ($0.102$), DeepSeek ($0.106$), Claude ($0.117$),
+and Gemini ($0.130$). The model that leads on overall binary-pass ECE
+(Claude) is third on the R-dimension calibration, while the
+accuracy-bottom GPT-4.1 leads both robustness and reasoning
+calibration. The picture matches the binary-pass ECE story
+directionally but locates the GPT-4.1 ``reasoning calibration''
+advantage more precisely.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/dimension_leaderboard.png}
+  \caption{Per-NMACR-dimension Expected Calibration Error. While
+           Claude leads the binary-pass ECE aggregate, GPT-4.1 leads
+           on the reasoning (R) dimension specifically, illustrating
+           that even within a single ranking axis, models exchange
+           positions across sub-dimensions.}
+  \label{fig:dimension-leaderboard}
+\end{figure}
