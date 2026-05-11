@@ -134,24 +134,6 @@ reruns at temperature $T = 0.7$. Inter-rater agreement on the rubric
 dimensions, summarized in Figure~\ref{fig:krippendorff-strip}, sits
 in the questionable range and informs our interpretation.
 
-\begin{figure*}[!t]
-  \centering
-  \includegraphics[width=\textwidth]{figures/calibration_ece_paired.png}
-  \caption{Calibration measured by two extraction methods.
-           \emph{Left:} verbalized ECE on $n=855$ truly-base runs
-           (171 base tasks $\times$ 5 models), where the model is
-           asked to state a probability or confidence; Claude (0.033)
-           and GPT-4.1 (0.034) appear well-calibrated, with DeepSeek
-           (0.198) the clear outlier. \emph{Right:} self-consistency
-           ECE on $n=2{,}415$ reruns (3-rerun protocol at temperature
-           $T=0.7$), where confidence is computed from cross-rerun
-           answer agreement; all five models exceed $\text{ECE}=0.6$,
-           indicating severe overconfidence. The verbalized-vs-self-
-           consistency gap is direct evidence that stated confidence
-           does not reflect actual response stability.}
-  \label{fig:calibration-paired}
-\end{figure*}
-
 Figure~\ref{fig:calibration-paired} reframes the calibration story.
 Verbalized confidence is what users observe when interacting with a
 model: Claude and GPT-4.1 appear excellently calibrated by this
@@ -174,3 +156,21 @@ the ground-truth signal, which excludes the rare cases where all
 three reruns fail to produce a parseable answer line; those cases
 are tracked separately in the run logs but not included in the
 $n = 2{,}415$ figure here.
+
+\begin{figure}[!b]
+  \centering
+  \includegraphics[width=\columnwidth]{figures/calibration_ece_paired.png}
+  \caption{Calibration measured by two extraction methods.
+           \emph{Left:} verbalized ECE on $n=855$ truly-base runs
+           (171 base tasks $\times$ 5 models), where the model is
+           asked to state a probability or confidence; Claude (0.033)
+           and GPT-4.1 (0.034) appear well-calibrated, with DeepSeek
+           (0.198) the clear outlier. \emph{Right:} self-consistency
+           ECE on $n=2{,}415$ reruns (3-rerun protocol at temperature
+           $T=0.7$), where confidence is computed from cross-rerun
+           answer agreement; all five models exceed $\text{ECE}=0.6$,
+           indicating severe overconfidence. The verbalized-vs-self-
+           consistency gap is direct evidence that stated confidence
+           does not reflect actual response stability.}
+  \label{fig:calibration-paired}
+\end{figure}
