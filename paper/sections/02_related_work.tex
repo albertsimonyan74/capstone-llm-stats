@@ -6,8 +6,9 @@
 \textbf{Quantitative-reasoning benchmarks.}
 StatEval~\cite{lu2025stateval} catalogues 13{,}817 problems across
 descriptive statistics, probability, inference, and regression,
-scored mainly by answer correctness.
-MathEval~\cite{liu2025matheval} compares 23 LLMs across 19
+scored by a mix of answer correctness and rubric-based proof
+evaluation.
+MathEval~\cite{liu2025matheval} compares 52 LLMs across 22
 mathematical-reasoning datasets, again on accuracy. Nagarkar et
 al.~\cite{nagarkar2026canllm} compare LLMs to human respondents on
 statistical tasks. All three count how often the model lands on the
@@ -18,8 +19,8 @@ stable under perturbation.
 al.~\cite{longjohn2025bayesian} aggregate benchmark results
 probabilistically rather than evaluating Bayesian reasoning itself.
 Du et al.~\cite{du2025icecream} document assumption-blindness in
-causal reasoning: LLMs produce ``convincing yet misleading'' answers
-without articulating the assumptions those answers depend on. The
+causal reasoning: LLMs produce confident causal claims that semantic
+cues drive even when the data contradicts them. The
 $44.3\%$ missing-assumption rate reported here extends the pattern
 to inferential statistics.
 
@@ -36,10 +37,11 @@ reported in this work.
 \textbf{LLM-as-judge.} Zheng et al.~\cite{zheng2023judge} introduced
 LLM-as-judge with MT-Bench, showing strong LLMs can substitute for
 human raters on open-ended tasks. Follow-up work documents
-design-choice sensitivity and self-preference
-bias~\cite{park2025judge,judgment2025noise}. Brittlebench and
-ReasonBench~\cite{brittlebench2026,reasonbench2025} document prompt
-sensitivity and reasoning instability under perturbation. The
+design-choice sensitivity and rubric-adherence
+failures~\cite{park2025judge,judgment2025noise}.
+Brittlebench~\cite{brittlebench2026} documents prompt sensitivity;
+ReasonBench~\cite{reasonbench2025} documents run-to-run instability
+from stochastic decoding. The
 protocol used here constrains the judge to a single dimension
 (assumption-compliance) and uses an out-of-family open-weights
 model (Llama 3.3 70B Turbo). Both choices address failure modes
