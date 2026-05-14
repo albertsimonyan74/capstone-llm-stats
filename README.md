@@ -52,7 +52,7 @@ Operating rules: [CLAUDE.md](CLAUDE.md). Methodology rationale: `llm-stats-vault
 - Python 3.11
 - R 4.3+ (for figure pipeline)
 - TeX Live or TinyTeX 2024+ for paper compile. Needs `IEEEtran.cls`, `IEEEtran.bst`, `amsmath`, `graphicx`, `booktabs`, `float`, `hyperref`. `IEEEtran` files vendored in `paper/`.
-- macOS or Linux. Tested on macOS Darwin 25.3.0.
+- **Operating system**: Linux, macOS, or Windows. Tested on macOS Darwin 25.3.0. Windows users should run the bash-based reproduction scripts inside [WSL2](https://learn.microsoft.com/en-us/windows/wsl/install) or [Git Bash](https://gitforwindows.org/) (bundled with Git for Windows). Native PowerShell or CMD are not supported; the scripts assume a POSIX shell.
 
 ## Live Demo
 
@@ -71,6 +71,37 @@ Reproduces all paper figures and the PDF from committed benchmark results. About
 ```
 
 This installs Python and R dependencies, regenerates figures from `data/processed_data/`, and compiles `paper/main.pdf`.
+
+## API Keys (optional)
+
+**The default reproduction path does not require API keys.** All LLM responses, scoring outputs, and external-judge classifications from the original benchmark run are committed in `data/processed_data/` and ship with the repository. Running `./reproduce.sh` regenerates the figures, tables, and paper PDF from this committed data — no API calls are made.
+
+API keys are only needed if you want to **re-run the full LLM benchmark from scratch**, making fresh paid API calls to all five model providers plus the external judge. The author's `.env` file containing live API credentials is intentionally **not committed** to the repository. To re-run the benchmark on your own infrastructure:
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Edit `.env` and supply your own API keys for each provider:
+
+   | Variable | Used by |
+   |---|---|
+   | `ANTHROPIC_API_KEY` | Claude Sonnet 4.5 |
+   | `OPENAI_API_KEY` | GPT-4.1 |
+   | `GEMINI_API_KEY` | Gemini 2.5 Flash |
+   | `DEEPSEEK_API_KEY` | DeepSeek-Chat |
+   | `MISTRAL_API_KEY` | Mistral Large |
+   | `TOGETHER_API_KEY` | Llama 3.3 70B (external judge) |
+
+3. Run the benchmark pipeline:
+   ```bash
+   export PYTHONPATH="$(pwd)/code"
+   bash code/scripts/refresh_pipeline.sh
+   ```
+
+This will call all five model APIs across the 171 base tasks and 473 perturbations, then run the external judge on each `(task, response)` pair. Approximate cost: $10–15 across all providers; runtime: ~30 minutes depending on rate limits.
+
+After the benchmark completes, follow the standard reproduction path above (`./reproduce.sh`) to regenerate figures and the paper PDF from the new outputs.
 
 ## Detailed Reproduction Steps
 
