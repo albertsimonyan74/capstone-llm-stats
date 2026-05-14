@@ -17,6 +17,16 @@
 \usepackage{graphicx}
 \usepackage{booktabs}
 \usepackage{float}
+\usepackage{xcolor}
+\definecolor{accbar}{HTML}{2E86AB}
+\definecolor{robbar}{HTML}{52A675}
+\definecolor{ecebar}{HTML}{D77A55}
+% Per-model palette for Fig 2 (consistent across all 3 panels)
+\definecolor{geminiColor}{HTML}{2563EB}
+\definecolor{claudeColor}{HTML}{D97706}
+\definecolor{gptColor}{HTML}{16A34A}
+\definecolor{deepseekColor}{HTML}{7C3AED}
+\definecolor{mistralColor}{HTML}{DC2626}
 \usepackage[hidelinks]{hyperref}
 
 % TikZ deferred (tikz.sty missing from local TinyTeX install, blocked by
@@ -73,7 +83,9 @@
 \section*{Acknowledgments}
 The author thanks Vahe Movsisyan, PhD, for advising this capstone
 project, and the Akian College of Science \& Engineering at the
-American University of Armenia for supporting the work.
+American University of Armenia for supporting the work. Claude AI
+(Anthropic) was used as a writing assistant for grammatical and
+stylistic refinement of the manuscript text.
 
 \appendices
 \section{Formal Metric Definitions}

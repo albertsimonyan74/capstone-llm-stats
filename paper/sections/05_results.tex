@@ -5,67 +5,115 @@
 
 \subsection{Per-Metric Rankings}
 
-Table~\ref{tab:rankings} gives the per-model summary. Accuracy is
-the Path~B NMACR-weighted pass rate on the 171 base tasks.
-Robustness is one minus the perturbation pass-flip rate on the 473
+The per-model summary can be seen in a table above. Accuracy is the
+Path~B NMACR-weighted pass rate on the 171 base tasks. Robustness
+is one minus the perturbation pass-flip rate on the 473
 perturbations. ECE is binary-pass Expected Calibration Error
 (lower is better).
 
-\begin{table}[t]
-\centering
-\caption{Per-Model Performance Across the Three Metrics}
-\label{tab:rankings}
-\begin{tabular}{lccc}
-\toprule
-\textbf{Model} & \textbf{Accuracy $\uparrow$} & \textbf{Robustness $\uparrow$} & \textbf{ECE $\downarrow$} \\
-\midrule
-Claude Sonnet 4.5 & \textbf{0.683} & 0.9565 & \textbf{0.0334} \\
-Mistral Large     & 0.644 & 0.9981 & 0.0811 \\
-Gemini 2.5 Flash  & 0.642 & 0.9824 & 0.0765 \\
-DeepSeek-Chat     & 0.625 & 0.9422 & 0.1977 \\
-GPT-4.1           & 0.621 & \textbf{0.9996} & 0.0339 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 No two rankings agree. Accuracy reads
-Claude $>$ Mistral $>$ Gemini $>$ DeepSeek $>$ GPT-4.1, with Claude
-four points ahead of the runner-up and GPT-4.1 last. Robustness
-reads GPT-4.1 $>$ Mistral $>$ Gemini $>$ Claude $>$ DeepSeek, moving
-GPT-4.1 from last to first and Claude from first to fourth.
-Calibration reads Claude $>$ GPT-4.1 $>$ Gemini $>$ Mistral $>$
-DeepSeek; Claude and GPT-4.1 are tied at the top within the 95\%
-bootstrap CI (10{,}000 resamples; the 0.0005 gap falls inside the
-interval), while DeepSeek's ECE of $0.198$ is roughly six times the
-leader's. DeepSeek is the only model in the bottom two on every
+Gemini $>$ Claude $>$ GPT-4.1 $>$ DeepSeek $>$ Mistral, with Gemini
+three points ahead of Claude. Robustness reads
+GPT-4.1 $>$ Mistral $>$ Gemini $>$ Claude $>$ DeepSeek, moving
+GPT-4.1 from third to first and Claude from second to fourth. Calibration reads Claude $>$ GPT-4.1 $>$ Gemini $>$ Mistral
+$>$ DeepSeek. Claude and GPT-4.1 are tied at the top within the
+95\% bootstrap CI (10{,}000 resamples, the 0.0005 gap falls inside
+the interval), while DeepSeek's ECE of $0.198$ is roughly six times
+the leader's. DeepSeek is the only model in the bottom two on every
 axis.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\columnwidth]{figures/rank_flow.png}
-  \caption{Rank flow across the three metrics. Each panel ranks the
-           five models on one dimension; lines connect each model's
-           positions to reveal cross-metric rank changes. Brackets
-           mark statistically non-separable ranks (95\% bootstrap CI,
-           $B=10{,}000$); ``n.s.'' on the Robustness panel marks a
-           $\Delta$ not separable from zero.}
+  \scriptsize
+  % Vertical-bar panel macro.
+  % #1 = panel title (with arrow), #2..#6 = bar heights in pt for
+  % Gemini, Claude, GPT-4.1, DeepSeek, Mistral (fixed left-to-right order).
+  % #7..#11 = numeric value strings (same order).
+  \newcommand{\barpanel}[1]{\centering\textbf{#1}\\[2pt]}
+  \newcommand{\verticalbars}[5]{%
+    \setlength{\tabcolsep}{1.5pt}%
+    \begin{tabular}{@{}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{}}
+      {\tiny #1} & {\tiny #2} & {\tiny #3} & {\tiny #4} & {\tiny #5} \\[0pt]
+    \end{tabular}\par\vspace{-1pt}%
+  }
+  \newcommand{\verticalrules}[5]{%
+    \setlength{\tabcolsep}{1.5pt}%
+    \renewcommand{\arraystretch}{0}%
+    \begin{tabular}[b]{@{}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{}}
+      {\color{geminiColor}\rule[0pt]{7pt}{#1pt}} &
+      {\color{claudeColor}\rule[0pt]{7pt}{#2pt}} &
+      {\color{gptColor}\rule[0pt]{7pt}{#3pt}} &
+      {\color{deepseekColor}\rule[0pt]{7pt}{#4pt}} &
+      {\color{mistralColor}\rule[0pt]{7pt}{#5pt}} \\
+    \end{tabular}\par\vspace{1pt}%
+  }
+  \newcommand{\verticallabels}{%
+    \setlength{\tabcolsep}{1.5pt}%
+    \begin{tabular}{@{}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{}}
+      \rotatebox[origin=lt]{45}{\tiny Gemini} &
+      \rotatebox[origin=lt]{45}{\tiny Claude} &
+      \rotatebox[origin=lt]{45}{\tiny GPT-4.1} &
+      \rotatebox[origin=lt]{45}{\tiny DeepSeek} &
+      \rotatebox[origin=lt]{45}{\tiny Mistral} \\
+    \end{tabular}%
+  }
+  % --- Panel 1: Accuracy ---------------------------------------------------
+  \begin{minipage}[t]{0.32\columnwidth}
+    \barpanel{Accuracy $\uparrow$}
+    \verticalbars{.731}{.698}{.673}{.669}{.668}
+    \verticalrules{27}{16}{7.7}{6.3}{6}
+    \verticallabels
+  \end{minipage}\hfill
+  % --- Panel 2: Robustness -------------------------------------------------
+  \begin{minipage}[t]{0.32\columnwidth}
+    \barpanel{Robustness $\uparrow$}
+    \verticalbars{.9824}{.9565}{.9996}{.9422}{.9981}
+    \verticalrules{21.2}{8.25}{29.8}{1.1}{29}
+    \verticallabels
+  \end{minipage}\hfill
+  % --- Panel 3: ECE --------------------------------------------------------
+  \begin{minipage}[t]{0.32\columnwidth}
+    \barpanel{ECE $\downarrow$}
+    \verticalbars{.077}{.033}{.034}{.198}{.081}
+    \verticalrules{11}{4.7}{4.9}{28.3}{11.6}
+    \verticallabels
+  \end{minipage}
+  \caption{Per-metric bar chart for the five models. Models are in
+           fixed left-to-right order across all three panels
+           (Gemini, Claude, GPT-4.1, DeepSeek, Mistral) and bar color
+           identifies each model consistently: Gemini blue, Claude
+           orange, GPT-4.1 green, DeepSeek purple, Mistral red. Bars
+           are normalized within each metric (Accuracy zeroed at
+           $0.65$, Robustness zeroed at $0.94$, ECE on the linear
+           $[0, 0.2]$ scale) so that within-metric differences are
+           visible. Cross-metric rank shifts are visible by tracking
+           each model's color across the three panels. GPT-4.1
+           (green) moves from third on Accuracy to first on
+           Robustness, Claude (orange) moves from second on Accuracy
+           to fourth on Robustness, and Mistral (red) moves from
+           fifth on Accuracy to second on Robustness. Bootstrap CI
+           (95\%, $B=10{,}000$): Claude and GPT-4.1 are tied at the
+           top of the ECE chart (gap $0.0005$, inside the interval),
+           and the Robustness $\Delta$ for GPT-4.1 is not separable
+           from zero.}
   \label{fig:rank-flow}
 \end{figure}
 
 \subsection{Headline Divergence}
 
-Figure~\ref{fig:rank-flow} makes the divergence visible. Two
-examples carry the headline. \textbf{Example 1 (GPT-4.1
-inversion).} The model last on accuracy (GPT-4.1, $0.621$) is first
-on robustness ($0.9996$); its base and perturbation pass rates are
-$0.6661$ and $0.6658$, a gap of $0.0003$. \textbf{Example 2 (Claude
-pattern).} The model that leads accuracy ($0.683$) and ties for
-calibration (ECE $0.0334$) drops to fourth on robustness ($0.9565$);
-base pass is $0.7011$, perturbed pass is $0.6706$. Neither pattern
-shows up in an accuracy-only ranking. A consumer who picks GPT-4.1
-for robustness is picking the model with the lowest base accuracy.
-A consumer who picks Claude for accuracy and calibration is picking
-the third-most-brittle of the five.
+Figure~\ref{fig:rank-flow} makes the cross-metric divergence
+concrete. GPT-4.1 ranks third on accuracy ($0.673$), behind Gemini
+($0.731$) and Claude ($0.698$), yet its base and perturbation pass
+rates fall within $0.0003$ ($0.6661$ vs $0.6658$), the tightest
+agreement among the five and first place on robustness ($0.9996$).
+Claude shows the opposite pattern: second on accuracy ($0.698$),
+tied with GPT-4.1 at the top of calibration (ECE $\approx 0.033$),
+but pass rate falls from $0.7011$ on base prompts to $0.6706$ on
+perturbed ones, a three-point drop that pushes it to fourth on
+robustness ($0.9565$). A practitioner picking GPT-4.1 for its
+robustness accepts a middle-of-the-pack accuracy model. One picking
+Claude for accuracy and calibration accepts the second-most-brittle
+behavior under perturbation.
 
 \subsection{Assumption-Compliance Results}
 
@@ -89,17 +137,29 @@ Du et al.~\cite{du2025icecream} report the same blindness in causal
 reasoning. Figure~\ref{fig:krippendorff-strip} shows the
 per-dimension $\alpha$ values from the inter-rater check.
 
-\begin{figure}[!ht]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\columnwidth]{figures/krippendorff_strip.png}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lrcl}
+    \toprule
+    \textbf{Dimension} & \textbf{$\alpha$} & \textbf{95\% CI} & \textbf{Band} \\
+    \midrule
+    Method Structure       & $-0.009$ & $[-0.072,\ 0.062]$  & near chance \\
+    Assumption Compliance  & $\phantom{-}0.573$  & $[\phantom{-}0.516,\ 0.622]$   & questionable \\
+    Reasoning Quality      & $-0.125$ & $[-0.197,\ -0.059]$ & near/below chance \\
+    \bottomrule
+  \end{tabular}%
+  }
   \caption{Krippendorff's $\alpha$ across the three judged dimensions
-           (method structure, assumption compliance, reasoning quality).
-           The assumption-compliance $\alpha = 0.573$ sits in the
-           conventionally ``questionable'' range; the other two
-           dimensions cluster near chance. The three-ranking divergence
-           is a within-model cross-metric finding and does not depend
-           on inter-rater agreement, so these $\alpha$ values qualify
-           but do not invalidate the central findings.}
+           (method structure, assumption compliance, reasoning quality),
+           computed on $n = 750$ paired (task, response) outputs with
+           a 1{,}000-resample bootstrap CI. The assumption-compliance
+           $\alpha = 0.573$ sits in the conventionally
+           ``questionable'' range ($\alpha < 0.667$), while the other
+           two dimensions cluster near chance. The three-ranking
+           divergence is a within-model cross-metric finding and does
+           not depend on inter-rater agreement, so these $\alpha$
+           values qualify but do not invalidate the central findings.}
   \label{fig:krippendorff-strip}
 \end{figure}
 
@@ -111,37 +171,48 @@ what the model states alongside its answer. \emph{Self-consistency
 confidence} is inferred from how often the model returns the same
 answer across reruns at temperature $T = 0.7$.
 
-Figure~\ref{fig:calibration-paired} reframes the story. Verbalized
-confidence is what a user sees in conversation: Claude and GPT-4.1
-look well-calibrated, matching Table~\ref{tab:rankings}.
-Self-consistency confidence asks instead how often the model agrees
-with itself on the same prompt across reruns, and the picture
-inverts. Every model crosses the conventional $\text{ECE} = 0.6$
-threshold for ``severe overconfidence,'' and the cross-model spread
-collapses. A model that states $90\%$ confidence but reproduces
-its own answer only $60\%$ of the time is calibrated only verbally;
-the verbal claim is detached from the empirical answer distribution.
-Verbalized confidence is pattern matching on calibration-shaped
-language; self-consistency probes whether the reasoning underneath
-is stable, and the two come apart by an order of magnitude. One
-methodological note: the self-consistency ECE treats single-answer
-agreement across reruns as ground truth, excluding the rare cases
-where all three reruns fail to produce a parseable answer line.
-Those cases sit in the run logs but are not in the $n = 2{,}415$
-figure.
-
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\columnwidth]{figures/calibration_ece_paired.png}
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Model} & \textbf{Verbalized ECE $\downarrow$}
+                   & \textbf{Self-consistency ECE $\downarrow$} \\
+                   & {\footnotesize $n=855$ base runs}
+                   & {\footnotesize $n=2{,}415$ reruns, $T=0.7$} \\
+    \midrule
+    Claude    & 0.033 & 0.734 \\
+    GPT-4.1   & 0.034 & 0.721 \\
+    Gemini    & 0.077 & 0.618 \\
+    Mistral   & 0.081 & 0.663 \\
+    DeepSeek  & 0.198 & 0.726 \\
+    \bottomrule
+  \end{tabular}%
+  }
   \caption{Calibration measured by two extraction methods.
-           \emph{Left:} verbalized ECE on $n=855$ truly-base runs
-           (171 base tasks $\times$ 5 models); Claude (0.033) and
-           GPT-4.1 (0.034) look well-calibrated, with DeepSeek
-           (0.198) the clear outlier. \emph{Right:} self-consistency
-           ECE on $n=2{,}415$ reruns (3-rerun protocol at $T=0.7$);
-           all five models exceed $\text{ECE}=0.6$, indicating
-           severe overconfidence. The gap is direct evidence that
-           stated confidence does not reflect actual response
-           stability.}
+           \emph{Left column:} verbalized ECE on $n=855$ truly-base
+           runs (171 base tasks $\times$ 5 models). Claude (0.033)
+           and GPT-4.1 (0.034) look well-calibrated, with DeepSeek
+           (0.198) the clear outlier. \emph{Right column:}
+           self-consistency ECE on $n=2{,}415$ reruns (3-rerun
+           protocol at $T=0.7$). All five models exceed
+           $\text{ECE}=0.6$, indicating severe overconfidence. The
+           gap is direct evidence that stated confidence does not
+           reflect actual response stability.}
   \label{fig:calibration-paired}
 \end{figure}
+
+Figure~\ref{fig:calibration-paired} reframes the story. Verbalized
+confidence is what a user sees: Claude and GPT-4.1 look
+well-calibrated, matching the per-model summary. Self-consistency
+asks instead how often the model agrees with itself across reruns,
+and the picture inverts: every model crosses the conventional
+$\text{ECE} = 0.6$ ``severe overconfidence'' threshold and the
+cross-model spread collapses. A model that states $90\%$ confidence
+but reproduces its own answer only $60\%$ of the time is calibrated
+only verbally. Verbalized confidence is pattern matching on
+calibration-shaped language, while self-consistency probes underlying
+stability, and the two come apart by an order of magnitude. The
+self-consistency ECE treats single-answer agreement across reruns
+as ground truth, excluding cases where all three reruns fail to
+produce a parseable answer ($n = 2{,}415$).
