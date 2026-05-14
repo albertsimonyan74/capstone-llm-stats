@@ -5,6 +5,21 @@
 % to canonical arXiv 2504.07086.
 
 % =====================================================================
+% IEEEtran BSTCTL — enforces IEEE strict ">6 authors -> et al." rule
+% =====================================================================
+
+@IEEEtranBSTCTL{IEEEexample:BSTcontrol,
+  CTLuse_article_number    = "yes",
+  CTLuse_paper             = "yes",
+  CTLuse_forced_etal       = "yes",
+  CTLmax_names_forced_etal = "6",
+  CTLnames_show_etal       = "1",
+  CTLuse_alt_spacing       = "yes",
+  CTLstandard_url          = "yes",
+  CTLdash_repeated_names   = "yes"
+}
+
+% =====================================================================
 % PAPERS — original references (5)
 % =====================================================================
 
@@ -56,7 +71,7 @@
 @inproceedings{wei2022cot,
   author       = {Wei, Jason and Wang, Xuezhi and Schuurmans, Dale and Bosma, Maarten and Ichter, Brian and Xia, Fei and Chi, Ed H. and Le, Quoc V. and Zhou, Denny},
   title        = {Chain-of-Thought Prompting Elicits Reasoning in Large Language Models},
-  booktitle    = {Advances in Neural Information Processing Systems (NeurIPS)},
+  booktitle    = {Proc. Adv. Neural Inf. Process. Syst. (NeurIPS)},
   year         = {2022},
   eprint       = {2201.11903},
   archivePrefix= {arXiv},
@@ -203,16 +218,18 @@
   author       = {Bolstad, William M.},
   title        = {Introduction to Bayesian Statistics},
   edition      = {2},
-  year         = {2007},
+  address      = {Hoboken, NJ, USA},
   publisher    = {Wiley-Interscience},
+  year         = {2007},
   isbn         = {978-0-471-27020-5}
 }
 
 @book{bishop2006prml,
   author       = {Bishop, Christopher M.},
   title        = {Pattern Recognition and Machine Learning},
-  year         = {2006},
+  address      = {New York, NY, USA},
   publisher    = {Springer},
+  year         = {2006},
   isbn         = {978-0-387-31073-2}
 }
 
@@ -228,8 +245,9 @@
 @book{hoff2009bayesian,
   author       = {Hoff, Peter D.},
   title        = {A First Course in Bayesian Statistical Methods},
-  year         = {2009},
+  address      = {New York, NY, USA},
   publisher    = {Springer},
+  year         = {2009},
   series       = {Springer Texts in Statistics},
   isbn         = {978-0-387-92299-7}
 }
@@ -271,7 +289,7 @@
 @inproceedings{guo2017calibration,
   author    = {Guo, Chuan and Pleiss, Geoff and Sun, Yu and Weinberger, Kilian Q.},
   title     = {On Calibration of Modern Neural Networks},
-  booktitle = {International Conference on Machine Learning (ICML)},
+  booktitle = {Proc. Int. Conf. Mach. Learn. (ICML)},
   year      = {2017},
   eprint    = {1706.04599},
   archivePrefix = {arXiv},
@@ -284,7 +302,7 @@
 @inproceedings{zheng2023judge,
   author    = {Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric P. and Zhang, Hao and Gonzalez, Joseph E. and Stoica, Ion},
   title     = {Judging {LLM-as-a-Judge} with {MT-Bench} and {Chatbot Arena}},
-  booktitle = {Advances in Neural Information Processing Systems (NeurIPS)},
+  booktitle = {Proc. Adv. Neural Inf. Process. Syst. (NeurIPS)},
   year      = {2023},
   eprint    = {2306.05685},
   archivePrefix = {arXiv},

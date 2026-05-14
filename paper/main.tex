@@ -55,6 +55,11 @@
 % ----------------------------------------------------------------------------
 \begin{document}
 
+% Enforces IEEE strict "more than 6 authors -> et al." rule via BSTCTL block
+% defined at top of references.bib. Must follow \begin{document} so the
+% .aux file is open for citation writing.
+\bstctlcite{IEEEexample:BSTcontrol}
+
 \maketitle
 
 \input{sections/00_abstract}
