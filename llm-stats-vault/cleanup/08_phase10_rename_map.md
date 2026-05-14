@@ -20,7 +20,7 @@
 | `data/processed_data/results_v2/` | `data/processed_data/results_v2/` |
 | `code/scripts/run_benchmark.py` | `code/scripts/run_benchmark.py` |
 | `code/scripts/runs_jsonl_adapter.py` | `code/scripts/runs_jsonl_adapter.py` |
-| `experiments/__init__.py` | (delete) |
+| `code/scripts/__init__.py` | (delete) |
 | `data/raw_data/benchmark_v1/` | `data/raw_data/benchmark_v1/` |
 | `data/raw_data/synthetic/` | `data/raw_data/synthetic/` |
 

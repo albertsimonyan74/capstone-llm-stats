@@ -43,7 +43,7 @@ Called as part of `refresh_pipeline.sh`, the documented refresh entry point. **K
 | File:line | Reference |
 |---|---|
 | [code/scripts/robustness_analysis.py:10, 47](code/scripts/robustness_analysis.py) | doc-comment + "Same 6-group taxonomy as `code/scripts/generate_group_a_figures.py`" — copies taxonomy from this file |
-| [llm-stats-vault/90-archive/audit/personal_todo_status.md:167](llm-stats-vault/90-archive/audit/personal_todo_status.md#L167), [llm-stats-vault/90-archive/audit/tier2a6_dual_write_fix.md](llm-stats-vault/90-archive/audit/tier2a6_dual_write_fix.md), [llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md:181](llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md#L181) | documented as the canonical figure generator for `a1`–`a6` PNGs in `report_materials/figures/` |
+| [llm-stats-vault/90-archive/audit/personal_todo_status.md:167](llm-stats-vault/90-archive/audit/personal_todo_status.md#L167), [llm-stats-vault/90-archive/audit/tier2a6_dual_write_fix.md](llm-stats-vault/90-archive/audit/tier2a6_dual_write_fix.md), [llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md:181](llm-stats-vault/90-archive/audit/cleanup_audit_2026-05-02.md#L181) | documented as the canonical figure generator for `a1`–`a6` PNGs in `paper/figures/` |
 | [llm-stats-vault/sessions/2026-05-05-day5-tier2a5.md:31, 46](llm-stats-vault/sessions/2026-05-05-day5-tier2a5.md) | session notes describe `figure_a6`, `figure_a2` as canonical |
 
 Outputs `a1_failure_by_tasktype.png`, `a2_accuracy_by_category.png`, `a3_failure_heatmap.png`, `a4_robustness_by_perttype.png`, `a5_calibration_reliability.png`, `a6_aggregate_ranking.png` — all paper-relevant figures. **Keep.**

@@ -42,7 +42,7 @@ capstone-llm-stats/
 │   ├── error_taxonomy_results.json   ← scheduled to MOVE → llm-stats-vault/90-archive/data_legacy/
 │   └── README.md
 │
-├── experiments/                  ← UNCHANGED INTERNALLY. results_v1/ + results_v2/ stay path-stable.
+├── code/scripts/                  ← UNCHANGED INTERNALLY. results_v1/ + results_v2/ stay path-stable.
 │   ├── results_v1/               (runs.jsonl + results.json + rq4_analysis.json)
 │   └── results_v2/               (24 result files; 100+ hardcoded callers — DO NOT MOVE)
 │
@@ -52,7 +52,7 @@ capstone-llm-stats/
 ├── llm-stats-vault/90-archive/audit/   ← Moved 2026-05-10 from repo root (was top-level audit/).
 ├── llm-stats-vault/90-archive/   ← Canonical archive root. Receives newly archived items in Phase 3a/3b.
 │   ├── audit/                    (existing)
-│   ├── experiments/              (existing)
+│   ├── code/scripts/              (existing)
 │   ├── _originals/               (existing)
 │   ├── audit_history/            (existing)
 │   ├── intermediate_analyses/    (existing)
@@ -73,7 +73,7 @@ capstone-llm-stats/
 └── README.md                     ← Optional new top-level README (out of scope here).
 ```
 
-**Why minimal**: 100+ hard-coded `data/processed_data/results_v2/` paths, 17+ `report_materials/figures/` paths, R pipeline cwd-dependent, backend Docker bundles `static_data/{experiments,data,llm-stats-vault}/`. Wholesale `results/accuracy/`, `results/calibration/`, `results/robustness/` reorg is **deferred to a refactor phase** — it would require touching every script + the website backend + the R pipeline + the Docker build. Not Phase 3.
+**Why minimal**: 100+ hard-coded `data/processed_data/results_v2/` paths, 17+ `paper/figures/` paths, R pipeline cwd-dependent, backend Docker bundles `static_data/{experiments,data,llm-stats-vault}/`. Wholesale `results/accuracy/`, `results/calibration/`, `results/robustness/` reorg is **deferred to a refactor phase** — it would require touching every script + the website backend + the R pipeline + the Docker build. Not Phase 3.
 
 The new directories that DO appear: `paper/` (entirely new, no path collisions); `llm-stats-vault/90-archive/{data_legacy,results_legacy,scripts_legacy,poster_prep_assets}/` (new sub-dirs receiving moved items). All other top-levels stay untouched.
 
@@ -107,8 +107,8 @@ Actions: **KEEP-IN-PLACE / MOVE / ARCHIVE / DELETE / INVESTIGATE-FURTHER / NEW**
 | `code/models/__pycache__/` | DELETE | — | Phase 3a. |
 | `code/scripts/` | KEEP-IN-PLACE | — | Many internal cross-refs. |
 | `code/scripts/__pycache__/` | DELETE | — | Phase 3a. |
-| `experiments/` | KEEP-IN-PLACE | — | 100+ hard-coded callers. |
-| `experiments/__pycache__/` | DELETE | — | Phase 3a. |
+| `code/scripts/` | KEEP-IN-PLACE | — | 100+ hard-coded callers. |
+| `code/scripts/__pycache__/` | DELETE | — | Phase 3a. |
 | `data/` | KEEP-IN-PLACE | — | Path-stable. |
 | `llm-stats-vault/90-archive/audit/` | KEEP-IN-PLACE | — | Moved 2026-05-10 from repo root. |
 | `llm-stats-vault/90-archive/` | KEEP-IN-PLACE | — | Canonical archive root. Receives newly archived items via new sub-dirs `data_legacy/`, `results_legacy/`, `scripts_legacy/`, `poster_prep_assets/`. |
@@ -173,7 +173,7 @@ All 24 `.py` + 1 `.sh` files in `code/scripts/` keep their current paths. None a
 ./code/capstone_mcp/tools/__pycache__/
 ./capstone-website/backend/__pycache__/
 ./code/analysis/__pycache__/
-./experiments/__pycache__/
+./code/scripts/__pycache__/
 ./code/models/__pycache__/
 ./poster/scripts/__pycache__/
 ./scripts/__pycache__/
@@ -347,16 +347,16 @@ git commit -m "feat(paper): scaffold IEEEtran conference paper (stubs only, comp
 - **Verification**: After Phase 3, `cd code/visualization/ && Rscript 00_load_data.R` should still produce `data/benchmark_clean.{csv,rds}` in that same dir.
 
 ### R2. Backend Docker static bundle
-- **Risk**: [capstone-website/backend/Dockerfile:6, 8](capstone-website/backend/Dockerfile) does `COPY static_data/ ./static_data/` and sets `ENV DATA_ROOT=/app/static_data`. The bundle includes copies of `data/`, `experiments/`, `llm-stats-vault/`. We are NOT moving anything that the bundle copies (perturbations.json, perturbations_all.json, runs.jsonl, results.json, results_v2/* all stay put).
+- **Risk**: [capstone-website/backend/Dockerfile:6, 8](capstone-website/backend/Dockerfile) does `COPY static_data/ ./static_data/` and sets `ENV DATA_ROOT=/app/static_data`. The bundle includes copies of `data/`, `code/scripts/`, `llm-stats-vault/`. We are NOT moving anything that the bundle copies (perturbations.json, perturbations_all.json, runs.jsonl, results.json, results_v2/* all stay put).
 - **Verification**: Before Phase 3 ship, `cd capstone-website/backend && docker build -t capstone-backend . && docker run --rm capstone-backend ls /app/static_data/data/processed_data/results_v1/` should show `runs.jsonl + results.json + rq4_analysis.json` (no backups now, since they moved out — but the bundle script copies whatever's in `static_data/data/processed_data/results_v1/` so the prior baked-in copy stays valid). Resync `static_data/` only if backend redeploys.
 
 ### R3. Hard-coded `data/processed_data/results_v2/` paths (100+)
 - **Risk**: Any move of `data/processed_data/results_v2/` would break: 14+ analysis scripts, `code/analysis/llm_judge_rubric.py`, `capstone-website/backend/v2_routes.py`, R pipeline, llm-stats-vault/90-archive/audit/recompute_log.md cross-refs.
 - **Mitigation**: Plan does NOT move these. Future refactor only.
-- **Verification**: After Phase 3, dry-run `bash code/scripts/refresh_pipeline.sh --help` (if it has --help) or read its top to ensure no path it touches has moved. `code/scripts/refresh_pipeline.sh` calls `dedup_runs.py` (unmoved), and downstream pipelines all read `experiments/results_v{1,2}/` (unmoved).
+- **Verification**: After Phase 3, dry-run `bash code/scripts/refresh_pipeline.sh --help` (if it has --help) or read its top to ensure no path it touches has moved. `code/scripts/refresh_pipeline.sh` calls `dedup_runs.py` (unmoved), and downstream pipelines all read `code/scripts/results_v{1,2}/` (unmoved).
 
-### R4. Hard-coded `report_materials/figures/` paths (17+)
-- **Risk**: Each figure-generator script writes to `report_materials/figures/<name>.png`.
+### R4. Hard-coded `paper/figures/` paths (17+)
+- **Risk**: Each figure-generator script writes to `paper/figures/<name>.png`.
 - **Mitigation**: `report_materials/` not moved.
 - **Verification**: `python code/scripts/three_rankings_figure.py` (or similar) should still write to the same path.
 

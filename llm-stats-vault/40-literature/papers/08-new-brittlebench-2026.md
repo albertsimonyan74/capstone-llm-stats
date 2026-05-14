@@ -36,7 +36,7 @@ brittlebench2026
 - code/scripts/robustness_analysis.py
 - data/raw_data/synthetic/perturbations_v2.json
 - data/processed_data/results_v2/robustness_v2.json
-- report_materials/figures/robustness_heatmap.png
+- paper/figures/robustness_heatmap.png
 - RQ4 panel
 
 ## Tags

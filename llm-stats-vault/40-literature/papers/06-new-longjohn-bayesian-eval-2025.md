@@ -33,7 +33,7 @@ longjohn2025bayesian
 ## Project artifacts that cite this
 - code/scripts/bootstrap_ci.py
 - data/processed_data/results_v2/bootstrap_ci.json
-- report_materials/figures/bootstrap_ci.png
+- paper/figures/bootstrap_ci.png
 - ../../90-archive/audit/day2_audit_report.md (P-2 finding)
 - Three Rankings poster panel
 

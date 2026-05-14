@@ -112,17 +112,17 @@ Per-dimension citations grounding the locked weights
 
 ## By figure
 
-- `report_materials/figures/bootstrap_ci.png`: Papers 06, 15
-- `report_materials/figures/three_rankings.png`: Paper 07
-- `report_materials/figures/robustness_heatmap.png`: Paper 08
-- `report_materials/figures/error_taxonomy_hierarchical.png`: Papers 09, 13
-- `report_materials/figures/judge_validation_scatter.png`: Paper 10
-- `report_materials/figures/judge_validation_by_model.png`: Paper 10
-- `report_materials/figures/a4b_per_dim_robustness.png` (Phase 1B): Papers 07, 08, 13
-- `report_materials/figures/a5b_per_dim_calibration.png` (Phase 1B): Papers 11, 12
-- `report_materials/figures/a2_accuracy_by_category.png` (regenerated): Papers 03, 13
-- `report_materials/figures/a3_failure_heatmap.png` (regenerated): Papers 09, 13
-- `report_materials/figures/a6_aggregate_ranking.png` (regenerated): Papers 06, 15
+- `paper/figures/bootstrap_ci.png`: Papers 06, 15
+- `paper/figures/three_rankings.png`: Paper 07
+- `paper/figures/robustness_heatmap.png`: Paper 08
+- `paper/figures/error_taxonomy_hierarchical.png`: Papers 09, 13
+- `paper/figures/judge_validation_scatter.png`: Paper 10
+- `paper/figures/judge_validation_by_model.png`: Paper 10
+- `paper/figures/a4b_per_dim_robustness.png` (Phase 1B): Papers 07, 08, 13
+- `paper/figures/a5b_per_dim_calibration.png` (Phase 1B): Papers 11, 12
+- `paper/figures/a2_accuracy_by_category.png` (regenerated): Papers 03, 13
+- `paper/figures/a3_failure_heatmap.png` (regenerated): Papers 09, 13
+- `paper/figures/a6_aggregate_ranking.png` (regenerated): Papers 06, 15
 
 ## By limitations / future work item
 
@@ -157,5 +157,5 @@ Per-dimension citations grounding the locked weights
   Papers 11, 12
 
 ### By figure
-- `report_materials/figures/self_consistency_calibration.png`
+- `paper/figures/self_consistency_calibration.png`
   (regenerated, two-panel verbalized vs consistency): Papers 11, 12

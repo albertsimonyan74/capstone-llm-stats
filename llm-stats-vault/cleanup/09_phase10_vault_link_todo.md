@@ -1,6 +1,16 @@
 # Phase 10 — Vault link cleanup TODO
 
-**Status:** DEFERRED past 2026-05-15 (paper submission).
+**STATUS: RESOLVED 2026-05-14**
+
+Vault path migration applied via sed across all .md files in
+llm-stats-vault/ (excluding 90-archive/ and this TODO file). 13 files
+modified (175+/175-). Double-substitution recovery (`data/raw_data/raw_data/`
+→ `data/raw_data/`) applied. See `git diff <commit-hash>^..<commit-hash>`
+for per-file changes.
+
+---
+
+**Status:** DEFERRED past 2026-05-15 (paper submission). [SUPERSEDED — see RESOLVED note above.]
 **Created:** 2026-05-11 during Phase 10 refactor.
 
 ---

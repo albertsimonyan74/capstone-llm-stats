@@ -29,7 +29,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 > `archive/` removed 2026-05-10; snapshot at `llm-stats-vault/cleanup/pre_deletion_archive_snapshot_2026-05-10.tar.gz`.
 > `audit/` moved 2026-05-10 → `llm-stats-vault/90-archive/audit/`; pre-move snapshot at `llm-stats-vault/cleanup/pre_audit_migration_snapshot_2026-05-10.tar.gz`.
 | 28M   | `poster/`                  | [KEEP-CORE]        | Poster LaTeX + figures + scripts. Headline narrative source for paper. |
-| 34M   | `experiments/`             | [KEEP-CORE] mostly | `results_v1/` + `results_v2/` JSONLs (raw + scored). Two `runs.jsonl` backups [STALE]. |
+| 34M   | `code/scripts/`             | [KEEP-CORE] mostly | `results_v1/` + `results_v2/` JSONLs (raw + scored). Two `runs.jsonl` backups [STALE]. |
 | 76M   | `literature/`              | [KEEP-REFERENCE]   | Lecture PDFs + 4 textbooks. Big but small footprint via `.gitignore`. |
 | 87M   | `report_materials/`        | [KEEP-CORE] mostly | R analysis pipeline (18 scripts) + figures + interactive HTML. |
 | 338M  | `capstone-website/`        | [KEEP-REFERENCE]   | Vite/React frontend + FastAPI backend. Not part of paper. Heavy. |
@@ -67,7 +67,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - `metrics.py` (Path B scoring), `llm_judge.py`, `llm_judge_rubric.py` (uses OpenAI for assumption-compliance — but CLAUDE.md says external Llama 3.3 70B judge; verify), `error_taxonomy.py`, `rubrics.py`, `task_spec_schema.py`, `task_validator.py`. **[KEEP-CORE]**.
 - **Flag**: `llm_judge_rubric.py` matched `OPENAI_API_KEY` grep — confirm whether this is the live judge code path, or stale.
 
-### `experiments/`
+### `code/scripts/`
 - `run_benchmark.py`, `runs_jsonl_adapter.py`, `__init__.py`. **[KEEP-CORE]**.
 - `results_v1/`:
   - `runs.jsonl` (4.4M, append-only). **[KEEP-CORE]**.
@@ -103,7 +103,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 - 44 PDFs: lecture notes 2–40 + 4 textbooks. **[KEEP-REFERENCE]**. Already gitignored.
 
 ### `capstone-website/`
-- `backend/` (FastAPI: `main.py`, `user_study.py`, `v2_routes.py`, `data/{user_study_results.json, vote_memory.json}`, `static_data/` (7.3M, bundles `experiments/` + `data/` + `llm-stats-vault/` for Render Docker). **[KEEP-REFERENCE]** for paper.
+- `backend/` (FastAPI: `main.py`, `user_study.py`, `v2_routes.py`, `data/{user_study_results.json, vote_memory.json}`, `static_data/` (7.3M, bundles `code/scripts/` + `data/` + `llm-stats-vault/` for Render Docker). **[KEEP-REFERENCE]** for paper.
 - `frontend/` (Vite/React: `src/`, `public/`, `dist/` (68M built), `node_modules/` (196M), `package.json`, `vite.config.js`, `vercel.json`). **[KEEP-REFERENCE]**. Reproducible from `npm install`.
 
 ### `llm-stats-vault/logs/`
@@ -123,7 +123,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 (No single file > 50 MB. Two cumulative directories large: `capstone-website/frontend/node_modules` 196M, `capstone-website/frontend/dist` 68M, `capstone-website/frontend/public` 66M.)
 
 ### Junk dirs (remove or gitignore)
-- 12 `__pycache__/` dirs (in `experiments/`, `code/data_preprocessing/`, `code/models/`, `code/scripts/`, `code/analysis/`, `code/capstone_mcp/`, `capstone-website/backend/`, `poster/scripts/`, `code/capstone_mcp/tools/`, `code/data_preprocessing/{frequentist,bayesian}/`, plus `.venv/...`).
+- 12 `__pycache__/` dirs (in `code/scripts/`, `code/data_preprocessing/`, `code/models/`, `code/scripts/`, `code/analysis/`, `code/capstone_mcp/`, `capstone-website/backend/`, `poster/scripts/`, `code/capstone_mcp/tools/`, `code/data_preprocessing/{frequentist,bayesian}/`, plus `.venv/...`).
 - `.DS_Store` × 3 (`./`, `./poster/`, `./poster/figures/`).
 - `.Rhistory` (empty).
 - `.pytest_cache/`, `.ruff_cache/`.
@@ -139,7 +139,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 | `data/raw_data/synthetic/perturbations_v2_sample.jsonl` | Sample/preview only. [STALE]. |
 | `data/error_taxonomy_results.json` (top-level) ↔ `data/processed_data/results_v2/error_taxonomy_v2.json` | Possibly superseded. [UNCLEAR]. |
 | `archive/visualizations-pre-modernization-2026-05-05/scripts/{error_taxonomy.py, self_consistency_full.py, generate_perturbations_full.py}` ↔ `code/scripts/{same names}` | Archived snapshot. [KEEP-REFERENCE] (already in archive/). |
-| Poster figures `*.png` and `*.svg` ↔ `report_materials/figures/*.png` | Different aesthetics (poster vs report). Both [KEEP-CORE]. |
+| Poster figures `*.png` and `*.svg` ↔ `paper/figures/*.png` | Different aesthetics (poster vs report). Both [KEEP-CORE]. |
 | Frontend `dist/visualizations/` (66M) ↔ `public/visualizations/` (66M) | Build output vs source. `dist/` rebuildable. |
 
 ### Secrets / API keys (flag — NOT printing)
@@ -159,7 +159,7 @@ Total tracked content (excluding `.venv`, `node_modules`, `.git`): ~280 MB on di
 
 ### Unclear (need user input before classifying)
 - `data/raw_data/synthetic/perturbations_v2.json` — superseded by `_all` but unclear if read by any script. Will grep in Phase 2.
-- `data/error_taxonomy_results.json` (top-level orphan) — vs v2 in `experiments/`.
+- `data/error_taxonomy_results.json` (top-level orphan) — vs v2 in `code/scripts/`.
 - `code/analysis/llm_judge_rubric.py` — current vs stale judge code path (CLAUDE.md says Llama 3.3 70B; this file references OpenAI).
 - `code/scripts/{dedup_runs.py, inspect_judge_strictness.py, generate_group_a_figures.py, site_palette.py}` — one-shot diagnostics or kept utilities?
 - `capstone-website/` — keep in repo, archive, or split into separate repo? Not part of paper but referenced by it.
