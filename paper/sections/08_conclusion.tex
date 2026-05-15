@@ -18,8 +18,13 @@ instrument for statistical-reasoning evaluation.
 
 \textbf{Threats to validity.} The judge can carry training biases;
 it is constrained to one dimension and validated against the keyword
-rubric (Spearman $\rho = 0.602$). Krippendorff's $\alpha$ sits in
-the ``questionable'' range, reflecting genuine ambiguity in scoring
+rubric (Spearman $\rho = 0.602$). The same Llama 3.3 70B Turbo
+model both generated the v2 perturbations and served as the judge;
+it evaluates outputs from the five benchmarked LLMs (not Llama
+outputs), so this is not strict self-judging, but Llama-flavored
+perturbation phrasing could yield more consistent judge scoring
+than human-flavored phrasing. Krippendorff's $\alpha$ sits in the
+``questionable'' range, reflecting genuine ambiguity in scoring
 free-form Bayesian reasoning. The three-ranking divergence is a
 within-model finding independent of inter-rater agreement. Task
 coverage excludes causal inference and experimental design. Model

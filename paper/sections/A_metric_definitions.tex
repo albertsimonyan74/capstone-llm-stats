@@ -17,9 +17,12 @@ weight values lives in the scoring metadata.
 
 \subsection{Robustness Score Ratio}
 
-See Eq.~(\ref{eq:robustness}). The pool is $n=398$ paired (base,
-perturbation) records, a subset of the 473-record superset after
-dropping rows with missing or errored runs.
+See Eq.~(\ref{eq:robustness}). The pool is $n=398$ LLM-generated
+v2 perturbation records per model (covering 146 of the 171 base
+tasks). The 75 hand-authored v1 seeds covering the remaining 25
+base tasks are excluded from the robustness ratio to keep the
+generation source uniform; the v1 seeds remain in the canonical
+473-record perturbation superset for other analyses.
 
 \subsection{Expected Calibration Error}
 

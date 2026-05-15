@@ -18,13 +18,16 @@ The second issue is that after the rephrasement model continues to
 derive the correct value, even when the problem is recast into a
 different domain, or is embodied with new inputs. The third issue
 is whether the empirical correctness of the model corresponds to its
-stated confidence. LLM-statistics
-evaluations~\cite{lu2025stateval,liu2025matheval,nagarkar2026canllm,longjohn2025bayesian}
-that were used as the theoretical foundation and guideline for this
-research report, and evaluate only on the first, and consider the
-other two as out of scope. A single-column leaderboard still picks a
-winner, even when there is a strong disagreement on the three
-properties of the same set of models.
+stated confidence. Prior LLM-statistics work informs this evaluation
+pipeline differently along each axis. Accuracy-focused benchmarks
+like MathEval~\cite{liu2025matheval} and the LLM-vs-human study of
+Nagarkar et al.~\cite{nagarkar2026canllm} score the first property
+exclusively. StatEval~\cite{lu2025stateval} adds proof-evaluation
+rubrics but does not measure robustness or calibration. Longjohn et
+al.~\cite{longjohn2025bayesian} treat the evaluation itself
+probabilistically rather than the reasoning content. A single-column
+leaderboard still picks a winner, even when there is a strong
+disagreement on the three properties of the same set of models.
 
 The novelty and contribution of this work is an evaluation pipeline
 that is designed to independently measure and compare the three
