@@ -22,82 +22,25 @@ the interval), while DeepSeek's ECE of $0.198$ is roughly six times
 the leader's. DeepSeek is the only model in the bottom two on every
 axis.
 
-\begin{figure}[H]
+\begin{figure*}[!t]
   \centering
-  \scriptsize
-  % Vertical-bar panel macro.
-  % #1 = panel title (with arrow), #2..#6 = bar heights in pt for
-  % Gemini, Claude, GPT-4.1, DeepSeek, Mistral (fixed left-to-right order).
-  % #7..#11 = numeric value strings (same order).
-  \newcommand{\barpanel}[1]{\centering\textbf{#1}\\[2pt]}
-  \newcommand{\verticalbars}[5]{%
-    \setlength{\tabcolsep}{1.5pt}%
-    \begin{tabular}{@{}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{}}
-      {\tiny #1} & {\tiny #2} & {\tiny #3} & {\tiny #4} & {\tiny #5} \\[0pt]
-    \end{tabular}\par\vspace{-1pt}%
-  }
-  \newcommand{\verticalrules}[5]{%
-    \setlength{\tabcolsep}{1.5pt}%
-    \renewcommand{\arraystretch}{0}%
-    \begin{tabular}[b]{@{}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{}}
-      {\color{geminiColor}\rule[0pt]{7pt}{#1pt}} &
-      {\color{claudeColor}\rule[0pt]{7pt}{#2pt}} &
-      {\color{gptColor}\rule[0pt]{7pt}{#3pt}} &
-      {\color{deepseekColor}\rule[0pt]{7pt}{#4pt}} &
-      {\color{mistralColor}\rule[0pt]{7pt}{#5pt}} \\
-    \end{tabular}\par\vspace{1pt}%
-  }
-  \newcommand{\verticallabels}{%
-    \setlength{\tabcolsep}{1.5pt}%
-    \begin{tabular}{@{}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{\hspace{2pt}}c@{}}
-      \rotatebox[origin=lt]{45}{\tiny Gemini} &
-      \rotatebox[origin=lt]{45}{\tiny Claude} &
-      \rotatebox[origin=lt]{45}{\tiny GPT-4.1} &
-      \rotatebox[origin=lt]{45}{\tiny DeepSeek} &
-      \rotatebox[origin=lt]{45}{\tiny Mistral} \\
-    \end{tabular}%
-  }
-  % --- Panel 1: Accuracy ---------------------------------------------------
-  \begin{minipage}[t]{0.32\columnwidth}
-    \barpanel{Accuracy $\uparrow$}
-    \verticalbars{.731}{.698}{.673}{.669}{.668}
-    \verticalrules{27}{16}{7.7}{6.3}{6}
-    \verticallabels
-  \end{minipage}\hfill
-  % --- Panel 2: Robustness -------------------------------------------------
-  \begin{minipage}[t]{0.32\columnwidth}
-    \barpanel{Robustness $\uparrow$}
-    \verticalbars{.9824}{.9565}{.9996}{.9422}{.9981}
-    \verticalrules{21.2}{8.25}{29.8}{1.1}{29}
-    \verticallabels
-  \end{minipage}\hfill
-  % --- Panel 3: ECE --------------------------------------------------------
-  \begin{minipage}[t]{0.32\columnwidth}
-    \barpanel{ECE $\downarrow$}
-    \verticalbars{.077}{.033}{.034}{.198}{.081}
-    \verticalrules{11}{4.7}{4.9}{28.3}{11.6}
-    \verticallabels
-  \end{minipage}
-  \caption{Per-metric bar chart for the five models. Models are in
-           fixed left-to-right order across all three panels
-           (Gemini, Claude, GPT-4.1, DeepSeek, Mistral) and bar color
-           identifies each model consistently: Gemini blue, Claude
-           orange, GPT-4.1 green, DeepSeek purple, Mistral red. Bars
-           are normalized within each metric (Accuracy zeroed at
-           $0.65$, Robustness zeroed at $0.94$, ECE on the linear
-           $[0, 0.2]$ scale) so that within-metric differences are
-           visible. Cross-metric rank shifts are visible by tracking
-           each model's color across the three panels. GPT-4.1
+  \includegraphics[width=0.95\textwidth]{figures/per_metric_leaderboard.png}
+  \caption{Per-metric performance for the five models. Each panel
+           shows one of the three rank dimensions, and bar colors
+           identify models consistently across panels. Within each
+           panel, models are sorted best-first by that metric, so the
+           same color appears at different vertical positions across
+           panels, making cross-metric rank shifts visible. GPT-4.1
            (green) moves from third on Accuracy to first on
-           Robustness, Claude (orange) moves from second on Accuracy
-           to fourth on Robustness, and Mistral (red) moves from
-           fifth on Accuracy to second on Robustness. Bootstrap CI
-           (95\%, $B=10{,}000$): Claude and GPT-4.1 are tied at the
-           top of the ECE chart (gap $0.0005$, inside the interval),
-           and the Robustness $\Delta$ for GPT-4.1 is not separable
-           from zero.}
+           Robustness, Claude (teal) leads Accuracy and Calibration
+           but drops to fourth on Robustness, and Mistral (purple)
+           moves from fifth on Accuracy to second on Robustness.
+           Bootstrap CI (95\%, $B = 10{,}000$): Claude and GPT-4.1
+           are tied at the top of the ECE chart (gap $0.0005$,
+           inside the interval), and the Robustness $\Delta$ for
+           GPT-4.1 is not separable from zero.}
   \label{fig:rank-flow}
-\end{figure}
+\end{figure*}
 
 \subsection{Headline Divergence}
 
