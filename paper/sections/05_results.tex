@@ -45,6 +45,31 @@ is $\rho = 0.602$; Krippendorff $\alpha = 0.573$ (95\% CI
 $[0.516, 0.622]$, 1{,}000-resample bootstrap;
 Fig.~\ref{fig:krippendorff-strip}).
 
+\begin{figure}[H]
+  \centering
+  \resizebox{\columnwidth}{!}{%
+  \begin{tabular}{lrcl}
+    \toprule
+    \textbf{Dimension} & \textbf{$\alpha$} & \textbf{95\% CI} & \textbf{Band} \\
+    \midrule
+    Method Structure       & $-0.009$ & $[-0.072,\ 0.062]$  & near chance \\
+    Assumption Compliance  & $\phantom{-}0.573$  & $[\phantom{-}0.516,\ 0.622]$   & questionable \\
+    Reasoning Quality      & $-0.125$ & $[-0.197,\ -0.059]$ & near/below chance \\
+    \bottomrule
+  \end{tabular}%
+  }
+  \caption{Krippendorff's $\alpha$ across three judged dimensions
+           on $n = 750$ paired outputs (1{,}000-resample bootstrap
+           CI). Assumption-compliance $\alpha = 0.573$ is
+           ``questionable'' ($\alpha < 0.667$); the other two cluster
+           near chance. Per-dimension Spearman correlations:
+           method structure $\rho = 0.004$, reasoning quality
+           $\rho = 0.180$, assumption compliance $\rho = 0.602$.
+           The three-ranking divergence is a within-model
+           cross-metric finding independent of inter-rater agreement.}
+  \label{fig:krippendorff-strip}
+\end{figure}
+
 On the combined base-plus-perturbation pool ($n=2{,}850$ = 750
 base + 2{,}100 perturbation rows, eligibility scoped to tasks with
 at least one required assumption check), $20.7\%$ of responses
@@ -66,7 +91,7 @@ articulation.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=0.82\columnwidth]{figures/disagreement_matrix.png}
+  \includegraphics[width=0.65\columnwidth]{figures/disagreement_matrix.png}
   \caption{Keyword-vs-judge disagreement matrix on $n=2{,}850$
            eligible runs. Keyword-PASS / judge-FAIL outnumbers
            keyword-FAIL / judge-PASS by $4.5\times$ (591 vs 131):
@@ -109,31 +134,6 @@ are assumption violations. The model ranking first on robustness
 also omits assumption articulation most --- robustness here
 reflects absence of articulated reasoning to vary, not stable
 reasoning.
-
-\begin{figure}[H]
-  \centering
-  \resizebox{\columnwidth}{!}{%
-  \begin{tabular}{lrcl}
-    \toprule
-    \textbf{Dimension} & \textbf{$\alpha$} & \textbf{95\% CI} & \textbf{Band} \\
-    \midrule
-    Method Structure       & $-0.009$ & $[-0.072,\ 0.062]$  & near chance \\
-    Assumption Compliance  & $\phantom{-}0.573$  & $[\phantom{-}0.516,\ 0.622]$   & questionable \\
-    Reasoning Quality      & $-0.125$ & $[-0.197,\ -0.059]$ & near/below chance \\
-    \bottomrule
-  \end{tabular}%
-  }
-  \caption{Krippendorff's $\alpha$ across three judged dimensions
-           on $n = 750$ paired outputs (1{,}000-resample bootstrap
-           CI). Assumption-compliance $\alpha = 0.573$ is
-           ``questionable'' ($\alpha < 0.667$); the other two cluster
-           near chance. Per-dimension Spearman correlations:
-           method structure $\rho = 0.004$, reasoning quality
-           $\rho = 0.180$, assumption compliance $\rho = 0.602$.
-           The three-ranking divergence is a within-model
-           cross-metric finding independent of inter-rater agreement.}
-  \label{fig:krippendorff-strip}
-\end{figure}
 
 \subsection{Calibration Across Extraction Methods}
 

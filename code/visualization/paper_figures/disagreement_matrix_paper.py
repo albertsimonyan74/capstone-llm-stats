@@ -58,7 +58,7 @@ def _apply_theme():
 
 def main():
     _apply_theme()
-    fig, ax = plt.subplots(figsize=(3.0, 2.6), dpi=300, facecolor=PRINT_BG)
+    fig, ax = plt.subplots(figsize=(2.5, 2.0), dpi=300, facecolor=PRINT_BG)
 
     im = ax.imshow(COUNTS, cmap="Blues", aspect="auto")
 
@@ -72,17 +72,17 @@ def main():
             text_color = "white" if cnt > 0.55 * vmax else PRINT_FG
             ax.text(j, i - 0.10, f"{cnt:,}",
                     ha="center", va="center",
-                    color=text_color, fontsize=11, fontweight="bold")
+                    color=text_color, fontsize=9, fontweight="bold")
             ax.text(j, i + 0.18, f"{pct:.1f}%",
                     ha="center", va="center",
-                    color=text_color, fontsize=8)
+                    color=text_color, fontsize=6.5)
 
     ax.set_xticks([0, 1])
     ax.set_yticks([0, 1])
-    ax.set_xticklabels(["PASS", "FAIL"], fontsize=8)
-    ax.set_yticklabels(["PASS", "FAIL"], fontsize=8)
-    ax.set_xlabel("Judge", fontsize=9, color=PRINT_FG)
-    ax.set_ylabel("Keyword Rubric", fontsize=9, color=PRINT_FG)
+    ax.set_xticklabels(["PASS", "FAIL"], fontsize=7)
+    ax.set_yticklabels(["PASS", "FAIL"], fontsize=7)
+    ax.set_xlabel("Judge", fontsize=7.5, color=PRINT_FG)
+    ax.set_ylabel("Keyword Rubric", fontsize=7.5, color=PRINT_FG)
 
     ax.tick_params(axis="both", which="both", length=0)
     for s in ax.spines.values():
