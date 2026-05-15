@@ -287,3 +287,49 @@ per-task-type total L1 failure rate are independent signals.
     failure-free).}
   \label{fig:failure-concentration}
 \end{figure}
+
+\subsubsection{Robustness by Perturbation Axis}
+\label{sec:per-axis-robustness}
+
+The per-axis pooled means across models invert the prior hypothesis:
+rephrasing is the most damaging axis at $R = 0.966$, with semantic
+$R = 0.984$ and numerical $R = 0.978$ slightly less damaging.
+Rewording prompts hurts more than changing the numbers, indicating
+sensitivity to surface phrasing even when the underlying math is
+identical. Numerical perturbation runs only $n=530$ (40 conceptual
+or seeded-MC tasks skip that axis per \S\ref{sec:methodology}) but
+the spread is the widest: $0.9146$ (DeepSeek) to $1.0130$ (Mistral),
+a $0.10$-point gap.
+
+Variance decomposition shows robustness is more a model property
+than an axis property: mean model-variance within axis is
+$7.28 \times 10^{-4}$, mean axis-variance within model is
+$1.99 \times 10^{-4}$ --- a $3.7\times$ ratio. Table~I's robustness
+column captures a real model signal, not an average over
+heterogeneous axis behavior.
+
+Four (model, axis) cells exceed $R = 1.0$, meaning the model scores
+higher on perturbed prompts than on their base counterparts:
+GPT-4.1 (semantic $1.011$, numerical $1.013$) and Mistral (semantic
+$1.006$, numerical $1.013$). GPT-4.1's pooled $0.9996$ is therefore
+not uniform stability but a near-cancellation: a rephrasing drop of
+$0.021$ offsets the two axes where it gains. Cross-linking
+\S\ref{sec:per-model-disagreement}/\S\ref{sec:failure-by-task-type}:
+the over-credit ranking (Mistral, Claude) does not align with the
+robustness ranking (GPT-4.1, Mistral). Mistral is both the largest
+over-credit contributor and the second-most robust --- pattern
+matching on surface tokens can be stable across paraphrases even
+when it is substantively wrong.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\columnwidth]{figures/per_axis_robustness.png}
+  \caption{Robustness ratio $R = \bar{s}_\text{pert} / \bar{s}_\text{base}$
+    decomposed by perturbation axis (5 models $\times$ 3 axes,
+    $n=1{,}990$ v2 paired records). Cells centered at $R=1.0$
+    (perfect agreement); blue = score drop, red = gain. Model
+    variance dominates axis variance ($3.7\times$), so the
+    robustness column of Table~I captures a model property rather
+    than an axis property.}
+  \label{fig:per-axis-robustness}
+\end{figure}

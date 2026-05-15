@@ -1,0 +1,179 @@
+{
+  "per_model_axis": {
+    "claude": {
+      "rephrase": {
+        "n_paired": 146,
+        "mean_base": 0.6991,
+        "mean_pert": 0.6578,
+        "delta": 0.0413,
+        "ratio_R": 0.9409
+      },
+      "semantic": {
+        "n_paired": 146,
+        "mean_base": 0.6991,
+        "mean_pert": 0.68,
+        "delta": 0.0191,
+        "ratio_R": 0.9727
+      },
+      "numerical": {
+        "n_paired": 106,
+        "mean_base": 0.7065,
+        "mean_pert": 0.6752,
+        "delta": 0.0313,
+        "ratio_R": 0.9557
+      }
+    },
+    "chatgpt": {
+      "rephrase": {
+        "n_paired": 146,
+        "mean_base": 0.6706,
+        "mean_pert": 0.6566,
+        "delta": 0.014,
+        "ratio_R": 0.9791
+      },
+      "semantic": {
+        "n_paired": 146,
+        "mean_base": 0.6706,
+        "mean_pert": 0.6778,
+        "delta": -0.0071,
+        "ratio_R": 1.0107
+      },
+      "numerical": {
+        "n_paired": 106,
+        "mean_base": 0.6537,
+        "mean_pert": 0.662,
+        "delta": -0.0083,
+        "ratio_R": 1.0127
+      }
+    },
+    "gemini": {
+      "rephrase": {
+        "n_paired": 146,
+        "mean_base": 0.7355,
+        "mean_pert": 0.7178,
+        "delta": 0.0177,
+        "ratio_R": 0.9759
+      },
+      "semantic": {
+        "n_paired": 146,
+        "mean_base": 0.7355,
+        "mean_pert": 0.7211,
+        "delta": 0.0144,
+        "ratio_R": 0.9804
+      },
+      "numerical": {
+        "n_paired": 106,
+        "mean_base": 0.7167,
+        "mean_pert": 0.7127,
+        "delta": 0.004,
+        "ratio_R": 0.9944
+      }
+    },
+    "deepseek": {
+      "rephrase": {
+        "n_paired": 146,
+        "mean_base": 0.6708,
+        "mean_pert": 0.6399,
+        "delta": 0.031,
+        "ratio_R": 0.9538
+      },
+      "semantic": {
+        "n_paired": 146,
+        "mean_base": 0.6708,
+        "mean_pert": 0.6376,
+        "delta": 0.0332,
+        "ratio_R": 0.9504
+      },
+      "numerical": {
+        "n_paired": 106,
+        "mean_base": 0.6689,
+        "mean_pert": 0.6118,
+        "delta": 0.0571,
+        "ratio_R": 0.9146
+      }
+    },
+    "mistral": {
+      "rephrase": {
+        "n_paired": 146,
+        "mean_base": 0.6735,
+        "mean_pert": 0.6595,
+        "delta": 0.014,
+        "ratio_R": 0.9792
+      },
+      "semantic": {
+        "n_paired": 146,
+        "mean_base": 0.6735,
+        "mean_pert": 0.6777,
+        "delta": -0.0042,
+        "ratio_R": 1.0063
+      },
+      "numerical": {
+        "n_paired": 106,
+        "mean_base": 0.6661,
+        "mean_pert": 0.6748,
+        "delta": -0.0087,
+        "ratio_R": 1.013
+      }
+    }
+  },
+  "per_model_overall": {
+    "claude": {
+      "n_paired": 398,
+      "mean_base": 0.7011,
+      "mean_pert": 0.6706,
+      "ratio_R": 0.9565
+    },
+    "chatgpt": {
+      "n_paired": 398,
+      "mean_base": 0.6661,
+      "mean_pert": 0.6658,
+      "ratio_R": 0.9996
+    },
+    "gemini": {
+      "n_paired": 398,
+      "mean_base": 0.7305,
+      "mean_pert": 0.7177,
+      "ratio_R": 0.9824
+    },
+    "deepseek": {
+      "n_paired": 398,
+      "mean_base": 0.6703,
+      "mean_pert": 0.6315,
+      "ratio_R": 0.9422
+    },
+    "mistral": {
+      "n_paired": 398,
+      "mean_base": 0.6715,
+      "mean_pert": 0.6703,
+      "ratio_R": 0.9981
+    }
+  },
+  "per_axis_overall": {
+    "rephrase": {
+      "n_paired": 730,
+      "mean_base": 0.6899,
+      "mean_pert": 0.6663,
+      "ratio_R": 0.9658
+    },
+    "semantic": {
+      "n_paired": 730,
+      "mean_base": 0.6899,
+      "mean_pert": 0.6788,
+      "ratio_R": 0.984
+    },
+    "numerical": {
+      "n_paired": 530,
+      "mean_base": 0.6824,
+      "mean_pert": 0.6673,
+      "ratio_R": 0.9779
+    }
+  },
+  "variance_decomposition": {
+    "mean_axis_variance_within_model": 0.000199,
+    "mean_model_variance_within_axis": 0.000728
+  },
+  "_cross_check": {
+    "total_paired": 1990,
+    "expected": 1990
+  }
+}
