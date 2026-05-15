@@ -16,24 +16,19 @@ and the keyword rubric overcounts assumption articulation by
 $15.4$ points relative to the judge. A single number is the wrong
 instrument for statistical-reasoning evaluation.
 
-\textbf{Threats to validity.} The Llama 3.3 70B Turbo judge can
-carry training biases. It is constrained to one dimension and
-validated against the keyword rubric (Spearman $\rho = 0.602$).
-Krippendorff's $\alpha$ sits in the ``questionable'' range,
-reflecting genuine ambiguity in scoring free-form Bayesian reasoning.
-The three-ranking divergence is a within-model cross-metric finding
-independent of inter-rater agreement. Task coverage is broad for
-Bayesian and inferential reasoning but not representative of
-statistical reasoning generally. Causal inference and experimental
-design are out of scope. Model versions are May 2026 snapshots and
-inversion patterns may not replicate as APIs evolve.
+\textbf{Threats to validity.} The judge can carry training biases;
+it is constrained to one dimension and validated against the keyword
+rubric (Spearman $\rho = 0.602$). Krippendorff's $\alpha$ sits in
+the ``questionable'' range, reflecting genuine ambiguity in scoring
+free-form Bayesian reasoning. The three-ranking divergence is a
+within-model finding independent of inter-rater agreement. Task
+coverage excludes causal inference and experimental design. Model
+versions are May 2026 snapshots; inversion patterns may not
+replicate as APIs evolve.
 
-\textbf{Future work.} Three extensions follow. First, broaden the
-task suite into causal inference, experimental design, and
-frequentist hypothesis testing to test whether the three-axis
-divergence generalizes. Second, replicate with a second out-of-family
-judge to bound judge-bias variance and upper-bound inter-rater
-reliability on assumption-compliance. Third, treat the GPT-4.1
-inversion as a hypothesis about training-data composition and
-decoding choices to be tested in controlled provider-level
-experiments.
+\textbf{Future work.} Three extensions follow: broaden the task
+suite to causal inference, experimental design, and frequentist
+hypothesis testing; replicate with a second out-of-family judge to
+bound judge-bias variance; treat the GPT-4.1 inversion as a
+hypothesis about training-data and decoding choices to test in
+controlled provider-level experiments.

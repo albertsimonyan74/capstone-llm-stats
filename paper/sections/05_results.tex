@@ -5,62 +5,32 @@
 
 \subsection{Per-Metric Rankings}
 
-The per-model summary can be seen in a table above. Accuracy is the
-mean Path~B NMACR score on the 171 base tasks. Robustness $R_m$
-is the ratio of mean NMACR score on the $n = 398$ paired
+The per-model summary appears in Table~\ref{tab:per-model}. Accuracy
+is the mean Path~B NMACR score on the 171 base tasks. Robustness
+$R_m$ is the ratio of mean NMACR score on the $n=398$ paired
 perturbation runs to mean NMACR score on their base counterparts
 (Eq.~\ref{eq:robustness}), so $R_m = 1$ corresponds to perfect
 base-to-perturbation agreement. ECE is binary-pass Expected
 Calibration Error (lower is better).
 
-No two rankings agree. Accuracy reads
-Gemini $>$ Claude $>$ GPT-4.1 $>$ DeepSeek $>$ Mistral, with Gemini
-three points ahead of Claude. Robustness reads
-GPT-4.1 $>$ Mistral $>$ Gemini $>$ Claude $>$ DeepSeek, moving
-GPT-4.1 from third to first and Claude from second to fourth. Calibration reads Claude $>$ GPT-4.1 $>$ Gemini $>$ Mistral
-$>$ DeepSeek. Claude and GPT-4.1 are tied at the top within the
-95\% bootstrap CI (10{,}000 resamples, the 0.0005 gap falls inside
-the interval), while DeepSeek's ECE of $0.198$ is roughly six times
-the leader's. DeepSeek is the only model in the bottom two on every
-axis.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/per_metric_leaderboard.png}
-  \caption{Per-metric performance for the five models. Each panel
-           shows one of the three rank dimensions, and bar colors
-           identify models consistently across panels. Within each
-           panel, models are sorted best-first by that metric, so the
-           same color appears at different vertical positions across
-           panels, making cross-metric rank shifts visible. GPT-4.1
-           (green) moves from third on Accuracy to first on
-           Robustness, Claude (teal) leads Accuracy and Calibration
-           but drops to fourth on Robustness, and Mistral (purple)
-           moves from fifth on Accuracy to second on Robustness.
-           Bootstrap CI (95\%, $B = 10{,}000$): Claude and GPT-4.1
-           are tied at the top of the ECE chart (gap $0.0005$,
-           inside the interval), and the Robustness $\Delta$ for
-           GPT-4.1 is not separable from zero.}
-  \label{fig:rank-flow}
-\end{figure}
+No two rankings agree. Orderings, rank-flips, and 95\% bootstrap
+CIs are detailed in \S\ref{sec:headline-divergence} below. DeepSeek
+is the only model in the bottom two on every axis.
 
 \subsection{Headline Divergence}
+\label{sec:headline-divergence}
 
-Figure~\ref{fig:rank-flow} makes the cross-metric divergence
-concrete. GPT-4.1 ranks third on accuracy ($0.673$), behind Gemini
-($0.731$) and Claude ($0.698$), yet its base and perturbation mean
-NMACR scores fall within $0.0003$ ($0.6661$ vs $0.6658$), the
-tightest agreement among the five and first place on robustness
-($0.9996$). Claude shows the opposite pattern: second on accuracy
-($0.698$), tied with GPT-4.1 at the top of calibration
-(ECE $\approx 0.033$), but mean NMACR score falls from $0.7011$ on
-base prompts to $0.6706$ on perturbed ones, a three-point drop that
-pushes it to fourth on robustness ($0.9565$). A practitioner picking GPT-4.1 for its
-robustness accepts a middle-of-the-pack accuracy model. One picking
-Claude for accuracy and calibration accepts the second-most-brittle
-behavior under perturbation.
+The cross-metric divergence is concrete: GPT-4.1 ranks third on
+accuracy ($0.673$, behind Gemini $0.731$ and Claude $0.698$) yet
+its base and perturbation mean NMACR scores fall within $0.0003$
+($0.6661$ vs $0.6658$) --- first on robustness ($0.9996$). Claude
+inverts: second on accuracy ($0.698$), tied with GPT-4.1 on
+calibration (ECE $\approx 0.033$), but mean NMACR drops from
+$0.7011$ to $0.6706$ under perturbation, dropping it to fourth on
+robustness ($0.9565$).
 
 \subsection{Assumption-Compliance Results}
+\label{sec:assumption-compliance}
 
 On $n=750$ paired runs the Llama 3.3 70B Turbo judge passes only
 $55.7\%$ of responses on assumption-compliance, leaving $44.3\%$
@@ -69,9 +39,10 @@ even when the final number is right. The keyword rubric passes
 $71.1\%$ of the same responses, $15.4$ points higher. Spearman
 rank correlation between keyword and judge scores on this dimension
 is $\rho = 0.602$; Krippendorff $\alpha = 0.573$ (95\% CI
-$[0.516, 0.622]$, 1{,}000-resample bootstrap).
+$[0.516, 0.622]$, 1{,}000-resample bootstrap;
+Fig.~\ref{fig:krippendorff-strip}).
 
-On the combined base-plus-perturbation pool ($n=2850$ eligible
+On the combined base-plus-perturbation pool ($n=2{,}850$ eligible
 runs), $20.7\%$ of responses pass-flip between the keyword rubric
 and the judge: one in five times, the two scorers disagree on
 whether the assumption was actually articulated. That is the
@@ -79,8 +50,58 @@ clearest evidence in the paper for the title's question. Models
 produce surface-correct outputs that pass keyword checks for
 ``assume'' or ``given'' tokens while failing the substantive check.
 Du et al.~\cite{du2025icecream} report the same blindness in causal
-reasoning. Figure~\ref{fig:krippendorff-strip} shows the
-per-dimension $\alpha$ values from the inter-rater check.
+reasoning.
+
+Figure~\ref{fig:disagreement-matrix} visualizes the direction of
+the disagreement. Of 722 disagreeing runs in the $n=2{,}850$ pool,
+591 are keyword-PASS / judge-FAIL versus only 131 the reverse --- a
+$4.5\times$ asymmetry showing the rubric over-credits surface tokens
+like ``assume'' or ``given'' without substantive assumption
+articulation.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.82\columnwidth]{figures/disagreement_matrix.png}
+  \caption{Keyword-vs-judge disagreement matrix on $n=2{,}850$
+           eligible runs. Keyword-PASS / judge-FAIL outnumbers
+           keyword-FAIL / judge-PASS by $4.5\times$ (591 vs 131):
+           the rubric over-credits surface tokens on
+           assumption-compliance.}
+  \label{fig:disagreement-matrix}
+\end{figure}
+
+\subsection{Failure Taxonomy}
+\label{sec:failure-taxonomy}
+
+The 143 responses the judge flagged as L1 failures cluster into
+five categories. Figure~\ref{fig:failure-taxonomy} breaks them down
+per model.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\columnwidth]{figures/failure_taxonomy.png}
+  \caption{Failure-mode distribution across the five models
+           ($n=143$ judge-classified L1 failures, stacked by
+           category). Assumption violations dominate at $46.9\%$
+           (67), then mathematical errors $33.6\%$ (48), formatting
+           $12.6\%$ (18), and conceptual $7.0\%$ (10). \textbf{No
+           hallucinations observed} on these tasks.}
+  \label{fig:failure-taxonomy}
+\end{figure}
+
+Three observations follow. Assumption violations dominate,
+reinforcing the keyword-vs-judge gap in
+\S\ref{sec:assumption-compliance}: in Bayesian reasoning the
+substantive failure mode is unstated or implicit assumptions, not
+incorrect arithmetic. Hallucinations are absent --- fabrication is
+widely cited as a general LLM risk, but on structured tasks with
+explicit ground-truth anchors it does not appear here. Third, the
+per-model breakdown sharpens the GPT-4.1 robustness paradox:
+GPT-4.1 has the most overall L1 failures (38 of 143), of which 25
+are assumption violations. The model ranking first on robustness
+also omits assumption articulation most --- robustness here
+reflects absence of articulated reasoning to vary, not stable
+reasoning.
 
 \begin{figure}[H]
   \centering
@@ -95,16 +116,15 @@ per-dimension $\alpha$ values from the inter-rater check.
     \bottomrule
   \end{tabular}%
   }
-  \caption{Krippendorff's $\alpha$ across the three judged dimensions
-           (method structure, assumption compliance, reasoning quality),
-           computed on $n = 750$ paired (task, response) outputs with
-           a 1{,}000-resample bootstrap CI. The assumption-compliance
-           $\alpha = 0.573$ sits in the conventionally
-           ``questionable'' range ($\alpha < 0.667$), while the other
-           two dimensions cluster near chance. The three-ranking
-           divergence is a within-model cross-metric finding and does
-           not depend on inter-rater agreement, so these $\alpha$
-           values qualify but do not invalidate the central findings.}
+  \caption{Krippendorff's $\alpha$ across three judged dimensions
+           on $n = 750$ paired outputs (1{,}000-resample bootstrap
+           CI). Assumption-compliance $\alpha = 0.573$ is
+           ``questionable'' ($\alpha < 0.667$); the other two cluster
+           near chance. Per-dimension Spearman correlations:
+           method structure $\rho = 0.004$, reasoning quality
+           $\rho = 0.180$, assumption compliance $\rho = 0.602$.
+           The three-ranking divergence is a within-model
+           cross-metric finding independent of inter-rater agreement.}
   \label{fig:krippendorff-strip}
 \end{figure}
 

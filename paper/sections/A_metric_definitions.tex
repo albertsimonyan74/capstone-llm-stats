@@ -8,81 +8,40 @@ reported confidence intervals.
 
 \subsection{NMACR Aggregate}
 
-For each (task, model) pair, the Path~B rubric produces five
-dimension-level scores $N, M, A, C, R \in [0,1]$. The aggregate
-from~(\ref{eq:nmacr}) is
-\[
-  S_{\text{NMACR}} = 0.10\,N + 0.20\,M + 0.30\,A + 0.15\,C + 0.25\,R.
-\]
-The ordering $A > R > M > C > N$ weights assumption articulation
-highest in a Bayesian task and a correct number with no derivation
-lowest. Per-model accuracy is the mean of $S_{\text{NMACR}}$ over
-the 171 base tasks. The literature trail behind the weights lives
-in the scoring metadata.
+See Eq.~(\ref{eq:nmacr}) in \S\ref{sec:scoring} for the NMACR
+aggregate definition. The weight ordering $A > R > M > C > N$
+reflects assumption articulation as the foundation of Bayesian
+reasoning; a correct numeric answer without derivation does not
+support the answer logic. The full literature trail behind the
+weight values lives in the scoring metadata.
 
 \subsection{Robustness Score Ratio}
 
-Equation~(\ref{eq:robustness}) defines per-model robustness as the
-ratio of mean NMACR score on paired perturbation runs to mean NMACR
-score on the corresponding base runs:
-\[
-  R_m = \frac{\bar{s}_{\text{pert}}(m)}{\bar{s}_{\text{base}}(m)}
-      = 1 - \frac{\Delta_m}{\bar{s}_{\text{base}}(m)},
-\]
-where $\Delta_m = \bar{s}_{\text{base}}(m) - \bar{s}_{\text{pert}}(m)$
-is the signed mean score gap. The pool used in the published numbers
-is the $n = 398$ paired (base, perturbation) records that survive
-deduplication and scoring; this is a subset of the 473 perturbations
-in the canonical superset (records with missing or errored base or
-perturbation runs are dropped from the paired computation).
+See Eq.~(\ref{eq:robustness}). The pool is $n=398$ paired (base,
+perturbation) records, a subset of the 473-record superset after
+dropping rows with missing or errored runs.
 
 \subsection{Expected Calibration Error}
 
-Binary-pass ECE is computed with $B = 4$ confidence buckets parsed
-from the response's hedging language (low, medium, high, unstated).
-Following Guo et al.~\cite{guo2017calibration} and
-restating~(\ref{eq:ece}),
-\[
-  \mathrm{ECE} = \sum_{b=1}^{4} \frac{|B_b|}{N}
-                 \,\bigl|\,\mathrm{acc}(B_b) - \mathrm{conf}(B_b)\,\bigr|,
-\]
-where bucket centres for ``low'', ``medium'', ``high'', and
-``unstated'' map to $0.25$, $0.50$, $0.85$, and $0.50$ before
-computing $\mathrm{conf}(B_b)$.
+See Eq.~(\ref{eq:ece}); $B = 4$ confidence buckets are parsed from
+hedging language (low, medium, high, unstated), with bucket centres
+$0.25$, $0.50$, $0.85$, $0.50$ for computing $\mathrm{conf}(B_b)$.
 
 \subsection{Krippendorff's \texorpdfstring{$\alpha$}{alpha}}
 
-For each judged dimension, inter-rater reliability between the
-keyword rubric and the external judge is
-\begin{equation}
-  \alpha = 1 - \frac{D_o}{D_e},
-  \label{eq:krippendorff}
-\end{equation}
-with $D_o$ observed disagreement among raters and $D_e$ disagreement
-expected under chance. Values near $1$ indicate strong agreement,
-values near $0$ indicate chance. $\alpha$ is computed on the three Path~B dimensions
-(method-structure, assumption-compliance, reasoning-quality) used to
-characterize keyword-vs-judge alignment in
-Section~\ref{sec:results}.
+Inter-rater reliability between keyword rubric and judge is
+$\alpha = 1 - D_o / D_e$ ($D_o$ observed, $D_e$ chance-expected
+disagreement), computed on the three Path~B dimensions.
 
 \subsection{Spearman Rank Correlation}
 
-Per-dimension keyword-vs-judge agreement is also reported as
-\begin{equation}
-  \rho = 1 - \frac{6 \sum_{i=1}^{n} d_i^2}{n(n^2 - 1)},
-  \label{eq:spearman}
-\end{equation}
-with $d_i$ the rank difference between the keyword-rubric and
-external-judge score for the $i$-th response in the paired sample
-of size $n$. $\rho$ is reported rather than Pearson $r$ because the
+Per-dimension agreement is also reported as
+$\rho = 1 - 6 \sum d_i^2 / [n(n^2 - 1)]$ with $d_i$ the rank
+difference; $\rho$ is preferred over Pearson $r$ because the
 rubric-judge relationship is monotonic but not linear.
 
 \subsection{Bootstrap Procedure}
 
-All reported confidence intervals use the 95\% percentile bootstrap
-on per-run aggregates, with $B = 10{,}000$ resamples and a fixed
-RNG seed (42). The resampling unit is the individual (task, model)
-run. Resamples preserve the per-model count ($n = 171$ for accuracy,
-$n = 398$ for the v2 perturbation pool used in robustness). CIs are
-reported as $[\text{lower}, \text{upper}]$ at the $0.025$ and
-$0.975$ quantiles of the resampled statistic distribution.
+All CIs use the 95\% percentile bootstrap on per-run aggregates,
+with $B = 10{,}000$ resamples (seed 42). Resamples preserve
+per-model count ($n=171$ accuracy, $n=398$ robustness).

@@ -8,20 +8,18 @@ are not the same axis under different names. Each has deployment
 consequences the others do not capture. Accuracy is the natural
 signal for one-shot question answering. For pipelines that
 paraphrase prompts or swap inputs (automated tutoring, agentic
-workflows), robustness matters more, and the GPT-4.1 inversion is
-the warning sign: a model that ranks only third on accuracy can
-still be the one whose outputs hold up best under perturbation, so
-picking by accuracy alone for paraphrase-heavy pipelines can be
-exactly wrong.
-For systems that gate decisions on expressed confidence (triage
-tools, ensemble selectors), calibration matters, and DeepSeek's ECE
-of $0.198$ rules it out regardless of accuracy.
+workflows), robustness matters more: picking by accuracy alone for
+paraphrase-heavy pipelines can be exactly wrong. For systems that
+gate decisions on expressed confidence (triage tools, ensemble
+selectors), calibration matters, and DeepSeek's ECE of $0.198$
+rules it out regardless of accuracy.
 
 \textbf{Reasoning versus pattern matching.} The keyword-vs-judge
 gap on assumption-compliance is the clearest evidence for the paper's
-title. On the combined base-and-perturbation pool ($n = 2850$),
-$20.7\%$ of responses pass-flip between the two scorers. The judge's
-lower pass rate ($55.7\%$ vs the rubric's $71.1\%$) indicates the
+title. On the combined base-and-perturbation pool ($n = 2{,}850$),
+$20.7\%$ of responses pass-flip between the two scorers. On the
+$n=750$ base-only pool, the judge passes $55.7\%$ versus the
+keyword rubric's $71.1\%$, a $15.4$-point gap that indicates the
 direction: surface-form scoring overcounts substantive
 articulation~\cite{du2025icecream}. The calibration analysis
 (Figure~\ref{fig:calibration-paired}) shows the same shape:
@@ -32,9 +30,6 @@ $\text{ECE} = 0.6$ ``severe overconfidence'' threshold.
 
 \textbf{Broader implications.} The multi-axis ranking is cheap to
 add: the same response corpus feeds robustness once perturbations
-exist and calibration once confidence is parsed. The GPT-4.1
-accuracy-to-robustness inversion hints that training-data and
-decoding choices may trade ``follows the textbook'' against
-``answers the question actually asked,'' though settling that takes
-controlled provider-level experiments. Single-number leaderboards
-should be reported alongside the multi-axis view, not in place of it.
+exist and calibration once confidence is parsed. Single-number
+leaderboards should be reported alongside the multi-axis view, not
+in place of it.
