@@ -100,31 +100,31 @@ CALIBRATION_DATA = [
 ]
 
 
-def _draw_panel(ax, data, *, xlim, title, xlabel, value_fmt):
+def _draw_panel(ax, data, *, ylim, title, ylabel, value_fmt):
     models = [m for m, _ in data]
     values = [v for _, v in data]
-    y_pos = np.arange(len(models))
+    colors = [MODEL_COLORS[m] for m in models]
+    x_pos = np.arange(len(models))
 
-    for i, m in enumerate(models):
-        ax.barh(y_pos[i], values[i], color=MODEL_COLORS[m], height=0.65)
+    ax.bar(x_pos, values, color=colors, width=0.7, edgecolor="none")
 
-    span = xlim[1] - xlim[0]
-    label_offset = span * 0.012
+    span = ylim[1] - ylim[0]
+    label_offset = span * 0.03
     for i, v in enumerate(values):
-        ax.text(v + label_offset, y_pos[i], value_fmt.format(v),
-                va="center", ha="left",
+        ax.text(i, v + label_offset, value_fmt.format(v),
+                ha="center", va="bottom",
                 color=PRINT_FG, fontsize=VALUE_FONTSIZE, fontweight="bold")
 
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(models, fontsize=MODEL_LABEL_FONTSIZE,
-                       fontweight="bold")
-    for tick, m in zip(ax.get_yticklabels(), models):
-        tick.set_color(MODEL_COLORS[m])
-    ax.invert_yaxis()
+    ax.set_xticks(x_pos)
+    ax.set_xticklabels(models, rotation=45, ha="right",
+                       rotation_mode="anchor",
+                       fontsize=MODEL_LABEL_FONTSIZE, fontweight="bold")
+    for tick_label, color in zip(ax.get_xticklabels(), colors):
+        tick_label.set_color(color)
 
-    ax.set_xlim(*xlim)
-    ax.set_xlabel(xlabel, color=PRINT_FG_MUTED, fontsize=XLABEL_FONTSIZE)
-    ax.tick_params(axis="x", labelsize=TICK_FONTSIZE)
+    ax.set_ylim(*ylim)
+    ax.set_ylabel(ylabel, color=PRINT_FG_MUTED, fontsize=XLABEL_FONTSIZE)
+    ax.tick_params(axis="y", labelsize=TICK_FONTSIZE)
     ax.set_title(title, fontsize=TITLE_FONTSIZE, fontweight="bold",
                  color=PRINT_FG, pad=6, loc="left")
     _dim_spines(ax)
@@ -134,30 +134,30 @@ def _draw_panel(ax, data, *, xlim, title, xlabel, value_fmt):
 
 def main():
     _apply_theme()
-    fig = plt.figure(figsize=(3.5, 2.4), dpi=300, facecolor=PRINT_BG)
+    fig = plt.figure(figsize=(3.5, 2.6), dpi=300, facecolor=PRINT_BG)
     # Explicit figure-relative coordinates [left, bottom, width, height].
-    # Top row: Accuracy left, Robustness right, gap of 0.14 figure units.
-    # Bottom row: ECE centered at the same panel width as the top row.
-    ax_acc = fig.add_axes([0.10, 0.60, 0.34, 0.34])
-    ax_rob = fig.add_axes([0.58, 0.60, 0.34, 0.34])
-    ax_ece = fig.add_axes([0.34, 0.07, 0.34, 0.34])
+    # Top row: y from 0.62 to 0.90. Bottom row: y from 0.10 to 0.38.
+    # Gap = 0.24 — clear of top-row 45-deg x-labels + ECE title.
+    ax_acc = fig.add_axes([0.12, 0.62, 0.34, 0.28])
+    ax_rob = fig.add_axes([0.58, 0.62, 0.34, 0.28])
+    ax_ece = fig.add_axes([0.34, 0.10, 0.34, 0.28])
 
     _draw_panel(ax_acc, ACCURACY_DATA,
-                xlim=(0.6, 0.78),
+                ylim=(0.60, 0.78),
                 title="Accuracy",
-                xlabel="(A-30, R-25, M-20, C-15, N-10)",
+                ylabel="(A-30, R-25, M-20, C-15, N-10)",
                 value_fmt="{:.3f}")
 
     _draw_panel(ax_rob, ROBUSTNESS_DATA,
-                xlim=(0.0, 0.045),
+                ylim=(0.0, 0.048),
                 title=r"Robustness  $\cdot$  $\Delta$",
-                xlabel=r"$\Delta$ score (base $-$ pert.)",
+                ylabel=r"$\Delta$ score (base $-$ pert.)",
                 value_fmt="{:+.4f}")
 
     _draw_panel(ax_ece, CALIBRATION_DATA,
-                xlim=(0.0, 0.21),
+                ylim=(0.0, 0.235),
                 title=r"Calibration  $\cdot$  ECE",
-                xlabel="Verbalized ECE",
+                ylabel="Verbalized ECE",
                 value_fmt="{:.3f}")
 
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
