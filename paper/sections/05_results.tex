@@ -32,8 +32,10 @@ robustness ($0.9565$).
 \subsection{Assumption-Compliance Results}
 \label{sec:assumption-compliance}
 
-On $n=750$ paired runs the Llama 3.3 70B Turbo judge passes only
-$55.7\%$ of responses on assumption-compliance, leaving $44.3\%$
+On $n=750$ paired runs (150 base tasks $\times$ 5 models, excluding
+21 task specifications with no required assumption checks) the
+Llama 3.3 70B Turbo judge passes only $55.7\%$ of responses on
+assumption-compliance, leaving $44.3\%$
 that fail to articulate the assumptions the derivation depends on,
 even when the final number is right. The keyword rubric passes
 $71.1\%$ of the same responses, $15.4$ points higher. Spearman
@@ -42,9 +44,11 @@ is $\rho = 0.602$; Krippendorff $\alpha = 0.573$ (95\% CI
 $[0.516, 0.622]$, 1{,}000-resample bootstrap;
 Fig.~\ref{fig:krippendorff-strip}).
 
-On the combined base-plus-perturbation pool ($n=2{,}850$ eligible
-runs), $20.7\%$ of responses pass-flip between the keyword rubric
-and the judge: one in five times, the two scorers disagree on
+On the combined base-plus-perturbation pool ($n=2{,}850$ = 750
+base + 2{,}100 perturbation rows, eligibility scoped to tasks with
+at least one required assumption check), $20.7\%$ of responses
+pass-flip between the keyword rubric and the judge: one in five
+times, the two scorers disagree on
 whether the assumption was actually articulated. That is the
 clearest evidence in the paper for the title's question. Models
 produce surface-correct outputs that pass keyword checks for

@@ -28,17 +28,24 @@ hedging language (low, medium, high, unstated), with bucket centres
 $0.25$, $0.50$, $0.85$, $0.50$ for computing $\mathrm{conf}(B_b)$.
 
 \subsection{Krippendorff's \texorpdfstring{$\alpha$}{alpha}}
+\label{appendix:krippendorff}
 
 Inter-rater reliability between keyword rubric and judge is
 $\alpha = 1 - D_o / D_e$ ($D_o$ observed, $D_e$ chance-expected
-disagreement), computed on the three Path~B dimensions.
+disagreement), computed on the three Path~B dimensions. $\alpha$
+is computed on $n=750$ base paired outputs (150 tasks $\times$ 5
+models; the 21 trivial-pass task specifications with empty
+assumption-check lists are excluded to avoid agreement inflation
+from auto-PASS responses).
 
 \subsection{Spearman Rank Correlation}
 
 Per-dimension agreement is also reported as
 $\rho = 1 - 6 \sum d_i^2 / [n(n^2 - 1)]$ with $d_i$ the rank
 difference; $\rho$ is preferred over Pearson $r$ because the
-rubric-judge relationship is monotonic but not linear.
+rubric-judge relationship is monotonic but not linear. Reported
+on the same $n=750$ pool as the Krippendorff coefficient above
+(see \S\ref{appendix:krippendorff}).
 
 \subsection{Bootstrap Procedure}
 
