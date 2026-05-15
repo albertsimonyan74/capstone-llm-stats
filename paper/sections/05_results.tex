@@ -43,10 +43,12 @@ $71.1\%$ of the same responses, $15.4$ points higher. Spearman
 rank correlation between keyword and judge scores on this dimension
 is $\rho = 0.602$; Krippendorff $\alpha = 0.573$ (95\% CI
 $[0.516, 0.622]$, 1{,}000-resample bootstrap;
-Fig.~\ref{fig:krippendorff-strip}).
+Table~\ref{tab:krippendorff-strip}).
 
-\begin{figure}[H]
+\begin{table}[H]
   \centering
+  \caption{Krippendorff's $\alpha$ Across Three Judged Dimensions}
+  \label{tab:krippendorff-strip}
   \resizebox{\columnwidth}{!}{%
   \begin{tabular}{lrcl}
     \toprule
@@ -58,17 +60,17 @@ Fig.~\ref{fig:krippendorff-strip}).
     \bottomrule
   \end{tabular}%
   }
-  \caption{Krippendorff's $\alpha$ across three judged dimensions
-           on $n = 750$ paired outputs (1{,}000-resample bootstrap
-           CI). Assumption-compliance $\alpha = 0.573$ is
-           ``questionable'' ($\alpha < 0.667$); the other two cluster
-           near chance. Per-dimension Spearman correlations:
-           method structure $\rho = 0.004$, reasoning quality
-           $\rho = 0.180$, assumption compliance $\rho = 0.602$.
-           The three-ranking divergence is a within-model
-           cross-metric finding independent of inter-rater agreement.}
-  \label{fig:krippendorff-strip}
-\end{figure}
+
+  \vspace{2pt}
+  \footnotesize{\textit{Note}: Computed on $n=750$ paired outputs
+  (1{,}000-resample bootstrap CI). Assumption-compliance
+  $\alpha = 0.573$ is ``questionable'' ($\alpha < 0.667$); the other
+  two cluster near chance. Per-dimension Spearman correlations:
+  method structure $\rho = 0.004$, reasoning quality $\rho = 0.180$,
+  assumption compliance $\rho = 0.602$. The three-ranking divergence
+  is a within-model cross-metric finding independent of inter-rater
+  agreement.}
+\end{table}
 
 On the combined base-plus-perturbation pool ($n=2{,}850$ = 750
 base + 2{,}100 perturbation rows, eligibility scoped to tasks with
@@ -143,8 +145,10 @@ what the model states alongside its answer. \emph{Self-consistency
 confidence} is inferred from how often the model returns the same
 answer across reruns at temperature $T = 0.7$.
 
-\begin{figure}[H]
+\begin{table}[H]
   \centering
+  \caption{Calibration ECE by Two Extraction Methods}
+  \label{tab:calibration-paired}
   \resizebox{\columnwidth}{!}{%
   \begin{tabular}{lcc}
     \toprule
@@ -161,23 +165,21 @@ answer across reruns at temperature $T = 0.7$.
     \bottomrule
   \end{tabular}%
   }
-  \caption{Calibration measured by two extraction methods.
-           \emph{Left column:} verbalized ECE on $n=855$ truly-base
-           runs (all 171 base tasks $\times$ 5 models; calibration
-           uses the full base pool with no assumption-check filter,
-           distinct from the $n=750$ pool in \S\ref{sec:assumption-compliance}).
-           Claude (0.033)
-           and GPT-4.1 (0.034) look well-calibrated, with DeepSeek
-           (0.198) the clear outlier. \emph{Right column:}
-           self-consistency ECE on $n=2{,}415$ reruns (3-rerun
-           protocol at $T=0.7$). All five models exceed
-           $\text{ECE}=0.6$, indicating severe overconfidence. The
-           gap is direct evidence that stated confidence does not
-           reflect actual response stability.}
-  \label{fig:calibration-paired}
-\end{figure}
 
-Figure~\ref{fig:calibration-paired} reframes the story. Verbalized
+  \vspace{2pt}
+  \footnotesize{\textit{Note}: Left column = verbalized ECE on
+  $n=855$ truly-base runs (all 171 base tasks $\times$ 5 models;
+  calibration uses the full base pool with no assumption-check
+  filter, distinct from the $n=750$ pool in
+  \S\ref{sec:assumption-compliance}). Right column =
+  self-consistency ECE on $n=2{,}415$ reruns (3-rerun protocol at
+  $T=0.7$). All five models exceed $\text{ECE}=0.6$ on
+  self-consistency, indicating severe overconfidence; the gap
+  between the two columns is direct evidence that stated confidence
+  does not reflect actual response stability.}
+\end{table}
+
+Table~\ref{tab:calibration-paired} reframes the story. Verbalized
 confidence is what a user sees: Claude and GPT-4.1 look
 well-calibrated, matching the per-model summary. Self-consistency
 asks instead how often the model agrees with itself across reruns,
