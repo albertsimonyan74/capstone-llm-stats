@@ -193,3 +193,55 @@ stability, and the two come apart by an order of magnitude. The
 self-consistency ECE treats single-answer agreement across reruns
 as ground truth, excluding cases where all three reruns fail to
 produce a parseable answer ($n = 2{,}415$).
+
+\subsection{Extended Diagnostics: Where the Divergence Lives}
+\label{sec:extended-diagnostics}
+
+The \S\ref{sec:headline-divergence} headline divergence and the
+\S\ref{sec:assumption-compliance}/\S\ref{sec:failure-taxonomy}
+failure analyses are reported as model-level summaries. The
+following subsections decompose those summaries to reveal where the
+divergence concentrates: which models contribute disproportionately
+to the keyword-judge disagreement, which task types absorb the
+failures, which perturbation axes drive the robustness gap, and how
+the closed-form and computational phases differ.
+
+\subsubsection{Per-Model Disagreement Profiles}
+\label{sec:per-model-disagreement}
+
+The pooled $4.5\times$ asymmetry in \S\ref{sec:assumption-compliance}
+(Table~\ref{tab:krippendorff-strip}) decomposes unevenly across the
+five models. Mistral has the most lopsided profile: 109 keyword-PASS
+/ judge-FAIL versus only 9 in the reverse direction, a $12.1\times$
+asymmetry. Claude is second at $7.84\times$ (149 vs 19), followed
+by Gemini ($4.19\times$, 130 vs 31) and DeepSeek ($3.12\times$,
+100 vs 32). GPT-4.1 is the most balanced at $2.58\times$ (103 vs
+40); its keyword passes are also its judge passes more often than
+any other model in the sample. The over-credit problem is not
+uniform: two of the five models account for $43.7\%$ of the 591
+keyword-PASS / judge-FAIL cases.
+
+This sharpens the GPT-4.1 robustness paradox from
+\S\ref{sec:failure-taxonomy} in an unexpected direction. GPT-4.1
+has the most overall L1 failures (38 of 143) yet the lowest
+keyword-judge asymmetry; its surface tokens track the judge's
+substantive read more closely than any other model. The first-place
+robustness rank therefore does not reduce to pattern-matching of
+assumption-shaped language --- the candidate that did would be
+Mistral or Claude. GPT-4.1's robustness instead coincides with
+substantively correctable failures: when the keyword rubric passes
+it, the judge agrees; when it fails, both agree. Robustness here
+reflects within-prompt consistency rather than over-credited surface
+form.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\columnwidth]{figures/per_model_disagreement.png}
+  \caption{Per-model keyword-vs-judge disagreement on the $n=2{,}850$
+    eligible pool (570 runs per model). KW-PASS / Judge-FAIL
+    (over-credit) versus KW-FAIL / Judge-PASS (under-credit). The
+    pooled $4.5\times$ asymmetry decomposes unevenly: Mistral
+    $12.1\times$, Claude $7.84\times$, Gemini $4.19\times$, DeepSeek
+    $3.12\times$, GPT-4.1 $2.58\times$.}
+  \label{fig:per-model-disagreement}
+\end{figure}

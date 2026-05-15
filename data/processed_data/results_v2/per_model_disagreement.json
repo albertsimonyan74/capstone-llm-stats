@@ -1,0 +1,51 @@
+{
+  "per_model": {
+    "claude": {
+      "n_both_pass": 271,
+      "n_keyword_only": 149,
+      "n_judge_only": 19,
+      "n_both_fail": 131,
+      "n_total": 570,
+      "asymmetry_ratio": 7.842
+    },
+    "chatgpt": {
+      "n_both_pass": 251,
+      "n_keyword_only": 103,
+      "n_judge_only": 40,
+      "n_both_fail": 176,
+      "n_total": 570,
+      "asymmetry_ratio": 2.575
+    },
+    "gemini": {
+      "n_both_pass": 305,
+      "n_keyword_only": 130,
+      "n_judge_only": 31,
+      "n_both_fail": 104,
+      "n_total": 570,
+      "asymmetry_ratio": 4.194
+    },
+    "deepseek": {
+      "n_both_pass": 248,
+      "n_keyword_only": 100,
+      "n_judge_only": 32,
+      "n_both_fail": 190,
+      "n_total": 570,
+      "asymmetry_ratio": 3.125
+    },
+    "mistral": {
+      "n_both_pass": 270,
+      "n_keyword_only": 109,
+      "n_judge_only": 9,
+      "n_both_fail": 182,
+      "n_total": 570,
+      "asymmetry_ratio": 12.111
+    }
+  },
+  "totals": {
+    "n_both_pass": 1345,
+    "n_keyword_only": 591,
+    "n_judge_only": 131,
+    "n_both_fail": 783,
+    "n_total": 2850
+  }
+}
