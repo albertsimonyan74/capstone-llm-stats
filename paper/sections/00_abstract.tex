@@ -1,25 +1,32 @@
 % --- Section: Abstract ---
 
 \begin{abstract}
-Failure modes are disguised on accuracy-only leaderboards, and the
-disguise matters when LLMs are used to solve statistical problems.
-Five frontier models (Claude Sonnet 4.5, GPT-4.1, Gemini 2.5 Flash,
-DeepSeek-Chat, Mistral Large) are benchmarked against 171 Bayesian
-and inferential tasks across 38 types with 473 perturbations on
-three axes: rephrase, semantic, and numerical. Each response is
-scored twice, by a deterministic keyword rubric and by an
-out-of-family judge (Llama 3.3 70B Turbo, served via Together AI)
-on assumption-compliance and reasoning quality. The rankings
-disagree. GPT-4.1 places last on accuracy (0.621) but first on
-robustness (0.9996). Claude leads accuracy (0.683) and binary-pass
-calibration (ECE 0.0334), yet drops to fourth on robustness
-(0.9565). 44.3\% of responses do not mention the assumptions the
-derivation depends on, and assumption violation drives 47\% of
-judge-classified failures. The keyword rubric and the judge agree
-only moderately on assumption-compliance (Spearman 0.602) and
-barely at all on the two other judged dimensions. A single-number
-leaderboard is the wrong instrument here: which model wins depends
-on the metric.
+Accuracy-only leaderboards disguise the actual failure modes of LLMs
+when used for solving statistical problems. Five popular and frontier
+models --- Claude Sonnet 4.5, GPT-4.1, Gemini 2.5 Flash, DeepSeek-Chat,
+Mistral Large --- are benchmarked on 171 Bayesian and inferential
+statistics tasks across 38 topics. Furthermore, three axes
+perturbations --- rephrasing, numerical change, and semantic change ---
+are also applied, summing up to a total of 473. Each response is
+scored twice, by a Python-based deterministic keyword rubric and by an
+independent AI judge --- Llama 3.3 70B Turbo, through Together AI (out
+of a family of 5 benchmarked LLMs) on assumption articulation and
+reasoning quality. Three leaderboards are derived from the results.
+GPT-4.1 is first on robustness to prompt variation (0.9996), but
+ranks third on NMACR scoring formula accuracy (0.673). Claude leads
+in verbalized extraction of self-confidence (ECE 0.033) and places
+second on NMACR scoring formula accuracy (0.698), but drops to
+fourth in robustness to prompt variation (0.9565). 44.3\% of computed 750 paired (task, response)
+outputs fail on the assumption-compliance dimension (no mention of
+assumption derivation). 67 (46.9\%) of the 143 judge-classified L1
+failures are assumption violations as well. There is a moderate
+agreement on assumption compliance between the keyword rubric (regex
+from Python-based ground-truth) and the Llama judge, with a Spearman
+$\rho = 0.602$ on assumption compliance, essentially zero
+($\rho = 0.004$) on method structure, and weak agreement
+($\rho = 0.180$) on reasoning quality. A single metric leaderboard is
+the wrong approach in such evaluations, so a deeper and
+multi-dimensional assessment will serve as a stronger fundament.
 \end{abstract}
 
 \begin{IEEEkeywords}

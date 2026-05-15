@@ -4,43 +4,36 @@
 \label{sec:conclusion}
 
 Five frontier LLMs were benchmarked on 171 Bayesian and inferential
-tasks with 473 perturbations, scored by a deterministic keyword
-rubric, an NMACR aggregator with literature-derived weights, and an
-out-of-family Llama 3.3 70B Turbo judge constrained to
-assumption-compliance. The five models produce three different rank
-orders. GPT-4.1, last on accuracy ($0.621$), is the most robust to
-perturbation ($0.9996$); the model that leads accuracy ($0.683$) and
-binary-pass calibration (ECE $0.0334$) drops to fourth on robustness
-($0.9565$). $44.3\%$ of responses do not articulate the assumptions
-the derivation requires, and the keyword rubric overcounts
-assumption articulation by $15.4$ points relative to the judge. A
-single number is the wrong instrument for statistical-reasoning
-evaluation; the right ranking depends on the property being measured.
+tasks with 473 perturbations, scored by a keyword rubric, an NMACR
+aggregator with literature-derived weights, and an out-of-family
+Llama 3.3 70B Turbo judge constrained to assumption-compliance. The
+five models produce three different rank orders: GPT-4.1, third on
+accuracy ($0.673$), is most robust ($0.9996$). Claude, second on
+accuracy ($0.698$) and top on calibration (ECE $0.0334$), drops to
+fourth on robustness ($0.9565$).
+$44.3\%$ of responses do not articulate the required assumptions,
+and the keyword rubric overcounts assumption articulation by
+$15.4$ points relative to the judge. A single number is the wrong
+instrument for statistical-reasoning evaluation.
 
 \textbf{Threats to validity.} The Llama 3.3 70B Turbo judge can
-carry biases from its training. We constrain it to one dimension
-rather than asking for a holistic preference signal, and validate
-it against the keyword rubric (Spearman $\rho = 0.602$ on
-assumption-compliance). Krippendorff's $\alpha$ on the three judged
-dimensions sits in the ``questionable'' range. That reflects genuine
-ambiguity in scoring free-form Bayesian reasoning, not instrument
-failure, and we report it as honest disclosure. The three-ranking
-divergence is a within-model cross-metric finding and does not
-depend on inter-rater agreement. Task coverage is broad for Bayesian
-and inferential reasoning but is not representative of statistical
-reasoning generally; causal inference and experimental design are
-out of scope. Mean perturbation count is $2.77$ per base task, and
-ECE estimates use 10{,}000-sample bootstrap CIs that carry the
-uncertainty through. Model versions are May 2026 snapshots; the
+carry training biases. It is constrained to one dimension and
+validated against the keyword rubric (Spearman $\rho = 0.602$).
+Krippendorff's $\alpha$ sits in the ``questionable'' range,
+reflecting genuine ambiguity in scoring free-form Bayesian reasoning.
+The three-ranking divergence is a within-model cross-metric finding
+independent of inter-rater agreement. Task coverage is broad for
+Bayesian and inferential reasoning but not representative of
+statistical reasoning generally. Causal inference and experimental
+design are out of scope. Model versions are May 2026 snapshots and
 inversion patterns may not replicate as APIs evolve.
 
-\textbf{Future work.} Three extensions follow. Broaden the task
-suite into causal inference, experimental design, and frequentist
-hypothesis testing, to see whether the three-axis divergence
-generalizes outside Bayesian reasoning. Replicate with a second
-out-of-family judge to bound judge-bias variance; cross-judge
-agreement on assumption-compliance would also act as an upper bound
-on inter-rater reliability for the dimension. Treat the GPT-4.1
+\textbf{Future work.} Three extensions follow. First, broaden the
+task suite into causal inference, experimental design, and
+frequentist hypothesis testing to test whether the three-axis
+divergence generalizes. Second, replicate with a second out-of-family
+judge to bound judge-bias variance and upper-bound inter-rater
+reliability on assumption-compliance. Third, treat the GPT-4.1
 inversion as a hypothesis about training-data composition and
-decoding choices, and run controlled experiments at the provider
-level that isolate the relevant factors.
+decoding choices to be tested in controlled provider-level
+experiments.

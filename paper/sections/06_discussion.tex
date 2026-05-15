@@ -4,62 +4,37 @@
 \label{sec:discussion}
 
 \textbf{What the three-ranking divergence means.} The three metrics
-are not the same axis under different names. Accuracy asks whether
-the model produces the right number for the prompt as worded.
-Robustness asks whether it still produces the right number when the
-prompt is reworded, reframed, or has its numbers swapped. Calibration
-asks whether stated confidence tracks empirical correctness. Each
-has deployment consequences the others do not capture, so the choice
-of which metric to report picks the winner. For one-shot question
-answering, accuracy is the natural signal. For applications that
-paraphrase the prompt or swap in equivalent numerical setups
-(automated tutoring, prompt-engineered pipelines, agentic workflows
-that write their own prompts), robustness matters more, and the
-GPT-4.1 inversion is the warning sign: the accuracy-best model can
-be the wrong default. For systems that gate decisions on expressed
-confidence (triage tools, ensemble selectors), calibration matters,
-and DeepSeek's ECE of $0.198$ rules it out regardless of where it
-sits on accuracy.
+are not the same axis under different names. Each has deployment
+consequences the others do not capture. Accuracy is the natural
+signal for one-shot question answering. For pipelines that
+paraphrase prompts or swap inputs (automated tutoring, agentic
+workflows), robustness matters more, and the GPT-4.1 inversion is
+the warning sign: a model that ranks only third on accuracy can
+still be the one whose outputs hold up best under perturbation, so
+picking by accuracy alone for paraphrase-heavy pipelines can be
+exactly wrong.
+For systems that gate decisions on expressed confidence (triage
+tools, ensemble selectors), calibration matters, and DeepSeek's ECE
+of $0.198$ rules it out regardless of accuracy.
 
-\textbf{Reasoning versus pattern matching.} The clearest evidence
-for the paper's title is the keyword-vs-judge gap on
-assumption-compliance. On the combined base-and-perturbation pool
-($n = 2850$), $20.7\%$ of responses pass-flip between the two
-scorers: one in five times, the keyword check approves a response
-the judge rejects, or vice versa, on whether the required assumption
-was actually articulated. The judge's lower pass rate ($55.7\%$ vs
-the rubric's $71.1\%$) indicates which way the bias runs: surface-form
-scoring overcounts substantive assumption articulation. That matters
-because assumption articulation is not a stylistic choice in
-Bayesian reasoning. Posterior derivations are wrong if the
-assumptions are wrong, and a model that lands on the right number
-while quietly assuming exchangeability where the task posits
-hierarchical structure has solved a different problem than the one
-asked. Du et al.~\cite{du2025icecream} report the same blindness in
-causal reasoning. The calibration analysis
+\textbf{Reasoning versus pattern matching.} The keyword-vs-judge
+gap on assumption-compliance is the clearest evidence for the paper's
+title. On the combined base-and-perturbation pool ($n = 2850$),
+$20.7\%$ of responses pass-flip between the two scorers. The judge's
+lower pass rate ($55.7\%$ vs the rubric's $71.1\%$) indicates the
+direction: surface-form scoring overcounts substantive
+articulation~\cite{du2025icecream}. The calibration analysis
 (Figure~\ref{fig:calibration-paired}) shows the same shape:
 verbalized confidence places Claude and GPT-4.1 in the
 well-calibrated tier (ECE $\approx 0.033$), while self-consistency
-confidence on three reruns at $T = 0.7$ puts every model past the
-$\text{ECE} = 0.6$ ``severe overconfidence'' threshold. Verbalized
-confidence is pattern matching on calibration-shaped language;
-self-consistency probes the underlying answer distribution. Future
-benchmarks for statistical reasoning should score
-assumption-compliance with a non-self-referential judge and report
-calibration under both verbalized and self-consistency extractors,
-not under a keyword rubric alone.
+on three reruns at $T = 0.7$ puts every model past the
+$\text{ECE} = 0.6$ ``severe overconfidence'' threshold.
 
 \textbf{Broader implications.} The multi-axis ranking is cheap to
-add. The same response corpus that feeds an accuracy leaderboard
-feeds a robustness leaderboard once perturbations exist, and a
-calibration leaderboard once confidence is parsed. The GPT-4.1
-accuracy-to-robustness inversion hints that training-data composition
-and decoding choices may trade off ``follows the textbook'' against
-``answers the question that was actually asked.'' Settling that
-would take controlled experiments at the provider level, not
-black-box benchmarking. The open audit trail is also a contribution:
-every scoring weight, tolerance threshold, and aggregation choice
-is documented and linked to its motivating paper, so replication or
-reweighting takes a one-line change instead of reverse engineering.
-Single-number leaderboards remain useful shorthand. They should be
-reported alongside the multi-axis view, not in place of it.
+add: the same response corpus feeds robustness once perturbations
+exist and calibration once confidence is parsed. The GPT-4.1
+accuracy-to-robustness inversion hints that training-data and
+decoding choices may trade ``follows the textbook'' against
+``answers the question actually asked,'' though settling that takes
+controlled provider-level experiments. Single-number leaderboards
+should be reported alongside the multi-axis view, not in place of it.

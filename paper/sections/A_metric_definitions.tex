@@ -55,11 +55,10 @@ keyword rubric and the external judge is
   \label{eq:krippendorff}
 \end{equation}
 with $D_o$ observed disagreement among raters and $D_e$ disagreement
-expected under chance. Values near $1$ indicate strong agreement;
-near $0$, chance. We compute $\alpha$ as defined in
-Eq.~\ref{eq:krippendorff} on the three Path~B dimensions
-(method-structure, assumption-compliance, reasoning-quality) used
-to characterize keyword-vs-judge alignment in
+expected under chance. Values near $1$ indicate strong agreement,
+values near $0$ indicate chance. $\alpha$ is computed on the three Path~B dimensions
+(method-structure, assumption-compliance, reasoning-quality) used to
+characterize keyword-vs-judge alignment in
 Section~\ref{sec:results}.
 
 \subsection{Spearman Rank Correlation}
@@ -71,17 +70,15 @@ Per-dimension keyword-vs-judge agreement is also reported as
 \end{equation}
 with $d_i$ the rank difference between the keyword-rubric and
 external-judge score for the $i$-th response in the paired sample
-of size $n$. We report $\rho$ as defined in Eq.~\ref{eq:spearman}
-rather than Pearson $r$ because the rubric-judge relationship is
-monotonic but not linear.
+of size $n$. $\rho$ is reported rather than Pearson $r$ because the
+rubric-judge relationship is monotonic but not linear.
 
 \subsection{Bootstrap Procedure}
 
 All reported confidence intervals use the 95\% percentile bootstrap
 on per-run aggregates, with $B = 10{,}000$ resamples and a fixed
 RNG seed (42). The resampling unit is the individual (task, model)
-run; resamples preserve the per-model count ($n = 171$ for accuracy,
+run. Resamples preserve the per-model count ($n = 171$ for accuracy,
 $n = 398$ for the v2 perturbation pool used in robustness). CIs are
-reported throughout the results section as $[\text{lower},
-\text{upper}]$ at the $0.025$ and $0.975$ quantiles of the
-resampled statistic distribution.
+reported as $[\text{lower}, \text{upper}]$ at the $0.025$ and
+$0.975$ quantiles of the resampled statistic distribution.

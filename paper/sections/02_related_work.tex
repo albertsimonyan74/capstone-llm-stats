@@ -4,52 +4,53 @@
 \label{sec:related}
 
 \textbf{Quantitative-reasoning benchmarks.}
-StatEval~\cite{lu2025stateval} catalogues 13{,}817 problems across
-descriptive statistics, probability, inference, and regression,
-scored by a mix of answer correctness and rubric-based proof
-evaluation.
+StatEval~\cite{lu2025stateval} contains 13{,}817 problems across
+several dimensions, including descriptive statistics, probability,
+inference, and regression, and a mix of answer correctness and
+rubric-based proof evaluation serves as a scoring method.
 MathEval~\cite{liu2025matheval} compares 52 LLMs across 22
 mathematical-reasoning datasets, again on accuracy. Nagarkar et
-al.~\cite{nagarkar2026canllm} compare LLMs to human respondents on
-statistical tasks. All three count how often the model lands on the
-right number; none asks whether the reasoning is well-formed or
-stable under perturbation.
+al.~\cite{nagarkar2026canllm} compare the responses of LLMs to
+humans on statistical tasks. All three mainly take into account how
+often the model derives the right number. None of these papers asks
+whether the reasoning is well-formed or stable under perturbation.
 
 \textbf{Bayesian reasoning.} Longjohn et
 al.~\cite{longjohn2025bayesian} aggregate benchmark results
 probabilistically rather than evaluating Bayesian reasoning itself.
 Du et al.~\cite{du2025icecream} document assumption-blindness in
 causal reasoning: LLMs produce confident causal claims that semantic
-cues drive even when the data contradicts them. The
-$44.3\%$ missing-assumption rate reported here extends the pattern
-to inferential statistics.
+cues drive even when the data contradict them. The $44.3\%$ missing
+assumption rate reported in this research extends the pattern to
+inferential statistics.
 
-\textbf{Calibration.} Guo et al.~\cite{guo2017calibration} introduced
-Expected Calibration Error and showed that modern neural networks
-are systematically miscalibrated despite high accuracy. ECE is
-well-studied for classifiers; applying it to free-form LLM reasoning
-is recent and less settled. FermiEval and related
-work~\cite{fermieval2025,multianswer2026,nagarkar2026canllm} adapt
-calibration to natural-language outputs, usually on a single
-dimension. Binary-pass ECE and a per-NMACR-dimension ECE are
-reported in this work.
+\textbf{Calibration.} Guo et al.~\cite{guo2017calibration}
+introduced Expected Calibration Error and showed that modern neural
+networks, despite being high on accuracy, are, in fact,
+systematically miscalibrated. For classifiers, ECE is well studied.
+Applying it to free-form LLM reasoning is recent and less settled.
+FermiEval and related
+work~\cite{fermieval2025,multianswer2026,nagarkar2026canllm} usually
+adapt calibration to natural-language outputs on a single dimension.
+Binary-pass ECE and a per-NMACR-dimension ECE are reported in this
+research.
 
 \textbf{LLM-as-judge.} Zheng et al.~\cite{zheng2023judge} introduced
-LLM-as-judge with MT-Bench, showing strong LLMs can substitute for
-human raters on open-ended tasks. Follow-up work documents
-design-choice sensitivity and rubric-adherence
+LLM as a judge with MT-Bench, showing that strong LLMs can
+substitute for human raters on open-ended tasks. Follow-up work
+documents design-choice sensitivity and rubric-adherence
 failures~\cite{park2025judge,judgment2025noise}.
-Brittlebench~\cite{brittlebench2026} documents prompt sensitivity;
+Brittlebench~\cite{brittlebench2026} documents prompt sensitivity.
 ReasonBench~\cite{reasonbench2025} documents run-to-run instability
-from stochastic decoding. The
-protocol used here constrains the judge to a single dimension
-(assumption-compliance) and uses an out-of-family open-weights
-model (Llama 3.3 70B Turbo). Both choices address failure modes
-Feuer et al.~\cite{judgment2025noise} document.
+from stochastic decoding. The protocol used here constrains the
+judge to a single dimension (assumption-compliance) and uses an
+out-of-family open-weights model (Llama 3.3 70B Turbo). Feuer et
+al.~\cite{judgment2025noise} address both choices of failure modes.
 
-No prior benchmark is known for Bayesian or inferential
-statistical reasoning that combines (i) a perturbation taxonomy
-for robustness, (ii) an external single-dimension judge for
-assumption-compliance, and (iii) calibration measured on the same
-task set. The contribution of this work is that combination; it
-surfaces ranking divergences a single-metric leaderboard cannot.
+No prior benchmark is known for Bayesian or inferential statistical
+reasoning that combines (i) a perturbation taxonomy for robustness,
+(ii) an external single-dimension judge for assumption-compliance,
+and (iii) calibration measured on the same task set. The
+contribution of this work is the combination of those three, which
+surfaces ranking divergences that a single-metric leaderboard
+cannot.

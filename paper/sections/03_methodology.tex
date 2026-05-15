@@ -5,59 +5,88 @@
 
 \subsection{Task Suite}
 
-171 base tasks across 38 task types in two phases. Phase~1 (136
-tasks, 31 types) covers closed-form conjugate Bayesian models:
-Beta-Binomial, Gamma-Poisson, Normal mean with known and unknown
-variance (Normal-Inverse-Gamma), Dirichlet-Multinomial, Bayesian
-linear regression, and decision theory under squared, absolute, and
-0-1 loss. Phase~2 (35 tasks, 7 types, 5 tasks each) covers
-computational methods: Gibbs sampling, Metropolis-Hastings,
+Two phases are passed for 171 base tasks across 38 task types.
+Phase~1 (136 tasks, 31 types) covers closed-form conjugate Bayesian
+models: Beta-Binomial, Gamma-Poisson, Normal mean with known and
+unknown variance (Normal-Inverse-Gamma), Dirichlet-Multinomial,
+Bayesian linear regression, and decision theory under squared,
+absolute, and 0-1 loss. Phase~2 (35 tasks, 7 types, 5 tasks each)
+covers computational methods: Gibbs sampling, Metropolis-Hastings,
 Hamiltonian Monte Carlo, Reversible-Jump MCMC, hierarchical models,
-Variational Bayes, and Approximate Bayesian Computation. Every task
-has a ground-truth solver implemented from
-textbooks~\cite{bolstad2007bayesian,hoff2009bayesian,bishop2006prml}.
-Phase~2 stochastic methods use seeded Monte Carlo estimates as
-ground truth, with tolerances of 0.05 for MCMC variants and 0.10
-for VB and ABC.
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\columnwidth]{figures/pipeline.png}
-  \caption{Evaluation pipeline. Each task and its perturbations go
-           to five LLMs in parallel. Responses are scored three
-           ways: deterministic extraction, NMACR rubric, and an
-           external Llama 3.3 70B judge for assumption-compliance.
-           Aggregation yields three independent rankings.}
-  \label{fig:pipeline}
-\end{figure}
+Variational Bayes, and Approximate Bayesian Computation. Based on
+the implementation from
+textbooks~\cite{bolstad2007bayesian,hoff2009bayesian,bishop2006prml},
+each task has a ground-truth solver. Seeded Monte Carlo estimates
+are used as ground truth for Phase~2 stochastic methods, with
+tolerances of 0.05 for MCMC variants and 0.10 for VB and ABC.
 
 \subsection{Perturbation Taxonomy}
 
-Figure~\ref{fig:pipeline} summarizes the full evaluation flow:
-task generation feeds into perturbation generation, parallel model
-querying, and three-path scoring. Each base task is perturbed along
-three axes. \emph{Rephrase}
-preserves the math and answer while rewording the prompt.
-\emph{Semantic} preserves the math while relocating the problem to
-a different real-world framing. \emph{Numerical} changes the inputs
-and recomputes ground truth. The full set is 473 records: 75
-hand-authored seeds covering 25 base tasks on all three axes, and
-398 LLM-generated perturbations covering the remaining 146 tasks,
-produced by the same Llama 3.3 70B Turbo used as the judge. Every
-generated perturbation was checked against the ground-truth solver
-before inclusion. Mean coverage is 2.77 per base task. The numerical
-axis is skipped for 40 conceptual or seeded-MC tasks where swapping
-numbers would invalidate the ground-truth procedure.
+The full evaluation flow is summarized in Figure~\ref{fig:pipeline}
+below. Task generation feeds into perturbation generation, parallel
+model querying, and three-path scoring. Perturbation for each task
+is done in three axes. \emph{Rephrasing} keeps the math and answer
+while rewording the prompt. \emph{Semantic} perturbation keeps the
+math, but relocates the problem context to a different real-world
+framing. \emph{Numerical} changes the inputs and recomputes the
+ground-truth. The full perturbation set is 473 records, 75 of which
+are hand-written seeds covering 25 base tasks on all three axes.
+The remaining 398 are LLM-generated perturbations (produced by the
+LLM judge Llama 3.3 70B Turbo) covering the remaining 146 tasks.
+Ground-truth solver was checked against each generated perturbation
+before inclusion. For 40 conceptual or seeded-MC tasks, the
+numerical axis is skipped because number swapping would cause an
+invalid ground-truth procedure.
+
+\begin{figure}[H]
+  \centering
+  \footnotesize
+  \setlength{\fboxsep}{4pt}%
+  \setlength{\fboxrule}{0.4pt}%
+  % --- Layer 1: Inputs -----------------------------------------------------
+  \fbox{\parbox[c][1.0em][c]{0.43\columnwidth}{\centering \textbf{171} Base Tasks}}\hspace{2pt}%
+  \fbox{\parbox[c][1.0em][c]{0.43\columnwidth}{\centering \textbf{473} Perturbations}}\\[2pt]
+  $\Big\downarrow$\\[2pt]
+  % --- Layer 2: Models -----------------------------------------------------
+  \fbox{\parbox[c][1.6em][c]{0.92\columnwidth}{\centering
+    \textbf{Five LLMs queried in parallel (unified HTTP client)}\\
+    Claude\,$\cdot$\,GPT-4.1\,$\cdot$\,Gemini\,$\cdot$\,DeepSeek\,$\cdot$\,Mistral
+  }}\\[2pt]
+  $\Big\downarrow$\\[2pt]
+  % --- Layer 3: Three scoring paths ----------------------------------------
+  \fbox{\parbox[c][2.4em][c]{0.29\columnwidth}{\centering
+    \textbf{Path A}\\[-1pt]{\scriptsize regex\\extractor}}}\hspace{2pt}%
+  \fbox{\parbox[c][2.4em][c]{0.29\columnwidth}{\centering
+    \textbf{Path B}\\[-1pt]{\scriptsize NMACR\\rubric}}}\hspace{2pt}%
+  \fbox{\parbox[c][2.4em][c]{0.29\columnwidth}{\centering
+    \textbf{Path C}\\[-1pt]{\scriptsize Llama 3.3\\70B judge}}}\\[2pt]
+  $\Big\downarrow\quad\Big\downarrow\quad\Big\downarrow$\\[2pt]
+  % --- Layer 4: Three rankings ---------------------------------------------
+  \fbox{\parbox[c][1.0em][c]{0.29\columnwidth}{\centering Accuracy}}\hspace{2pt}%
+  \fbox{\parbox[c][1.0em][c]{0.29\columnwidth}{\centering Robustness}}\hspace{2pt}%
+  \fbox{\parbox[c][1.0em][c]{0.29\columnwidth}{\centering Calibration}}
+  \caption{Evaluation pipeline. Each task and its perturbations are
+           dispatched in parallel to five LLMs via a unified HTTP
+           client. Each response is scored three ways: a
+           deterministic regex extractor (Path~A), the NMACR
+           five-dimensional rubric (Path~B), and an out-of-family
+           Llama 3.3 70B judge re-scoring the three qualitative
+           dimensions (Path~C). The three scoring paths feed three
+           independent aggregations and produce three rankings
+           rather than one.}
+  \label{fig:pipeline}
+\end{figure}
 
 \subsection{Three-Path Scoring}
 
-\textbf{Path~A} is a deterministic keyword rubric in the live
-runner: extract the answer line, compare numeric targets to ground
-truth within a per-task tolerance, check required structural and
-assumption keywords in the prose. \textbf{Path~B} is a post-hoc
-NMACR aggregator. Each task contributes five components in $[0,1]$:
-numerical accuracy (N), method structure (M), assumption compliance
-(A), confidence calibration (C), and reasoning quality (R). The
+\textbf{Path~A} --- the deterministic keyword rubric extracts the
+answer line, compares numeric targets to ground-truth within a
+per-task tolerance, and checks required structural and assumption
+articulation related keywords in the prose. \textbf{Path~B} --- a
+post-hoc NMACR aggregator. Each task contributes five components
+from five corresponding domains in the range of $[0,1]$ ---
+Numerical Accuracy (N), Method Structure (M), Assumption Compliance
+(A), Confidence Calibration (C), and Reasoning Quality (R). The
 combined score is
 \begin{equation}
   S_{\text{NMACR}} = 0.10\,N + 0.20\,M + 0.30\,A + 0.15\,C + 0.25\,R,
@@ -66,15 +95,18 @@ combined score is
 with weights drawn from the chain-of-thought, calibration, and
 assumption-articulation
 literature~\cite{wei2022cot,chen2022pot,guo2017calibration,du2025icecream,park2025judge,nagarkar2026canllm,fermieval2025,liu2025matheval}.
-A is weighted highest because assumption articulation is what
-Bayesian reasoning is for; N lowest because a correct number with
-no derivation does not answer the question. Pass threshold is
-$s \geq 0.5$. \textbf{Path~C}, the external judge, runs on one
-dimension. Each (task, response) pair goes to Llama 3.3 70B Turbo
-via Together AI with a fixed rubric prompt asking whether the
-response explicitly states the assumptions the task requires. The
-narrow scope addresses the holistic-judge failure modes Feuer et
-al.~\cite{judgment2025noise} document.
+The highest weight in the formula is allocated to A because
+assumption articulation is the foundation of Bayesian reasoning.
+N is given the lowest weight since correct numeric calculation
+without derivation does not support the answer logic of the
+specified question. The pass threshold is set to $s \geq 0.5$.
+\textbf{Path~C} --- the external judge runs on one dimension.
+Llama 3.3 70B Turbo via Together AI is fed with each (task,
+response) pair and a fixed prompt rubric, which requires a statement
+from the judge whether the explicit assumption articulation
+requirement is met. The holistic-judge failure modes are addressed
+in a narrower scope in the Feuer et al.~\cite{judgment2025noise}
+document.
 
 \subsection{Three-Ranking Framework}
 
@@ -109,15 +141,36 @@ all three configurations occur in the five-model sample.
 The five LLMs are queried directly over their HTTP APIs with no
 vendor SDKs: Claude Sonnet 4.5 (Anthropic Messages), GPT-4.1 (OpenAI
 Chat Completions), Gemini 2.5 Flash (Google Generative Language),
-DeepSeek-Chat, Mistral Large. Decoding is identical across providers:
-temperature at the API default (around 1.0), 1024-token max output,
-60-second timeout, retries on transient 429 and 5xx, the same
-Bayesian-statistics system prompt for every model. Each (task,
-model) pair produces one response; a 3-sample self-consistency
-subset is used for the calibration analysis. Bootstrap CIs use
-10{,}000 non-parametric resamples (seed 42) of per-run aggregate
-scores. A single shell script drives deduplication, scoring,
-perturbation scoring, judge invocation, and aggregation; 53 unit
-tests cover the task generators and the MCP query interface.
-Figures come from the R pipeline at
-\emph{report\_materials/r\_analysis/run\_all.R}.
+DeepSeek-Chat, and Mistral Large. The benchmark run sends no
+explicit temperature, so each provider's API default applies (1.0
+for Anthropic, OpenAI, Google, and DeepSeek, and 0.7 for Mistral). Max
+output is 1024 tokens for Claude, GPT-4.1, DeepSeek, and Mistral,
+and 4096 tokens for Gemini (its thinking-token accounting consumes
+part of the budget before emitting visible text). Other decoding
+parameters are shared: a 60-second per-request timeout, retries on
+transient 429 and 5xx responses, and the same Bayesian-statistics
+system prompt for every model. Each (task, model) pair produces one
+response. The calibration analysis uses a separate 3-rerun
+self-consistency protocol at temperature $T = 0.7$ with
+top-$p = 0.95$.
+Bootstrap CIs use 10{,}000 non-parametric resamples (seed 42) of
+per-run aggregate scores. A single shell script drives deduplication,
+scoring, perturbation scoring, judge invocation, and aggregation.
+53 unit tests cover the frequentist statistical solvers and the MCP
+query interface.
+
+\begin{table}[H]
+\centering
+{\footnotesize\textbf{PER-MODEL PERFORMANCE ACROSS THE THREE METRICS}}\\[2pt]
+\begin{tabular}{lccc}
+\toprule
+\textbf{Model} & \textbf{Accuracy $\uparrow$} & \textbf{Robustness $\uparrow$} & \textbf{ECE $\downarrow$} \\
+\midrule
+Gemini 2.5 Flash  & \textbf{0.731} & 0.9824 & 0.0765 \\
+Claude Sonnet 4.5 & 0.698 & 0.9565 & \textbf{0.0334} \\
+GPT-4.1           & 0.673 & \textbf{0.9996} & 0.0339 \\
+DeepSeek-Chat     & 0.669 & 0.9422 & 0.1977 \\
+Mistral Large     & 0.668 & 0.9981 & 0.0811 \\
+\bottomrule
+\end{tabular}
+\end{table}
