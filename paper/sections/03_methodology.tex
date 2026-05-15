@@ -111,18 +111,19 @@ document.
 \subsection{Three-Ranking Framework}
 
 Three rank orders come from the same response corpus. The
-\emph{accuracy ranking} uses Path~B NMACR pass rate per model on
-the 171 base tasks. The \emph{robustness ranking} uses the
-perturbation pass-flip rate. Let
-$\mathrm{pass}(t, m) \in \{0,1\}$ be the base pass for task $t$ and
-model $m$, and $\overline{\mathrm{pass}}(t, m)$ the mean pass over
-$t$'s perturbations $\mathcal{P}(t)$. Then
+\emph{accuracy ranking} uses the mean Path~B NMACR score per model
+on the 171 base tasks. The \emph{robustness ranking} uses the
+ratio of mean NMACR score on perturbation runs to mean NMACR score
+on the paired base runs over the $n = 398$ paired records. With
+$\bar{s}_{\text{base}}(m)$ and $\bar{s}_{\text{pert}}(m)$ those
+means,
 \begin{equation}
-  R_m = 1 - \frac{1}{|\mathcal{T}|}\sum_{t \in \mathcal{T}}
-        \left| \mathrm{pass}(t, m) - \overline{\mathrm{pass}}(t, m) \right|,
+  R_m = \frac{\bar{s}_{\text{pert}}(m)}{\bar{s}_{\text{base}}(m)}
+      = 1 - \frac{\Delta_m}{\bar{s}_{\text{base}}(m)},
   \label{eq:robustness}
 \end{equation}
-with $R_m = 1$ for perfect base/perturbation agreement. The
+where $\Delta_m = \bar{s}_{\text{base}}(m) - \bar{s}_{\text{pert}}(m)$
+is the signed mean score gap; $R_m = 1$ is perfect agreement. The
 \emph{calibration ranking} uses binary-pass Expected Calibration
 Error~\cite{guo2017calibration} over $B$ confidence buckets,
 \begin{equation}

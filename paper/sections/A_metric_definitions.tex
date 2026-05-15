@@ -20,17 +20,21 @@ lowest. Per-model accuracy is the mean of $S_{\text{NMACR}}$ over
 the 171 base tasks. The literature trail behind the weights lives
 in the scoring metadata.
 
-\subsection{Robustness Pass-Flip}
+\subsection{Robustness Score Ratio}
 
-Equation~(\ref{eq:robustness}) defines per-model robustness as one
-minus the mean absolute pass-flip between a base task and the mean
-pass over its perturbations. Equivalently, for each base task with
-$k$ perturbations, the contribution to $R_m$ is
+Equation~(\ref{eq:robustness}) defines per-model robustness as the
+ratio of mean NMACR score on paired perturbation runs to mean NMACR
+score on the corresponding base runs:
 \[
-  \frac{1}{k}\sum_{p \in \mathcal{P}(t)}
-    \mathbb{1}\bigl[\mathrm{pass}(t, m) = \mathrm{pass}(p, m)\bigr].
+  R_m = \frac{\bar{s}_{\text{pert}}(m)}{\bar{s}_{\text{base}}(m)}
+      = 1 - \frac{\Delta_m}{\bar{s}_{\text{base}}(m)},
 \]
-The two formulations agree exactly for binary $\mathrm{pass}(\cdot)$.
+where $\Delta_m = \bar{s}_{\text{base}}(m) - \bar{s}_{\text{pert}}(m)$
+is the signed mean score gap. The pool used in the published numbers
+is the $n = 398$ paired (base, perturbation) records that survive
+deduplication and scoring; this is a subset of the 473 perturbations
+in the canonical superset (records with missing or errored base or
+perturbation runs are dropped from the paired computation).
 
 \subsection{Expected Calibration Error}
 

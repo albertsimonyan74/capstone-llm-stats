@@ -6,10 +6,12 @@
 \subsection{Per-Metric Rankings}
 
 The per-model summary can be seen in a table above. Accuracy is the
-Path~B NMACR-weighted pass rate on the 171 base tasks. Robustness
-is one minus the perturbation pass-flip rate on the 473
-perturbations. ECE is binary-pass Expected Calibration Error
-(lower is better).
+mean Path~B NMACR score on the 171 base tasks. Robustness $R_m$
+is the ratio of mean NMACR score on the $n = 398$ paired
+perturbation runs to mean NMACR score on their base counterparts
+(Eq.~\ref{eq:robustness}), so $R_m = 1$ corresponds to perfect
+base-to-perturbation agreement. ECE is binary-pass Expected
+Calibration Error (lower is better).
 
 No two rankings agree. Accuracy reads
 Gemini $>$ Claude $>$ GPT-4.1 $>$ DeepSeek $>$ Mistral, with Gemini
@@ -46,14 +48,14 @@ axis.
 
 Figure~\ref{fig:rank-flow} makes the cross-metric divergence
 concrete. GPT-4.1 ranks third on accuracy ($0.673$), behind Gemini
-($0.731$) and Claude ($0.698$), yet its base and perturbation pass
-rates fall within $0.0003$ ($0.6661$ vs $0.6658$), the tightest
-agreement among the five and first place on robustness ($0.9996$).
-Claude shows the opposite pattern: second on accuracy ($0.698$),
-tied with GPT-4.1 at the top of calibration (ECE $\approx 0.033$),
-but pass rate falls from $0.7011$ on base prompts to $0.6706$ on
-perturbed ones, a three-point drop that pushes it to fourth on
-robustness ($0.9565$). A practitioner picking GPT-4.1 for its
+($0.731$) and Claude ($0.698$), yet its base and perturbation mean
+NMACR scores fall within $0.0003$ ($0.6661$ vs $0.6658$), the
+tightest agreement among the five and first place on robustness
+($0.9996$). Claude shows the opposite pattern: second on accuracy
+($0.698$), tied with GPT-4.1 at the top of calibration
+(ECE $\approx 0.033$), but mean NMACR score falls from $0.7011$ on
+base prompts to $0.6706$ on perturbed ones, a three-point drop that
+pushes it to fourth on robustness ($0.9565$). A practitioner picking GPT-4.1 for its
 robustness accepts a middle-of-the-pack accuracy model. One picking
 Claude for accuracy and calibration accepts the second-most-brittle
 behavior under perturbation.
