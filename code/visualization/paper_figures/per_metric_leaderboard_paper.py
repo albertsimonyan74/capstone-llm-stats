@@ -17,7 +17,6 @@ from __future__ import annotations
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 import numpy as np
 
 # Font-size constants (single-column paper layout)
@@ -135,11 +134,13 @@ def _draw_panel(ax, data, *, xlim, title, xlabel, value_fmt):
 
 def main():
     _apply_theme()
-    fig = plt.figure(figsize=(3.5, 3.6), dpi=300, facecolor=PRINT_BG)
-    gs = GridSpec(2, 2, figure=fig, hspace=0.55, wspace=0.45)
-    ax_acc = fig.add_subplot(gs[0, 0])  # top-left
-    ax_rob = fig.add_subplot(gs[0, 1])  # top-right
-    ax_ece = fig.add_subplot(gs[1, 1])  # bottom-right
+    fig = plt.figure(figsize=(3.5, 2.4), dpi=300, facecolor=PRINT_BG)
+    # Explicit figure-relative coordinates [left, bottom, width, height].
+    # Top row: Accuracy left, Robustness right, gap of 0.14 figure units.
+    # Bottom row: ECE centered at the same panel width as the top row.
+    ax_acc = fig.add_axes([0.10, 0.60, 0.34, 0.34])
+    ax_rob = fig.add_axes([0.58, 0.60, 0.34, 0.34])
+    ax_ece = fig.add_axes([0.34, 0.07, 0.34, 0.34])
 
     _draw_panel(ax_acc, ACCURACY_DATA,
                 xlim=(0.6, 0.78),
