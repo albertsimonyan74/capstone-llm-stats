@@ -33,8 +33,9 @@ robustness ($0.9565$).
 \label{sec:assumption-compliance}
 
 On $n=750$ paired runs (150 base tasks $\times$ 5 models, excluding
-21 task specifications with no required assumption checks) the
-Llama 3.3 70B Turbo judge passes only $55.7\%$ of responses on
+21 task specifications with no required assumption checks; distinct
+from the 40-task numerical-axis filter in \S\ref{sec:methodology})
+the Llama 3.3 70B Turbo judge passes only $55.7\%$ of responses on
 assumption-compliance, leaving $44.3\%$
 that fail to articulate the assumptions the derivation depends on,
 even when the final number is right. The keyword rubric passes
@@ -162,7 +163,10 @@ answer across reruns at temperature $T = 0.7$.
   }
   \caption{Calibration measured by two extraction methods.
            \emph{Left column:} verbalized ECE on $n=855$ truly-base
-           runs (171 base tasks $\times$ 5 models). Claude (0.033)
+           runs (all 171 base tasks $\times$ 5 models; calibration
+           uses the full base pool with no assumption-check filter,
+           distinct from the $n=750$ pool in \S\ref{sec:assumption-compliance}).
+           Claude (0.033)
            and GPT-4.1 (0.034) look well-calibrated, with DeepSeek
            (0.198) the clear outlier. \emph{Right column:}
            self-consistency ECE on $n=2{,}415$ reruns (3-rerun
