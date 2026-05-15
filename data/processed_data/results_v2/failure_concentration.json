@@ -1,0 +1,464 @@
+{
+  "_cross_check": {
+    "total_failures": 143,
+    "expected": 143,
+    "per_model": {
+      "claude": 19,
+      "chatgpt": 38,
+      "deepseek": 36,
+      "mistral": 26,
+      "gemini": 24
+    },
+    "per_phase_total": {
+      "1": 143,
+      "2": 0
+    }
+  },
+  "phase_summary": {
+    "phase1": {
+      "n_tasks": 136,
+      "n_responses": 680,
+      "n_failures": 143,
+      "failure_rate": 0.2103
+    },
+    "phase2": {
+      "n_tasks": 35,
+      "n_responses": 175,
+      "n_failures": 0,
+      "failure_rate": 0.0
+    },
+    "phase2_to_phase1_ratio": 0.0
+  },
+  "per_task_type": {
+    "ABC": {
+      "phase": 2,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "BAYES_FACTOR": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 9,
+      "per_model": {
+        "chatgpt": 5,
+        "deepseek": 2,
+        "gemini": 2
+      }
+    },
+    "BAYES_REG": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 25,
+      "per_model": {
+        "claude": 5,
+        "chatgpt": 5,
+        "deepseek": 5,
+        "mistral": 5,
+        "gemini": 5
+      }
+    },
+    "BAYES_RISK": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "BETA_BINOM": {
+      "phase": 1,
+      "n_tasks": 1,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "BIAS_VAR": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "BINOM_FLAT": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "BOX_MULLER": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 19,
+      "per_model": {
+        "claude": 2,
+        "chatgpt": 5,
+        "deepseek": 5,
+        "mistral": 4,
+        "gemini": 3
+      }
+    },
+    "CI_CREDIBLE": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 1,
+      "per_model": {
+        "deepseek": 1
+      }
+    },
+    "CONCEPTUAL": {
+      "phase": 1,
+      "n_tasks": 10,
+      "total_failures": 1,
+      "per_model": {
+        "chatgpt": 1
+      }
+    },
+    "DIRICHLET": {
+      "phase": 1,
+      "n_tasks": 1,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "DISC_MEDIAN": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "FISHER_INFO": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 13,
+      "per_model": {
+        "claude": 3,
+        "chatgpt": 4,
+        "deepseek": 3,
+        "mistral": 1,
+        "gemini": 2
+      }
+    },
+    "GAMBLER": {
+      "phase": 1,
+      "n_tasks": 3,
+      "total_failures": 2,
+      "per_model": {
+        "deepseek": 1,
+        "gemini": 1
+      }
+    },
+    "GAMMA_POISSON": {
+      "phase": 1,
+      "n_tasks": 1,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "GIBBS": {
+      "phase": 2,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "HIERARCHICAL": {
+      "phase": 2,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "HMC": {
+      "phase": 2,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "HPD": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "JEFFREYS": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "LOG_ML": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 9,
+      "per_model": {
+        "chatgpt": 4,
+        "deepseek": 3,
+        "mistral": 2
+      }
+    },
+    "MARKOV": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 6,
+      "per_model": {
+        "claude": 1,
+        "chatgpt": 1,
+        "deepseek": 2,
+        "mistral": 2
+      }
+    },
+    "MH": {
+      "phase": 2,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "MINIMAX": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "MLE_EFFICIENCY": {
+      "phase": 1,
+      "n_tasks": 3,
+      "total_failures": 3,
+      "per_model": {
+        "claude": 1,
+        "gemini": 1,
+        "mistral": 1
+      }
+    },
+    "MLE_MAP": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 2,
+      "per_model": {
+        "chatgpt": 1,
+        "deepseek": 1
+      }
+    },
+    "MSE_COMPARE": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 8,
+      "per_model": {
+        "chatgpt": 5,
+        "deepseek": 3
+      }
+    },
+    "NORMAL_GAMMA": {
+      "phase": 1,
+      "n_tasks": 1,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "OPT_SCALED": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 6,
+      "per_model": {
+        "deepseek": 2,
+        "mistral": 4
+      }
+    },
+    "ORDER_STAT": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 4,
+      "per_model": {
+        "gemini": 4
+      }
+    },
+    "PPC": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 1,
+      "per_model": {
+        "deepseek": 1
+      }
+    },
+    "RANGE_DIST": {
+      "phase": 1,
+      "n_tasks": 3,
+      "total_failures": 1,
+      "per_model": {
+        "gemini": 1
+      }
+    },
+    "RC_BOUND": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "REGRESSION": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 25,
+      "per_model": {
+        "claude": 5,
+        "chatgpt": 5,
+        "deepseek": 5,
+        "mistral": 5,
+        "gemini": 5
+      }
+    },
+    "RJMCMC": {
+      "phase": 2,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "STATIONARY": {
+      "phase": 1,
+      "n_tasks": 3,
+      "total_failures": 8,
+      "per_model": {
+        "claude": 2,
+        "chatgpt": 2,
+        "deepseek": 2,
+        "mistral": 2
+      }
+    },
+    "UNIFORM_MLE": {
+      "phase": 1,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    },
+    "VB": {
+      "phase": 2,
+      "n_tasks": 5,
+      "total_failures": 0,
+      "per_model": {}
+    }
+  },
+  "top10": [
+    {
+      "task_type": "REGRESSION",
+      "count": 25,
+      "phase": 1,
+      "per_model": {
+        "claude": 5,
+        "chatgpt": 5,
+        "deepseek": 5,
+        "mistral": 5,
+        "gemini": 5
+      }
+    },
+    {
+      "task_type": "BAYES_REG",
+      "count": 25,
+      "phase": 1,
+      "per_model": {
+        "claude": 5,
+        "chatgpt": 5,
+        "deepseek": 5,
+        "mistral": 5,
+        "gemini": 5
+      }
+    },
+    {
+      "task_type": "BOX_MULLER",
+      "count": 19,
+      "phase": 1,
+      "per_model": {
+        "claude": 2,
+        "chatgpt": 5,
+        "deepseek": 5,
+        "mistral": 4,
+        "gemini": 3
+      }
+    },
+    {
+      "task_type": "FISHER_INFO",
+      "count": 13,
+      "phase": 1,
+      "per_model": {
+        "claude": 3,
+        "chatgpt": 4,
+        "deepseek": 3,
+        "mistral": 1,
+        "gemini": 2
+      }
+    },
+    {
+      "task_type": "BAYES_FACTOR",
+      "count": 9,
+      "phase": 1,
+      "per_model": {
+        "chatgpt": 5,
+        "deepseek": 2,
+        "gemini": 2
+      }
+    },
+    {
+      "task_type": "LOG_ML",
+      "count": 9,
+      "phase": 1,
+      "per_model": {
+        "chatgpt": 4,
+        "deepseek": 3,
+        "mistral": 2
+      }
+    },
+    {
+      "task_type": "STATIONARY",
+      "count": 8,
+      "phase": 1,
+      "per_model": {
+        "claude": 2,
+        "chatgpt": 2,
+        "deepseek": 2,
+        "mistral": 2
+      }
+    },
+    {
+      "task_type": "MSE_COMPARE",
+      "count": 8,
+      "phase": 1,
+      "per_model": {
+        "chatgpt": 5,
+        "deepseek": 3
+      }
+    },
+    {
+      "task_type": "MARKOV",
+      "count": 6,
+      "phase": 1,
+      "per_model": {
+        "claude": 1,
+        "chatgpt": 1,
+        "deepseek": 2,
+        "mistral": 2
+      }
+    },
+    {
+      "task_type": "OPT_SCALED",
+      "count": 6,
+      "phase": 1,
+      "per_model": {
+        "deepseek": 2,
+        "mistral": 4
+      }
+    }
+  ],
+  "n_types_with_failures": 18,
+  "n_types_zero_failures": 20,
+  "zero_failure_types": [
+    "ABC",
+    "BAYES_RISK",
+    "BETA_BINOM",
+    "BIAS_VAR",
+    "BINOM_FLAT",
+    "DIRICHLET",
+    "DISC_MEDIAN",
+    "GAMMA_POISSON",
+    "GIBBS",
+    "HIERARCHICAL",
+    "HMC",
+    "HPD",
+    "JEFFREYS",
+    "MH",
+    "MINIMAX",
+    "NORMAL_GAMMA",
+    "RC_BOUND",
+    "RJMCMC",
+    "UNIFORM_MLE",
+    "VB"
+  ]
+}

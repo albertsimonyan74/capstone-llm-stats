@@ -245,3 +245,45 @@ form.
     $3.12\times$, GPT-4.1 $2.58\times$.}
   \label{fig:per-model-disagreement}
 \end{figure}
+
+\subsubsection{Failure Concentration by Task Type}
+\label{sec:failure-by-task-type}
+
+The 143 L1 failures distribute across phases with a counter-intuitive
+shape: Phase~1 closed-form tasks absorb all $143$ ($21.03\%$ of $680$
+Phase~1 responses) while Phase~2 computational methods (Gibbs, MH,
+HMC, RJMCMC, hierarchical, VB, ABC) absorb zero ($0.00\%$ of $175$
+responses). Computational sampling is not the failure mode the
+benchmarked LLMs hit at the L1 severity tier; closed-form algebra is.
+The likely mechanism: Phase~2 prompts invite procedural answers
+(``run Gibbs for $N$ iterations'') whose ground-truth tolerance is
+$0.05$--$0.10$ and whose assumption articulation is implicit in the
+sampler choice, while Phase~1 prompts require explicit prior,
+likelihood, and posterior derivation that the judge can audit
+line-by-line.
+
+The 143 failures cluster in 18 of 38 task types; 20 task types are
+failure-free. The top three are REGRESSION (25), BAYES\_REG (25),
+and BOX\_MULLER (19). The first two are particularly stark: every
+model fails on every problem of those types ($5\times 5=25$ each).
+This is a TASK-difficulty pattern, not a model-shortcut pattern.
+
+This complicates the \S\ref{sec:per-model-disagreement} story rather
+than reinforcing it. The pattern-matching champions identified there
+(Mistral, Claude) do not dominate the task-type failures: REGRESSION
+and BAYES\_REG hit all five models equally, and the bottom of the
+top-10 (MSE\_COMPARE, BAYES\_FACTOR, LOG\_ML) is dominated by GPT-4.1
+and DeepSeek --- the models with the lowest \S\ref{sec:per-model-disagreement}
+asymmetry. Per-model over-credit on assumption-compliance and
+per-task-type total L1 failure rate are independent signals.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.95\columnwidth]{figures/failure_concentration.png}
+  \caption{Top-10 task types by L1 failure count from the $n=143$
+    pool, stacked by model. All ten are Phase~1 closed-form tasks;
+    Phase~2 computational types contribute zero L1 failures. The
+    failures concentrate in 18 of 38 task types (20 types
+    failure-free).}
+  \label{fig:failure-concentration}
+\end{figure}
