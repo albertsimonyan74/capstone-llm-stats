@@ -22,8 +22,8 @@ import numpy as np
 # Font-size constants (single-column paper layout)
 TITLE_FONTSIZE       = 9
 TICK_FONTSIZE        = 7
-MODEL_LABEL_FONTSIZE = 8
-VALUE_FONTSIZE       = 7.5
+MODEL_LABEL_FONTSIZE = 6.5
+VALUE_FONTSIZE       = 6.0
 XLABEL_FONTSIZE      = 7
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -134,7 +134,7 @@ def _draw_panel(ax, data, *, ylim, title, ylabel, value_fmt):
 
 def main():
     _apply_theme()
-    fig = plt.figure(figsize=(3.5, 2.6), dpi=300, facecolor=PRINT_BG)
+    fig = plt.figure(figsize=(3.5, 2.4), dpi=300, facecolor=PRINT_BG)
     # Explicit figure-relative coordinates [left, bottom, width, height].
     # Top row: y from 0.62 to 0.90. Bottom row: y from 0.10 to 0.38.
     # Gap = 0.24 — clear of top-row 45-deg x-labels + ECE title.
@@ -145,13 +145,13 @@ def main():
     _draw_panel(ax_acc, ACCURACY_DATA,
                 ylim=(0.60, 0.78),
                 title="Accuracy",
-                ylabel="(A-30, R-25, M-20, C-15, N-10)",
+                ylabel="",
                 value_fmt="{:.3f}")
 
     _draw_panel(ax_rob, ROBUSTNESS_DATA,
                 ylim=(0.0, 0.048),
                 title=r"Robustness  $\cdot$  $\Delta$",
-                ylabel=r"$\Delta$ score (base $-$ pert.)",
+                ylabel="",
                 value_fmt="{:+.4f}")
 
     _draw_panel(ax_ece, CALIBRATION_DATA,
