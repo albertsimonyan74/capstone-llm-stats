@@ -17,7 +17,15 @@ from __future__ import annotations
 from pathlib import Path
 
 import matplotlib.pyplot as plt
+from matplotlib.gridspec import GridSpec
 import numpy as np
+
+# Font-size constants (single-column paper layout)
+TITLE_FONTSIZE       = 9
+TICK_FONTSIZE        = 7
+MODEL_LABEL_FONTSIZE = 8
+VALUE_FONTSIZE       = 7.5
+XLABEL_FONTSIZE      = 7
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT_PATH = ROOT / "paper" / "figures" / "per_metric_leaderboard.png"
@@ -99,25 +107,27 @@ def _draw_panel(ax, data, *, xlim, title, xlabel, value_fmt):
     y_pos = np.arange(len(models))
 
     for i, m in enumerate(models):
-        ax.barh(y_pos[i], values[i], color=MODEL_COLORS[m], height=0.62)
+        ax.barh(y_pos[i], values[i], color=MODEL_COLORS[m], height=0.65)
 
     span = xlim[1] - xlim[0]
     label_offset = span * 0.012
     for i, v in enumerate(values):
         ax.text(v + label_offset, y_pos[i], value_fmt.format(v),
                 va="center", ha="left",
-                color=PRINT_FG, fontsize=8, fontweight="bold")
+                color=PRINT_FG, fontsize=VALUE_FONTSIZE, fontweight="bold")
 
     ax.set_yticks(y_pos)
-    ax.set_yticklabels(models, fontsize=9, fontweight="bold")
+    ax.set_yticklabels(models, fontsize=MODEL_LABEL_FONTSIZE,
+                       fontweight="bold")
     for tick, m in zip(ax.get_yticklabels(), models):
         tick.set_color(MODEL_COLORS[m])
     ax.invert_yaxis()
 
     ax.set_xlim(*xlim)
-    ax.set_xlabel(xlabel, color=PRINT_FG_MUTED, fontsize=8)
-    ax.set_title(title, fontsize=10, fontweight="bold", color=PRINT_FG,
-                 pad=8, loc="left")
+    ax.set_xlabel(xlabel, color=PRINT_FG_MUTED, fontsize=XLABEL_FONTSIZE)
+    ax.tick_params(axis="x", labelsize=TICK_FONTSIZE)
+    ax.set_title(title, fontsize=TITLE_FONTSIZE, fontweight="bold",
+                 color=PRINT_FG, pad=6, loc="left")
     _dim_spines(ax)
     ax.grid(False)
     ax.set_axisbelow(True)
@@ -125,31 +135,33 @@ def _draw_panel(ax, data, *, xlim, title, xlabel, value_fmt):
 
 def main():
     _apply_theme()
-    fig, axes = plt.subplots(1, 3, figsize=(7.0, 2.2), dpi=300,
-                             facecolor=PRINT_BG)
+    fig = plt.figure(figsize=(3.5, 3.6), dpi=300, facecolor=PRINT_BG)
+    gs = GridSpec(2, 2, figure=fig, hspace=0.55, wspace=0.45)
+    ax_acc = fig.add_subplot(gs[0, 0])  # top-left
+    ax_rob = fig.add_subplot(gs[0, 1])  # top-right
+    ax_ece = fig.add_subplot(gs[1, 1])  # bottom-right
 
-    _draw_panel(axes[0], ACCURACY_DATA,
+    _draw_panel(ax_acc, ACCURACY_DATA,
                 xlim=(0.6, 0.78),
                 title="Accuracy",
                 xlabel="(A-30, R-25, M-20, C-15, N-10)",
                 value_fmt="{:.3f}")
 
-    _draw_panel(axes[1], ROBUSTNESS_DATA,
+    _draw_panel(ax_rob, ROBUSTNESS_DATA,
                 xlim=(0.0, 0.045),
-                title=r"Robustness  $\cdot$  $\Delta$ (smaller = better)",
-                xlabel=r"$\Delta$ score (base $-$ perturbation)",
+                title=r"Robustness  $\cdot$  $\Delta$",
+                xlabel=r"$\Delta$ score (base $-$ pert.)",
                 value_fmt="{:+.4f}")
 
-    _draw_panel(axes[2], CALIBRATION_DATA,
+    _draw_panel(ax_ece, CALIBRATION_DATA,
                 xlim=(0.0, 0.21),
-                title=r"Calibration  $\cdot$  ECE (smaller = better)",
+                title=r"Calibration  $\cdot$  ECE",
                 xlabel="Verbalized ECE",
                 value_fmt="{:.3f}")
 
-    fig.tight_layout()
-
     OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    fig.savefig(str(OUT_PATH), format="png", dpi=300, bbox_inches="tight")
+    fig.savefig(str(OUT_PATH), format="png", dpi=300,
+                bbox_inches="tight", pad_inches=0.05)
     plt.close(fig)
 
     size_kb = OUT_PATH.stat().st_size / 1024
