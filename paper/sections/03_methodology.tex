@@ -183,13 +183,20 @@ Mistral Large     & 0.668 & 0.9981 & 0.0811 \\
 \subsection{Reproducibility and Audit Infrastructure}
 \label{sec:reproducibility}
 
-Contribution 4 (\S\ref{sec:intro}) is reified in the repository:
-\texttt{reproduce.sh} runs the full pipeline deterministically;
-dependencies are pinned in \texttt{requirements.txt} and
-\texttt{environment.yml}; every random seed (e.g.\ \texttt{seed=42})
-is fixed inline; 53 unit tests cover the frequentist solvers (24)
-and the MCP interface (29); three audit notes in
-\texttt{docs/audit/} (\texttt{aggregation\_locus},
-\texttt{methodology\_continuity}, \texttt{limitations\_disclosures})
-document design decisions complementing \S\ref{sec:conclusion}'s
-threats to validity.
+Contribution~4 (\S\ref{sec:intro}) is reified in the project
+repository: \texttt{reproduce.sh} runs the full pipeline
+deterministically from raw task prompts through scoring, judge
+invocation, and aggregation; dependencies are pinned in
+\texttt{requirements.txt} and \texttt{environment.yml}; every
+random seed (e.g., \texttt{seed=42} for the 10{,}000-resample
+bootstrap) is fixed inline; 53 unit tests cover the frequentist
+solvers (24 in \texttt{test\_frequentist.py}) and the MCP query
+interface (29 in \texttt{test\_server.py}); and three audit notes
+in \texttt{docs/audit/} (\texttt{aggregation\_locus.md},
+\texttt{methodology\_continuity.md},
+\texttt{limitations\_disclosures.md}) document the NMACR-weight
+literature trail, the methodology continuity log, and explicit
+bias disclosures complementing \S\ref{sec:conclusion}'s threats to
+validity. An independent re-runner reaches the same numbers
+reported in \S\ref{sec:results} and \S\ref{sec:discussion} from a
+fresh clone.

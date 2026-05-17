@@ -23,6 +23,11 @@
 \definecolor{ecebar}{HTML}{D77A55}
 \usepackage[hidelinks]{hyperref}
 
+% Courier (pcr) is missing from local TinyTeX; route \texttt -> Computer
+% Modern Typewriter (cmtt) which is shipped. Without this, \texttt{...}
+% silently renders as empty boxes via nullfont fallback.
+\renewcommand{\ttdefault}{cmtt}
+
 % TikZ deferred (tikz.sty missing from local TinyTeX install, blocked by
 % TeX Live 2024 vs remote 2026 cross-release rule). Pipeline diagram
 % rendered as PNG via matplotlib instead; switch to TikZ once tlmgr
