@@ -31,9 +31,30 @@ coverage excludes causal inference and experimental design. Model
 versions are May 2026 snapshots; inversion patterns may not
 replicate as APIs evolve.
 
-\textbf{Future work.} Three extensions follow: broaden the task
-suite to causal inference, experimental design, and frequentist
-hypothesis testing; replicate with a second out-of-family judge to
-bound judge-bias variance; treat the GPT-4.1 inversion as a
-hypothesis about training-data and decoding choices to test in
-controlled provider-level experiments.
+\textit{Future work.} The four-axis decomposition in
+\S\ref{sec:extended-diagnostics} opens several extensions of this
+evaluation framework. The task suite can broaden to causal
+inference, experimental design, and frequentist hypothesis testing,
+where assumption articulation matters as much as in Bayesian
+inference. The single-dimension judge can extend to a multi-judge
+ensemble with Krippendorff $\alpha$ reported across raters rather
+than against the keyword rubric only, bounding judge-bias variance
+more rigorously than the single-rater estimate in
+\S\ref{sec:assumption-compliance}. The per-model over-credit
+asymmetry surfaced in \S\ref{sec:per-model-disagreement}
+(Mistral $12.11\times$, Claude $7.84\times$) invites mechanistic
+investigation: an RLHF artifact, a training-data composition
+effect, or an attention-pattern signature on
+assumption-articulation tokens. The Phase~2 zero-failure result
+in \S\ref{sec:failure-by-task-type} motivates a rubric redesign
+that scores procedural assumption articulation --- convergence
+diagnostics, proposal-distribution choice, acceptance-rate
+calibration --- rather than only conjugate-derivation assumptions.
+The rephrasing-sensitivity result in
+\S\ref{sec:per-axis-robustness} (rephrasing damages scores more
+than numerical perturbation) suggests adversarial perturbation
+generation targeting the most failure-prone task types from
+\S\ref{sec:failure-by-task-type} as a probe corpus for future
+model releases. Finally, the GPT-4.1 robustness inversion
+deserves controlled provider-level experiments isolating
+training-data and decoding choices.
