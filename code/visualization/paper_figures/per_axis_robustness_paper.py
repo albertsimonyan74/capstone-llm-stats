@@ -70,7 +70,7 @@ def main():
     fig, ax = plt.subplots(figsize=(3.0, 2.4), dpi=300, facecolor=PRINT_BG)
 
     # Diverging colormap centered at 1.0, tight range
-    norm = mcolors.TwoSlopeNorm(vmin=0.90, vcenter=1.0, vmax=1.02)
+    norm = mcolors.TwoSlopeNorm(vmin=0.90, vcenter=1.0, vmax=1.10)
     im = ax.imshow(grid, cmap="RdBu_r", norm=norm, aspect="auto")
 
     for i in range(grid.shape[0]):
@@ -98,6 +98,7 @@ def main():
         s.set_visible(False)
 
     cbar = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
+    cbar.set_ticks([0.90, 0.94, 0.98, 1.02, 1.06, 1.10])
     cbar.set_label("R (1.0 = perfect)", fontsize=6.5,
                    color=PRINT_FG_MUTED)
     cbar.ax.tick_params(labelsize=6)
