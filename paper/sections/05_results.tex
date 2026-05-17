@@ -153,6 +153,18 @@ model calibrated only verbally may state ``90\% confidence''
 while producing different answers across reruns at the same
 temperature --- pattern-matching on calibration-shaped
 language rather than tracking actual response stability.
+The Expected Calibration Error framework of
+Guo~et~al.~\cite{guo2017calibration} was originally developed
+for classifiers with explicit logit-derived probabilities;
+free-form LLM reasoning has no logit anchor, so calibration
+must be inferred indirectly. The choice between verbal-hedge
+extraction and behavioral-consistency extraction is itself an
+unsettled methodological question that this paper exposes by
+reporting both rather than picking one. The 3-rerun protocol
+at $T = 0.7$ balances cost against statistical power: three
+samples can distinguish an $80\%$ answer-mode rate from a
+$95\%$ one, the practical regime for frontier LLMs on these
+tasks.
 
 \begin{table}[H]
   \centering
