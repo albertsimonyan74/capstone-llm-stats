@@ -33,3 +33,60 @@ add: the same response corpus feeds robustness once perturbations
 exist and calibration once confidence is parsed. Single-number
 leaderboards should be reported alongside the multi-axis view, not
 in place of it.
+
+\subsection{Decomposing the Divergence: Four Orthogonal Signals}
+\label{sec:decomposition-synthesis}
+
+The three-ranking divergence in \S\ref{sec:results} is one
+coarse-grained view. \S\ref{sec:extended-diagnostics} decomposes
+it into at least four orthogonal diagnostic signals.
+(i)~Model-specific over-credit
+(\S\ref{sec:per-model-disagreement}): Mistral $12.11\times$ and
+Claude $7.84\times$ keyword-judge asymmetry versus GPT-4.1
+$2.58\times$ --- surface-token credit is not uniform across the
+benchmarked LLMs. (ii)~Task-specific failure concentration
+(\S\ref{sec:failure-by-task-type}): all 143 L1 failures fall in
+Phase~1, with Bayesian-regression families
+(REGRESSION + BAYES\_REG) absorbing 35\%; failures are uniform
+across models within each task type, so the over-credit problem
+and the task-difficulty problem are independent. (iii)~Axis-specific
+robustness (\S\ref{sec:per-axis-robustness}): rephrasing
+($R=0.966$) hurts more than numerical perturbation ($R=0.978$),
+with model-variance ($3.66\times$) dominating axis-variance ---
+the robustness ranking is a real model property, but GPT-4.1's
+$0.9996$ is a near-cancellation of a rephrasing drop and gains
+on the other two axes. (iv)~Phase-specific rank-flips
+(\S\ref{sec:per-phase-performance}): Mistral climbs from 5th on
+Phase~1 to 2nd on Phase~2 ($+3$ positions), driven by the
+assumption-compliance bar dropping on procedural prompts where
+the rubric expects no explicit prior or likelihood statement.
+
+A model can be top-ranked on one signal and bottom-ranked on
+another --- the four are not a single latent factor under
+different names. Mistral concretely illustrates this: it ranks
+5th on Phase~1 NMACR but 2nd on Phase~2; it is the strongest
+pattern-matcher per the F.1 asymmetry but the second-most-robust
+per the F.3 axis decomposition. Pattern matching as a strategy
+is robust --- surface tokens propagate cleanly through paraphrase
+and number-swap --- and it pays off on tasks where the rubric
+accepts surface-correct procedural prose. It only collapses on
+tasks with substantive assumption-articulation requirements that
+the judge actually checks (Phase~1 conjugate derivations,
+specifically Bayesian linear regression).
+
+A single-metric leaderboard does not just collapse the
+three-ranking divergence from \S\ref{sec:results}: it collapses
+four orthogonal diagnostic axes into one number. The paper's
+title question --- ``Reasoning or Pattern Matching?'' --- admits
+a more specific answer than the three-metric view captured:
+pattern matching is real, model-specific, axis-stable, and
+rewarded by procedural task structure. A reader picking a model
+for Bayesian work should inspect at least four columns ---
+assumption-articulation honesty
+(\S\ref{sec:per-model-disagreement}), task-type failure
+concentration (\S\ref{sec:failure-by-task-type}), per-axis
+robustness profile (\S\ref{sec:per-axis-robustness}), and
+intra-phase rank position (\S\ref{sec:per-phase-performance})
+--- alongside the headline accuracy and calibration numbers.
+The aggregate scoreboard hides which model is genuinely reasoning
+and which is fluent at the surface.
