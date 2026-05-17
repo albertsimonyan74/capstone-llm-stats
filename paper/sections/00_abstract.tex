@@ -2,7 +2,7 @@
 
 \begin{abstract}
 Accuracy-only leaderboards disguise the actual failure modes of LLMs
-when used for solving statistical problems. Five popular and frontier
+when used for solving statistical problems. Five frontier
 models --- Claude Sonnet 4.5, GPT-4.1, Gemini 2.5 Flash, DeepSeek-Chat,
 Mistral Large --- are benchmarked on 171 Bayesian and inferential
 statistics tasks across 38 topics. Furthermore, three axes
@@ -13,13 +13,14 @@ out-of-family independent AI judge --- Llama 3.3 70B Turbo via
 Together AI on assumption articulation and
 reasoning quality. Three leaderboards are derived from the results.
 GPT-4.1 is first on robustness to prompt variation (0.9996), but
-ranks third on NMACR scoring formula accuracy (0.673). Claude leads
+ranks third on NMACR accuracy (0.673). Claude leads
 in verbalized extraction of self-confidence (ECE 0.033) and places
-second on NMACR scoring formula accuracy (0.698), but drops to
+second on NMACR accuracy (0.698), but drops to
 fourth in robustness to prompt variation (0.9565). 44.3\% of computed 750 paired (task, response)
 outputs fail on the assumption-compliance dimension (no mention of
-assumption derivation). 67 (46.9\%) of the 143 judge-classified L1
-failures are assumption violations as well. There is a moderate
+assumption derivation). Among 143 judge-flagged Level-1
+(assumption-compliance) failures, 67 (46.9\%) are assumption
+violations. There is a moderate
 agreement on assumption compliance between the keyword rubric (regex
 from Python-based ground-truth) and the Llama judge, with a Spearman
 $\rho = 0.602$ on assumption compliance, essentially zero
