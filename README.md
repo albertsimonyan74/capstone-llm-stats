@@ -45,7 +45,7 @@ conftest.py                     Puts code/ on sys.path for pytest
 
 Phase 10 (2026-05-11) restructured the repo to capstone-guideline §5 layout. Pre-Phase-10 directories `baseline/`, `evaluation/`, `llm_runner/`, `experiments/`, `report_materials/r_analysis/` no longer exist at the working-repo root. Phase 12 (2026-05-11) moved `cleanup/` and `logs/` under `llm-stats-vault/`. Phase 14 (2026-05-11) merged `report_materials/figures/` into `paper/figures/`. Archival convention: all under `llm-stats-vault/90-archive/<category>_legacy/`.
 
-Operating rules: [CLAUDE.md](CLAUDE.md). Methodology rationale: `llm-stats-vault/90-archive/audit/{aggregation_locus.md, methodology_continuity.md, limitations_disclosures.md}`.
+Operating rules: [.claude/CLAUDE.md](.claude/CLAUDE.md). Methodology rationale: `llm-stats-vault/90-archive/audit/{aggregation_locus.md, methodology_continuity.md, limitations_disclosures.md}`.
 
 ### Layout vs. capstone guideline
 
