@@ -1,0 +1,93 @@
+% --- Appendix B: Failure Case Studies ---
+
+\label{appendix:case-studies}
+
+Three representative L1-failure examples from the $n=143$ pool
+(Fig.~\ref{fig:failure-taxonomy}), one from each of the three
+most-frequent failure categories. Excerpts; full responses are in
+\texttt{data/processed\_data/results\_v2/error\_taxonomy\_v2\_judge.jsonl}.
+
+\subsection{Assumption Violation (Mistral, Bayesian Regression)}
+\label{appendix:case-b1}
+
+\textit{Task.} \texttt{BAYES\_REG\_01}: Bayesian linear regression
+with a Normal-Inverse-Gamma conjugate prior on $n=10$ observations;
+report the posterior mean of the intercept and slope.
+
+\textit{Response excerpt.}
+\begin{quote}\small
+``\dots We model the data as $y_i = \beta_0 + \beta_1 x_i + \epsilon_i$,
+$\epsilon_i \sim \mathcal{N}(0, \sigma^2)$. In vector form,
+$\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\epsilon}$,
+$\boldsymbol{\epsilon} \sim \mathcal{N}(\mathbf{0}, \sigma^2 \mathbf{I})$.
+The conjugate prior is $\boldsymbol{\beta} \mid \sigma^2 \sim
+\mathcal{N}(\boldsymbol{\mu}_0, \sigma^2 \boldsymbol{\Lambda}_0^{-1})$,
+$\sigma^2 \sim \text{Inv-Gamma}(a_0, b_0)$.\dots''
+\end{quote}
+
+\textit{Judge verdict.}
+\begin{quote}\small\textit{
+``The model does not explicitly state the assumptions of i.i.d.,
+normal errors, and constant variance.''
+}\end{quote}
+
+\textit{Interpretation.} The response writes out the Normal model
+and the conjugate prior formally, but never states i.i.d.\ sampling,
+normality of errors, or homoskedasticity --- precisely the
+assumptions whose articulation the judge audits. The formal
+notation embeds the assumptions without naming them, the concrete
+mechanism behind \S\ref{sec:per-model-disagreement}'s $12.11\times$
+Mistral over-credit asymmetry.
+
+\subsection{Mathematical Error (GPT-4.1, Box-Muller)}
+\label{appendix:case-b2}
+
+\textit{Task.} \texttt{BOX\_MULLER\_02}: Generate two independent
+standard normal samples from $U=0.2$, $V=0.5$ via the Box-Muller
+transform.
+
+\textit{Response excerpt.}
+\begin{quote}\small
+``\dots $-2\ln(0.2) = 3.2189$,
+$\sqrt{3.2189} \approx 1.7941$, $2\pi V = \pi$,
+$\cos(\pi) = -1$, $\sin(\pi) = 0$, so $z_1 = -1.7941$, $z_2 = 0$.
+ANSWER: $-1.7941, 0.0000$.''
+\end{quote}
+
+\textit{Judge verdict.}
+\begin{quote}\small\textit{
+``The model correctly applies the Box-Muller formula but the final
+answer disagrees with the reference; the per-step computation
+appears to follow the method.''
+}\end{quote}
+
+\textit{Interpretation.} Procedure-aware response with the right
+formula, the right intermediate steps, and a clean final-answer
+format --- yet the final numeric result fails the tolerance check.
+Consistent with \S\ref{sec:failure-by-task-type}'s task-difficulty
+pattern: failures concentrate by task type rather than by model.
+
+\subsection{Conceptual Error (Gemini, Order Statistic)}
+\label{appendix:case-b3}
+
+\textit{Task.} \texttt{ORDER\_STAT\_02}: For $X_1,\dots,X_4$ i.i.d.\
+Uniform$[0,1]$, evaluate the PDF of $X_{(1)}$ at $y = 0.2$.
+
+\textit{Response excerpt.}
+\begin{quote}\small
+``\dots $g_{(1)}(y) = \frac{4!}{0!\,3!}\, y^0 (1-y)^3 = 4(1-y)^3$,
+so $g_{(1)}(0.2) = 4(0.8)^3 = 2.0480$.\dots''
+\end{quote}
+
+\textit{Judge verdict.}
+\begin{quote}\small\textit{
+``The model incorrectly identified the PDF of the 1st order
+statistic as $g_1(y) = 4(1-y)^3$, which does not match the given
+Beta distribution connection.''
+}\end{quote}
+
+\textit{Interpretation.} Formula application is correct in isolation,
+but the response misses the prompt's explicit Beta$(k, n-k+1)$
+connection, defaulting to the textbook order-statistic identity.
+Less-frequent than B.1 or B.2 (only 10 of 143 cases), but the binary
+L1 flag captures it on the same footing as the dominant modes.
