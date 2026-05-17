@@ -1,7 +1,7 @@
 """Failure concentration by task type (Fig. 5).
 
-Horizontal stacked bar chart: top-10 task types by L1 failure count,
-stacked by the 5 models. n=143 total.
+10 x 5 horizontal heatmap: top-10 task types (rows) by 5 models
+(columns). Sequential Blues colormap. n=143 total L1 failures.
 
 Counts from data/processed_data/results_v2/failure_concentration.json.
 
@@ -33,13 +33,6 @@ MODEL_DISPLAY = {
     "deepseek": "DeepSeek",
     "mistral": "Mistral",
 }
-MODEL_COLORS = {
-    "claude":   "#0d9488",
-    "chatgpt":  "#16a34a",
-    "gemini":   "#e11d48",
-    "deepseek": "#2563eb",
-    "mistral":  "#7c3aed",
-}
 
 
 def _apply_theme():
@@ -61,49 +54,56 @@ def _apply_theme():
 def main():
     _apply_theme()
     d = json.loads(DATA.read_text())
+    # d["top10"] is sorted by count desc; keep that order (rank 1 at top)
     top10 = d["top10"]
-    # reverse so highest is at top of horizontal chart
-    top10 = list(reversed(top10))
     labels = [t["task_type"] for t in top10]
     n = len(top10)
 
-    counts = np.zeros((len(MODELS_ORDER), n), dtype=int)
-    for col, entry in enumerate(top10):
-        for row, m in enumerate(MODELS_ORDER):
+    # counts[row=task_type, col=model]
+    counts = np.zeros((n, len(MODELS_ORDER)), dtype=int)
+    for row, entry in enumerate(top10):
+        for col, m in enumerate(MODELS_ORDER):
             counts[row, col] = entry["per_model"].get(m, 0)
+    totals = counts.sum(axis=1)
 
-    fig, ax = plt.subplots(figsize=(3.2, 3.0), dpi=300, facecolor=PRINT_BG)
-    y = np.arange(n)
-    left = np.zeros(n)
-    for row, m in enumerate(MODELS_ORDER):
-        ax.barh(y, counts[row], left=left,
-                color=MODEL_COLORS[m], edgecolor="none",
-                label=MODEL_DISPLAY[m], height=0.7)
-        left += counts[row]
+    fig, ax = plt.subplots(figsize=(3.4, 3.2), dpi=300, facecolor=PRINT_BG)
 
-    totals = counts.sum(axis=0)
+    im = ax.imshow(counts, cmap="Blues", vmin=0, vmax=5, aspect="auto")
+
+    # Cell annotations (blank for 0)
+    for i in range(n):
+        for j in range(len(MODELS_ORDER)):
+            val = counts[i, j]
+            if val == 0:
+                continue
+            text_color = "white" if val >= 3 else PRINT_FG
+            ax.text(j, i, str(int(val)),
+                    ha="center", va="center",
+                    fontsize=7.5, fontweight="bold", color=text_color)
+
+    # Right-margin totals
     for i, total in enumerate(totals):
-        ax.text(total + 0.6, i, str(total),
-                va="center", ha="left",
-                fontsize=7, fontweight="bold", color=PRINT_FG)
+        ax.text(len(MODELS_ORDER) - 0.30, i, f"{int(total)}",
+                ha="left", va="center",
+                fontsize=8, fontweight="bold", color=PRINT_FG,
+                transform=ax.transData)
 
-    ax.set_yticks(y)
-    ax.set_yticklabels(labels, fontsize=7)
+    ax.set_xticks(np.arange(len(MODELS_ORDER)))
+    ax.set_xticklabels([MODEL_DISPLAY[m] for m in MODELS_ORDER],
+                       rotation=30, ha="right", rotation_mode="anchor",
+                       fontsize=7)
+    ax.set_yticks(np.arange(n))
+    ax.set_yticklabels(labels, fontsize=7, family="monospace")
 
-    ax.set_xlabel("L1 failures (count)", color=PRINT_FG_MUTED, fontsize=7.5)
-    ax.tick_params(axis="x", labelsize=7)
-    ax.set_xlim(0, totals.max() * 1.15)
+    ax.tick_params(axis="both", which="both", length=0)
+    for s in ax.spines.values():
+        s.set_visible(False)
 
-    leg = ax.legend(loc="lower right", fontsize=6.5, frameon=False,
-                    handlelength=1.0, borderaxespad=0.2, labelspacing=0.3,
-                    ncol=1)
-    for txt in leg.get_texts():
-        txt.set_color(PRINT_FG)
-
-    for side in ("top", "right"):
-        ax.spines[side].set_visible(False)
-    for side in ("bottom", "left"):
-        ax.spines[side].set_alpha(0.3)
+    cbar = fig.colorbar(im, ax=ax, shrink=0.7, pad=0.14)
+    cbar.set_ticks([0, 1, 2, 3, 4, 5])
+    cbar.set_label("L1 failures per cell (max 5)",
+                   fontsize=6.5, color=PRINT_FG_MUTED)
+    cbar.ax.tick_params(labelsize=6)
 
     OUT_PNG.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(str(OUT_PNG), format="png", dpi=300,
