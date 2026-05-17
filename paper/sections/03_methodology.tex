@@ -28,7 +28,7 @@ model querying, and three-path scoring. Perturbation for each task
 is done in three axes. \emph{Rephrasing} keeps the math and answer
 while rewording the prompt. \emph{Semantic} perturbation keeps the
 math, but relocates the problem context to a different real-world
-framing. \emph{Numerical} changes the inputs and recomputes the
+framing. \emph{Numerical} perturbation changes the inputs and recomputes the
 ground-truth. The full perturbation set is 473 records, 75 of which
 are hand-written seeds covering 25 base tasks on all three axes.
 The remaining 398 are LLM-generated perturbations (produced by the
@@ -102,12 +102,12 @@ N is given the lowest weight since correct numeric calculation
 without derivation does not support the answer logic of the
 specified question. The pass threshold is set to $s \geq 0.5$.
 \textbf{Path~C} --- the external judge runs on one dimension.
-Llama 3.3 70B Turbo via Together AI is fed with each (task,
+Llama 3.3 70B Turbo via Together AI is given each (task,
 response) pair and a fixed prompt rubric, which requires a statement
 from the judge whether the explicit assumption articulation
 requirement is met. The holistic-judge failure modes are addressed
 in a narrower scope in the Feuer et al.~\cite{judgment2025noise}
-document.
+paper.
 
 \subsection{Three-Ranking Framework}
 

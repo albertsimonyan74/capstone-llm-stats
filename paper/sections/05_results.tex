@@ -233,7 +233,7 @@ the closed-form and computational phases differ.
 The pooled $4.5\times$ asymmetry in \S\ref{sec:assumption-compliance}
 (Table~\ref{tab:krippendorff-strip}) decomposes unevenly across the
 five models. Mistral has the most lopsided profile: 109 keyword-PASS
-/ judge-FAIL versus only 9 in the reverse direction, a $12.1\times$
+/ judge-FAIL versus only 9 in the reverse direction, a $12.11\times$
 asymmetry. Claude is second at $7.84\times$ (149 vs 19), followed
 by Gemini ($4.19\times$, 130 vs 31) and DeepSeek ($3.12\times$,
 100 vs 32). GPT-4.1 is the most balanced at $2.58\times$ (103 vs
@@ -262,7 +262,7 @@ form.
     eligible pool (570 runs per model). KW-PASS / Judge-FAIL
     (over-credit) versus KW-FAIL / Judge-PASS (under-credit). The
     pooled $4.5\times$ asymmetry decomposes unevenly: Mistral
-    $12.1\times$, Claude $7.84\times$, Gemini $4.19\times$, DeepSeek
+    $12.11\times$, Claude $7.84\times$, Gemini $4.19\times$, DeepSeek
     $3.12\times$, GPT-4.1 $2.58\times$.}
   \label{fig:per-model-disagreement}
 \end{figure}
@@ -326,7 +326,7 @@ a $0.10$-point gap.
 Variance decomposition shows robustness is more a model property
 than an axis property: mean model-variance within axis is
 $7.28 \times 10^{-4}$, mean axis-variance within model is
-$1.99 \times 10^{-4}$ --- a $3.7\times$ ratio. Table~I's robustness
+$1.99 \times 10^{-4}$ --- a $3.66\times$ ratio. Table~I's robustness
 column captures a real model signal, not an average over
 heterogeneous axis behavior.
 
@@ -350,7 +350,7 @@ when it is substantively wrong.
     decomposed by perturbation axis (5 models $\times$ 3 axes,
     $n=1{,}990$ v2 paired records). Cells centered at $R=1.0$
     (perfect agreement); blue = score drop, red = gain. Model
-    variance dominates axis variance ($3.7\times$), so the
+    variance dominates axis variance ($3.66\times$), so the
     robustness column of Table~I captures a model property rather
     than an axis property.}
   \label{fig:per-axis-robustness}
