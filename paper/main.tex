@@ -11,6 +11,11 @@
 
 \documentclass[conference]{IEEEtran}
 
+% Relax IEEEtran's \flushbottom default — allows shorter columns to end
+% naturally rather than stretching whitespace to bottom-align. Eliminates
+% the page-5 left-column gap before \S IV.E without harming dense pages.
+\raggedbottom
+
 % --- Packages ---------------------------------------------------------------
 \usepackage{amsmath}
 \usepackage{amssymb}
