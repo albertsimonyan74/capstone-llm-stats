@@ -145,6 +145,14 @@ Two extraction methods are separated below. \emph{Verbalized confidence} uses
 what the model states alongside its answer. \emph{Self-consistency
 confidence} is inferred from how often the model returns the same
 answer across reruns at temperature $T = 0.7$.
+The two measure related but distinct notions: verbalized
+confidence is a single-pass stated belief the user actually
+sees; self-consistency is a behavioral probe of whether the
+model would re-derive the same answer if asked again. A
+model calibrated only verbally may state ``90\% confidence''
+while producing different answers across reruns at the same
+temperature --- pattern-matching on calibration-shaped
+language rather than tracking actual response stability.
 
 \begin{table}[H]
   \centering
