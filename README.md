@@ -47,6 +47,19 @@ Phase 10 (2026-05-11) restructured the repo to capstone-guideline §5 layout. Pr
 
 Operating rules: [CLAUDE.md](CLAUDE.md). Methodology rationale: `llm-stats-vault/90-archive/audit/{aggregation_locus.md, methodology_continuity.md, limitations_disclosures.md}`.
 
+### Layout vs. capstone guideline
+
+The guideline §5 specifies `code/data_preprocessing.py` and `code/analysis.py` as single files. This project realizes each as a Python package — `code/data_preprocessing/` (with `bayesian/` and `frequentist/` submodules) and `code/analysis/` (with `metrics.py`, `llm_judge_rubric.py`, `error_taxonomy.py`, etc.) — for separation-of-concerns reasons. The guideline's spirit (clear separation of preprocessing vs analysis) is preserved; only the unit (file vs package) differs.
+
+Additional directories beyond the guideline:
+
+- `code/scripts/` — pipeline orchestration entry points (figure generation, downstream analyses, scoring runners)
+- `code/capstone_mcp/` — FastMCP server exposing 7 query tools over the benchmark
+- `poster/` — AUA poster TeX + figures + scripts (historical artifact)
+- `capstone-website/` — public live demo (Next.js + FastAPI, deployed at <https://bayes-benchmark.vercel.app/>)
+- `llm-stats-vault/` — Obsidian session vault and `90-archive/` (design decisions, methodology continuity logs, pre-Phase-10 snapshots)
+- `literature/` — textbook PDFs and lecture notes (gitignored)
+
 ## Software Requirements
 
 - Python 3.11
@@ -286,4 +299,4 @@ CODASSCA 2026.
 
 ## License
 
-MIT (TODO: confirm with advisor before public release).
+MIT (see [LICENSE](LICENSE)).
