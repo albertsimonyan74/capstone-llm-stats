@@ -43,9 +43,9 @@ llm-stats-vault/                Obsidian vault (sessions, knowledge, atlas, 40-l
 conftest.py                     Puts code/ on sys.path for pytest
 ```
 
-Phase 10 (2026-05-11) restructured the repo to capstone-guideline §5 layout. Pre-Phase-10 directories `baseline/`, `evaluation/`, `llm_runner/`, `experiments/`, `report_materials/r_analysis/` no longer exist at the working-repo root. Phase 12 (2026-05-11) moved `cleanup/` and `logs/` under `llm-stats-vault/`. Phase 14 (2026-05-11) merged `report_materials/figures/` into `paper/figures/`. Archival convention: all under `llm-stats-vault/90-archive/<category>_legacy/`.
+The repository follows capstone-guideline §5 layout; archival conventions for legacy paths live under `llm-stats-vault/90-archive/`.
 
-Operating rules: [.claude/CLAUDE.md](.claude/CLAUDE.md). Methodology rationale: `llm-stats-vault/90-archive/audit/{aggregation_locus.md, methodology_continuity.md, limitations_disclosures.md}`.
+Operating rules: [.claude/CLAUDE.md](.claude/CLAUDE.md). Methodology rationale (also referenced from paper §III-F): [`docs/audit/aggregation_locus.md`](docs/audit/aggregation_locus.md), [`docs/audit/methodology_continuity.md`](docs/audit/methodology_continuity.md), [`docs/audit/limitations_disclosures.md`](docs/audit/limitations_disclosures.md).
 
 ### Layout vs. capstone guideline
 
@@ -121,11 +121,10 @@ After the benchmark completes, follow the standard reproduction path above (`./r
 1. Clone the repository.
 2. `python -m venv .venv && source .venv/bin/activate`
 3. `pip install -r requirements.txt`
-4. `Rscript -e 'renv::restore()'`   # restores R deps from `renv.lock`
-5. `export PYTHONPATH="$(pwd)/code"`
-6. `cd code/visualization && Rscript run_all.R && cd ../..`
-7. `cp code/visualization/figures/* paper/figures/`
-8. `cd paper && pdflatex main.tex && bibtex main && \`
+4. `export PYTHONPATH="$(pwd)/code"`
+5. `cd code/visualization && Rscript run_all.R && cd ../..`  # R deps installed on first run; package list in `run_all.R`
+6. `cp code/visualization/figures/* paper/figures/`
+7. `cd paper && pdflatex main.tex && bibtex main && \`
    `              pdflatex main.tex && pdflatex main.tex && cd ..`
 
 Output: `paper/paper.pdf`
@@ -196,7 +195,7 @@ Five dimensions in [0, 1] with literature-derived weights (sole canonical scheme
 | C | Confidence Calibration | 0.15 |
 | R | Reasoning Quality | 0.25 |
 
-Weights defended in `code/analysis/metrics.py` docstring; full literature trail in `llm-stats-vault/90-archive/audit/methodology_continuity.md` (Du 2025, Boye & Moell 2025, Yamauchi 2025, ReasonBench 2025, Wei 2022, Chen 2022, Bishop 2006, Nagarkar 2026, FermiEval 2025, Liu 2025).
+Weights defended in `code/analysis/metrics.py` docstring; full literature trail in [`docs/audit/methodology_continuity.md`](docs/audit/methodology_continuity.md) (Du 2025, Boye & Moell 2025, Yamauchi 2025, ReasonBench 2025, Wei 2022, Chen 2022, Bishop 2006, Nagarkar 2026, FermiEval 2025, Liu 2025).
 
 ### Path A — live runner (deterministic keyword rubric)
 
@@ -214,19 +213,19 @@ Outputs: `data/processed_data/results_v2/llm_judge_scores_full.jsonl` (base runs
 
 ### Aggregation locus
 
-Single-path aggregation: each task contributes one normalized score; models are averaged across all tasks completed. Avoids the two-stage averaging bias earlier v1 analyses exhibited. Rationale: `llm-stats-vault/90-archive/audit/aggregation_locus.md`.
+Single-path aggregation: each task contributes one normalized score; models are averaged across all tasks completed. Avoids the two-stage averaging bias earlier v1 analyses exhibited. Rationale: [`docs/audit/aggregation_locus.md`](docs/audit/aggregation_locus.md).
 
 ## Three-Ranking Framework — Headline Finding
 
 The same five models reorder when scored on different axes. Central empirical claim of the paper.
 
-**Ranking by accuracy** (Path A normalized score):
+**Ranking by accuracy** (Path B NMACR mean over the 171 base tasks):
 
-1. Claude 0.683
-2. Mistral 0.644
-3. Gemini 0.642
-4. DeepSeek 0.625
-5. GPT-4.1 0.621
+1. Gemini 2.5 Flash    0.731
+2. Claude Sonnet 4.5   0.698
+3. GPT-4.1             0.673
+4. DeepSeek-Chat       0.669
+5. Mistral Large       0.668
 
 **Ranking by robustness** (1 − Δ between base and perturbation pass rate):
 
@@ -244,21 +243,33 @@ The same five models reorder when scored on different axes. Central empirical cl
 4. Mistral 0.0811
 5. DeepSeek 0.1977
 
-Two headline patterns: Claude leads accuracy and calibration but drops to 4th on robustness; GPT-4.1 is last on accuracy but first on robustness. The Claude-vs-GPT-4.1 calibration gap (0.0005) is within bootstrap CI; the accuracy-robustness inversion for GPT-4.1 is the clearer story.
+Two headline patterns: Gemini leads accuracy but lacks calibration leadership (3rd at 0.0765); GPT-4.1 is third on accuracy but first on robustness. Claude is second on accuracy and top on calibration but drops to fourth on robustness — the central rank-divergence example explored in §IV-B.
 
 **Supporting findings.** Assumption violation is the dominant failure mode at 47% of judge-classified failures (`ASSUMPTION_VIOLATION` 67, `MATHEMATICAL_ERROR` 48, `FORMATTING_FAILURE` 18, `CONCEPTUAL_ERROR` 10; n=143). Keyword-vs-judge agreement on assumption-compliance: Spearman ρ = 0.602 (n=750 paired runs). Keyword rubric passes 71.1% on the assumption dimension; judge passes 55.7%. Surface-form scoring systematically overcounts substantive assumption articulation.
 
 ## How Figures and Tables Were Generated
 
-All figures are generated programmatically per capstone-guideline §8.2:
+All figures are generated programmatically per capstone-guideline §8.2. Source scripts live in `code/visualization/paper_figures/` and read directly from `data/processed_data/results_v2/`. Tables I-IV are inline LaTeX in `paper/sections/` rendered at compile time from the same source data.
 
-- **Figure 1** (pipeline) — matplotlib via `code/scripts/_phase7_pipeline.py` equivalent. Output at `paper/figures/pipeline.png`. TikZ source held back pending TeX Live cross-release upgrade.
-- **Figure 2** (rank flow across the three metrics) — `poster/scripts/dimension_leaderboard_print.py` (matplotlib + `poster/scripts/print_theme.py` for white background, dark text, 600 DPI). Copied to `paper/figures/rank_flow.png`.
-- **Figure 3** (Krippendorff strip across judged dimensions) — `poster/scripts/krippendorff_strip_print.py`. Output `paper/figures/krippendorff_strip.png`.
-- **Figure 4** (calibration ECE paired, verbalized vs self-consistency) — `poster/scripts/calibration_ece_paired_print.py`. Output `paper/figures/calibration_ece_paired.png`.
-- **Table I** (per-model performance) — values from `data/processed_data/results_v2/{calibration,robustness_v2}.json` and `data/processed_data/results_v1/results.json`, formatted in LaTeX `booktabs`.
+| Figure | Script | Output |
+|---|---|---|
+| Fig. 1 Pipeline | hand-authored TikZ in `paper/sections/03_methodology.tex` | rendered inline |
+| Fig. 2 Disagreement matrix | `code/visualization/paper_figures/disagreement_matrix_paper.py` | `paper/figures/disagreement_matrix.png` |
+| Fig. 3 Failure taxonomy | `code/visualization/paper_figures/failure_taxonomy_paper.py` | `paper/figures/failure_taxonomy.png` |
+| Fig. 4 Per-model disagreement | `code/visualization/paper_figures/per_model_disagreement_paper.py` | `paper/figures/per_model_disagreement.png` |
+| Fig. 5 Failure concentration heatmap | `code/visualization/paper_figures/failure_concentration_paper.py` | `paper/figures/failure_concentration.png` |
+| Fig. 6 Per-axis robustness heatmap | `code/visualization/paper_figures/per_axis_robustness_paper.py` | `paper/figures/per_axis_robustness.png` |
 
-To regenerate all figures from scratch:
+To regenerate all paper figures:
+
+```bash
+source .venv/bin/activate
+for f in code/visualization/paper_figures/*_paper.py; do
+    python "$f"
+done
+```
+
+For the supplementary R visualization pipeline (interactive HTML dashboards, used on the live website):
 
 ```bash
 Rscript code/visualization/run_all.R
@@ -287,7 +298,7 @@ ruff check .
 
 ## Academic Integrity Statement
 
-All code in this repository is original work by the author except where explicitly noted. External libraries are listed in `requirements.txt` and `renv.lock` with their respective licenses preserved. The capstone was developed with the assistance of Anthropic's Claude (Sonnet 4.5 / 4.6 and Opus) for code generation, review, and prose drafting; all final analytical decisions, methodological choices, and substantive claims are the author's own. The benchmark task content draws on standard textbook formulations of Bayesian and inferential statistics (Bolstad 2007, Hoff 2009, Bishop 2006), cited in `paper/references.bib`.
+All code in this repository is original work by the author except where explicitly noted. External libraries are listed in `requirements.txt` (Python) and at the top of `code/visualization/run_all.R` (R) with their respective licenses preserved. The capstone was developed with the assistance of Anthropic's Claude (Sonnet 4.5 / 4.6 and Opus) for code generation, review, and prose drafting; all final analytical decisions, methodological choices, and substantive claims are the author's own. The benchmark task content draws on standard textbook formulations of Bayesian and inferential statistics (Bolstad 2007, Hoff 2009, Bishop 2006), cited in `paper/references.bib`.
 
 ## Citation
 
