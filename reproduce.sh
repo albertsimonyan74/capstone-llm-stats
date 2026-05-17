@@ -22,9 +22,15 @@ Rscript -e 'if (!require("renv")) install.packages("renv", repos="https://cloud.
 cd ../..
 
 echo "=== [4/5] Regenerating figures ==="
-cd code/visualization && Rscript run_all.R && cd ../..
-cp code/visualization/figures/rank_flow.* paper/figures/ 2>/dev/null || true
-cp code/visualization/figures/dimension_leaderboard.* paper/figures/ 2>/dev/null || true
+echo "  [a] Paper figures (Python — canonical, used in PDF)"
+for f in code/visualization/paper_figures/*_paper.py; do
+    echo "      Running $(basename "$f")..."
+    python "$f" || { echo "FAILED: $f"; exit 1; }
+done
+echo "  [b] Supplementary R figures (used by website/poster)"
+cd code/visualization && Rscript run_all.R || \
+    echo "WARNING: R figure regen had failures (supplementary, non-blocking)"
+cd ../..
 
 echo "=== [5/5] Compiling paper ==="
 cd paper

@@ -15,9 +15,13 @@ venv/
 **/.DS_Store
 
 # Runs & results data (large/sensitive)
+# NOTE: results_v1/ now committed for MCP test suite + paper III.F
+# reproducibility (53/53 pytest). Top-level runs.jsonl / results.json
+# still ignored to avoid stray test artifacts in repo root.
 runs.jsonl
 results.json
-data/processed_data/results_v1/
+!data/processed_data/results_v1/runs.jsonl
+!data/processed_data/results_v1/results.json
 
 # Un-ignore static copies bundled for Render Docker build
 !capstone-website/backend/static_data/**
