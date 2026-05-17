@@ -1,0 +1,173 @@
+{
+  "per_model_phase": {
+    "claude": {
+      "phase1": {
+        "n_tasks": 136,
+        "mean_nmacr": 0.6983,
+        "std_nmacr": 0.1895,
+        "per_dim_mean": {
+          "N": 0.6305,
+          "M": 0.9669,
+          "A": 0.4338,
+          "C": 0.4972,
+          "R": 0.9485
+        }
+      },
+      "phase2": {
+        "n_tasks": 35,
+        "mean_nmacr": 0.6949,
+        "std_nmacr": 0.1749,
+        "per_dim_mean": {
+          "N": 0.0095,
+          "M": 0.9143,
+          "A": 0.7857,
+          "C": 0.2883,
+          "R": 0.9286
+        }
+      },
+      "weighted_avg": 0.6976,
+      "table_I_expected": 0.7011,
+      "residual": -0.0035
+    },
+    "chatgpt": {
+      "phase1": {
+        "n_tasks": 136,
+        "mean_nmacr": 0.6729,
+        "std_nmacr": 0.1888,
+        "per_dim_mean": {
+          "N": 0.614,
+          "M": 0.9449,
+          "A": 0.3971,
+          "C": 0.4862,
+          "R": 0.9219
+        }
+      },
+      "phase2": {
+        "n_tasks": 35,
+        "mean_nmacr": 0.6747,
+        "std_nmacr": 0.1887,
+        "per_dim_mean": {
+          "N": 0.0429,
+          "M": 0.8429,
+          "A": 0.8,
+          "C": 0.3232,
+          "R": 0.8536
+        }
+      },
+      "weighted_avg": 0.6733,
+      "table_I_expected": 0.6661,
+      "residual": 0.00717
+    },
+    "gemini": {
+      "phase1": {
+        "n_tasks": 136,
+        "mean_nmacr": 0.7076,
+        "std_nmacr": 0.1771,
+        "per_dim_mean": {
+          "N": 0.5312,
+          "M": 0.9779,
+          "A": 0.4926,
+          "C": 0.467,
+          "R": 0.9642
+        }
+      },
+      "phase2": {
+        "n_tasks": 35,
+        "mean_nmacr": 0.824,
+        "std_nmacr": 0.0993,
+        "per_dim_mean": {
+          "N": 0.181,
+          "M": 0.9857,
+          "A": 0.9714,
+          "C": 0.4668,
+          "R": 0.9893
+        }
+      },
+      "weighted_avg": 0.7314,
+      "table_I_expected": 0.7305,
+      "residual": 0.00092
+    },
+    "deepseek": {
+      "phase1": {
+        "n_tasks": 136,
+        "mean_nmacr": 0.6754,
+        "std_nmacr": 0.193,
+        "per_dim_mean": {
+          "N": 0.5662,
+          "M": 0.9375,
+          "A": 0.4449,
+          "C": 0.4397,
+          "R": 0.9274
+        }
+      },
+      "phase2": {
+        "n_tasks": 35,
+        "mean_nmacr": 0.6421,
+        "std_nmacr": 0.2306,
+        "per_dim_mean": {
+          "N": 0.0905,
+          "M": 0.7857,
+          "A": 0.7143,
+          "C": 0.3812,
+          "R": 0.8179
+        }
+      },
+      "weighted_avg": 0.6686,
+      "table_I_expected": 0.6703,
+      "residual": -0.00172
+    },
+    "mistral": {
+      "phase1": {
+        "n_tasks": 136,
+        "mean_nmacr": 0.6536,
+        "std_nmacr": 0.1831,
+        "per_dim_mean": {
+          "N": 0.6066,
+          "M": 0.9412,
+          "A": 0.3309,
+          "C": 0.4893,
+          "R": 0.9283
+        }
+      },
+      "phase2": {
+        "n_tasks": 35,
+        "mean_nmacr": 0.722,
+        "std_nmacr": 0.1814,
+        "per_dim_mean": {
+          "N": 0.0762,
+          "M": 0.9,
+          "A": 0.8571,
+          "C": 0.3365,
+          "R": 0.9071
+        }
+      },
+      "weighted_avg": 0.6676,
+      "table_I_expected": 0.6715,
+      "residual": -0.0039
+    }
+  },
+  "rankings": {
+    "phase1_best_to_worst": [
+      "gemini",
+      "claude",
+      "deepseek",
+      "chatgpt",
+      "mistral"
+    ],
+    "phase2_best_to_worst": [
+      "gemini",
+      "mistral",
+      "claude",
+      "chatgpt",
+      "deepseek"
+    ],
+    "rank_shift": {
+      "claude": "2 -> 3",
+      "chatgpt": "4 -> 4",
+      "gemini": "1 -> 1",
+      "deepseek": "3 -> 5",
+      "mistral": "5 -> 2"
+    }
+  },
+  "cross_check": {}
+}
