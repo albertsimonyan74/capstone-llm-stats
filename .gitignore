@@ -81,7 +81,14 @@ paper/*.blg
 paper/*.out
 paper/*.toc
 paper/*.pdf
+!paper/paper.pdf
 paper/sections/*.aux
+
+# R htmlwidget vendored JS bundles (regeneratable by run_all.R)
+code/visualization/figures/*_files/
+
+# Stray TeX log artifacts
+texput.log
 paper/main.synctex.gz
 llm-stats-vault/cleanup/pre_phase10_refactor_snapshot_*.tar.gz
 llm-stats-vault/logs/*.log

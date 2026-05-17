@@ -3,7 +3,7 @@
 DS 299 Capstone, American University of Armenia, Akian College of Science & Engineering.
 Author: Albert Simonyan. Advisor: Vahe Movsisyan, PhD.
 
-**Live demo:** <https://bayes-benchmark.vercel.app/>  ·  **Paper:** [paper/main.pdf](paper/main.pdf)
+**Live demo:** <https://bayes-benchmark.vercel.app/>  ·  **Paper:** [paper/paper.pdf](paper/paper.pdf)
 
 ## Project Objective
 
@@ -70,7 +70,7 @@ Reproduces all paper figures and the PDF from committed benchmark results. About
 ./reproduce.sh
 ```
 
-This installs Python and R dependencies, regenerates figures from `data/processed_data/`, and compiles `paper/main.pdf`.
+This installs Python and R dependencies, regenerates figures from `data/processed_data/`, and compiles `paper/paper.pdf`.
 
 ## API Keys (optional)
 
@@ -115,7 +115,7 @@ After the benchmark completes, follow the standard reproduction path above (`./r
 8. `cd paper && pdflatex main.tex && bibtex main && \`
    `              pdflatex main.tex && pdflatex main.tex && cd ..`
 
-Output: `paper/main.pdf`
+Output: `paper/paper.pdf`
 
 The repository's `data/processed_data/` directory contains all model responses, scoring outputs, and judge classifications used in the paper.
 

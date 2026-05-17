@@ -32,7 +32,8 @@ pdflatex -interaction=nonstopmode main.tex
 bibtex main
 pdflatex -interaction=nonstopmode main.tex
 pdflatex -interaction=nonstopmode main.tex
+cp main.pdf paper.pdf
 cd ..
 
 echo ""
-echo "Done. Paper at paper/main.pdf"
+echo "Done. Paper at paper/paper.pdf (also paper/main.pdf)"

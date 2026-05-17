@@ -23,7 +23,7 @@ import numpy as np
 TITLE_FONTSIZE       = 9
 TICK_FONTSIZE        = 7
 MODEL_LABEL_FONTSIZE = 6.5
-VALUE_FONTSIZE       = 6.0
+VALUE_FONTSIZE       = 5.0
 XLABEL_FONTSIZE      = 7
 
 ROOT = Path(__file__).resolve().parents[3]
